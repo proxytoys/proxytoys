@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.thoughtworks.proxy.MulticastingInvoker;
+import com.thoughtworks.proxy.toys.multicast.MulticastingInvoker;
 
 /**
  * @author Aslak Helles&oslash;y

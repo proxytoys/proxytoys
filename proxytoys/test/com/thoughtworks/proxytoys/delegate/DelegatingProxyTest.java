@@ -11,6 +11,8 @@ import java.rmi.RemoteException;
 
 import junit.framework.TestCase;
 
+import com.thoughtworks.proxy.toys.delegate.DelegatingProxy;
+
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */

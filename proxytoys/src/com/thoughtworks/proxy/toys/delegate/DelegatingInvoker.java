@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.proxytoys.delegate;
+package com.thoughtworks.proxy.toys.delegate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

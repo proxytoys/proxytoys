@@ -1,4 +1,5 @@
-package com.thoughtworks.proxy;
+package com.thoughtworks.proxy.toys.hide;
+
 
 /**
  * Interface implemented by all proxy instances created by

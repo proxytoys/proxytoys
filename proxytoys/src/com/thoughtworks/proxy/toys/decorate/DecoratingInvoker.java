@@ -5,11 +5,11 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.proxytoys.decorate;
+package com.thoughtworks.proxy.toys.decorate;
 
 import java.lang.reflect.Method;
 
-import com.thoughtworks.proxytoys.delegate.DelegatingInvoker;
+import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
 
 public class DecoratingInvoker extends DelegatingInvoker {

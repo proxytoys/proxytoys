@@ -19,7 +19,7 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 
-import com.thoughtworks.proxy.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 
 /**
  * @author Aslak Helles&oslash;y

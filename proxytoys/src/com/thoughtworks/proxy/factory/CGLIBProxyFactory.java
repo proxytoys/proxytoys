@@ -17,7 +17,6 @@ import net.sf.cglib.proxy.Proxy;
 
 import com.thoughtworks.nothing.Null;
 import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.InvokerReference;
 import com.thoughtworks.proxy.ProxyFactory;
 
 /**

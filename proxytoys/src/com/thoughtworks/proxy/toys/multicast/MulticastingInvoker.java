@@ -1,8 +1,10 @@
-package com.thoughtworks.proxy;
+package com.thoughtworks.proxy.toys.multicast;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**

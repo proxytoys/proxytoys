@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 
 import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.InvokerReference;
 import com.thoughtworks.proxy.ProxyFactory;
 
 /**

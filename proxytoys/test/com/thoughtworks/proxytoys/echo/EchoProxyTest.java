@@ -17,6 +17,8 @@ import org.jmock.Mock;
 import org.jmock.core.mixin.Invoked;
 import org.jmock.core.mixin.Return;
 
+import com.thoughtworks.proxy.toys.echo.Echoing;
+
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */

@@ -12,6 +12,9 @@ import java.lang.reflect.Method;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.thoughtworks.proxy.toys.decorate.DecoratingProxy;
+import com.thoughtworks.proxy.toys.decorate.InvocationDecorator;
+
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */

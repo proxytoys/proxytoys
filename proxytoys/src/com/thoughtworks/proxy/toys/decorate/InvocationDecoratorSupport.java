@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.proxytoys.decorate;
+package com.thoughtworks.proxy.toys.decorate;
 
 import java.lang.reflect.Method;
 

@@ -1,4 +1,6 @@
-package com.thoughtworks.proxy;
+package com.thoughtworks.proxy.factory;
+
+import com.thoughtworks.proxy.Invoker;
 
 /**
  * @author Aslak Helles&oslash;y

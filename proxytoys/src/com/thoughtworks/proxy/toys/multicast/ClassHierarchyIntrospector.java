@@ -1,4 +1,4 @@
-package com.thoughtworks.proxy;
+package com.thoughtworks.proxy.toys.multicast;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;

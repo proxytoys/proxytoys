@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.thoughtworks.proxy.HidingInvoker;
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.Swappable;
 import com.thoughtworks.proxy.factory.CGLIBProxyFactory;
+import com.thoughtworks.proxy.toys.hide.HidingInvoker;
+import com.thoughtworks.proxy.toys.hide.Swappable;
 
 /**
  * @author Aslak Helles&oslash;y

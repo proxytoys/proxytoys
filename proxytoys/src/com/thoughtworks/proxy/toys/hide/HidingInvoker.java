@@ -3,10 +3,13 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.proxy;
+package com.thoughtworks.proxy.toys.hide;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.ProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.InvokerReference;
 
 /**
  * @author Aslak Helles&oslash;y

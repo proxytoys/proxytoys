@@ -3,8 +3,8 @@ package com.thoughtworks.proxytoys;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.thoughtworks.proxy.HidingInvoker;
-import com.thoughtworks.proxy.Swappable;
+import com.thoughtworks.proxy.toys.hide.HidingInvoker;
+import com.thoughtworks.proxy.toys.hide.Swappable;
 
 /**
  * @author Aslak Helles&oslash;y

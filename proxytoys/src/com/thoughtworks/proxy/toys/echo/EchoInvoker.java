@@ -5,13 +5,13 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.proxytoys.echo;
+package com.thoughtworks.proxy.toys.echo;
 
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
-import com.thoughtworks.proxytoys.delegate.DelegatingInvoker;
+import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
 
 class EchoInvoker extends DelegatingInvoker {
