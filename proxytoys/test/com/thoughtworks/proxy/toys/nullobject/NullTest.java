@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.nothing;
+package com.thoughtworks.proxy.toys.nullobject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

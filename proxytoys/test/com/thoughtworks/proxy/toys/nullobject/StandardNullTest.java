@@ -1,4 +1,4 @@
-package com.thoughtworks.nothing;
+package com.thoughtworks.proxy.toys.nullobject;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
