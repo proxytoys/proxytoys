@@ -87,4 +87,22 @@ public class DelegatingTest extends ProxyTestCase {
     	foo = createProxy(null);
         assertNull(foo.getSomething());
     }
+    
+    public void testShouldCompareEqualToItself() {
+        String string = new String("some thing");
+        foo = createProxy(string);
+        assertEquals(foo, foo);
+    }
+    
+    public void testShouldCompareEqualToDelegatedInstance() {
+        String string = new String("some thing");
+        foo = createProxy(string);
+        assertEquals(foo, string);
+    }
+    
+    public void testShouldCompareEqualToAnotherDelegatingProxyOnTheSameInstance() {
+        String string = new String("some thing");
+        foo = createProxy(string);
+        assertEquals(foo, createProxy(string));
+    }
 }

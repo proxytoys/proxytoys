@@ -53,11 +53,19 @@ public class DelegatingInvoker implements Invoker {
 
         // equals(...) and hashCode()
         if (method.equals(ClassHierarchyIntrospector.equals)) {
+            // TODO this whole section is really ugly and needs cleaning up
 			Object arg = args[0];
-			if (proxyFactory.isProxyClass(arg.getClass())) {
+            if (proxyFactory.isProxyClass(arg.getClass())) {
 				arg = proxyFactory.getInvoker(arg);
 			}
-			result = equals(arg) ? Boolean.TRUE : Boolean.FALSE;
+            if (arg instanceof DelegatingInvoker) {
+                arg = ((DelegatingInvoker)arg).delegate();
+            }
+            if (delegate() == null) {
+                result = arg == null ? Boolean.TRUE : Boolean.FALSE;
+            } else {
+                result = delegate().equals(arg) ? Boolean.TRUE : Boolean.FALSE;
+            }
 		} else if (method.equals(ClassHierarchyIntrospector.hashCode)) {
 			result = new Integer(hashCode());
             
