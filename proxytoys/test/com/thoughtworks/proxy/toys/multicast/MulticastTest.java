@@ -1,14 +1,17 @@
 package com.thoughtworks.proxy.toys.multicast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @version $Revision: 1.3 $
  */
 public class MulticastTest extends ProxyTestCase {
@@ -132,13 +135,20 @@ public class MulticastTest extends ProxyTestCase {
         assertEquals("world", map.get("hello"));
     }
 
-    public void testShouldNotReturnProxyWhenThereIsOnlyOne() {
+    public void testShouldNotReturnProxyWhenThereIsOnlyOneForUndeclaredReturnType() {
         Map map = new HashMap();
-        Object multicast = Multicasting.object(getFactory(), new Object[]{map});
-        Object result = ((Map) multicast).put("hello", "world");
-        assertNull(result);
-        assertEquals("world", ((Map) multicast).put("hello", "moon"));
-        assertEquals("moon", map.get("hello"));
+        ProxyFactory factory = getFactory();
+        Object multicast = Multicasting.object(factory, new Object[]{map});
+        assertFalse(factory.isProxyClass(multicast.getClass()));
+        assertSame(map, multicast);
+    }
+
+    public void testShouldNotReturnProxyWhenThereIsOnlyOneForCompatibleDeclaredReturnTypes() {
+        Map map = new HashMap();
+        ProxyFactory factory = getFactory();
+        Object multicast = Multicasting.object(new Class[]{Map.class, Serializable.class}, factory, new Object[]{map});
+        assertFalse(factory.isProxyClass(multicast.getClass()));
+        assertSame(map, multicast);
     }
 
 
