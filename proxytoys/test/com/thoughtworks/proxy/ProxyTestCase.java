@@ -20,11 +20,9 @@ public abstract class ProxyTestCase extends MockObjectTestCase {
      * @see AllTests#suite()
      */
     public static ProxyFactory FACTORY;
-    
-    protected final ProxyFactory proxyFactory;
 
 	protected ProxyTestCase() {
-		proxyFactory = createProxyFactory();
+		FACTORY = createProxyFactory();
 	}
 
     /**

@@ -30,12 +30,12 @@ public class CglibMulticastTest extends ProxyTestCase {
     }
 
     public void testShouldAddIntegers() {
-        Primitives primitives = (Primitives) Multicasting.object(proxyFactory, new Object[]{new Primitives(true), new Primitives(true), new Primitives(true)});
+        Primitives primitives = (Primitives) Multicasting.object(FACTORY, new Object[]{new Primitives(true), new Primitives(true), new Primitives(true)});
         assertEquals(9, primitives.getInt());
     }
 
     public void testShouldAndBooleans() {
-        Primitives primitives = (Primitives) Multicasting.object(proxyFactory, new Object[]{new Primitives(true), new Primitives(false), new Primitives(false)});
+        Primitives primitives = (Primitives) Multicasting.object(FACTORY, new Object[]{new Primitives(true), new Primitives(false), new Primitives(false)});
         assertFalse(primitives.getBoolean());
     }
 
