@@ -53,12 +53,12 @@ public class CglibHotSwappingTest extends ProxyTestCase {
 
     public void testShouldMakeMutualDependenciesPossible() {
         Yin yin = (Yin) HotSwapping.object(Yin.class, getFactory(), null);
-        Yang realYang = new Yang(yin);
-        Yin realYin = new Yin(realYang);
-        ((Swappable) yin).hotswap(realYin);
+        Yang yang = new Yang(yin);
+        ((Swappable) yin).hotswap(new Yin(yang));
 
-        assertTrue(yin.equals(realYang.getYin()));
-        assertTrue(realYang.equals(yin.getYang()));
+        // isn't this wicked?
+        assertSame(yin, yang.getYin());
+        assertSame(yang, yin.getYang());
     }
 
 }
