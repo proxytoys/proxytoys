@@ -22,12 +22,19 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 
 import junit.framework.TestCase;
+import com.thoughtworks.proxytoys.ProxyFactory;
+import com.thoughtworks.proxytoys.ProxyTestCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
-public abstract class NullTestCase extends TestCase {
+public abstract class NullTestCase extends ProxyTestCase {
+    protected Null nil;
+
+    protected NullTestCase() {
+        nil = new Null(null, proxyFactory);
+    }
 
     public interface SomePrimitives {
         boolean getBoolean();
@@ -49,7 +56,7 @@ public abstract class NullTestCase extends TestCase {
 
     public void testShouldReturnDefaultValuesForPrimitives() throws Exception {
         // execute
-		SomePrimitives nullObject = (SomePrimitives) Null.object(SomePrimitives.class);
+		SomePrimitives nullObject = (SomePrimitives) Null.object(SomePrimitives.class, proxyFactory);
 
         // verify
         assertNotNull(nullObject);
@@ -77,7 +84,7 @@ public abstract class NullTestCase extends TestCase {
 
     public void testShouldReturnEmptyArrayForArrayMethods() throws Exception {
         // execute
-		SomeArrays nullObject = (SomeArrays) Null.object(SomeArrays.class);
+		SomeArrays nullObject = (SomeArrays) Null.object(SomeArrays.class, proxyFactory);
 
         // verify
         assertEquals(0, nullObject.getIntArray().length);
@@ -94,7 +101,7 @@ public abstract class NullTestCase extends TestCase {
 
     public void testShouldReturnStandardNullObjectsForCollections() throws Exception {
         // execute
-		SomeCollections nullObject = (SomeCollections) Null.object(SomeCollections.class);
+		SomeCollections nullObject = (SomeCollections) Null.object(SomeCollections.class, proxyFactory);
 
         // verify
         assertSame(Collections.EMPTY_MAP, nullObject.getMap());
@@ -111,7 +118,7 @@ public abstract class NullTestCase extends TestCase {
     public void testShouldExecuteVoidMethods() throws Exception {
         // execute
 		InterfaceWithVoidMethod nullObject =
-            (InterfaceWithVoidMethod) Null.object(InterfaceWithVoidMethod.class);
+            (InterfaceWithVoidMethod) Null.object(InterfaceWithVoidMethod.class, proxyFactory);
 
         // verify
         nullObject.doVoidMethod();
@@ -124,23 +131,23 @@ public abstract class NullTestCase extends TestCase {
     public void testShouldNotReturnNullForMethodsThatReturnAnObject() throws Exception {
         // execute
 		InterfaceWithObjectMethod nullObject =
-            (InterfaceWithObjectMethod) Null.object(InterfaceWithObjectMethod.class);
+            (InterfaceWithObjectMethod) Null.object(InterfaceWithObjectMethod.class, proxyFactory);
 
         // verify
         assertNotNull(nullObject.getObject());
 	}
 
     public void testShouldRecogniseNullCollectionsAsNullObjects() throws Exception {
-		assertTrue("Map", Null.isNullObject(Null.object(Map.class)));
-		assertTrue("Set", Null.isNullObject(Null.object(Set.class)));
-		assertTrue("List", Null.isNullObject(Null.object(List.class)));
-		assertTrue("SortedSet", Null.isNullObject(Null.object(SortedSet.class)));
-        assertTrue("SortedMap", Null.isNullObject(Null.object(SortedMap.class)));
-        assertTrue("Object", Null.isNullObject(Null.object(Object.class)));
+		assertTrue("Map", nil.isNullObject(Null.object(Map.class, proxyFactory)));
+		assertTrue("Set", nil.isNullObject(Null.object(Set.class, proxyFactory)));
+		assertTrue("List", nil.isNullObject(Null.object(List.class, proxyFactory)));
+		assertTrue("SortedSet", nil.isNullObject(Null.object(SortedSet.class, proxyFactory)));
+        assertTrue("SortedMap", nil.isNullObject(Null.object(SortedMap.class, proxyFactory)));
+        assertTrue("Object", nil.isNullObject(Null.object(Object.class, proxyFactory)));
 	}
 
     public void testShouldThrowUnsupportedOperationWhenMutatingNullSortedSet() throws Exception {
-        SortedSet sortedSet = (SortedSet) Null.object(SortedSet.class);
+        SortedSet sortedSet = (SortedSet) Null.object(SortedSet.class, proxyFactory);
 
         Object object = new Object();
 
@@ -183,7 +190,7 @@ public abstract class NullTestCase extends TestCase {
     }
 
     public void testShouldThrowUnsupportedOperationWhenMutatingNullSortedMap() throws Exception {
-        SortedMap map = (SortedMap) Null.object(SortedMap.class);
+        SortedMap map = (SortedMap) Null.object(SortedMap.class, proxyFactory);
 
         try {
             map.put("should fail", "really");
@@ -212,7 +219,7 @@ public abstract class NullTestCase extends TestCase {
     }
 
     public void testShouldReturnImmutableNullCollectionsForNullSortedMap() throws Exception {
-        SortedMap map = (SortedMap) Null.object(SortedMap.class);
+        SortedMap map = (SortedMap) Null.object(SortedMap.class, proxyFactory);
 
         assertSame(Collections.EMPTY_SET, map.keySet());
         assertSame(Collections.EMPTY_LIST, map.values());
@@ -226,7 +233,7 @@ public abstract class NullTestCase extends TestCase {
     public void testShouldReturnNullObjectIfMethodReturnsAnInterface() throws Exception {
 		// execute
         InterfaceWithInterfaceMethod nullObject =
-            (InterfaceWithInterfaceMethod)Null.object(InterfaceWithInterfaceMethod.class);
+            (InterfaceWithInterfaceMethod)Null.object(InterfaceWithInterfaceMethod.class, proxyFactory);
 
         // verify
         assertNotNull(nullObject.getSubInterface());
@@ -238,11 +245,11 @@ public abstract class NullTestCase extends TestCase {
 
     public void testShouldCreateObjectWhichIsIdentifiableAsNullObject() throws Exception {
         // execute
-		SimpleInterface nullObject = (SimpleInterface) Null.object(SimpleInterface.class);
+		SimpleInterface nullObject = (SimpleInterface) Null.object(SimpleInterface.class, proxyFactory);
 
         // verify
-        assertTrue(Null.isNullObject(nullObject));
-		assertFalse(Null.isNullObject(new Object()));
+        assertTrue(nil.isNullObject(nullObject));
+		assertFalse(nil.isNullObject(new Object()));
 	}
 
     public void testShouldReturnNonNullStringForToStringMethod() throws Exception {
@@ -254,7 +261,7 @@ public abstract class NullTestCase extends TestCase {
 	}
 
     public void testShouldCompareEqualToAnotherNullObjectOfTheSameType() throws Exception {
-        assertEquals(Null.object(SimpleInterface.class), Null.object(SimpleInterface.class));
+        assertEquals(Null.object(SimpleInterface.class, proxyFactory), Null.object(SimpleInterface.class, proxyFactory));
 	}
 
     private static void assertNotEquals(Object o1, Object o2) {
@@ -262,12 +269,12 @@ public abstract class NullTestCase extends TestCase {
     }
 
     public void testShouldCompareUnequalToAnotherNullObjectOfDifferentType() throws Exception {
-        assertNotEquals(Null.object(Collection.class), Null.object(List.class));
-        assertNotEquals(Null.object(List.class), Null.object(Collection.class));
+        assertNotEquals(Null.object(Collection.class, proxyFactory), Null.object(List.class, proxyFactory));
+        assertNotEquals(Null.object(List.class, proxyFactory), Null.object(Collection.class, proxyFactory));
 	}
 
     public void testShouldHaveSameHashcodeAsAnotherNullObjectOfTheSameType() throws Exception {
-        assertEquals(Null.object(Collection.class).hashCode(), Null.object(Collection.class).hashCode());
+        assertEquals(Null.object(Collection.class, proxyFactory).hashCode(), Null.object(Collection.class, proxyFactory).hashCode());
 	}
 
     private static void assertNotEquals(int i1, int i2) {
@@ -275,16 +282,16 @@ public abstract class NullTestCase extends TestCase {
     }
 
     public void testShouldUsuallyHaveDifferentHashcodeFromAnotherNullObjectOfDifferentType() throws Exception {
-        assertNotEquals(Null.object(Collection.class).hashCode(), Null.object(List.class).hashCode());
+        assertNotEquals(Null.object(Collection.class, proxyFactory).hashCode(), Null.object(List.class, proxyFactory).hashCode());
 	}
 
     public void testShouldCreateEmptyStringForNullString() {
-        assertEquals("", Null.object(String.class));
+        assertEquals("", Null.object(String.class, proxyFactory));
     }
 
     public void testShouldCreateSameObjectForNullObject() {
-        assertSame(Null.object(Object.class), Null.object(Object.class));
-        assertNotNull(Null.object(Object.class));
+        assertSame(Null.object(Object.class, proxyFactory), Null.object(Object.class, proxyFactory));
+        assertNotNull(Null.object(Object.class, proxyFactory));
     }
 
     public interface ShouldSerialize extends Serializable {
@@ -292,7 +299,7 @@ public abstract class NullTestCase extends TestCase {
 
     public void testShouldBeSerializableIfInterfaceIsSerializable() throws Exception {
         // setup
-		Object nullObject = Null.object(ShouldSerialize.class);
+		Object nullObject = Null.object(ShouldSerialize.class, proxyFactory);
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bytes);
 
@@ -303,7 +310,7 @@ public abstract class NullTestCase extends TestCase {
 
         // verify
         assertNotNull("not null", result);
-        assertTrue("is Null Object", Null.isNullObject(result));
+        assertTrue("is Null Object", nil.isNullObject(result));
         assertTrue("is correct type", result instanceof ShouldSerialize);
 	}
 
@@ -312,7 +319,7 @@ public abstract class NullTestCase extends TestCase {
 
     public void testShouldNotBeSerializableIfInterfaceIsNotSerializable() throws Exception {
         // setup
-		ShouldNotSerialize nullObject = (ShouldNotSerialize) Null.object(ShouldNotSerialize.class);
+		ShouldNotSerialize nullObject = (ShouldNotSerialize) Null.object(ShouldNotSerialize.class, proxyFactory);
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bytes);
 
