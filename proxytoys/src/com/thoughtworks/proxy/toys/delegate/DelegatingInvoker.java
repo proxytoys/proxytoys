@@ -9,6 +9,8 @@ package com.thoughtworks.proxy.toys.delegate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
@@ -35,7 +37,11 @@ public class DelegatingInvoker implements Invoker {
     protected final ProxyFactory proxyFactory;
     protected final ObjectReference delegateReference;
     private final boolean staticTyping;
-    private boolean executing = false;
+    private final ThreadLocal executing = new ThreadLocal() {
+        protected Object initialValue() {
+            return new HashSet();
+        }
+    };
 
 	public DelegatingInvoker(ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
         this.proxyFactory = proxyFactory;
@@ -50,7 +56,8 @@ public class DelegatingInvoker implements Invoker {
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		final Object result;
-
+        final Set stack = (Set)executing.get();
+        
         // equals(...) and hashCode()
         if (method.equals(ClassHierarchyIntrospector.equals)) {
             // TODO this whole section is really ugly and needs cleaning up
@@ -75,13 +82,13 @@ public class DelegatingInvoker implements Invoker {
             
         // regular method call
         } else {
-			if (executing) {
+			if (stack.contains(method)) {
 				throw new IllegalStateException("Cyclic dependency");
 			}
-			executing = true;
+			stack.add(method);
 			result = invokeOnDelegate(getMethodToInvoke(method), args);
 		}
-		executing = false;
+		stack.remove(method);
 		return result;
 	}
 
