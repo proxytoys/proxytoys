@@ -1,4 +1,4 @@
-package com.thoughtworks.proxy.toys.hide;
+package com.thoughtworks.proxy.toys.hotswap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
