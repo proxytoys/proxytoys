@@ -31,12 +31,6 @@ public class DelegatingTest extends ProxyTestCase {
         foo = createProxy(fooMock.proxy());
     }
     
-    public static class SimpleImpl {
-        public String getSomething() throws RemoteException {
-            return "some thing";
-        }
-    }
-
     private Foo createProxy(Object impl) {
         return (Foo)Delegating.object(Foo.class, impl, getFactory());
     }
@@ -104,6 +98,12 @@ public class DelegatingTest extends ProxyTestCase {
         String string = new String("some thing");
         foo = createProxy(string);
         assertEquals(foo, createProxy(string));
+    }
+    
+    public void testShouldCompareEqualToANestedProxyOnTheSameInstance() {
+        String string = new String("some thing");
+        foo = createProxy(string);
+        assertEquals(foo, createProxy(foo));
     }
     
     public static interface Faculty {

@@ -54,11 +54,11 @@ public class DelegatingInvoker implements Invoker {
         if (method.equals(ClassHierarchyIntrospector.equals)) {
             // TODO this whole section is really ugly and needs cleaning up
 			Object arg = args[0];
-            if (proxyFactory.isProxyClass(arg.getClass())) {
+            while (arg != null && proxyFactory.isProxyClass(arg.getClass())) {
 				arg = proxyFactory.getInvoker(arg);
-			}
-            if (arg instanceof DelegatingInvoker) {
-                arg = ((DelegatingInvoker)arg).delegate();
+                if (arg instanceof DelegatingInvoker) {
+                    arg = ((DelegatingInvoker)arg).delegate();
+                }
             }
             if (delegate() == null) {
                 result = arg == null ? Boolean.TRUE : Boolean.FALSE;
