@@ -13,7 +13,8 @@ import java.lang.reflect.Method;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class InvocationDecoratorSupport implements InvocationDecorator {
-	public void beforeMethodStarts(Object target, Method method, Object[] args) {
+	public Object[] beforeMethodStarts(Object target, Method method, Object[] args) {
+        return args;
 	}
 
     public Object decorateResult(Object result) {

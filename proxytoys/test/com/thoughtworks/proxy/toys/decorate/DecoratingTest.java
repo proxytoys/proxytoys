@@ -25,9 +25,9 @@ public class DecoratingTest extends ProxyTestCase {
     
     static {
         try {
-			getSomethingMethod = Foo.class.getMethod(getSomething, null);
+			getSomethingMethod = Foo.class.getMethod(getSomething, new Class[] {String.class});
 		} catch (Exception e) {
-			throw new NoSuchMethodError("Foo.doSomething()");
+			throw new NoSuchMethodError("Foo.getSomething()");
 		}
     }
     
@@ -36,44 +36,55 @@ public class DecoratingTest extends ProxyTestCase {
     private Foo foo;
     
     public interface Foo {
-        String getSomething();
+        String getSomething(String arg);
     }
     
     public void setUp() throws Exception {
         fooMock = new Mock(Foo.class);
-        fooMock.stubs();
         decoratorMock = new Mock(InvocationDecorator.class);
         decoratorMock.stubs();
+        assertNotNull(fooMock.proxy());
         foo = (Foo) Decorating.object(Foo.class, fooMock.proxy(),
                 (InvocationDecorator)decoratorMock.proxy());
+    }
+
+    private Object[] toArray(Object value) {
+        return new Object[] {value};
     }
     
     public void testShouldInterceptMethodInvocation() throws Exception {
 		// expect
         decoratorMock.expects(once())
-			.method(beforeMethodStarts).with(same(foo), eq(getSomethingMethod), NULL);
+			.method(beforeMethodStarts)
+            .with(same(foo), eq(getSomethingMethod), eq(toArray("foo")))
+            .will(returnValue(toArray("decorated")));
         
         fooMock.expects(once())
-            .method(getSomething).withNoArguments()
+            .method(getSomething).with(eq("decorated"))
             .after(decoratorMock, beforeMethodStarts)
             .will(returnValue("hello"));
         
 		// execute
-        foo.getSomething();
+        foo.getSomething("foo");
 	}
     
-    public void testShouldInterceptMethodSuccess() throws Exception {
+	public void testShouldInterceptMethodSuccess() throws Exception {
 		// expect
+        decoratorMock.expects(once())
+            .method(beforeMethodStarts).withAnyArguments()
+            .will(returnValue(toArray("ignored")));
+
         fooMock.expects(once())
-            .method(getSomething).withNoArguments()
+            .method(getSomething).withAnyArguments()
 			.will(returnValue("hello"));
     
         decoratorMock.expects(once())
-            .method(decorateResult).with(eq("hello")).after(fooMock, getSomething)
+            .method(decorateResult).with(eq("hello"))
+            .after(fooMock, getSomething)
 			.will(returnValue("world"));
     
         // execute
-        String result = foo.getSomething();
+        String result = foo.getSomething("before");
         
         // verify
         assertEquals("world", result);
@@ -82,13 +93,15 @@ public class DecoratingTest extends ProxyTestCase {
     public static class MyException extends RuntimeException {}
     
     public void testShouldInterceptMethodFailure() throws Exception {
+        decoratorMock.expects(once()).method(beforeMethodStarts)
+            .will(returnValue(toArray("ignored")));
         
         MyException exception = new MyException();
         MyException decoratedException = new MyException();
 		
 		// expect
 		fooMock.expects(once())
-            .method(getSomething).withNoArguments()
+            .method(getSomething)
 			.will(throwException(exception));
     
         decoratorMock.expects(once())
@@ -97,7 +110,7 @@ public class DecoratingTest extends ProxyTestCase {
     
         // execute
         try {
-			foo.getSomething();
+			foo.getSomething("value");
             fail("Mock should have thrown exception");
 		} catch (MyException oops) {
 			assertSame(decoratedException, oops);

@@ -22,8 +22,8 @@ public class DecoratingInvoker extends DelegatingInvoker {
     
     public Object invoke(Object proxy, Method method, Object[]args) throws Throwable {
         try {
-            decorator.beforeMethodStarts(proxy, method, args);
-            Object result = super.invoke(proxy, method, args);
+            Object[] decoratedArgs = decorator.beforeMethodStarts(proxy, method, args);
+            Object result = super.invoke(proxy, method, decoratedArgs);
             return decorator.decorateResult(result);
         } catch (Throwable t) {
             Throwable decorated = decorator.decorateException(t);
