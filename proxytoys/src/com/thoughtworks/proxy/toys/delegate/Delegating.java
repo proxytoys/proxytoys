@@ -24,7 +24,9 @@ public class Delegating {
     }
     
     public static Object object(Class type, Object delegate, ProxyFactory factory) {
-        return factory.createProxy(new Class[] {type}, new DelegatingInvoker(delegate));
+        return factory.createProxy(
+                new Class[] {type}, 
+                new DelegatingInvoker(factory, new SimpleReference(delegate), DYNAMIC_TYPING));
     }
     
     /** It's a factory, stupid */
