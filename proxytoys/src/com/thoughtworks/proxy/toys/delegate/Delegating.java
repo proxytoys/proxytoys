@@ -14,6 +14,10 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Delegating {
+    /** delegate must implement the method's interface */
+    public static final boolean STATIC_TYPING = DelegatingInvoker.STATIC_TYPING;
+    /** delegate must have method with matching signature - not necessarily the same */
+    public static final boolean DYNAMIC_TYPING = DelegatingInvoker.DYNAMIC_TYPING;
     
     public static Object object(Class type, Object delegate) {
         return object(type, delegate, new StandardProxyFactory());

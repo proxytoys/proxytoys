@@ -27,60 +27,71 @@ import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
  * @author Dan North
  */
 public class DelegatingInvoker implements Invoker {
+    /** delegate must implement the method's interface */
+    public static final boolean STATIC_TYPING = true;
+    /** delegate must have method with matching signature - not necessarily the same */
+    public static final boolean DYNAMIC_TYPING = false;
+    
     protected final ProxyFactory proxyFactory;
     protected final ObjectReference delegateReference;
-    private final boolean forceSameType;
+    private final boolean staticTyping;
     private boolean executing = false;
 
-	public DelegatingInvoker(ProxyFactory proxyFactory, ObjectReference delegateReference, boolean isTypeForgiving) {
+	public DelegatingInvoker(ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
         this.proxyFactory = proxyFactory;
         this.delegateReference = delegateReference;
-        this.forceSameType = isTypeForgiving;
+        this.staticTyping = staticTyping;
 	}
 
 	public DelegatingInvoker(final Object delegate) {
-        this(new StandardProxyFactory(), new SimpleReference(delegate), true);
+        this(new StandardProxyFactory(), new SimpleReference(delegate), DYNAMIC_TYPING);
 	}
-
+	
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
-        Object result;
-        {
-            if (method.equals(ClassHierarchyIntrospector.equals)) {
-            Object arg = args[0];
-            if (proxyFactory.isProxyClass(arg.getClass())) {
-                arg = proxyFactory.getInvoker(arg);
-            }
-            result = new Boolean(equals(arg));
-            } else if (method.equals(ClassHierarchyIntrospector.hashCode)) {
-                result = new Integer(hashCode());
-            } else {
-                if (executing) {
-                    throw new IllegalStateException("Cyclic dependency");
-                }
-                executing = true;
-    
-                result = invokeMethod(proxy, getMethodToInvoke(method), args);
-            }
-            executing = false;
-        }
-        return result;
+		final Object result;
+
+        // equals(...) and hashCode()
+        if (method.equals(ClassHierarchyIntrospector.equals)) {
+			Object arg = args[0];
+			if (proxyFactory.isProxyClass(arg.getClass())) {
+				arg = proxyFactory.getInvoker(arg);
+			}
+			result = equals(arg) ? Boolean.TRUE : Boolean.FALSE;
+		} else if (method.equals(ClassHierarchyIntrospector.hashCode)) {
+			result = new Integer(hashCode());
+            
+        // null delegate
+		} else if (delegateReference.get() == null) {
+            result = null;
+            
+        // regular method call
+        } else {
+			if (executing) {
+				throw new IllegalStateException("Cyclic dependency");
+			}
+			executing = true;
+			result = invokeMethod(proxy, getMethodToInvoke(method), args);
+		}
+		executing = false;
+		return result;
 	}
 
-	private Method getMethodToInvoke(Method method) throws NoSuchMethodException {
-	    if(forceSameType) {
+	private Method getMethodToInvoke(Method method) {
+	    if(staticTyping) {
 	        return method;
 	    } else {
-	        return delegateReference.get().getClass().getMethod(method.getName(), method.getParameterTypes());
+	        try {
+				return delegateReference.get().getClass().getMethod(method.getName(), method.getParameterTypes());
+			} catch (Exception e) {
+                throw new DelegationException("Problem invoking " + method, e, delegateReference.get());
+			}
 	    }
 	}
 
 	protected Object invokeMethod(Object proxy, Method method, Object[] args) throws Throwable {
 	    Object delegate = delegateReference.get();
 	    try {
-            if (delegate == null) {
-                return null;
-            }
 		    return method.invoke(delegate, args);
         } catch (InvocationTargetException e) {
             throw e;

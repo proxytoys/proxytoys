@@ -22,13 +22,13 @@ public class HotSwapping {
     /**
      * @return a proxy that hides the implementation and implements {@link Swappable}.
      */
-    public static Object object(Class[] types, ProxyFactory proxyFactory, Object delegate, boolean forceSameType) {
+    public static Object object(Class[] types, ProxyFactory proxyFactory, Object delegate, boolean staticTyping) {
         ObjectReference delegateReference = new SimpleReference(delegate);
-        return object(types, proxyFactory, delegateReference, forceSameType);
+        return object(types, proxyFactory, delegateReference, staticTyping);
     }
 
-	public static Object object(Class[] types, ProxyFactory proxyFactory, ObjectReference objectReference, boolean forceSameType) {
-	    return new HotSwappingInvoker(types, proxyFactory, objectReference, forceSameType).proxy();
+	public static Object object(Class[] types, ProxyFactory proxyFactory, ObjectReference objectReference, boolean staticTyping) {
+	    return new HotSwappingInvoker(types, proxyFactory, objectReference, staticTyping).proxy();
 	}
     
     /** It's a factory, stupid */

@@ -28,8 +28,8 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
     private final Class[] types;
     
-    public HotSwappingInvoker(Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean isTypeForgiving) {
-        super(proxyFactory, delegateReference, isTypeForgiving);
+    public HotSwappingInvoker(Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
+        super(proxyFactory, delegateReference, staticTyping);
         this.types = types;
     }
 
