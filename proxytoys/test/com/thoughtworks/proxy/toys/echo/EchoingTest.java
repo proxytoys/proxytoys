@@ -12,8 +12,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.jmock.Mock;
-import org.jmock.core.mixin.Invoked;
-import org.jmock.core.mixin.Return;
 
 import com.thoughtworks.proxy.ProxyTestCase;
 
@@ -31,9 +29,11 @@ public class EchoingTest extends ProxyTestCase {
     private Simple simpleImpl;
     
     public void setUp() throws Exception {
-        simpleMock = new Mock(Simple.class);
+        simpleMock = mock(Simple.class);
         simpleImpl = (Simple) simpleMock.proxy();
     }
+    
+    
     
     public void testShouldEchoMethodNameAndArgs() throws Exception {
         // setup
@@ -54,7 +54,7 @@ public class EchoingTest extends ProxyTestCase {
         Simple simple = (Simple) Echoing.object(Simple.class, simpleImpl, new PrintWriter(out), getFactory());
         
         // expect
-        simpleMock.expects(Invoked.once()).method("doSomething");
+        simpleMock.expects(once()).method("doSomething");
         
         // execute
         simple.doSomething();
@@ -84,13 +84,13 @@ public class EchoingTest extends ProxyTestCase {
                 getFactory());
         
         // expect
-        outerMock.expects(Invoked.once())
+        outerMock.expects(once())
             .method(getInner).withNoArguments()
-            .will(Return.value(innerMock.proxy()));
+            .will(returnValue(innerMock.proxy()));
         
-        innerMock.expects(Invoked.once())
+        innerMock.expects(once())
             .method("getName").withNoArguments()
-            .will(Return.value("inner"));
+            .will(returnValue("inner"));
         
         // execute
         String result = outer.getInner().getName();
