@@ -8,6 +8,7 @@
 package com.thoughtworks.proxy.toys.hotswap;
 
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.delegate.*;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

@@ -12,7 +12,6 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
- * @deprecated Use {@link com.thoughtworks.proxy.toys.hotswap.HotSwapping}
  */
 public class Delegating {
     
@@ -21,7 +20,7 @@ public class Delegating {
     }
     
     public static Object object(Class type, Object delegate, ProxyFactory factory) {
-        return factory.createProxy(new Class[] {type}, new OldDelegatingInvoker(delegate));
+        return factory.createProxy(new Class[] {type}, new DelegatingInvoker(delegate));
     }
     
     /** It's a factory, stupid */

@@ -13,13 +13,19 @@ package com.thoughtworks.proxy.toys.delegate;
 public class DelegationException extends RuntimeException {
 
 	private final Throwable cause;
+	private final Object delegate;
 
-	public DelegationException(String message, Throwable cause) {
+	public DelegationException(String message, Throwable cause, Object delegate) {
         super(message);
         this.cause = cause;
+		this.delegate = delegate;
 	}
     
     public Throwable getCause() {
         return cause;
+    }
+    
+    public Object getDelegate() {
+        return delegate;
     }
 }

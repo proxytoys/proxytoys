@@ -5,19 +5,17 @@
  */
 package com.thoughtworks.proxy.toys.hotswap;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker2;
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.toys.delegate.*;
+import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
-public class HotSwappingInvoker extends DelegatingInvoker2 {
+public class HotSwappingInvoker extends DelegatingInvoker {
     private static final Method hotswap;
 
     static {
@@ -28,8 +26,11 @@ public class HotSwappingInvoker extends DelegatingInvoker2 {
         }
     }
 
+    private final Class[] types;
+    
     public HotSwappingInvoker(Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean isTypeForgiving) {
-        super(types, proxyFactory, delegateReference, isTypeForgiving);
+        super(proxyFactory, delegateReference, isTypeForgiving);
+        this.types = types;
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -37,7 +38,7 @@ public class HotSwappingInvoker extends DelegatingInvoker2 {
         if (method.equals(hotswap)) {
             result = hotswap(args[0]);
         } else
-			result = doInvoke(proxy, method, args);
+			result = super.invoke(proxy, method, args);
         return result;
     }
 

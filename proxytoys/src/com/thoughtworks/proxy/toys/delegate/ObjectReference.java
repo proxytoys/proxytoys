@@ -1,4 +1,4 @@
-package com.thoughtworks.proxy.toys.hotswap;
+package com.thoughtworks.proxy.toys.delegate;
 
 /**
  * A way to refer to objects that are stored in "awkward" places (for example inside a

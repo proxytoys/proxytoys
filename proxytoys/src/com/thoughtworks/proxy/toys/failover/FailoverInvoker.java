@@ -11,8 +11,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.delegate.SimpleReference;
 import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
-import com.thoughtworks.proxy.toys.hotswap.SimpleReference;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -28,7 +28,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
         this.exceptionClass = exceptionClass;
     }
 
-    protected Object invokeMethod(Object proxy, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
+    protected Object invokeMethod(Object proxy, Method method, Object[] args) throws Throwable {
         Object result = null;
         try {
             result = super.invokeMethod(proxy, method, args);

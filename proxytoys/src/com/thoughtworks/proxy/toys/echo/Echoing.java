@@ -14,6 +14,8 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 
 /**
+ * @deprecated EchoingInvoker is going to go away or be replaced with a
+ *             <tt>DecoratingInvoker</tt> - DN
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Echoing {

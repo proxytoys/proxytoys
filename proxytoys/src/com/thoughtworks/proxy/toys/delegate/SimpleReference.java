@@ -1,4 +1,4 @@
-package com.thoughtworks.proxy.toys.hotswap;
+package com.thoughtworks.proxy.toys.delegate;
 
 import java.io.Serializable;
 

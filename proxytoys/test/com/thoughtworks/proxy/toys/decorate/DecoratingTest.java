@@ -21,7 +21,6 @@ public class DecoratingTest extends ProxyTestCase {
 	private static final String decorateResult = "decorateResult";
 	private static final String beforeMethodStarts = "beforeMethodStarts";
 	private static final String getSomething = "getSomething";
-    private static final String decorateInvocationException = "decorateInvocationException";
 
     private static final Method getSomethingMethod;
     static {
