@@ -7,24 +7,36 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
+import com.thoughtworks.proxy.Invoker;
+
 import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
-import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
-
-// TODO: Shouldn't this just decorate another Invoker? Nicer chaining!! AH
-public class DecoratingInvoker extends DelegatingInvoker {
+/**
+ * @author Dan North
+ * @author Aslak Helles&oslash;y
+ */
+public class DecoratingInvoker implements Invoker {
+    private final Invoker decorated;
     private final InvocationDecorator decorator;
-
-	public DecoratingInvoker(Object delegate, InvocationDecorator decorator) {
-        super(delegate);
+    
+	public DecoratingInvoker(Invoker decorated, InvocationDecorator decorator) {
+        this.decorated = decorated;
         this.decorator = decorator;
 	}
-    
+
+    public DecoratingInvoker(Object delegate, InvocationDecorator decorator) {
+        this(new SimpleInvoker(delegate), decorator);
+    }
+
     public Object invoke(Object proxy, Method method, Object[]args) throws Throwable {
         try {
             Object[] decoratedArgs = decorator.beforeMethodStarts(proxy, method, args);
-            Object result = super.invoke(proxy, method, decoratedArgs);
+            Object result = decorated.invoke(proxy, method, decoratedArgs);
             return decorator.decorateResult(result);
+        } catch (InvocationTargetException t) {
+            Throwable decorated = decorator.decorateException(t.getTargetException());
+            throw decorated;
         } catch (Throwable t) {
             Throwable decorated = decorator.decorateException(t);
             throw decorated;

@@ -7,11 +7,10 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
-import java.lang.reflect.Method;
-
+import com.thoughtworks.proxy.ProxyTestCase;
 import org.jmock.Mock;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import java.lang.reflect.Method;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
