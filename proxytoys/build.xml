@@ -50,7 +50,7 @@
 				<fileset dir="${lib.dir}" includes="*.jar"/>
 				<path location="${jar.file}"/>
 			</classpath>
-			<test name="com.thoughtworks.${project}.AllTests" todir="${test.classes.dir}"/>
+			<test name="com.thoughtworks.AllTests" todir="${test.classes.dir}"/>
 		</junit>
 	</target>
 	
