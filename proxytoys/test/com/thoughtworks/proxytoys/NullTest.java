@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author <a href="mailto:aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
 public class NullTest extends TestCase {
     

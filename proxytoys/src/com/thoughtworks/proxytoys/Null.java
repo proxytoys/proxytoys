@@ -39,6 +39,7 @@ import java.util.TreeSet;
  * </ul>
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author <a href="mailto:aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
 public class Null {
     

@@ -11,6 +11,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+/**
+ * Invocation handler for Null Objects
+ * 
+ * @see Null
+ * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author <a href="mailto:aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
+ */
 
 class NullInvocationHandler implements InvocationHandler {
     private static final Method equals;
