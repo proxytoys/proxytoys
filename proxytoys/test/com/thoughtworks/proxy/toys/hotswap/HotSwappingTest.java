@@ -4,6 +4,7 @@ import com.thoughtworks.proxy.ProxyTestCase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -40,6 +41,16 @@ public class HotSwappingTest extends ProxyTestCase {
         } catch (IllegalStateException e) {
             // expected
         }
+    }
+
+    public void testShouldNotHotswapRecursively() {
+        List list = new ArrayList();
+        HashMap map = new HashMap();
+        map.put("hello", "world");
+        list.add(map);
+        List hidingList = (List) HotSwapping.object(List.class, getFactory(), list);
+        Object shouldNotBeSwappableMap = hidingList.get(0);
+        assertFalse(shouldNotBeSwappableMap instanceof Swappable);
     }
 
     public void testShouldWorkWithEquals() {

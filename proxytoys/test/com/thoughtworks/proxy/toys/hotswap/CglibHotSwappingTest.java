@@ -4,10 +4,6 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
@@ -15,16 +11,6 @@ import java.util.List;
 public class CglibHotSwappingTest extends ProxyTestCase {
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
-    }
-
-    public void testShouldNotHotswapRecursively() {
-        List list = new ArrayList();
-        HashMap map = new HashMap();
-        map.put("hello", "world");
-        list.add(map);
-        List hidingList = (List) HotSwapping.object(List.class, getFactory(), list);
-        Object shouldNotBeSwappableMap = hidingList.get(0);
-        assertFalse(shouldNotBeSwappableMap instanceof Swappable);
     }
 
     public static class Yin {
