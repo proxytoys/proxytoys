@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxytoys.echo;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -38,7 +38,7 @@ public class EchoProxyTest extends TestCase {
     public void testShouldEchoMethodNameAndArgs() throws Exception {
         // setup
         Writer out = new StringWriter();
-    	Simple foo = (Simple) EchoProxy.newProxyInstance(Simple.class, new PrintWriter(out));
+    	Simple foo = (Simple) Echoing.object(Simple.class, new PrintWriter(out));
         
         // execute
         foo.doSomething();
@@ -50,7 +50,7 @@ public class EchoProxyTest extends TestCase {
     public void testShouldDelegateCalls() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple simple = (Simple) EchoProxy.newProxyInstance(Simple.class, simpleImpl, new PrintWriter(out));
+        Simple simple = (Simple) Echoing.object(Simple.class, simpleImpl, new PrintWriter(out));
         
         // expect
         simpleMock.expects(Invoked.once()).method("doSomething");
@@ -76,7 +76,7 @@ public class EchoProxyTest extends TestCase {
         Mock outerMock = new Mock(Outer.class);
         StringWriter out = new StringWriter();
         
-    	Outer outer = (Outer)EchoProxy.newProxyInstance(
+    	Outer outer = (Outer)Echoing.object(
     	        Outer.class,
     	        outerMock.proxy(),
     	        new PrintWriter(out));
@@ -102,7 +102,7 @@ public class EchoProxyTest extends TestCase {
     public void testShouldRecursivelyReturnEchoProxiesEvenForMissingImplementations() throws Exception {
         // setup
         StringWriter out = new StringWriter();
-        Outer outer = (Outer)EchoProxy.newProxyInstance(
+        Outer outer = (Outer)Echoing.object(
                 Outer.class, null, new PrintWriter(out));
         
         // execute

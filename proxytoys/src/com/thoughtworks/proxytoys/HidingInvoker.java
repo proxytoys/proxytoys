@@ -5,14 +5,14 @@
  */
 package com.thoughtworks.proxytoys;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
-public class Hiding implements Invoker {
+public class HidingInvoker implements Invoker {
     private static final Method hotswap;
 
     static {
@@ -28,7 +28,7 @@ public class Hiding implements Invoker {
     private Object delegate;
     private boolean executing = false;
 
-    public Hiding(Class type, ProxyFactory proxyFactory, Object delegate) {
+    public HidingInvoker(Class type, ProxyFactory proxyFactory, Object delegate) {
         this.proxyFactory = proxyFactory;
         this.type = type;
         this.delegate = delegate;
@@ -71,7 +71,6 @@ public class Hiding implements Invoker {
      * @return a proxy that hides the implementation and implements {@link Swappable}.
      */
     public static Object object(Class type, ProxyFactory proxyFactory, Object delegate) {
-        return new Hiding(type, proxyFactory, delegate).proxy();
+        return new HidingInvoker(type, proxyFactory, delegate).proxy();
     }
-
 }

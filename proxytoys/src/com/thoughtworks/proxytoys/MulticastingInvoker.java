@@ -12,12 +12,12 @@ import java.util.ArrayList;
  * @author Chris Stevenson
  * @version $Revision: 1.3 $
  */
-public class Multicast implements Invoker {
+public class MulticastingInvoker implements Invoker {
     private final Class[] types;
     private final ProxyFactory proxyFactory;
     private final Object[] targets;
 
-    public Multicast(Class[] type, ProxyFactory proxyFactory, Object[] targets) {
+    public MulticastingInvoker(Class[] type, ProxyFactory proxyFactory, Object[] targets) {
         this.types = type;
         this.proxyFactory = proxyFactory;
         this.targets = targets;
@@ -32,7 +32,7 @@ public class Multicast implements Invoker {
     }
 
     public static Object object(Class[] types, ProxyFactory proxyFactory, Object[] targets) {
-        return new Multicast(types, proxyFactory, targets).proxy();
+        return new MulticastingInvoker(types, proxyFactory, targets).proxy();
     }
 
     public static Object object(Class type, ProxyFactory proxyFactory, Object[] targets) {

@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class Failover extends Hiding {
+public class Failover extends HidingInvoker {
     private final Object[] delegates;
     private final Class exceptionClass;
     private int current;
@@ -27,7 +27,7 @@ public class Failover extends Hiding {
             result = super.invokeMethod(proxy, method, args);
         } catch (InvocationTargetException e) {
             if (exceptionClass.isInstance(e.getTargetException())) {
-                Hiding hiding = (Hiding) proxyFactory.getInvoker(proxy);
+                HidingInvoker hiding = (HidingInvoker) proxyFactory.getInvoker(proxy);
                 current++;
                 current = current % delegates.length;
                 hiding.hotswap(delegates[1]);

@@ -7,18 +7,20 @@
  */
 package com.thoughtworks;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import com.thoughtworks.nothing.CGLIBNullTest;
 import com.thoughtworks.nothing.StandardNullTest;
 import com.thoughtworks.proxytoys.CGLIBFailoverTest;
 import com.thoughtworks.proxytoys.CGLIBHidingTest;
 import com.thoughtworks.proxytoys.CGLIBMulticastTest;
-import com.thoughtworks.proxytoys.DelegatingProxyTest;
-import com.thoughtworks.proxytoys.EchoProxyTest;
 import com.thoughtworks.proxytoys.StandardFailoverTest;
 import com.thoughtworks.proxytoys.StandardHidingTest;
 import com.thoughtworks.proxytoys.StandardMulticastTest;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import com.thoughtworks.proxytoys.decorate.DecoratingProxyTest;
+import com.thoughtworks.proxytoys.delegate.DelegatingProxyTest;
+import com.thoughtworks.proxytoys.echo.EchoProxyTest;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -37,6 +39,7 @@ public class AllTests {
         suite.addTestSuite(CGLIBFailoverTest.class);
 		suite.addTestSuite(EchoProxyTest.class);
 		suite.addTestSuite(DelegatingProxyTest.class);
+		suite.addTestSuite(DecoratingProxyTest.class);
 		//$JUnit-END$
 		return suite;
 	}

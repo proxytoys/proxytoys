@@ -2,7 +2,7 @@ package com.thoughtworks.proxytoys;
 
 /**
  * Interface implemented by all proxy instances created by
- * {@link DelegatingProxy}.
+ * {@link HidingInvoker}.
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.4 $

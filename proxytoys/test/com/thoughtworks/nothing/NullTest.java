@@ -136,12 +136,12 @@ public abstract class NullTest extends ProxyTestCase {
 	}
 
     public void testShouldRecogniseNullCollectionsAsNullObjects() throws Exception {
-		assertTrue("Map", nil.isNullObject(Null.object(Map.class, proxyFactory)));
-		assertTrue("Set", nil.isNullObject(Null.object(Set.class, proxyFactory)));
-		assertTrue("List", nil.isNullObject(Null.object(List.class, proxyFactory)));
-		assertTrue("SortedSet", nil.isNullObject(Null.object(SortedSet.class, proxyFactory)));
-        assertTrue("SortedMap", nil.isNullObject(Null.object(SortedMap.class, proxyFactory)));
-        assertTrue("Object", nil.isNullObject(Null.object(Object.class, proxyFactory)));
+		assertTrue("Map", Null.isNullObject(Null.object(Map.class, proxyFactory)));
+		assertTrue("Set", Null.isNullObject(Null.object(Set.class, proxyFactory)));
+		assertTrue("List", Null.isNullObject(Null.object(List.class, proxyFactory)));
+		assertTrue("SortedSet", Null.isNullObject(Null.object(SortedSet.class, proxyFactory)));
+        assertTrue("SortedMap", Null.isNullObject(Null.object(SortedMap.class, proxyFactory)));
+        assertTrue("Object", Null.isNullObject(Null.object(Object.class, proxyFactory)));
 	}
 
     public void testShouldThrowUnsupportedOperationWhenMutatingNullSortedSet() throws Exception {
@@ -246,8 +246,8 @@ public abstract class NullTest extends ProxyTestCase {
 		SimpleInterface nullObject = (SimpleInterface) Null.object(SimpleInterface.class, proxyFactory);
 
         // verify
-        assertTrue(nil.isNullObject(nullObject));
-		assertFalse(nil.isNullObject(new Object()));
+        assertTrue(Null.isNullObject(nullObject));
+		assertFalse(Null.isNullObject(new Object()));
 	}
 
     public void testShouldReturnNonNullStringForToStringMethod() throws Exception {
@@ -308,7 +308,7 @@ public abstract class NullTest extends ProxyTestCase {
 
         // verify
         assertNotNull("not null", result);
-        assertTrue("is Null Object", nil.isNullObject(result));
+        assertTrue("is Null Object", Null.isNullObject(result));
         assertTrue("is correct type", result instanceof ShouldSerialize);
 	}
 

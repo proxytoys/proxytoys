@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxytoys.delegate;
 
 import java.rmi.RemoteException;
 

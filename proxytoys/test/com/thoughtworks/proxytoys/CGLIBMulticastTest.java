@@ -26,12 +26,12 @@ public class CGLIBMulticastTest extends MulticastTest {
     }
 
     public void testShouldAddIntegers() {
-        Primitives primitives = (Primitives) Multicast.object(proxyFactory, new Object[]{new Primitives(true), new Primitives(true), new Primitives(true)});
+        Primitives primitives = (Primitives) MulticastingInvoker.object(proxyFactory, new Object[]{new Primitives(true), new Primitives(true), new Primitives(true)});
         assertEquals(9, primitives.getInt());
     }
 
     public void testShouldAndBooleans() {
-        Primitives primitives = (Primitives) Multicast.object(proxyFactory, new Object[]{new Primitives(true), new Primitives(false), new Primitives(false)});
+        Primitives primitives = (Primitives) MulticastingInvoker.object(proxyFactory, new Object[]{new Primitives(true), new Primitives(false), new Primitives(false)});
         assertFalse(primitives.getBoolean());
     }
 

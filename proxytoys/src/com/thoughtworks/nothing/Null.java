@@ -7,13 +7,9 @@
  */
 package com.thoughtworks.nothing;
 
-import com.thoughtworks.proxytoys.Invoker;
-import com.thoughtworks.proxytoys.ProxyFactory;
-import com.thoughtworks.proxytoys.StandardProxyFactory;
 
 import java.io.IOException;
 import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -27,6 +23,10 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import com.thoughtworks.proxytoys.Invoker;
+import com.thoughtworks.proxytoys.ProxyFactory;
+import com.thoughtworks.proxytoys.StandardProxyFactory;
 
 /**
  * Utility class for creating Null Objects.
@@ -56,7 +56,7 @@ import java.util.TreeSet;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:nospamx.aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
-public class Null implements Invoker, Serializable {
+public class Null implements Invoker {
     private static final Method equals;
     private static final Method hashCode;
     private static final Method toString;
@@ -114,7 +114,7 @@ public class Null implements Invoker, Serializable {
 		}
 	};
 
-    private Class type;
+    private final Class type;
     private final ProxyFactory proxyFactory;
 
     public Null(Class type, ProxyFactory proxyFactory) {
@@ -240,16 +240,12 @@ public class Null implements Invoker, Serializable {
         if (!nullObjectIsSerializable()) {
 		    throw new NotSerializableException(type.getName());
 		}
-        out.writeObject(type);
+        out.defaultWriteObject();
     }
 
 	private boolean nullObjectIsSerializable() {
 		return Serializable.class.isAssignableFrom(type);
 	}
-
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        type = (Class) in.readObject();
-    }
 
     /**
      * Determine whether an object was created by {@link Null#object(Class)}
