@@ -62,7 +62,7 @@ public class DelegatingInvoker implements Invoker {
 			result = new Integer(hashCode());
             
         // null delegate
-		} else if (delegateReference.get() == null) {
+		} else if (delegate() == null) {
             result = null;
             
         // regular method call
@@ -71,10 +71,14 @@ public class DelegatingInvoker implements Invoker {
 				throw new IllegalStateException("Cyclic dependency");
 			}
 			executing = true;
-			result = invokeMethod(proxy, getMethodToInvoke(method), args);
+			result = invokeOnDelegate(getMethodToInvoke(method), args);
 		}
 		executing = false;
 		return result;
+	}
+
+	protected Object delegate() {
+		return delegateReference.get();
 	}
 
 	private Method getMethodToInvoke(Method method) {
@@ -82,15 +86,15 @@ public class DelegatingInvoker implements Invoker {
 	        return method;
 	    } else {
 	        try {
-				return delegateReference.get().getClass().getMethod(method.getName(), method.getParameterTypes());
+				return delegate().getClass().getMethod(method.getName(), method.getParameterTypes());
 			} catch (Exception e) {
-                throw new DelegationException("Problem invoking " + method, e, delegateReference.get());
+                throw new DelegationException("Problem invoking " + method, e, delegate());
 			}
 	    }
 	}
 
-	protected Object invokeMethod(Object proxy, Method method, Object[] args) throws Throwable {
-	    Object delegate = delegateReference.get();
+	protected Object invokeOnDelegate(Method method, Object[] args) throws Throwable {
+	    Object delegate = delegate();
 	    try {
 		    return method.invoke(delegate, args);
         } catch (InvocationTargetException e) {

@@ -20,25 +20,33 @@ import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
 public class FailoverInvoker extends HotSwappingInvoker {
     private final Object[] delegates;
     private final Class exceptionClass;
+
     private int current;
+	private Object currentProxy;
 
     public FailoverInvoker(Class[] types, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
         super(types, proxyFactory, new SimpleReference(delegates[0]), true);
         this.delegates = delegates;
         this.exceptionClass = exceptionClass;
     }
+    
+    
 
-    protected Object invokeMethod(Object proxy, Method method, Object[] args) throws Throwable {
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		this.currentProxy = proxy;
+		return super.invoke(proxy, method, args);
+	}
+    protected Object invokeOnDelegate(Method method, Object[] args) throws Throwable {
         Object result = null;
         try {
-            result = super.invokeMethod(proxy, method, args);
+            result = super.invokeOnDelegate(method, args);
         } catch (InvocationTargetException e) {
             if (exceptionClass.isInstance(e.getTargetException())) {
-                HotSwappingInvoker hiding = (HotSwappingInvoker) proxyFactory.getInvoker(proxy);
+                HotSwappingInvoker hiding = (HotSwappingInvoker) proxyFactory.getInvoker(currentProxy);
                 current++;
                 current = current % delegates.length;
                 hiding.hotswap(delegates[1]);
-                result = super.invokeMethod(proxy, method, args);
+                result = super.invokeOnDelegate(method, args);
             } else {
                 throw e;
             }
