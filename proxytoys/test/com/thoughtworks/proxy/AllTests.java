@@ -12,7 +12,6 @@ import junit.framework.TestSuite;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.toys.autopool.AutoPoolTest;
 import com.thoughtworks.proxy.toys.decorate.DecoratingTest;
 import com.thoughtworks.proxy.toys.delegate.DelegatingTest;
 import com.thoughtworks.proxy.toys.echo.EchoingTest;
@@ -24,6 +23,7 @@ import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospectorTest;
 import com.thoughtworks.proxy.toys.multicast.MulticastTest;
 import com.thoughtworks.proxy.toys.nullobject.CglibNullTest;
 import com.thoughtworks.proxy.toys.nullobject.NullTest;
+import com.thoughtworks.proxy.toys.pool.PoolTest;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -64,7 +64,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Tests using " + type + "ProxyFactory");
 		ProxyTestCase.PROXY_FACTORY = factory;
         suite.addTestSuite(ProxyFactoryTest.class);
-        suite.addTestSuite(AutoPoolTest.class);
+        suite.addTestSuite(PoolTest.class);
         suite.addTestSuite(DecoratingTest.class);
 		suite.addTestSuite(DelegatingTest.class);
 		suite.addTestSuite(EchoingTest.class);

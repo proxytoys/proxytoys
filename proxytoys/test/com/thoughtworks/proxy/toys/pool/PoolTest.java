@@ -1,16 +1,17 @@
 /*
- * (c) 2003-2004 ThoughtWorks
+ * (c) 2004-2005 ThoughtWorks
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.proxy.toys.autopool;
+package com.thoughtworks.proxy.toys.pool;
 
 import com.thoughtworks.proxy.ProxyTestCase;
+
 
 /**
  * @author J&ouml;rg Schaible
  */
-public class AutoPoolTest extends ProxyTestCase {
+public class PoolTest extends ProxyTestCase {
 
     static public interface Identifiable {
         int getId();
@@ -29,13 +30,13 @@ public class AutoPoolTest extends ProxyTestCase {
         }
 
         public boolean equals(Object arg) {
-            return arg instanceof Identifiable && id == ((Identifiable) arg).getId();
+            return arg instanceof Identifiable && id == ((Identifiable)arg).getId();
         }
     }
-    
+
     private Object[] createIdentifiables(int size) {
         final Object array[] = new Object[size];
-        for(int i = 0; i < size; ++i) {
+        for (int i = 0; i < size; ++i) {
             array[i] = new InstanceCounter();
         }
         return array;
@@ -46,14 +47,14 @@ public class AutoPoolTest extends ProxyTestCase {
     }
 
     public void testInstancesCanBeAccessed() {
-        final AutoPool pool = new AutoPool(Identifiable.class, createIdentifiables(1), getFactory());
+        final Pool pool = new Pool(Identifiable.class, createIdentifiables(1), getFactory());
         Identifiable borrowed = (Identifiable)pool.get();
         assertNotNull(borrowed);
         assertEquals(0, borrowed.getId());
     }
 
     public void testInstancesCanBeRecycled() {
-        final AutoPool pool = new AutoPool(Identifiable.class, createIdentifiables(3), getFactory());
+        final Pool pool = new Pool(Identifiable.class, createIdentifiables(3), getFactory());
         Object borrowed0 = pool.get();
         Object borrowed1 = pool.get();
         Object borrowed2 = pool.get();
@@ -64,17 +65,17 @@ public class AutoPoolTest extends ProxyTestCase {
         borrowed1 = null;
         System.gc();
 
-        Identifiable borrowed = (Identifiable) pool.get();
+        Identifiable borrowed = (Identifiable)pool.get();
         assertEquals(1, borrowed.getId());
 
-        ((AutoPoolable) borrowed).returnInstanceToPool();
+        ((Poolable)borrowed).returnInstanceToPool();
 
         Object borrowedReloaded = pool.get();
         assertEquals(borrowed, borrowedReloaded);
     }
 
     public void testUnmanagedInstanceCannotBeReleased() {
-        final AutoPool pool = new AutoPool(Identifiable.class);
+        final Pool pool = new Pool(Identifiable.class);
         try {
             pool.release(new InstanceCounter());
             fail();
@@ -83,8 +84,8 @@ public class AutoPoolTest extends ProxyTestCase {
     }
 
     public void testElementWillReturnToOwnPool() {
-        final AutoPool pool1 = new AutoPool(Identifiable.class, createIdentifiables(1), getFactory());
-        final AutoPool pool2 = new AutoPool(Identifiable.class, createIdentifiables(1), getFactory());
+        final Pool pool1 = new Pool(Identifiable.class, createIdentifiables(1), getFactory());
+        final Pool pool2 = new Pool(Identifiable.class, createIdentifiables(1), getFactory());
         Object o1 = pool1.get();
         assertEquals(0, pool1.getAvailable());
         assertEquals(1, pool2.getAvailable());
@@ -94,7 +95,7 @@ public class AutoPoolTest extends ProxyTestCase {
     }
 
     public void testPoolReturnsNullIfExhausted() {
-        final AutoPool pool = new AutoPool(Identifiable.class, createIdentifiables(1), getFactory());
+        final Pool pool = new Pool(Identifiable.class, createIdentifiables(1), getFactory());
         Object obj1 = pool.get();
         assertNotNull(obj1);
         assertEquals(0, pool.getAvailable());
@@ -102,7 +103,7 @@ public class AutoPoolTest extends ProxyTestCase {
     }
 
     public void testPoolSizeIsConstant() {
-        final AutoPool pool = new AutoPool(Identifiable.class, createIdentifiables(3), getFactory());
+        final Pool pool = new Pool(Identifiable.class, createIdentifiables(3), getFactory());
         assertEquals(3, pool.size());
         Object obj1 = pool.get();
         assertEquals(3, pool.size());
@@ -113,7 +114,7 @@ public class AutoPoolTest extends ProxyTestCase {
     }
 
     public void testPoolGrowingManually() {
-        final AutoPool pool = new AutoPool(Identifiable.class, createIdentifiables(1), getFactory());
+        final Pool pool = new Pool(Identifiable.class, createIdentifiables(1), getFactory());
         Object obj1 = pool.get();
         assertEquals(0, pool.getAvailable());
         pool.add(new InstanceCounter());
