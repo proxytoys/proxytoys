@@ -50,30 +50,32 @@ public class CGLIBProxyFactory extends AbstractProxyFactory {
     }
 
     public Object createProxy(Class type, final Invoker invoker) {
-        if(type.isInterface()) {
+        if (type.isInterface()) {
             // slightly faster
             return standardProxyFactory.createProxy(type, invoker);
         }
-
         Enhancer enhancer = new Enhancer();
-        if (type.isInterface()) {
-            enhancer.setInterfaces(new Class[]{type, InvokerReference.class});
-        } else {
-            enhancer.setSuperclass(type);
-            enhancer.setInterfaces(new Class[]{InvokerReference.class});
-        }
+        enhancer.setSuperclass(type);
+        enhancer.setInterfaces(new Class[]{InvokerReference.class});
         enhancer.setCallback(new CGLIBInvocationHandlerAdapter(invoker));
         try {
             return enhancer.create();
         } catch (CodeGenerationException e) {
-            Constructor constructor = getConstructor(type);
-            Class[] params = constructor.getParameterTypes();
-            Object[] args = new Object[params.length];
-            for (int i = 0; i < args.length; i++) {
-                args[i] = Null.object(params[i]);
-            }
-            return enhancer.create(params, args);
+            return createWithConstructor(type, enhancer);
+        } catch (NoSuchMethodError e) {
+            return createWithConstructor(type, enhancer);
         }
+    }
+
+    private Object createWithConstructor(Class type, Enhancer enhancer) {
+        Constructor constructor = getConstructor(type);
+        Class[] params = constructor.getParameterTypes();
+        Object[] args = new Object[params.length];
+        for (int i = 0; i < args.length; i++) {
+            args[i] = Null.object(params[i]);
+        }
+        Object result = enhancer.create(params, args);
+        return result;
     }
 
     private Constructor getConstructor(Class type) {
