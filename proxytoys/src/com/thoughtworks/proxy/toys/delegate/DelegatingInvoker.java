@@ -25,6 +25,7 @@ import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Dan North
+ * @author J&ouml;rg Schaible
  */
 public class DelegatingInvoker implements Invoker {
     /** delegate must implement the method's interface */

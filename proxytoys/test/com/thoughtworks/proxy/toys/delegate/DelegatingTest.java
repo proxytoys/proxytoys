@@ -7,20 +7,34 @@
  */
 package com.thoughtworks.proxy.toys.delegate;
 
-import java.rmi.RemoteException;
+import com.thoughtworks.proxy.ProxyTestCase;
 
 import org.jmock.Mock;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import java.rmi.RemoteException;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author J&ouml;rg Schaible
  */
 public class DelegatingTest extends ProxyTestCase {
     
     public interface Foo {
         String getSomething() throws RemoteException;
     }
+    
+    public static class FinalizingImpl {
+        private StringBuffer buffer;
+        public FinalizingImpl(StringBuffer buffer) {
+            this.buffer = buffer;
+        }
+        protected String getSomething() throws RemoteException {
+            return "another thing";
+        }
+        protected void finalize() throws Throwable {
+            buffer.append("finalized");
+        }
+    }    
     
     private Mock fooMock;
     private Foo foo;
@@ -119,5 +133,34 @@ public class DelegatingTest extends ProxyTestCase {
         Faculty proxy = (Faculty)Delegating.object(Faculty.class, fac, getFactory());
         assertEquals(120, fac.calc(5, fac));
         assertEquals(120, proxy.calc(5, proxy));
+    }
+    
+    public void testShouldNotBeAbleToCallProtectedMethods() throws Exception {
+        FinalizingImpl finalizing = new FinalizingImpl(new StringBuffer());
+        foo = createProxy(finalizing);
+        try {
+            foo.getSomething();
+            fail("Protected method called");
+        } catch(final DelegationException e) {
+        }
+    }
+    
+    public void testShouldHandleFinalizeOnProxyOnly() throws Exception {
+        final StringBuffer buffer = new StringBuffer();
+        FinalizingImpl finalizing = new FinalizingImpl(buffer);
+        foo = createProxy(finalizing);
+        foo = null;
+        System.gc();
+        System.gc();
+        assertEquals("", buffer.toString());
+    }
+    
+    public void testShouldHandleFinalizeOnProxyAndDelegate() throws Exception {
+        final StringBuffer buffer = new StringBuffer();
+        foo = createProxy(new FinalizingImpl(buffer));
+        foo = null;
+        System.gc();
+        System.gc();
+        assertEquals("finalized", buffer.toString());
     }
 }
