@@ -3,6 +3,7 @@ package com.thoughtworks.proxy;
 import org.jmock.MockObjectTestCase;
 
 /**
+ * @author Dan North
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
