@@ -19,6 +19,8 @@ import java.util.Map;
  * @version $Revision: 1.2 $
  */
 public class CGLIBProxyFactory extends AbstractProxyFactory {
+    private ProxyFactory standardProxyFactory = new StandardProxyFactory();
+
     class CGLIBInvocationHandlerAdapter implements InvocationHandler, Serializable {
         private final Invoker invocationInterceptor;
 
@@ -48,6 +50,11 @@ public class CGLIBProxyFactory extends AbstractProxyFactory {
     }
 
     public Object createProxy(Class type, final Invoker invoker) {
+        if(type.isInterface()) {
+            // slightly faster
+            return standardProxyFactory.createProxy(type, invoker);
+        }
+
         Enhancer enhancer = new Enhancer();
         if (type.isInterface()) {
             enhancer.setInterfaces(new Class[]{type, InvokerReference.class});
@@ -86,6 +93,6 @@ public class CGLIBProxyFactory extends AbstractProxyFactory {
     }
 
     public boolean isProxyClass(Class clazz) {
-        return Factory.class.isAssignableFrom(clazz) || (!clazz.equals(Object.class) && Proxy.isProxyClass(clazz));
+        return Factory.class.isAssignableFrom(clazz) || (!clazz.equals(Object.class) && Proxy.isProxyClass(clazz)) || standardProxyFactory.isProxyClass(clazz);
     }
 }
