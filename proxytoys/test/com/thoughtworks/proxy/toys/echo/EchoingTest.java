@@ -39,7 +39,7 @@ public class EchoingTest extends ProxyTestCase {
         // setup
         Writer out = new StringWriter();
     	Simple foo = (Simple) Echoing.object(
-                Simple.class, null, new PrintWriter(out), proxyFactory());
+                Simple.class, null, new PrintWriter(out), proxyFactory);
         
         // execute
         foo.doSomething();
@@ -51,7 +51,7 @@ public class EchoingTest extends ProxyTestCase {
     public void testShouldDelegateCalls() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple simple = (Simple) Echoing.object(Simple.class, simpleImpl, new PrintWriter(out), proxyFactory());
+        Simple simple = (Simple) Echoing.object(Simple.class, simpleImpl, new PrintWriter(out), proxyFactory);
         
         // expect
         simpleMock.expects(Invoked.once()).method("doSomething");
@@ -81,7 +81,7 @@ public class EchoingTest extends ProxyTestCase {
     	        Outer.class,
     	        outerMock.proxy(),
     	        new PrintWriter(out),
-                proxyFactory());
+                proxyFactory);
         
         // expect
         outerMock.expects(Invoked.once())
@@ -105,7 +105,7 @@ public class EchoingTest extends ProxyTestCase {
         // setup
         StringWriter out = new StringWriter();
         Outer outer = (Outer)Echoing.object(
-                Outer.class, null, new PrintWriter(out), proxyFactory());
+                Outer.class, null, new PrintWriter(out), proxyFactory);
         
         // execute
         outer.getInner().getName();

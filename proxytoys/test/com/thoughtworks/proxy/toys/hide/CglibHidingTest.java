@@ -13,9 +13,8 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class CgHidingTest extends ProxyTestCase {
+public class CglibHidingTest extends ProxyTestCase {
     protected ProxyFactory createProxyFactory() {
-        System.out.println("CGLIBHidindTest - creating CGLIBProxyFactory");
         return new CglibProxyFactory();
     }
 
@@ -24,7 +23,7 @@ public class CgHidingTest extends ProxyTestCase {
         HashMap map = new HashMap();
         map.put("hello", "world");
         list.add(map);
-        List hidingList = (List) Hiding.object(List.class, proxyFactory(), list);
+        List hidingList = (List) Hiding.object(List.class, proxyFactory, list);
         Object shouldBeHidingMap = hidingList.get(0);
         Map hidingMap = (Map) shouldBeHidingMap;
         Swappable swappableMap = (Swappable) hidingMap;

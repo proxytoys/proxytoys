@@ -8,23 +8,19 @@ import org.jmock.MockObjectTestCase;
  */
 public abstract class ProxyTestCase extends MockObjectTestCase {
     public static ProxyFactory FACTORY;
-    private ProxyFactory proxyFactory;
+    
+    protected final ProxyFactory proxyFactory;
 
 	protected ProxyTestCase() {
 		proxyFactory = createProxyFactory();
 	}
 
+    /**
+     * Get a reference to a proxy factory.
+     * 
+     * Override this to force a particular factory.
+     */
 	protected ProxyFactory createProxyFactory() {
-		System.out.println(className(this) + ": " + className(FACTORY));
 		return FACTORY;
-	}
-
-    private String className(Object o) {
-        String name = o.getClass().getName();
-        return name.substring(name.lastIndexOf('.') + 1);
-	}
-
-	public ProxyFactory proxyFactory() {
-		return proxyFactory;
 	}
 }
