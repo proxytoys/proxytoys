@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
-
+// TODO: Shouldn't this just decorate another Invoker? Nicer chaining!! AH
 public class DecoratingInvoker extends DelegatingInvoker {
     private final InvocationDecorator decorator;
 

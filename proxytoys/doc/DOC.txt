@@ -1,0 +1,23 @@
+P R O X Y T O Y S
+by Dan North and Aslak Hellesoy
+
+Have you ever developed code that uses java.lang.reflect.Proxy and thought:
+"That Cglib library sure is cool. I wish I could leverage both standard proxies
+and Cglib proxies without changing my code".
+
+With ProxyToys you can! ProxyToys is to proxy generation what Jakarta Commons Logging
+is to logging - an thin implementation neutral API for Proxy creation. Whether to use
+Standard Proxies or CGLIB is a one-line code change.
+
+Moreover, ProxyToys provides a collection of factories for creating "special" proxies
+such as:
+
+(Each one links to a new page with more detail and UML sequence diagrams)
+o Null objects - for default implementations of classes that do nothing at all
+o Multicasting objects - for multicasting a method invocation to multiple objects
+o Hot swapping objects - allows implementation hiding that can be swapped, and mutual dependencies
+o Failover objects - fails over to a next object in case of exception
+o Decorators - for simple AOP-like chained method interception
+
+ProxyToys is a compact library. If you choose not to use the CGLIB features it requires
+no additional libraries.
