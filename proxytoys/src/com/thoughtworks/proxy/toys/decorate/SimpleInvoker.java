@@ -16,6 +16,6 @@ class SimpleInvoker implements Invoker {
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        return method.invoke(target, args);
+        return (target == null ? null : method.invoke(target, args));
     }
 }

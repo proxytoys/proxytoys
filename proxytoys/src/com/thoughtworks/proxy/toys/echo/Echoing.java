@@ -11,11 +11,10 @@ import java.io.PrintWriter;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.toys.decorate.Decorating;
 
 
 /**
- * @deprecated EchoingInvoker is going to go away or be replaced with a
- *             <tt>DecoratingInvoker</tt> - DN
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Echoing {
@@ -29,7 +28,7 @@ public class Echoing {
     }
 
     public static Object object(Class type, Object impl) {
-        return object(type, impl, null);
+        return object(type, impl, new PrintWriter(System.err));
     }
 
     public static Object object(Class type, Object impl, PrintWriter out) {
@@ -37,7 +36,7 @@ public class Echoing {
     }
 
     public static Object object(Class type, Object impl, PrintWriter out, ProxyFactory factory) {
-        return factory.createProxy(new Class[] {type}, new EchoInvoker(impl, out));
+        return Decorating.object(type, impl, new EchoDecorator(out));
     }
     
     /** It's a factory, stupid */
