@@ -20,7 +20,11 @@ public class InvocationDecoratorSupport implements InvocationDecorator {
     public Object decorateResult(Object result) {
 		return result;
 	}
-	public Throwable decorateException(Throwable cause) {
+	public Throwable decorateTargetException(Throwable cause) {
 		return cause;
+	}
+
+	public Exception decorateInvocationException(Exception cause) {
+        return cause;
 	}
 }

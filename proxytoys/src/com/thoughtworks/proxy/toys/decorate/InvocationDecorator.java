@@ -37,11 +37,20 @@ public interface InvocationDecorator {
 	Object decorateResult(Object result);
 
     /**
-     * Called when a method invocation fails, to possibly decorate
+     * Called when a called method fails, to possibly decorate
      * the type of error.
      * 
      * @param cause the original exception thrown
      * @return the decorated exception (typically just the supplied cause)
      */
-	Throwable decorateException(Throwable cause);
+	Throwable decorateTargetException(Throwable cause);
+
+    /**
+     * Called when a method cannot be invoked, to possibly decorate
+     * the type of error.
+     * 
+     * @param cause the original exception thrown
+     * @return the decorated exception (typically just the supplied cause)
+     */
+	Exception decorateInvocationException(Exception cause);
 }

@@ -7,10 +7,10 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
-import com.thoughtworks.proxy.Invoker;
-
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.Invoker;
 
 /**
  * @author Dan North
@@ -34,12 +34,10 @@ public class DecoratingInvoker implements Invoker {
             Object[] decoratedArgs = decorator.beforeMethodStarts(proxy, method, args);
             Object result = decorated.invoke(proxy, method, decoratedArgs);
             return decorator.decorateResult(result);
-        } catch (InvocationTargetException t) {
-            Throwable decorated = decorator.decorateException(t.getTargetException());
-            throw decorated;
-        } catch (Throwable t) {
-            Throwable decorated = decorator.decorateException(t);
-            throw decorated;
+        } catch (InvocationTargetException e) {
+            throw decorator.decorateTargetException(e.getTargetException());
+        } catch (Exception e) {
+            throw decorator.decorateInvocationException(e);
         }
     }
 }

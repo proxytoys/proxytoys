@@ -7,26 +7,28 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import java.lang.reflect.Method;
+
 import org.jmock.Mock;
 
-import java.lang.reflect.Method;
+import com.thoughtworks.proxy.ProxyTestCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class DecoratingTest extends ProxyTestCase {
-    private static final String decorateException = "decorateException";
+    private static final String decorateTargetException = "decorateTargetException";
 	private static final String decorateResult = "decorateResult";
 	private static final String beforeMethodStarts = "beforeMethodStarts";
 	private static final String getSomething = "getSomething";
+    private static final String decorateInvocationException = "decorateInvocationException";
+
     private static final Method getSomethingMethod;
-    
     static {
         try {
 			getSomethingMethod = Foo.class.getMethod(getSomething, new Class[] {String.class});
 		} catch (Exception e) {
-			throw new NoSuchMethodError("Foo.getSomething()");
+			throw new NoSuchMethodError("Foo.getSomething(String)");
 		}
     }
     
@@ -91,7 +93,7 @@ public class DecoratingTest extends ProxyTestCase {
     
     public static class MyException extends RuntimeException {}
     
-    public void testShouldInterceptMethodFailure() throws Exception {
+    public void testShouldInterceptTargetException() throws Exception {
         decoratorMock.expects(once()).method(beforeMethodStarts)
             .will(returnValue(toArray("ignored")));
         
@@ -104,7 +106,7 @@ public class DecoratingTest extends ProxyTestCase {
 			.will(throwException(exception));
     
         decoratorMock.expects(once())
-            .method(decorateException).with(same(exception))
+            .method(decorateTargetException).with(same(exception))
 			.will(returnValue(decoratedException));
     
         // execute
@@ -113,6 +115,30 @@ public class DecoratingTest extends ProxyTestCase {
             fail("Mock should have thrown exception");
 		} catch (MyException oops) {
 			assertSame(decoratedException, oops);
+		}
+	}
+    
+    public class MethodMissingImpl {}
+    
+    public void testShouldInterceptInvocationException() throws Exception {
+
+        // setup
+        final Throwable[] thrown = new Throwable[1]; // hack for inner class
+        final MyException decoratedException = new MyException();
+
+		foo = (Foo) Decorating.object(Foo.class, new MethodMissingImpl(),
+				new InvocationDecoratorSupport() {
+                    public Exception decorateInvocationException(Exception cause) {
+                        thrown[0] = cause;
+                        return decoratedException;
+                    }
+				});
+		
+        // execute
+        try {
+			foo.getSomething("value");
+            fail("Mock should have thrown exception");
+		} catch (MyException expected) {
 		}
 	}
 }
