@@ -1,4 +1,4 @@
- /*
+/*
  * Created on 04-Feb-2004
  * 
  * (c) 2003-2004 ThoughtWorks
@@ -13,46 +13,53 @@ import java.io.Writer;
 
 import junit.framework.TestCase;
 
+import org.jmock.Mock;
+import org.jmock.core.mixin.Invoked;
+import org.jmock.core.mixin.Return;
+
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class EchoProxyTest extends TestCase {
     
-    private interface Foo {
+    private static final String getInner = "getInner";
+	public interface Simple {
         void doSomething();
+    }
+    
+    private Mock simpleMock;
+    private Simple simpleImpl;
+    
+    public void setUp() throws Exception {
+        simpleMock = new Mock(Simple.class);
+        simpleImpl = (Simple) simpleMock.proxy();
     }
     
     public void testShouldEchoMethodNameAndArgs() throws Exception {
         // setup
         Writer out = new StringWriter();
-    	Foo foo = (Foo) EchoProxy.newProxyInstance(Foo.class, new PrintWriter(out));
+    	Simple foo = (Simple) EchoProxy.newProxyInstance(Simple.class, new PrintWriter(out));
         
         // execute
         foo.doSomething();
         
         // verify
-        assertContains("Foo.doSomething()", out);
-    }
-    
-    public static class FooImpl implements Foo {
-        public boolean wasCalled = false;
-        
-        public void doSomething() {
-            wasCalled = true;
-        }
+        assertContains("Simple.doSomething()", out);
     }
     
     public void testShouldDelegateCalls() throws Exception {
         // setup
         Writer out = new StringWriter();
-        FooImpl impl = new FooImpl();
-        Foo foo = (Foo) EchoProxy.newProxyInstance(Foo.class, impl, new PrintWriter(out));
+        Simple simple = (Simple) EchoProxy.newProxyInstance(Simple.class, simpleImpl, new PrintWriter(out));
+        
+        // expect
+        simpleMock.expects(Invoked.once()).method("doSomething");
         
         // execute
-        foo.doSomething();
+        simple.doSomething();
         
         // verify
-        assertTrue(impl.wasCalled);
+        simpleMock.verify();
     }
     
     public interface Inner {
@@ -63,25 +70,25 @@ public class EchoProxyTest extends TestCase {
         Inner getInner();
     }
     
-    public static class InnerImpl implements Inner {
-        public String getName() {
-            return "inner";
-        }
-    }
-    
-    public static class OuterImpl implements Outer {
-        public Inner getInner() {
-            return new InnerImpl();
-        }
-    }
-    
     public void testShouldRecursivelyReturnEchoProxiesForInterfaces() throws Exception {
         // setup
+        Mock innerMock = new Mock(Inner.class);
+        Mock outerMock = new Mock(Outer.class);
         StringWriter out = new StringWriter();
+        
     	Outer outer = (Outer)EchoProxy.newProxyInstance(
     	        Outer.class,
-    	        new OuterImpl(),
+    	        outerMock.proxy(),
     	        new PrintWriter(out));
+        
+        // expect
+        outerMock.expects(Invoked.once())
+            .method(getInner).withNoArguments()
+            .will(Return.value(innerMock.proxy()));
+        
+        innerMock.expects(Invoked.once())
+            .method("getName").withNoArguments()
+            .will(Return.value("inner"));
         
         // execute
         String result = outer.getInner().getName();

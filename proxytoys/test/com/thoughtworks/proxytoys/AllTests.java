@@ -19,7 +19,6 @@ public class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite(EchoProxyTest.class);
 		suite.addTestSuite(DelegatingProxyTest.class);
-		suite.addTestSuite(NullTest.class);
 		//$JUnit-END$
 		return suite;
 	}

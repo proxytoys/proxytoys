@@ -35,9 +35,10 @@ public class DelegatingProxy {
         
         protected Object invokeOnDelegate(String methodName, Class[] parameterTypes, Object[] args) throws Throwable {
             try {
-                if (delegate == null) return null;
-                Method delegateMethod = delegate.getClass().getMethod(methodName, parameterTypes);
-                return delegateMethod.invoke(delegate, args);
+                if (delegate == null) {
+                    return null;
+                }
+                return delegate.getClass().getMethod(methodName, parameterTypes).invoke(delegate, args);
             }
             catch (InvocationTargetException e) {
                 throw e.getTargetException();
