@@ -1,15 +1,13 @@
 package com.thoughtworks.proxy.toys.hotswap;
 
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.ProxyTestCase;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
-import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 /**
  * @author Aslak Helles&oslash;y

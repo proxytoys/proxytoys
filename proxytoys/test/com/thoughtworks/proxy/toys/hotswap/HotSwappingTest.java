@@ -1,11 +1,9 @@
 package com.thoughtworks.proxy.toys.hotswap;
 
+import com.thoughtworks.proxy.ProxyTestCase;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.thoughtworks.proxy.ProxyTestCase;
-import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
-import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -42,6 +40,12 @@ public class HotSwappingTest extends ProxyTestCase {
         } catch (IllegalStateException e) {
             // expected
         }
+    }
+
+    public void testShouldWorkWithEquals() {
+        List hotSwapList = (List) HotSwapping.object(List.class, getFactory(), (Object)null);
+        assertFalse(hotSwapList.equals(new ArrayList()));
+        assertTrue(hotSwapList.equals(hotSwapList));
     }
 
 }

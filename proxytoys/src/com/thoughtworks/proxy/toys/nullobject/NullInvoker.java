@@ -15,22 +15,19 @@ import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class NullInvoker implements Invoker {
-    private static final Method equals;
-    private static final Method hashCode;
     private static final Method toString;
 
     static {
         try {
-            equals = Object.class.getMethod("equals", new Class[]{Object.class});
-            hashCode = Object.class.getMethod("hashCode", new Class[0]);
             toString = Object.class.getMethod("toString", new Class[0]);
         } catch (Exception e) {
-            throw new InternalError("hashCode(), equals(Object) or toString() missing!");
+            throw new InternalError("toString() missing!");
         }
     }
 
@@ -49,13 +46,13 @@ public class NullInvoker implements Invoker {
         if (toString.equals(method)) {
             result = "Null Object for " + type.getName();
         }
-        else if (equals.equals(method)) {
+        else if (ClassHierarchyIntrospector.equals.equals(method)) {
             Object other = args[0];
             result = (Null.isNullObject(other, proxyFactory)
                     && type.equals(getType(other)))
                 ? Boolean.TRUE : Boolean.FALSE;
         }
-        else if (hashCode.equals(method)) {
+        else if (ClassHierarchyIntrospector.hashCode.equals(method)) {
             result = new Integer(type.hashCode());
         }
 

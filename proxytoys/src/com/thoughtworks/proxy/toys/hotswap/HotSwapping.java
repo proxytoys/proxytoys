@@ -14,11 +14,20 @@ import com.thoughtworks.proxy.ProxyFactory;
  */
 public class HotSwapping {
 
-	/**
-	 * @return a proxy that hides the implementation and implements {@link Swappable}.
-	 */
-	public static Object object(Class type, ProxyFactory proxyFactory, Object delegate) {
-	    return new HotSwappingInvoker(type, proxyFactory, delegate).proxy();
+    public static Object object(Class type, ProxyFactory proxyFactory, Object delegate) {
+        return object(new Class[]{type}, proxyFactory, delegate);
+    }
+
+    /**
+     * @return a proxy that hides the implementation and implements {@link Swappable}.
+     */
+    public static Object object(Class[] types, ProxyFactory proxyFactory, Object delegate) {
+        ObjectReference delegateReference = new SimpleReference(delegate);
+        return object(types, proxyFactory, delegateReference);
+    }
+
+	public static Object object(Class[] types, ProxyFactory proxyFactory, ObjectReference objectReference) {
+	    return new HotSwappingInvoker(types, proxyFactory, objectReference).proxy();
 	}
     
     /** It's a factory, stupid */

@@ -130,7 +130,7 @@ public class ClassHierarchyIntrospector {
         return clazz;
     }
 
-    static Class[] addIfClassProxyingSupportedAndNotObject(Class clazz, Class[] interfaces, ProxyFactory proxyFactory) {
+    public static Class[] addIfClassProxyingSupportedAndNotObject(Class clazz, Class[] interfaces, ProxyFactory proxyFactory) {
         Class[] result;
         if (proxyFactory.canProxy(ArrayList.class) && !clazz.equals(Object.class)) {
             result = new Class[interfaces.length + 1];

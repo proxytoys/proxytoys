@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
+import com.thoughtworks.proxy.toys.hotswap.SimpleReference;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -21,8 +22,8 @@ public class FailoverInvoker extends HotSwappingInvoker {
     private final Class exceptionClass;
     private int current;
 
-    public FailoverInvoker(Class type, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
-        super(type, proxyFactory, delegates[0]);
+    public FailoverInvoker(Class[] types, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
+        super(types, proxyFactory, new SimpleReference(delegates[0]));
         this.delegates = delegates;
         this.exceptionClass = exceptionClass;
     }

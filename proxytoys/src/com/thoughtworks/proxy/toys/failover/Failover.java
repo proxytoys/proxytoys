@@ -10,8 +10,12 @@ import com.thoughtworks.proxy.ProxyFactory;
  * @version $Revision: 1.3 $
  */
 public class Failover {
-   public static Object object(Class type, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
-        return new FailoverInvoker(type, proxyFactory, delegates, exceptionClass).proxy();
+    public static Object object(Class type, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
+        return object(new Class[]{type}, proxyFactory, delegates, exceptionClass);
+    }
+
+    public static Object object(Class[] types, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
+        return new FailoverInvoker(types, proxyFactory, delegates, exceptionClass).proxy();
     }
    
    /** It's a factory, stupid */
