@@ -9,6 +9,8 @@ package com.thoughtworks.proxy.toys.delegate;
 
 import java.rmi.RemoteException;
 
+import org.jmock.Mock;
+
 import com.thoughtworks.proxy.ProxyTestCase;
 
 /**
@@ -19,7 +21,16 @@ public class DelegatingTest extends ProxyTestCase {
     public interface Foo {
         String getSomething() throws RemoteException;
     }
-
+    
+    private Mock fooMock;
+    private Foo foo;
+    
+    public void setUp() throws Exception {
+        super.setUp();
+        fooMock = new Mock(Foo.class);
+        foo = createProxy(fooMock.proxy());
+    }
+    
     public static class SimpleImpl {
         public String getSomething() throws RemoteException {
             return "some thing";
@@ -31,47 +42,49 @@ public class DelegatingTest extends ProxyTestCase {
     }
 
     public void testShouldDelegateMethodsCalledOnInterface() throws Exception {
-        // setup
-        Foo remote = createProxy(new SimpleImpl());
-
-        // execute, verify
-        final String result = remote.getSomething();
+        // expect
+        fooMock.expects(once()).method("getSomething").withNoArguments()
+            .will(returnValue("some thing"));
+        
+        // execute
+        final String result = foo.getSomething();
+        
+        // verify
         assertEquals("some thing", result);
     }
 
-    public static class ExceptionThrowingImpl {
-        public String getSomething() {
-            throw new UnsupportedOperationException("sorry");
-        }
-    }
-    
     public void testShouldPropagateExceptionFromDelegate() throws Exception {
+        // setup
+        Exception cause = new UnsupportedOperationException("sorry");
+        
+        // expect
+        fooMock.expects(once()).method("getSomething").withNoArguments()
+            .will(throwException(cause));
+
+        // execute
         try {
-            Foo remote = createProxy(new ExceptionThrowingImpl());
-            remote.getSomething();
-            fail();
+            foo.getSomething();
+            fail("Mock should have thrown exception");
         } catch (UnsupportedOperationException e) {
-            // expected
-            assertEquals("sorry", e.getMessage());
+            // verify
+            assertSame(cause, e);
         }
     }
 
-    public static class MethodMissingImpl {
-    }
-
-    public void testShouldThrowRemoteExceptionIfDelegateMethodDoesNotExist()
-    throws Exception {
+    public void testShouldThrowDelegationExceptionIfDelegateMethodDoesNotExist() throws Exception {
+        // setup
+        foo = createProxy(new Object());
+        
+        // execute
         try {
-            Foo remote = createProxy(new MethodMissingImpl());
-            remote.getSomething();
-            fail();
-        } catch (RemoteException e) {
-            // expected
+            foo.getSomething();
+            fail("Should have thrown exception");
+        } catch (DelegationException expected) {
         }
     }
     
     public void testShouldIgnoreCallsToNullDelegate() throws Exception {
-    	Foo remote = createProxy(null);
-        assertNull(remote.getSomething());
+    	foo = createProxy(null);
+        assertNull(foo.getSomething());
     }
 }

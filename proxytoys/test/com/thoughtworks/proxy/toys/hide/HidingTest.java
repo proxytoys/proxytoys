@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.toys.hotswap.Hiding;
+import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -3,7 +3,7 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.proxy.toys.hide;
+package com.thoughtworks.proxy.toys.hotswap;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

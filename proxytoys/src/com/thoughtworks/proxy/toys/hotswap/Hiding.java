@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.proxy.toys.hide;
+package com.thoughtworks.proxy.toys.hotswap;
 
 import com.thoughtworks.proxy.ProxyFactory;
 

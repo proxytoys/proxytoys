@@ -8,6 +8,8 @@ import java.util.Map;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.hotswap.Hiding;
+import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 /**
  * @author Aslak Helles&oslash;y
