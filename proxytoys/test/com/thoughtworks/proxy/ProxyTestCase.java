@@ -1,4 +1,4 @@
-package com.thoughtworks.proxy.factory;
+package com.thoughtworks.proxy;
 
 import junit.framework.TestCase;
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.thoughtworks.proxy.factory.ProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 
 /**
  * @author Aslak Helles&oslash;y

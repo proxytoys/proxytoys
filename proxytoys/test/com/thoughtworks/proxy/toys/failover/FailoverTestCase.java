@@ -1,6 +1,6 @@
 package com.thoughtworks.proxy.toys.failover;
 
-import com.thoughtworks.proxy.factory.ProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 
 
 /**
