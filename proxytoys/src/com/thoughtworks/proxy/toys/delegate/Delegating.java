@@ -12,6 +12,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @deprecated Use {@link com.thoughtworks.proxy.toys.hotswap.HotSwapping}
  */
 public class Delegating {
     

@@ -23,7 +23,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
     private int current;
 
     public FailoverInvoker(Class[] types, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
-        super(types, proxyFactory, new SimpleReference(delegates[0]));
+        super(types, proxyFactory, new SimpleReference(delegates[0]), true);
         this.delegates = delegates;
         this.exceptionClass = exceptionClass;
     }

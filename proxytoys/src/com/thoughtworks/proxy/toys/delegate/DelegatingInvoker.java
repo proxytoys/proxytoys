@@ -17,6 +17,10 @@ import com.thoughtworks.proxy.Invoker;
 // We just need an extra flag indicating whether we're looking up a new method
 // "that looks the same", or if we are calling the "same" method.
 // AH
+/**
+ * @deprecated Use {@link com.thoughtworks.proxy.toys.hotswap.HotSwapping} and construct it with
+ * forceSameType=false
+ */
 public class DelegatingInvoker implements Invoker {
     protected final Object delegate;
     

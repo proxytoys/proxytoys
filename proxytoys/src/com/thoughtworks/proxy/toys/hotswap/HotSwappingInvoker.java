@@ -30,12 +30,14 @@ public class HotSwappingInvoker implements Invoker {
     protected final ProxyFactory proxyFactory;
     private final Class[] types;
     private final ObjectReference delegateReference;
+    private final boolean forceSameType;
     private boolean executing = false;
 
-    public HotSwappingInvoker(Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference) {
+    public HotSwappingInvoker(Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean isTypeForgiving) {
         this.proxyFactory = proxyFactory;
         this.types = types;
         this.delegateReference = delegateReference;
+        forceSameType = isTypeForgiving;
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -56,14 +58,18 @@ public class HotSwappingInvoker implements Invoker {
             }
             executing = true;
 
-            result = invokeMethod(proxy, method, args);
-            // I don't think it makes sense to have recursive behaviour for hot swapping after all. AH.
-//            if (result != null && proxyFactory.canProxy(result.getClass())) {
-//                result = HotSwapping.object(result.getClass(), proxyFactory, result);
-//            }
+            result = invokeMethod(proxy, getMethodToInvoke(method), args);
         }
         executing = false;
         return result;
+    }
+
+    private Method getMethodToInvoke(Method method) throws NoSuchMethodException {
+        if(forceSameType) {
+            return method;
+        } else {
+            return delegateReference.get().getClass().getMethod(method.getName(), method.getParameterTypes());
+        }
     }
 
     protected Object invokeMethod(Object proxy, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
