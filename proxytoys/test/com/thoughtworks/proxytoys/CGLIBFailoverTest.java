@@ -1,5 +1,8 @@
 package com.thoughtworks.proxytoys;
 
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CGLIBProxyFactory;
+
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $

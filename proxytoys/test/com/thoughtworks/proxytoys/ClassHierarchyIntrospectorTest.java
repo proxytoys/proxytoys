@@ -1,7 +1,5 @@
 package com.thoughtworks.proxytoys;
 
-import junit.framework.TestCase;
-
 import java.beans.beancontext.BeanContext;
 import java.beans.beancontext.BeanContextServices;
 import java.beans.beancontext.BeanContextServicesListener;
@@ -18,6 +16,10 @@ import java.util.EventListener;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
+
+import junit.framework.TestCase;
+
+import com.thoughtworks.proxy.ClassHierarchyIntrospector;
 
 /**
  * @author Aslak Helles&oslash;y

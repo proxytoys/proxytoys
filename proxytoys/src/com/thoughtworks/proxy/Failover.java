@@ -1,7 +1,10 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.HidingInvoker;
+import com.thoughtworks.proxy.ProxyFactory;
 
 /**
  * Creates a proxy handling failover. Delegates to one object as long as there

@@ -1,4 +1,4 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy;
 
 /**
  * Interface implemented by all proxy instances created by

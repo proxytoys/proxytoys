@@ -1,5 +1,7 @@
 package com.thoughtworks.proxytoys;
 
+import com.thoughtworks.proxy.toys.failover.Failover;
+
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $

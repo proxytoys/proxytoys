@@ -1,7 +1,7 @@
 package com.thoughtworks.nothing;
 
-import com.thoughtworks.proxytoys.CGLIBProxyFactory;
-import com.thoughtworks.proxytoys.ProxyFactory;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CGLIBProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y

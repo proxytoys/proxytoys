@@ -1,4 +1,4 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;

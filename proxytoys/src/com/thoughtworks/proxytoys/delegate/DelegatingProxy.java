@@ -7,8 +7,8 @@
  */
 package com.thoughtworks.proxytoys.delegate;
 
-import com.thoughtworks.proxytoys.ProxyFactory;
-import com.thoughtworks.proxytoys.StandardProxyFactory;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

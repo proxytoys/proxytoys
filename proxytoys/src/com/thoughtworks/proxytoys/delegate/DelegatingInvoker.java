@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.rmi.RemoteException;
 
-import com.thoughtworks.proxytoys.Invoker;
+import com.thoughtworks.proxy.Invoker;
 
 
 public class DelegatingInvoker implements Invoker {

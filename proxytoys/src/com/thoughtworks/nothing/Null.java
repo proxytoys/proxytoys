@@ -24,9 +24,9 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import com.thoughtworks.proxytoys.Invoker;
-import com.thoughtworks.proxytoys.ProxyFactory;
-import com.thoughtworks.proxytoys.StandardProxyFactory;
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**
  * Utility class for creating Null Objects.

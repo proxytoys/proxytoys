@@ -1,7 +1,8 @@
 package com.thoughtworks.proxytoys;
 
 import junit.framework.TestCase;
-import com.thoughtworks.proxytoys.ProxyFactory;
+
+import com.thoughtworks.proxy.ProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y

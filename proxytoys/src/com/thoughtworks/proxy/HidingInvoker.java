@@ -3,7 +3,7 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -7,8 +7,6 @@
  */
 package com.thoughtworks.nothing;
 
-import com.thoughtworks.proxytoys.ProxyTestCase;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,6 +20,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+
+import com.thoughtworks.proxytoys.ProxyTestCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

@@ -9,8 +9,8 @@ package com.thoughtworks.proxytoys.echo;
 
 import java.io.PrintWriter;
 
-import com.thoughtworks.proxytoys.ProxyFactory;
-import com.thoughtworks.proxytoys.StandardProxyFactory;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 
 /**

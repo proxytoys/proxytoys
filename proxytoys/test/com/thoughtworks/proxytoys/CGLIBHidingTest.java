@@ -1,9 +1,14 @@
 package com.thoughtworks.proxytoys;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.thoughtworks.proxy.HidingInvoker;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.Swappable;
+import com.thoughtworks.proxy.factory.CGLIBProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y

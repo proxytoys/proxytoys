@@ -1,4 +1,4 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy;
 
 /**
  * @author Aslak Helles&oslash;y
