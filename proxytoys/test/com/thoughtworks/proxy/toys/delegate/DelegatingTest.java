@@ -20,11 +20,6 @@ public class DelegatingTest extends ProxyTestCase {
     
     public interface Foo {
         String getSomething() throws RemoteException;
-        void doSomething(Object something) throws RemoteException;
-    }
-    
-    public interface Bar {
-        String doSomethingElse() throws RemoteException;
     }
     
     private Mock fooMock;
@@ -111,31 +106,18 @@ public class DelegatingTest extends ProxyTestCase {
         assertEquals(foo, createProxy(string));
     }
     
-    public void testShouldAllowCallOfProxyMethodWithDependencyOnAnotherProxiedMethod() throws Exception {
-
-        Bar concreteBar = null;
-        final Foo concreteFoo = new Foo() {
-            public String getSomething() {
-                return "something";
-            }
-
-            public void doSomething(Object something) throws RemoteException {
-                ((Bar)something).doSomethingElse();
+    public static interface Faculty {
+        int calc(int i, Faculty fac);
+    };
+    
+    public void testShouldSupportIndirectRecursion() {
+        Faculty fac = new Faculty() {
+            public int calc(int i, Faculty fac) {
+                return i == 1 ? 1 : i * fac.calc(i-1, fac);
             }
         };
-
-        final Foo fooProxy = createProxy(concreteFoo);
-
-        // Here is an object using the a Foo proxy 
-        concreteBar = new Bar() {
-
-            public String doSomethingElse() throws RemoteException {
-                // perform an operation on the proxied foo
-                return fooProxy.getSomething();
-            }
-
-        };
-
-        fooProxy.doSomething(concreteBar);
+        Faculty proxy = (Faculty)Delegating.object(Faculty.class, fac, getFactory());
+        assertEquals(120, fac.calc(5, fac));
+        assertEquals(120, proxy.calc(5, proxy));
     }
 }

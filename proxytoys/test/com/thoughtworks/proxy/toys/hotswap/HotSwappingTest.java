@@ -33,10 +33,10 @@ public class HotSwappingTest extends ProxyTestCase {
         List firstList = new ArrayList();
         List hidingOne = (List) HotSwapping.object(List.class, getFactory(), firstList);
         List hidingTwo = (List) HotSwapping.object(List.class, getFactory(), hidingOne);
-        ((Swappable)hidingOne).hotswap(hidingTwo);
+        List hidingThree = (List) HotSwapping.object(List.class, getFactory(), hidingTwo);
 
         try {
-            hidingOne.add("help");
+            ((Swappable)hidingOne).hotswap(hidingThree);
             fail();
         } catch (IllegalStateException e) {
             // expected
