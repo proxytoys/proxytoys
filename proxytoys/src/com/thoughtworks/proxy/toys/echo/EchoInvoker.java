@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
+import com.thoughtworks.proxy.toys.delegate.OldDelegatingInvoker;
 
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
  * part of the documentation, as an example.
  * @see com.thoughtworks.proxy.toys.decorate.InvocationDecorator
  */
-class EchoInvoker extends DelegatingInvoker {
+class EchoInvoker extends OldDelegatingInvoker {
     private final PrintWriter out;
 
     public EchoInvoker(Object impl, PrintWriter out) {

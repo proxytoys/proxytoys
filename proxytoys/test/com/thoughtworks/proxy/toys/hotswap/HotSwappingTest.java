@@ -64,23 +64,21 @@ public class HotSwappingTest extends ProxyTestCase {
         assertTrue(hotSwapList.hashCode() == hotSwapList.hashCode());
     }
 
-    static interface Screwdriver {
+    public static interface Screwdriver {
         void screw();
     }
-    static class ScredriverImpl implements Screwdriver {
+    
+    public static class ScredriverImpl implements Screwdriver {
         public void screw() {
-
+            fail("should not be called");
         }
     }
-    static class Person {
-        private boolean wasScrewed;
+    
+    public static class Person {
+        public boolean wasScrewed;
 
         public void screw() {
             wasScrewed = true;
-        }
-
-        public boolean wasScrewed() {
-            return wasScrewed;
         }
     }
 
@@ -88,7 +86,7 @@ public class HotSwappingTest extends ProxyTestCase {
         Person person = new Person();
         Screwdriver sd = (Screwdriver) HotSwapping.object(Screwdriver.class, getFactory(), person);
         sd.screw();
-        assertTrue(person.wasScrewed());
+        assertTrue(person.wasScrewed);
     }
 
 }

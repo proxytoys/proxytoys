@@ -7,16 +7,17 @@ package com.thoughtworks.proxy.toys.hotswap;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
-import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker2;
 import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
-public class HotSwappingInvoker implements Invoker {
+public class HotSwappingInvoker extends DelegatingInvoker2 {
     private static final Method hotswap;
 
     static {
@@ -27,54 +28,17 @@ public class HotSwappingInvoker implements Invoker {
         }
     }
 
-    protected final ProxyFactory proxyFactory;
-    private final Class[] types;
-    private final ObjectReference delegateReference;
-    private final boolean forceSameType;
-    private boolean executing = false;
-
     public HotSwappingInvoker(Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean isTypeForgiving) {
-        this.proxyFactory = proxyFactory;
-        this.types = types;
-        this.delegateReference = delegateReference;
-        forceSameType = isTypeForgiving;
+        super(types, proxyFactory, delegateReference, isTypeForgiving);
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result;
-        if (method.equals(ClassHierarchyIntrospector.equals)) {
-            Object arg = args[0];
-            if (proxyFactory.isProxyClass(arg.getClass())) {
-                arg = proxyFactory.getInvoker(arg);
-            }
-            result = new Boolean(equals(arg));
-        } else if (method.equals(ClassHierarchyIntrospector.hashCode)) {
-            result = new Integer(hashCode());
-        } else if (method.equals(hotswap)) {
+        if (method.equals(hotswap)) {
             result = hotswap(args[0]);
-        } else {
-            if (executing) {
-                throw new IllegalStateException("Cyclic dependency");
-            }
-            executing = true;
-
-            result = invokeMethod(proxy, getMethodToInvoke(method), args);
-        }
-        executing = false;
+        } else
+			result = doInvoke(proxy, method, args);
         return result;
-    }
-
-    private Method getMethodToInvoke(Method method) throws NoSuchMethodException {
-        if(forceSameType) {
-            return method;
-        } else {
-            return delegateReference.get().getClass().getMethod(method.getName(), method.getParameterTypes());
-        }
-    }
-
-    protected Object invokeMethod(Object proxy, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
-        Object delegate = delegateReference.get();
-        return method.invoke(delegate, args);
     }
 
     public Object hotswap(Object newDelegate) {

@@ -21,10 +21,10 @@ import com.thoughtworks.proxy.Invoker;
  * @deprecated Use {@link com.thoughtworks.proxy.toys.hotswap.HotSwapping} and construct it with
  * forceSameType=false
  */
-public class DelegatingInvoker implements Invoker {
+public class OldDelegatingInvoker implements Invoker {
     protected final Object delegate;
     
-    public DelegatingInvoker(Object delegate) {
+    public OldDelegatingInvoker(Object delegate) {
         this.delegate = delegate;
 	}
 

@@ -4,7 +4,7 @@ package com.thoughtworks.proxy.toys.hotswap;
  * A way to refer to objects that are stored in "awkward" places (for example inside a
  * <code>HttpSession</code> or {@link ThreadLocal}).
  *
- * This interface is typically implemented by someone integrating Pico into an existing container.
+ * This interface is typically implemented by someone integrating with an existing container.
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
