@@ -11,17 +11,17 @@ import java.io.Serializable;
  */
 public class StandardProxyFactory extends AbstractProxyFactory {
     class StandardInvocationHandlerAdapter implements InvocationHandler, Serializable {
-        private final Invoker invocationInterceptor;
+        private final Invoker invoker;
 
         public StandardInvocationHandlerAdapter(Invoker invocationInterceptor) {
-            this.invocationInterceptor = invocationInterceptor;
+            this.invoker = invocationInterceptor;
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (method.equals(AbstractProxyFactory.getInvocationInterceptor)) {
-                return invocationInterceptor;
+            if (method.equals(AbstractProxyFactory.getInvoker)) {
+                return invoker;
             }
-            return invocationInterceptor.invoke(proxy, method, args);
+            return invoker.invoke(proxy, method, args);
         }
     }
 

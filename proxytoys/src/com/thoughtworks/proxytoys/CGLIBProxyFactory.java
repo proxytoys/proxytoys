@@ -22,17 +22,17 @@ public class CGLIBProxyFactory extends AbstractProxyFactory {
     private ProxyFactory standardProxyFactory = new StandardProxyFactory();
 
     class CGLIBInvocationHandlerAdapter implements InvocationHandler, Serializable {
-        private final Invoker invocationInterceptor;
+        private final Invoker invoker;
 
         public CGLIBInvocationHandlerAdapter(Invoker invocationInterceptor) {
-            this.invocationInterceptor = invocationInterceptor;
+            this.invoker = invocationInterceptor;
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (method.equals(getInvocationInterceptor)) {
-                return invocationInterceptor;
+            if (method.equals(getInvoker)) {
+                return invoker;
             }
-            return invocationInterceptor.invoke(proxy, method, args);
+            return invoker.invoke(proxy, method, args);
         }
     }
 

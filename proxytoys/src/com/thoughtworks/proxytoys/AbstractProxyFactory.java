@@ -9,11 +9,11 @@ import java.io.Serializable;
  */
 public abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
 
-    public static final Method getInvocationInterceptor;
+    public static final Method getInvoker;
 
     static {
         try {
-            getInvocationInterceptor = InvokerReference.class.getMethod("getInvoker", null);
+            getInvoker = InvokerReference.class.getMethod("getInvoker", null);
         } catch (NoSuchMethodException e) {
             throw new InternalError();
         }

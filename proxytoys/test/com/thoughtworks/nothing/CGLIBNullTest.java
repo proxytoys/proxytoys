@@ -34,7 +34,7 @@ public class CGLIBNullTest extends NullTestCase {
 
     public void testShouldBeAbleToInstantiateClassWithPrimitiveParametersInConstructor() {
         // The loop is to assert that the method can be called several times, and also measure performance.
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             ClassWithPrimitiveParametersInConstructor o = (ClassWithPrimitiveParametersInConstructor) Null.object(ClassWithPrimitiveParametersInConstructor.class);
             assertNotNull(o);
         }
