@@ -20,4 +20,7 @@ public class Hiding {
 	public static Object object(Class type, ProxyFactory proxyFactory, Object delegate) {
 	    return new HidingInvoker(type, proxyFactory, delegate).proxy();
 	}
+    
+    /** It's a factory, stupid */
+    private Hiding(){}
 }

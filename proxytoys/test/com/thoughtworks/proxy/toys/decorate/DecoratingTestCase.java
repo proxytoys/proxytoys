@@ -10,15 +10,13 @@ package com.thoughtworks.proxy.toys.decorate;
 import java.lang.reflect.Method;
 
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
-import com.thoughtworks.proxy.toys.decorate.Decorating;
-import com.thoughtworks.proxy.toys.decorate.InvocationDecorator;
+import com.thoughtworks.proxy.ProxyTestCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class DecoratingProxyTest extends MockObjectTestCase {
+public abstract class DecoratingTestCase extends ProxyTestCase {
     private static final String decorateException = "decorateException";
 	private static final String decorateResult = "decorateResult";
 	private static final String beforeMethodStarts = "beforeMethodStarts";

@@ -33,4 +33,7 @@ public class Multicasting {
 	public static Object object(Object[] targets) {
 	    return object(new StandardProxyFactory(), targets);
 	}
+    
+    /** It's a factory, stupid */
+    private Multicasting(){}
 }

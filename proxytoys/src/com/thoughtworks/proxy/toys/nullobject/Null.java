@@ -196,6 +196,9 @@ public class Null {
 
 	private static boolean isNullProxyObject(Object object, ProxyFactory proxyFactory) {
 		return proxyFactory.isProxyClass(object.getClass())
-		&& proxyFactory.getInvoker(object) instanceof Null;
+		&& proxyFactory.getInvoker(object) instanceof NullInvoker;
 	}
+    
+    /** It's a factory, stupid */
+    private Null(){}
 }

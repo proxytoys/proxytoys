@@ -9,14 +9,12 @@ package com.thoughtworks.proxy.toys.delegate;
 
 import java.rmi.RemoteException;
 
-import junit.framework.TestCase;
-
-import com.thoughtworks.proxy.toys.delegate.Delegating;
+import com.thoughtworks.proxy.ProxyTestCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class DelegatingProxyTest extends TestCase {
+public abstract class DelegatingTestCase extends ProxyTestCase {
     
     public interface Foo {
         String getSomething() throws RemoteException;

@@ -42,19 +42,15 @@
     </javac>
   </target>
   
-  <!-- target name="test" depends="test.compile" -->
   <target name="test" depends="test.compile">
     <junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
-      <formatter type="xml"/>
       <formatter type="plain"/>
       <classpath>
         <path location="${test.classes.dir}"/>
         <fileset dir="${lib.dir}" includes="*.jar"/>
         <path location="${jar.file}"/>
       </classpath>
-      <batchtest todir="${test.classes.dir}">
-      	<fileset dir="${test.dir}" includes="**/*Test.java"/>
-      </batchtest>
+      <test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}"/>
     </junit>
   </target>
   

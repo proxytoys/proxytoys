@@ -246,7 +246,7 @@ public abstract class NullTestCase extends ProxyTestCase {
 		SimpleInterface nullObject = (SimpleInterface) Null.object(SimpleInterface.class, proxyFactory);
 
         // verify
-        assertTrue(Null.isNullObject(nullObject));
+        assertTrue(Null.isNullObject(nullObject, proxyFactory));
 		assertFalse(Null.isNullObject(new Object()));
 	}
 

@@ -19,4 +19,7 @@ public class Delegating {
     public static Object newProxyInstance(Class type, Object delegate) {
         return factory.createProxy(new Class[] {type}, new DelegatingInvoker(delegate));
     }
+    
+    /** It's a factory, stupid */
+    private Delegating(){}
 }

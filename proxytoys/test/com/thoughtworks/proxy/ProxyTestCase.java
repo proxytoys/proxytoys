@@ -1,14 +1,12 @@
 package com.thoughtworks.proxy;
 
-import junit.framework.TestCase;
-
-import com.thoughtworks.proxy.ProxyFactory;
+import org.jmock.MockObjectTestCase;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public abstract class ProxyTestCase extends TestCase {
+public abstract class ProxyTestCase extends MockObjectTestCase {
     protected ProxyFactory proxyFactory;
 
     public ProxyTestCase() {

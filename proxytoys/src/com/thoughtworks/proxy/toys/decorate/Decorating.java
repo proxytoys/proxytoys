@@ -20,4 +20,7 @@ public class Decorating {
         return factory.createProxy(new Class[] {type},
                 new DecoratingInvoker(delegate, interceptor));
 	}
+    
+    /** It's a factory, stupid */
+    private Decorating(){}
 }

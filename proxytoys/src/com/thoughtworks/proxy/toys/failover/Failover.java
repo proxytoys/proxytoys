@@ -13,4 +13,7 @@ public class Failover {
    public static Object object(Class type, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
         return new FailoverInvoker(type, proxyFactory, delegates, exceptionClass).proxy();
     }
+   
+   /** It's a factory, stupid */
+   private Failover(){}
 }

@@ -22,7 +22,7 @@ import com.thoughtworks.proxy.toys.echo.Echoing;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class EchoProxyTest extends TestCase {
+public class EchoingTestCase extends TestCase {
     
     private static final String getInner = "getInner";
 	public interface Simple {

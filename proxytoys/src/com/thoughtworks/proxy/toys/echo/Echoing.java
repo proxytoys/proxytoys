@@ -37,4 +37,7 @@ public class Echoing {
     public static Object object(Class type, Object impl, PrintWriter out, ProxyFactory factory) {
         return factory.createProxy(new Class[] {type}, new EchoInvoker(impl, out));
     }
+    
+    /** It's a factory, stupid */
+    private Echoing(){}
 }
