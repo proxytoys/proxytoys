@@ -27,7 +27,7 @@ import junit.framework.TestCase;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
-public abstract class NullTest extends TestCase {
+public abstract class NullTestCase extends TestCase {
 
     public interface SomePrimitives {
         boolean getBoolean();
@@ -124,7 +124,7 @@ public abstract class NullTest extends TestCase {
     public void testShouldNotReturnNullForMethodsThatReturnAnObject() throws Exception {
         // execute
 		InterfaceWithObjectMethod nullObject =
-            (NullTest.InterfaceWithObjectMethod) Null.object(InterfaceWithObjectMethod.class);
+            (InterfaceWithObjectMethod) Null.object(InterfaceWithObjectMethod.class);
 
         // verify
         assertNotNull(nullObject.getObject());

@@ -10,7 +10,8 @@ package com.thoughtworks;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.thoughtworks.nothing.NullTest;
+import com.thoughtworks.nothing.CGLIBNullTest;
+import com.thoughtworks.nothing.StandardNullTest;
 import com.thoughtworks.proxytoys.DelegatingProxyTest;
 import com.thoughtworks.proxytoys.EchoProxyTest;
 
@@ -19,9 +20,10 @@ import com.thoughtworks.proxytoys.EchoProxyTest;
  */
 public class AllTests {
 	public static Test suite() {
-		TestSuite suite = new TestSuite("Test for com.thoughtworks");
+		TestSuite suite = new TestSuite("Test for com.thoughtworks.proxytoys");
 		//$JUnit-BEGIN$
-        suite.addTestSuite(NullTest.class);
+        suite.addTestSuite(CGLIBNullTest.class);
+        suite.addTestSuite(StandardNullTest.class);
 		suite.addTestSuite(EchoProxyTest.class);
 		suite.addTestSuite(DelegatingProxyTest.class);
 		//$JUnit-END$

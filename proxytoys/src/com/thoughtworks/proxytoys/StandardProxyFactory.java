@@ -25,16 +25,16 @@ public class StandardProxyFactory extends AbstractProxyFactory {
         }
     }
 
-    public Object createProxy(Class classOrInterface, final Invoker invoker) {
-        return Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{classOrInterface, InvokerReference.class}, new StandardInvocationHandlerAdapter(invoker));
+    public Object createProxy(Class type, final Invoker invoker) {
+        return Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{type, InvokerReference.class}, new StandardInvocationHandlerAdapter(invoker));
     }
 
     public boolean canProxy(Class type) {
         return type.isInterface();
     }
 
-    public boolean isProxyClass(Class clazz) {
-        return Proxy.isProxyClass(clazz);
+    public boolean isProxyClass(Class type) {
+        return Proxy.isProxyClass(type);
     }
 
 }

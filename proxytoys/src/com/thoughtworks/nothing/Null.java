@@ -38,7 +38,7 @@ import java.util.TreeSet;
  * <li>If the method's return type is any other type, the null object returns
  * one of the following:
  * <ul>
- * <li>If the currently installed {@link proxyFactory) can create a proxy for the type,
+ * <li>If the currently installed {@link ProxyFactory} can create a proxy for the type,
  * a new null object for that type is returned (so you can recurse
  * or step through object graphs without surprises). (For the standard proxy factory
  * this requires the return type to be an interface).

@@ -11,6 +11,6 @@ package com.thoughtworks.proxytoys;
 public interface ProxyFactory {
     Object createProxy(Class type, Invoker invoker);
     boolean canProxy(Class type);
-    boolean isProxyClass(Class clazz);
+    boolean isProxyClass(Class type);
     Invoker getInvoker(Object proxy);
 }

@@ -6,7 +6,7 @@ import com.thoughtworks.proxytoys.CGLIBProxyFactory;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class CGLIBNullTest extends NullTest {
+public class CGLIBNullTest extends NullTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         Null.proxyFactory = new CGLIBProxyFactory();
@@ -32,5 +32,6 @@ public class CGLIBNullTest extends NullTest {
 
     public void testShouldBeAbleToInstantiateClassWithPrimitiveParametersInConstructor() {
         ClassWithPrimitiveParametersInConstructor o = (ClassWithPrimitiveParametersInConstructor) Null.object(ClassWithPrimitiveParametersInConstructor.class);
+        assertNotNull(o);
     }
 }

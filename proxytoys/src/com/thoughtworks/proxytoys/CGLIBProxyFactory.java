@@ -76,23 +76,23 @@ public class CGLIBProxyFactory extends AbstractProxyFactory {
         }
     }
 
-    private Constructor getConstructor(Class clazz) {
+    private Constructor getConstructor(Class type) {
         Constructor constructor = null;
         try {
-            constructor = clazz.getConstructor(null);
+            constructor = type.getConstructor(null);
         } catch (NoSuchMethodException e) {
-            constructor = clazz.getConstructors()[0];
+            constructor = type.getConstructors()[0];
 
         }
         return constructor;
     }
 
     public boolean canProxy(Class type) {
-        int mofifiers = type.getModifiers();
-        return !Modifier.isFinal(mofifiers);
+        int modifiers = type.getModifiers();
+        return !Modifier.isFinal(modifiers);
     }
 
-    public boolean isProxyClass(Class clazz) {
-        return Factory.class.isAssignableFrom(clazz) || (!clazz.equals(Object.class) && Proxy.isProxyClass(clazz)) || standardProxyFactory.isProxyClass(clazz);
+    public boolean isProxyClass(Class type) {
+        return Factory.class.isAssignableFrom(type) || (!type.equals(Object.class) && Proxy.isProxyClass(type)) || standardProxyFactory.isProxyClass(type);
     }
 }
