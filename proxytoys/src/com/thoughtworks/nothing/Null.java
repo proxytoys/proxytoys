@@ -1,5 +1,5 @@
 /*
- * Created on 21-Mar-2004
+ * Created on 24-Mar-2004
  *
  * (c) 2003-2004 ThoughtWorks Ltd
  *
@@ -7,10 +7,17 @@
  */
 package com.thoughtworks.nothing;
 
+import com.thoughtworks.proxytoys.Invoker;
 import com.thoughtworks.proxytoys.ProxyFactory;
 import com.thoughtworks.proxytoys.StandardProxyFactory;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -49,8 +56,20 @@ import java.util.TreeSet;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:nospamx.aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
-public class Null {
-    public static ProxyFactory proxyFactory = new StandardProxyFactory();
+public class Null implements Invoker, Serializable {
+    private static final Method equals;
+    private static final Method hashCode;
+    private static final Method toString;
+
+    static {
+        try {
+            equals = Object.class.getMethod("equals", new Class[]{Object.class});
+            hashCode = Object.class.getMethod("hashCode", new Class[0]);
+            toString = Object.class.getMethod("toString", new Class[0]);
+        } catch (Exception e) {
+            throw new InternalError("hashCode(), equals(Object) or toString() missing!");
+        }
+    }
 
     public static final Object NULL_OBJECT = new Object();
 
@@ -95,14 +114,39 @@ public class Null {
 		}
 	};
 
-    /**
-     * Create a new Null Object:
-     * <pre>
-     *     Foo foo = (Foo)<tt>Null.object</tt>(Foo.class);
-     * </pre>
-     *
-     */
-    public static Object object(Class type) {
+    private Class type;
+    private final ProxyFactory proxyFactory;
+
+    public Null(Class type, ProxyFactory proxyFactory) {
+        this.type = type;
+        this.proxyFactory = proxyFactory;
+    }
+
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        Object result;
+
+		// Object methods
+		if (toString.equals(method)) {
+            result = "Null Object for " + type.getName();
+        }
+        else if (equals.equals(method)) {
+            Object other = args[0];
+            result = (isNullObject(other, proxyFactory)
+                    && type.equals(getType(other)))
+                ? Boolean.TRUE : Boolean.FALSE;
+        }
+        else if (hashCode.equals(method)) {
+			result = new Integer(type.hashCode());
+        }
+
+        // Just another null object
+        else {
+            result = object(method.getReturnType(), proxyFactory);
+        }
+        return result;
+	}
+
+    public static Object object(Class type, ProxyFactory proxyFactory) {
         final Object result;
 
         // Primitives
@@ -159,12 +203,9 @@ public class Null {
         else if (SortedMap.class == type) {
             result = NULL_SORTED_MAP;
         }
-
         else if (proxyFactory.canProxy(type)) {
-            result = proxyFactory.createProxy(type,
-        			new NullInvocationHandler(type));
+            result = proxyFactory.createProxy(new Class[]{type}, new Null(type, proxyFactory));
         }
-
         else {
             result = null;
         }
@@ -172,10 +213,56 @@ public class Null {
     }
 
     /**
+     * Create a new Null Object:
+     * <pre>
+     *     Foo foo = (Foo)<tt>Null.object</tt>(Foo.class);
+     * </pre>
+     */
+    public static Object object(Class type) {
+        return object(type, new StandardProxyFactory());
+    }
+
+	private Class getType(Object object) {
+        final Class result;
+        if (proxyFactory.isProxyClass(object.getClass())) {
+            Null nullInvoker = (Null) proxyFactory.getInvoker(object);
+            result = nullInvoker.type;
+        }
+        else {
+            result = object.getClass();
+        }
+        return result;
+	}
+
+    // Serialization
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        if (!nullObjectIsSerializable()) {
+		    throw new NotSerializableException(type.getName());
+		}
+        out.writeObject(type);
+    }
+
+	private boolean nullObjectIsSerializable() {
+		return Serializable.class.isAssignableFrom(type);
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        type = (Class) in.readObject();
+    }
+
+    /**
      * Determine whether an object was created by {@link Null#object(Class)}
      */
     public static boolean isNullObject(Object object) {
-        return isStandardNullObject(object) || isNullProxyObject(object);
+        return isNullObject(object, new StandardProxyFactory());
+    }
+
+    /**
+     * Determine whether an object was created by {@link Null#object(Class, ProxyFactory)}
+     */
+    public static boolean isNullObject(Object object, ProxyFactory proxyFactory) {
+        return isStandardNullObject(object) || isNullProxyObject(object, proxyFactory);
     }
 
 	private static boolean isStandardNullObject(Object object) {
@@ -187,8 +274,8 @@ public class Null {
         || object == NULL_OBJECT;
 	}
 
-	private static boolean isNullProxyObject(Object object) {
+	private static boolean isNullProxyObject(Object object, ProxyFactory proxyFactory) {
 		return proxyFactory.isProxyClass(object.getClass())
-		&& proxyFactory.getInvoker(object) instanceof NullInvocationHandler;
+		&& proxyFactory.getInvoker(object) instanceof Null;
 	}
 }

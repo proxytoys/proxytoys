@@ -1,17 +1,19 @@
 package com.thoughtworks.proxytoys;
 
 import com.thoughtworks.nothing.Null;
+import net.sf.cglib.core.CodeGenerationException;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.Factory;
 import net.sf.cglib.proxy.InvocationHandler;
 import net.sf.cglib.proxy.Proxy;
-import net.sf.cglib.core.CodeGenerationException;
 
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,18 +23,9 @@ import java.util.Map;
 public class CGLIBProxyFactory extends AbstractProxyFactory {
     private ProxyFactory standardProxyFactory = new StandardProxyFactory();
 
-    class CGLIBInvocationHandlerAdapter implements InvocationHandler, Serializable {
-        private final Invoker invoker;
-
-        public CGLIBInvocationHandlerAdapter(Invoker invocationInterceptor) {
-            this.invoker = invocationInterceptor;
-        }
-
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (method.equals(getInvoker)) {
-                return invoker;
-            }
-            return invoker.invoke(proxy, method, args);
+    class CGLIBInvocationHandlerAdapter extends AbstractInvocationHandlerAdapter implements InvocationHandler {
+        public CGLIBInvocationHandlerAdapter(Invoker invoker) {
+            super(invoker);
         }
     }
 
@@ -49,22 +42,46 @@ public class CGLIBProxyFactory extends AbstractProxyFactory {
         boxedClasses.put(Float.TYPE, Float.class);
     }
 
-    public Object createProxy(Class type, final Invoker invoker) {
-        if (type.isInterface()) {
+    public Object createProxy(Class[] types, final Invoker invoker) {
+        Class clazz = getSingleClass(types);
+        if (clazz == null) {
             // slightly faster
-            return standardProxyFactory.createProxy(type, invoker);
+            return standardProxyFactory.createProxy(types, invoker);
         }
+        Class[] interfaces =  getInterfaces(types);
         Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(type);
-        enhancer.setInterfaces(new Class[]{InvokerReference.class});
+        enhancer.setSuperclass(clazz);
+        enhancer.setInterfaces(interfaces);
         enhancer.setCallback(new CGLIBInvocationHandlerAdapter(invoker));
         try {
             return enhancer.create();
         } catch (CodeGenerationException e) {
-            return createWithConstructor(type, enhancer);
+            return createWithConstructor(clazz, enhancer);
         } catch (NoSuchMethodError e) {
-            return createWithConstructor(type, enhancer);
+            return createWithConstructor(clazz, enhancer);
         }
+    }
+
+    private Class[] getInterfaces(Class[] types) {
+        List interfaces = new ArrayList(Arrays.asList(types));
+        for (Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
+            Class clazz = (Class) iterator.next();
+            if(!clazz.isInterface()) {
+                iterator.remove();
+            }
+        }
+        interfaces.add(InvokerReference.class);
+        return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
+    }
+
+    private Class getSingleClass(Class[] types) {
+        for (int i = 0; i < types.length; i++) {
+            Class type = types[i];
+            if(!type.isInterface()) {
+                return type;
+            }
+        }
+        return null;
     }
 
     private Object createWithConstructor(Class type, Enhancer enhancer) {
@@ -72,7 +89,7 @@ public class CGLIBProxyFactory extends AbstractProxyFactory {
         Class[] params = constructor.getParameterTypes();
         Object[] args = new Object[params.length];
         for (int i = 0; i < args.length; i++) {
-            args[i] = Null.object(params[i]);
+            args[i] = Null.object(params[i], this);
         }
         Object result = enhancer.create(params, args);
         return result;
