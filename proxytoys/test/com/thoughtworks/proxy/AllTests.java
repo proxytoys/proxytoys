@@ -14,6 +14,7 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.toys.decorate.DecoratingTest;
 import com.thoughtworks.proxy.toys.delegate.DelegatingTest;
+import com.thoughtworks.proxy.toys.dispatch.DispatchingTest;
 import com.thoughtworks.proxy.toys.echo.EchoingTest;
 import com.thoughtworks.proxy.toys.failover.FailoverTest;
 import com.thoughtworks.proxy.toys.hotswap.CglibHotSwappingTest;
@@ -64,14 +65,15 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Tests using " + type + "ProxyFactory");
 		ProxyTestCase.PROXY_FACTORY = factory;
         suite.addTestSuite(ProxyFactoryTest.class);
-        suite.addTestSuite(PoolTest.class);
         suite.addTestSuite(DecoratingTest.class);
 		suite.addTestSuite(DelegatingTest.class);
+        suite.addTestSuite(DispatchingTest.class);
 		suite.addTestSuite(EchoingTest.class);
 		suite.addTestSuite(FailoverTest.class);
 		suite.addTestSuite(HotSwappingTest.class);
 		suite.addTestSuite(MulticastTest.class);
 		suite.addTestSuite(NullTest.class);
+        suite.addTestSuite(PoolTest.class);
 		return suite;
 	}
 }
