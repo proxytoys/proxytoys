@@ -60,11 +60,11 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         enhancer.setCallback(new CGLIBInvocationHandlerAdapter(invoker));
         try {
             return enhancer.create();
-        } catch (CodeGenerationException e) {
-            return createWithConstructor(clazz, enhancer);
+        } catch (CodeGenerationException e) { // cglib 2.0
+        } catch (IllegalArgumentException e) { // cglib 2.0.2
         } catch (NoSuchMethodError e) {
-            return createWithConstructor(clazz, enhancer);
         }
+        return createWithConstructor(clazz, enhancer);
     }
 
     private Class[] getInterfaces(Class[] types) {
