@@ -1,4 +1,6 @@
 <project name="proxytoys" default="test">
+  <property name="version" value="0.1-SNAPSHOT"/>
+
   <property name="project" value="${ant.project.name}"/>
   
   <property name="src.dir" location="src"/>
@@ -9,7 +11,7 @@
   <property name="classes.dir" location="${build.dir}/classes"/>
   <property name="test.classes.dir" location="${build.dir}/test-classes"/>
   <property name="dist.dir" location="${build.dir}/dist"/>
-  <property name="jar.file" location="${dist.dir}/${project}.jar"/>
+  <property name="jar.file" location="${dist.dir}/${project}-${version}.jar"/>
   
   <target name="-init">
     <mkdir dir="${build.dir}"/>
@@ -32,6 +34,10 @@
     <jar basedir="${classes.dir}" destfile="${jar.file}"/>
   </target>
   
+  <target name="jar-dist" depends="jar">
+    <copy file="${jar.file}" todir="/home/projects/proxytoys/dist/jars"/>
+  </target>
+
   <target name="test.compile" depends="jar">
     <mkdir dir="${test.classes.dir}"/>
     <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
