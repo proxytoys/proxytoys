@@ -56,9 +56,9 @@ public class DelegatingInvoker implements Invoker {
             // TODO this whole section is really ugly and needs cleaning up
 			Object arg = args[0];
             while (arg != null && proxyFactory.isProxyClass(arg.getClass())) {
-				arg = proxyFactory.getInvoker(arg);
-                if (arg instanceof DelegatingInvoker) {
-                    arg = ((DelegatingInvoker)arg).delegate();
+				Invoker invoker = proxyFactory.getInvoker(arg);
+                if (invoker instanceof DelegatingInvoker) {
+                    arg = ((DelegatingInvoker)invoker).delegate();
                 }
             }
             if (delegate() == null) {
