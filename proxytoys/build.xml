@@ -38,6 +38,13 @@
     <copy file="${jar.file}" todir="/home/projects/proxytoys/dist/jars"/>
   </target>
 
+  <target name="jar-dist-plink" depends="jar">
+    <exec dir="." executable="pscp">
+      <arg value="${jar.file}"/>
+      <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars"/>
+    </exec>
+  </target>
+
   <target name="test.compile" depends="jar">
     <mkdir dir="${test.classes.dir}"/>
     <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">

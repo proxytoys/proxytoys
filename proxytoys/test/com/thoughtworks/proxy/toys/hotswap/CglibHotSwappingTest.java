@@ -7,7 +7,6 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -18,16 +17,14 @@ public class CglibHotSwappingTest extends ProxyTestCase {
         return new CglibProxyFactory();
     }
 
-    public void testShouldWorkRecursivelyWithMap() {
+    public void testShouldNotHotswapRecursively() {
         List list = new ArrayList();
         HashMap map = new HashMap();
         map.put("hello", "world");
         list.add(map);
         List hidingList = (List) HotSwapping.object(List.class, getFactory(), list);
-        Object shouldBeHidingMap = hidingList.get(0);
-        Map hidingMap = (Map) shouldBeHidingMap;
-        Swappable swappableMap = (Swappable) hidingMap;
-        swappableMap.hotswap(new HashMap());
+        Object shouldNotBeSwappableMap = hidingList.get(0);
+        assertFalse(shouldNotBeSwappableMap instanceof Swappable);
     }
 
     public static class Yin {
@@ -61,7 +58,7 @@ public class CglibHotSwappingTest extends ProxyTestCase {
         ((Swappable) yin).hotswap(realYin);
 
         assertTrue(yin.equals(realYang.getYin()));
-        assertFalse(realYang.equals(yin.getYang()));
+        assertTrue(realYang.equals(yin.getYang()));
     }
 
 }

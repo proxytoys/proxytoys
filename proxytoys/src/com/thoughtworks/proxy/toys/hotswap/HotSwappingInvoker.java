@@ -57,9 +57,10 @@ public class HotSwappingInvoker implements Invoker {
             executing = true;
 
             result = invokeMethod(proxy, method, args);
-            if (result != null && proxyFactory.canProxy(result.getClass())) {
-                result = HotSwapping.object(result.getClass(), proxyFactory, result);
-            }
+            // I don't think it makes sense to have recursive behaviour for hot swapping after all. AH.
+//            if (result != null && proxyFactory.canProxy(result.getClass())) {
+//                result = HotSwapping.object(result.getClass(), proxyFactory, result);
+//            }
         }
         executing = false;
         return result;
