@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class CGLIBHidingTestCase extends HidingTest {
+public class CGLIBHidingTest extends HidingTest {
     protected ProxyFactory createProxyFactory() {
         return new CGLIBProxyFactory();
     }

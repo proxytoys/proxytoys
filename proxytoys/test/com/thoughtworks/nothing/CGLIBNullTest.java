@@ -7,7 +7,7 @@ import com.thoughtworks.proxytoys.ProxyFactory;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class CGLIBNullTest extends NullTestCase {
+public class CGLIBNullTest extends NullTest {
 
     public static class ClassWithPrimitiveParametersInConstructor {
         private boolean bo;

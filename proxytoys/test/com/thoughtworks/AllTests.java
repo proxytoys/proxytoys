@@ -9,12 +9,14 @@ package com.thoughtworks;
 
 import com.thoughtworks.nothing.CGLIBNullTest;
 import com.thoughtworks.nothing.StandardNullTest;
+import com.thoughtworks.proxytoys.CGLIBFailoverTest;
+import com.thoughtworks.proxytoys.CGLIBHidingTest;
+import com.thoughtworks.proxytoys.CGLIBMulticastTest;
 import com.thoughtworks.proxytoys.DelegatingProxyTest;
 import com.thoughtworks.proxytoys.EchoProxyTest;
-import com.thoughtworks.proxytoys.StandardHidingTestCase;
-import com.thoughtworks.proxytoys.CGLIBHidingTestCase;
-import com.thoughtworks.proxytoys.StandardMulticastTestCase;
-import com.thoughtworks.proxytoys.CGLIBMulticastTestCase;
+import com.thoughtworks.proxytoys.StandardFailoverTest;
+import com.thoughtworks.proxytoys.StandardHidingTest;
+import com.thoughtworks.proxytoys.StandardMulticastTest;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -27,10 +29,12 @@ public class AllTests {
 		//$JUnit-BEGIN$
         suite.addTestSuite(StandardNullTest.class);
         suite.addTestSuite(CGLIBNullTest.class);
-        suite.addTestSuite(StandardHidingTestCase.class);
-        suite.addTestSuite(CGLIBHidingTestCase.class);
-        suite.addTestSuite(StandardMulticastTestCase.class);
-        suite.addTestSuite(CGLIBMulticastTestCase.class);
+        suite.addTestSuite(StandardHidingTest.class);
+        suite.addTestSuite(CGLIBHidingTest.class);
+        suite.addTestSuite(StandardMulticastTest.class);
+        suite.addTestSuite(CGLIBMulticastTest.class);
+        suite.addTestSuite(StandardFailoverTest.class);
+        suite.addTestSuite(CGLIBFailoverTest.class);
 		suite.addTestSuite(EchoProxyTest.class);
 		suite.addTestSuite(DelegatingProxyTest.class);
 		//$JUnit-END$

@@ -6,6 +6,7 @@
 package com.thoughtworks.proxytoys;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -22,7 +23,7 @@ public class Hiding implements Invoker {
         }
     }
 
-    private final ProxyFactory proxyFactory;
+    protected final ProxyFactory proxyFactory;
     private final Class type;
     private Object delegate;
     private boolean executing = false;
@@ -43,8 +44,8 @@ public class Hiding implements Invoker {
         if(method.equals(hotswap)) {
             result = hotswap(args[0]);
         } else {
-            result = method.invoke(delegate, args);
-            if(proxyFactory.canProxy(result.getClass())) {
+            result = invokeMethod(proxy,  method, args);
+            if(result != null && proxyFactory.canProxy(result.getClass())) {
                 result = object(result.getClass(), proxyFactory, result);
             }
         }
@@ -52,7 +53,11 @@ public class Hiding implements Invoker {
         return result;
     }
 
-    private Object hotswap(Object newDelegate) {
+    protected Object invokeMethod(Object proxy, Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
+        return method.invoke(delegate, args);
+    }
+
+    protected Object hotswap(Object newDelegate) {
         Object result = delegate;
         delegate = newDelegate;
         return result;

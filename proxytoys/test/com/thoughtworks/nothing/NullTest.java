@@ -7,6 +7,8 @@
  */
 package com.thoughtworks.nothing;
 
+import com.thoughtworks.proxytoys.ProxyTestCase;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,18 +23,14 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
-import junit.framework.TestCase;
-import com.thoughtworks.proxytoys.ProxyFactory;
-import com.thoughtworks.proxytoys.ProxyTestCase;
-
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
-public abstract class NullTestCase extends ProxyTestCase {
+public abstract class NullTest extends ProxyTestCase {
     protected Null nil;
 
-    protected NullTestCase() {
+    protected NullTest() {
         nil = new Null(null, proxyFactory);
     }
 

@@ -24,7 +24,7 @@ import java.util.Vector;
  * @author J&ouml;rg Schaible
  * @version $Revision: 1.2 $
  */
-public class ClassHierarchyIntrospectorTestCase extends TestCase {
+public class ClassHierarchyIntrospectorTest extends TestCase {
     public void testMostCommonSuperclassForClassesWithACommonBaseClass() {
         assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new StringWriter(), new OutputStreamWriter(System.out)}));
         assertEquals(Writer.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{new OutputStreamWriter(System.out), new StringWriter()}));

@@ -4,7 +4,7 @@ package com.thoughtworks.proxytoys;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class CGLIBMulticastTestCase extends MulticastTest {
+public class CGLIBMulticastTest extends MulticastTest {
     protected ProxyFactory createProxyFactory() {
         return new CGLIBProxyFactory();
     }
