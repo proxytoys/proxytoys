@@ -15,9 +15,9 @@ import net.sf.cglib.proxy.Factory;
 import net.sf.cglib.proxy.InvocationHandler;
 import net.sf.cglib.proxy.Proxy;
 
-import com.thoughtworks.nothing.Null;
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.nullobject.Null;
 
 /**
  * @author Aslak Helles&oslash;y

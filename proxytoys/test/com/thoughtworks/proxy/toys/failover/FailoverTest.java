@@ -1,6 +1,7 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy.toys.failover;
 
 import com.thoughtworks.proxy.toys.failover.Failover;
+import com.thoughtworks.proxytoys.ProxyTestCase;
 
 /**
  * @author Aslak Helles&oslash;y

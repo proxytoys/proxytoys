@@ -1,4 +1,4 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy.toys.failover;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CGLIBProxyFactory;

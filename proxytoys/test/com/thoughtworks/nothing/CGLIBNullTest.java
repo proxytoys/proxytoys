@@ -2,6 +2,7 @@ package com.thoughtworks.nothing;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CGLIBProxyFactory;
+import com.thoughtworks.proxy.toys.nullobject.Null;
 
 /**
  * @author Aslak Helles&oslash;y

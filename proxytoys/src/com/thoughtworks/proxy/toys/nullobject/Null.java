@@ -5,7 +5,7 @@
  *
  * See license.txt for license details
  */
-package com.thoughtworks.proxy.nullobject;
+package com.thoughtworks.proxy.toys.nullobject;
 
 
 import java.io.IOException;

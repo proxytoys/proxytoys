@@ -1,10 +1,11 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy.toys.hide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.thoughtworks.proxy.toys.hide.HidingInvoker;
 import com.thoughtworks.proxy.toys.hide.Swappable;
+import com.thoughtworks.proxytoys.ProxyTestCase;
 
 /**
  * @author Aslak Helles&oslash;y

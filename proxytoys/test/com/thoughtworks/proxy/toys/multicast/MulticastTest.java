@@ -1,10 +1,11 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy.toys.multicast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.thoughtworks.proxy.toys.multicast.MulticastingInvoker;
+import com.thoughtworks.proxytoys.ProxyTestCase;
 
 /**
  * @author Aslak Helles&oslash;y

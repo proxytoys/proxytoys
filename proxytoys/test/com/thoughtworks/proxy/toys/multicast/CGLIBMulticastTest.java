@@ -1,4 +1,4 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CGLIBProxyFactory;

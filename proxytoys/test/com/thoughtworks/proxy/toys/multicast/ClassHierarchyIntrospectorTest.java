@@ -1,4 +1,4 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy.toys.multicast;
 
 import java.beans.beancontext.BeanContext;
 import java.beans.beancontext.BeanContextServices;

@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import com.thoughtworks.proxy.toys.nullobject.Null;
 import com.thoughtworks.proxytoys.ProxyTestCase;
 
 /**

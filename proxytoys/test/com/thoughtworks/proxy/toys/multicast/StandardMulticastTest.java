@@ -1,4 +1,4 @@
-package com.thoughtworks.proxytoys;
+package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
@@ -7,7 +7,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class StandardHidingTest extends HidingTest {
+public class StandardMulticastTest extends MulticastTest {
     protected ProxyFactory createProxyFactory() {
         return new StandardProxyFactory();
     }

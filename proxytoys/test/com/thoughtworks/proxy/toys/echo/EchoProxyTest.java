@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.proxytoys.echo;
+package com.thoughtworks.proxy.toys.echo;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
