@@ -15,12 +15,15 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  */
 public class Decorating {
 	public static Object object(Class type, Object delegate, InvocationDecorator decorator) {
-        return object(type, delegate, decorator, new StandardProxyFactory());
+        return object(new Class[] {type}, delegate, decorator);
 	}
     
-	public static Object object(Class type, Object delegate, InvocationDecorator decorator, ProxyFactory factory) {
-        return factory.createProxy(new Class[] {type},
-                new DecoratingInvoker(delegate, decorator));
+	public static Object object(Class[] types, Object delegate, InvocationDecorator decorator) {
+        return object(types, delegate, decorator, new StandardProxyFactory());
+	}
+    
+	public static Object object(Class[] types, Object delegate, InvocationDecorator decorator, ProxyFactory factory) {
+        return factory.createProxy(types, new DecoratingInvoker(delegate, decorator));
 	}
     
     /** It's a factory, stupid */

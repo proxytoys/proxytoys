@@ -28,9 +28,9 @@ import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
  */
 public class DelegatingInvoker implements Invoker {
     /** delegate must implement the method's interface */
-    public static final boolean STATIC_TYPING = true;
+    public static final boolean EXACT_METHOD = true;
     /** delegate must have method with matching signature - not necessarily the same */
-    public static final boolean DYNAMIC_TYPING = false;
+    public static final boolean SAME_SIGNATURE_METHOD = false;
     
     protected final ProxyFactory proxyFactory;
     protected final ObjectReference delegateReference;
@@ -44,7 +44,7 @@ public class DelegatingInvoker implements Invoker {
 	}
 
 	public DelegatingInvoker(final Object delegate) {
-        this(new StandardProxyFactory(), new SimpleReference(delegate), DYNAMIC_TYPING);
+        this(new StandardProxyFactory(), new SimpleReference(delegate), SAME_SIGNATURE_METHOD);
 	}
 	
 	public Object invoke(Object proxy, Method method, Object[] args)
@@ -101,6 +101,14 @@ public class DelegatingInvoker implements Invoker {
             throw e;
         } catch (Exception e) {
             throw new DelegationException("Problem invoking " + method, e, delegate);
+        }
+    }
+
+    protected Method getDelegateMethod(String methodName, Class[] parameterTypes) {
+        try {
+            return delegate().getClass().getMethod(methodName, parameterTypes);
+        } catch (Exception e) {
+            throw new DelegationException("Unable to find method " + methodName, e, delegate());
         }
     }
 }
