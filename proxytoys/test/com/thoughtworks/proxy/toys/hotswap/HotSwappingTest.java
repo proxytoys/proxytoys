@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.thoughtworks.proxy.ProxyTestCase;
-import com.thoughtworks.proxy.toys.hotswap.Hiding;
+import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
 import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class HidingTest extends ProxyTestCase {
+public class HotSwappingTest extends ProxyTestCase {
 
     public void testShouldBeAbleToHotSwap() {
         List firstList = new ArrayList();
         firstList.add("first");
 
-        List proxyList = (List) Hiding.object(List.class, getFactory(), firstList);
+        List proxyList = (List) HotSwapping.object(List.class, getFactory(), firstList);
         assertTrue(proxyList.contains("first"));
 
         List secondList = new ArrayList();
@@ -32,8 +32,8 @@ public class HidingTest extends ProxyTestCase {
 
     public void testShouldDiscoverCyclicReferences() {
         List firstList = new ArrayList();
-        List hidingOne = (List) Hiding.object(List.class, getFactory(), firstList);
-        List hidingTwo = (List) Hiding.object(List.class, getFactory(), hidingOne);
+        List hidingOne = (List) HotSwapping.object(List.class, getFactory(), firstList);
+        List hidingTwo = (List) HotSwapping.object(List.class, getFactory(), hidingOne);
         ((Swappable)hidingOne).hotswap(hidingTwo);
 
         try {

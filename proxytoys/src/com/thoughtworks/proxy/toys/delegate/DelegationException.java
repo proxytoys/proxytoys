@@ -12,14 +12,14 @@ package com.thoughtworks.proxy.toys.delegate;
  */
 public class DelegationException extends RuntimeException {
 
-	private final Exception cause;
+	private final Throwable cause;
 
-	public DelegationException(String message, Exception cause) {
+	public DelegationException(String message, Throwable cause) {
         super(message);
         this.cause = cause;
 	}
     
-    public Exception getCause() {
+    public Throwable getCause() {
         return cause;
     }
 }

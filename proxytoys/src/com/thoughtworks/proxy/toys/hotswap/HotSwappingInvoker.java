@@ -15,7 +15,7 @@ import com.thoughtworks.proxy.ProxyFactory;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
-public class HidingInvoker implements Invoker {
+public class HotSwappingInvoker implements Invoker {
     private static final Method hotswap;
 
     static {
@@ -31,7 +31,7 @@ public class HidingInvoker implements Invoker {
     private Object delegate;
     private boolean executing = false;
 
-    public HidingInvoker(Class type, ProxyFactory proxyFactory, Object delegate) {
+    public HotSwappingInvoker(Class type, ProxyFactory proxyFactory, Object delegate) {
         this.proxyFactory = proxyFactory;
         this.type = type;
         this.delegate = delegate;
@@ -49,7 +49,7 @@ public class HidingInvoker implements Invoker {
         } else {
             result = invokeMethod(proxy,  method, args);
             if(result != null && proxyFactory.canProxy(result.getClass())) {
-                result = Hiding.object(result.getClass(), proxyFactory, result);
+                result = HotSwapping.object(result.getClass(), proxyFactory, result);
             }
         }
         executing = false;

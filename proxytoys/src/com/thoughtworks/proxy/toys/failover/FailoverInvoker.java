@@ -11,12 +11,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.toys.hotswap.HidingInvoker;
+import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class FailoverInvoker extends HidingInvoker {
+public class FailoverInvoker extends HotSwappingInvoker {
     private final Object[] delegates;
     private final Class exceptionClass;
     private int current;
@@ -33,7 +33,7 @@ public class FailoverInvoker extends HidingInvoker {
             result = super.invokeMethod(proxy, method, args);
         } catch (InvocationTargetException e) {
             if (exceptionClass.isInstance(e.getTargetException())) {
-                HidingInvoker hiding = (HidingInvoker) proxyFactory.getInvoker(proxy);
+                HotSwappingInvoker hiding = (HotSwappingInvoker) proxyFactory.getInvoker(proxy);
                 current++;
                 current = current % delegates.length;
                 hiding.hotswap(delegates[1]);

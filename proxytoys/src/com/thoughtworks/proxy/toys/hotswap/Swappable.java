@@ -3,7 +3,7 @@ package com.thoughtworks.proxy.toys.hotswap;
 
 /**
  * Interface implemented by all proxy instances created by
- * {@link HidingInvoker}.
+ * {@link HotSwappingInvoker}.
  *
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.4 $

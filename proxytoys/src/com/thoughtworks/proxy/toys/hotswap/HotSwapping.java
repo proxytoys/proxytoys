@@ -12,15 +12,15 @@ import com.thoughtworks.proxy.ProxyFactory;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class Hiding {
+public class HotSwapping {
 
 	/**
 	 * @return a proxy that hides the implementation and implements {@link Swappable}.
 	 */
 	public static Object object(Class type, ProxyFactory proxyFactory, Object delegate) {
-	    return new HidingInvoker(type, proxyFactory, delegate).proxy();
+	    return new HotSwappingInvoker(type, proxyFactory, delegate).proxy();
 	}
     
     /** It's a factory, stupid */
-    private Hiding(){}
+    private HotSwapping(){}
 }

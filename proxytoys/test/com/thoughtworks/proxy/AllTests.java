@@ -16,8 +16,8 @@ import com.thoughtworks.proxy.toys.decorate.DecoratingTest;
 import com.thoughtworks.proxy.toys.delegate.DelegatingTest;
 import com.thoughtworks.proxy.toys.echo.EchoingTest;
 import com.thoughtworks.proxy.toys.failover.FailoverTest;
-import com.thoughtworks.proxy.toys.hotswap.CglibHidingTest;
-import com.thoughtworks.proxy.toys.hotswap.HidingTest;
+import com.thoughtworks.proxy.toys.hotswap.CglibHotSwappingTest;
+import com.thoughtworks.proxy.toys.hotswap.HotSwappingTest;
 import com.thoughtworks.proxy.toys.multicast.CglibMulticastTest;
 import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospectorTest;
 import com.thoughtworks.proxy.toys.multicast.MulticastTest;
@@ -40,7 +40,7 @@ public class AllTests {
         suite.addTest(createProxyFactorySuite(new CglibProxyFactory(), "Cglib"));
         
         // CGLIB-specific tests
-        suite.addTestSuite(CglibHidingTest.class);
+        suite.addTestSuite(CglibHotSwappingTest.class);
         suite.addTestSuite(CglibMulticastTest.class);
         suite.addTestSuite(CglibNullTest.class);
         
@@ -66,7 +66,7 @@ public class AllTests {
 		suite.addTestSuite(DelegatingTest.class);
 		suite.addTestSuite(EchoingTest.class);
 		suite.addTestSuite(FailoverTest.class);
-		suite.addTestSuite(HidingTest.class);
+		suite.addTestSuite(HotSwappingTest.class);
 		suite.addTestSuite(MulticastTest.class);
 		suite.addTestSuite(NullTest.class);
 		return suite;
