@@ -1,6 +1,9 @@
 /*
- * Copyright (C) 2005 Jörg Schaible
- * Created on 24.02.2005 by Jörg Schaible
+ * Created on 24-Feb-2005
+ * 
+ * (c) 2005 ThoughtWorks
+ * 
+ * See license.txt for licence details
  */
 package com.thoughtworks.proxy.toys.dispatch;
 
