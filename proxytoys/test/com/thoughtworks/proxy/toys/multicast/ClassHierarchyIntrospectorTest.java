@@ -52,13 +52,11 @@ public class ClassHierarchyIntrospectorTest extends TestCase {
     }
 
     public void testMostCommonSuperclassForEmptyArray() {
-        // Makes more sense to return null perhaps? ==> Refactor Multicaster 
-        assertEquals(Void.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{}));
+        assertEquals(Object.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{}));
     }
 
     public void testMostCommonSuperclassForNullElements() {
-        // Makes more sense to return null perhaps? ==> Refactor Multicaster
-        assertEquals(Void.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{ null, null }));
+        assertEquals(Object.class, ClassHierarchyIntrospector.getMostCommonSuperclass(new Object[]{ null, null }));
     }
 
     public void testMostCommonSuperclassForCollections() {

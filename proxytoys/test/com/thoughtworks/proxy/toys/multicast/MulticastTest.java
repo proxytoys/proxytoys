@@ -3,6 +3,7 @@ package com.thoughtworks.proxy.toys.multicast;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.thoughtworks.proxy.ProxyTestCase;
 
@@ -103,23 +104,43 @@ public class MulticastTest extends ProxyTestCase {
         assertTrue(tomsTail.wasWagged());
     }
 
-    public void testShouldFailForIncompatibleTypes() {
-        try {
-            Multicasting.object(List.class, getFactory(), new Object[]{new HashMap()});
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
+    public static interface NotMap {
+        void add(Object s);
+
+        Object get(int i);
+    }
+
+    public static class NotMapImpl implements NotMap {
+        private List values = new ArrayList();
+
+        public void add(Object s) {
+            values.add(s);
+        }
+
+        public Object get(int i) {
+            return values.get(i);
         }
     }
 
-    public void testShouldFailForNull() {
-        try {
-            Multicasting.object(List.class, getFactory(), new Object[]{null});
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
+    public void testShouldMulticastToIncompatibleTypes() {
+        NotMap list = new NotMapImpl();
+        Map map = new HashMap();
+        Object multicast = Multicasting.object(getFactory(), new Object[]{list, map});
+        ((NotMap) multicast).add("hello");
+        ((Map) multicast).put("hello", "world");
+        assertEquals("hello", list.get(0));
+        assertEquals("world", map.get("hello"));
     }
+
+    public void testShouldNotReturnProxyWhenThereIsOnlyOne() {
+        Map map = new HashMap();
+        Object multicast = Multicasting.object(getFactory(), new Object[]{map});
+        Object result = ((Map) multicast).put("hello", "world");
+        assertNull(result);
+        assertEquals("world", ((Map) multicast).put("hello", "moon"));
+        assertEquals("moon", map.get("hello"));
+    }
+
 
     public void TODOtestShouldInvokeMethodsInARoundRobinFashion() {
         TailImpl t1 = new TailImpl();

@@ -62,7 +62,8 @@ public class AllTests {
 	private static Test createProxyFactorySuite(ProxyFactory factory, String type) {
 		TestSuite suite = new TestSuite("Tests using " + type + "ProxyFactory");
 		ProxyTestCase.PROXY_FACTORY = factory;
-		suite.addTestSuite(DecoratingTest.class);
+        suite.addTestSuite(ProxyFactoryTest.class);
+        suite.addTestSuite(DecoratingTest.class);
 		suite.addTestSuite(DelegatingTest.class);
 		suite.addTestSuite(EchoingTest.class);
 		suite.addTestSuite(FailoverTest.class);

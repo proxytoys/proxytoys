@@ -1,6 +1,7 @@
 package com.thoughtworks.proxy;
 
 import org.jmock.MockObjectTestCase;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**
  * 
@@ -22,7 +23,7 @@ public abstract class ProxyTestCase extends MockObjectTestCase {
      * @see com.thoughtworks.proxy.factory.StandardProxyFactory
      * @see AllTests#suite()
      */
-    public static ProxyFactory PROXY_FACTORY;
+    public static ProxyFactory PROXY_FACTORY = new StandardProxyFactory();
 
     /** the actual factory the tests will run against */
     private final ProxyFactory proxyFactory;
@@ -41,7 +42,6 @@ public abstract class ProxyTestCase extends MockObjectTestCase {
 	}
 
 	public ProxyFactory getFactory() {
-//        System.out.println("Factory = " + proxyFactory.getClass().getName());
 		return proxyFactory;
 	}
 }

@@ -39,7 +39,7 @@ public class DelegatingInvoker implements Invoker {
         catch (InvocationTargetException e) {
             throw e.getTargetException();
         }
-        catch (Exception e) {
+        catch (Throwable e) {
             throw new DelegationException("Problem calling " + methodName, e);
         }
     }

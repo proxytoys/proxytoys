@@ -26,7 +26,7 @@ public class Multicasting {
 	public static Object object(ProxyFactory proxyFactory, Object[] targets) {
 	    Class superclass = ClassHierarchyIntrospector.getMostCommonSuperclass(targets);
 	    Class[] interfaces = ClassHierarchyIntrospector.getAllInterfaces(targets);
-	    Class[] proxyTypes = MulticastingInvoker.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, proxyFactory);
+	    Class[] proxyTypes = ClassHierarchyIntrospector.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, proxyFactory);
 	    return object(proxyTypes, proxyFactory, targets);
 	}
 

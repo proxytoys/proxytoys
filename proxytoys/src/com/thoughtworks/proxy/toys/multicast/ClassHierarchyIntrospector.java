@@ -1,8 +1,12 @@
 package com.thoughtworks.proxy.toys.multicast;
 
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.InvokerReference;
+
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
 
 /**
  * Helper class for introspecting interface and class hierarchies.
@@ -12,9 +16,13 @@ import java.util.Set;
  * @version $Revision: 1.1 $
  */
 public class ClassHierarchyIntrospector {
-    /** the {@link Object#equals(Object)} method. */ 
+    /**
+     * the {@link Object#equals(Object)} method.
+     */
     public static Method equals;
-    /** the {@link Object#hashCode()} method. */ 
+    /**
+     * the {@link Object#hashCode()} method.
+     */
     public static Method hashCode;
 
     static {
@@ -31,12 +39,13 @@ public class ClassHierarchyIntrospector {
             ///CLOVER:ON
         }
     }
-    
+
     private ClassHierarchyIntrospector() {
     }
 
     /**
      * Get all the interfaces implemented by a list of objects.
+     *
      * @param objects the list of objects to consider.
      * @return an array of interfaces.
      */
@@ -53,19 +62,21 @@ public class ClassHierarchyIntrospector {
     /**
      * Get all interfaces of the given type.
      * If the type is a class, the returned list contains any interface, that is
-     * implemented by the class. If the type is an interface, the all 
+     * implemented by the class. If the type is an interface, the all
      * superinterfaces and the interface itself are included.
+     *
      * @param clazz type to explore.
      * @return an array with all interfaces. The array may be empty.
      */
     public static Class[] getAllInterfaces(Class clazz) {
         Set interfaces = new HashSet();
         getInterfaces(clazz, interfaces);
+        interfaces.remove(InvokerReference.class);
         return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
     }
 
     private static void getInterfaces(Class clazz, Set interfaces) {
-        if(clazz.isInterface()) {
+        if (clazz.isInterface()) {
             interfaces.add(clazz);
         }
         // Class.getInterfaces will return only the interfaces that are 
@@ -73,7 +84,7 @@ public class ClassHierarchyIntrospector {
         // the hierarchy for the superclasses and the superinterfaces. 
         while (clazz != null) {
             Class[] implemented = clazz.getInterfaces();
-            for(int i = 0; i < implemented.length; i++) {
+            for (int i = 0; i < implemented.length; i++) {
                 if (!interfaces.contains(implemented[i])) {
                     getInterfaces(implemented[i], interfaces);
                 }
@@ -83,12 +94,13 @@ public class ClassHierarchyIntrospector {
     }
 
     /**
-     * Get most common superclass for all given objects. 
+     * Get most common superclass for all given objects.
+     *
      * @param objects the array of objects to consider.
      * @return the superclass or <code>{@link Void}.class</code> for an empty array.
      */
     public static Class getMostCommonSuperclass(Object[] objects) {
-        Class clazz = Void.class;
+        Class clazz = null;
         boolean found = false;
         if (objects != null && objects.length > 0) {
             while (!found) {
@@ -96,11 +108,11 @@ public class ClassHierarchyIntrospector {
                     found = true;
                     if (objects[i] != null) {
                         Class currentClazz = objects[i].getClass();
-                        if(clazz == Void.class) {
+                        if (clazz == null) {
                             clazz = currentClazz;
                         }
-                        if(!clazz.isAssignableFrom(currentClazz)) {
-                            if(currentClazz.isAssignableFrom(clazz)) {
+                        if (!clazz.isAssignableFrom(currentClazz)) {
+                            if (currentClazz.isAssignableFrom(clazz)) {
                                 clazz = currentClazz;
                             } else {
                                 clazz = clazz.getSuperclass();
@@ -112,6 +124,21 @@ public class ClassHierarchyIntrospector {
                 }
             }
         }
+        if (clazz == null) {
+            clazz = Object.class;
+        }
         return clazz;
+    }
+
+    static Class[] addIfClassProxyingSupportedAndNotObject(Class clazz, Class[] interfaces, ProxyFactory proxyFactory) {
+        Class[] result;
+        if (proxyFactory.canProxy(ArrayList.class) && !clazz.equals(Object.class)) {
+            result = new Class[interfaces.length + 1];
+            result[0] = clazz;
+            System.arraycopy(interfaces, 0, result, 1, interfaces.length);
+        } else {
+            result = interfaces;
+        }
+        return result;
     }
 }
