@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.toys.nullobject.Null;
-import com.thoughtworks.proxytoys.ProxyTestCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
