@@ -1,6 +1,6 @@
 /*
  * Created on 10-May-2004
- * 
+ *
  * (c) 2003-2004 ThoughtWorks Ltd
  *
  * See license.txt for license details
@@ -20,6 +20,7 @@ public class InvocationDecoratorSupport implements InvocationDecorator {
     public Object decorateResult(Object result) {
 		return result;
 	}
+
 	public Throwable decorateTargetException(Throwable cause) {
 		return cause;
 	}

@@ -21,7 +21,7 @@ public class CglibMulticastTest extends ProxyTestCase {
         }
 
         public int getInt() {
-            return 3;
+            return 2;
         }
 
         public boolean getBoolean() {
@@ -31,7 +31,7 @@ public class CglibMulticastTest extends ProxyTestCase {
 
     public void testShouldAddIntegers() {
         Primitives primitives = (Primitives) Multicasting.object(getFactory(), new Object[]{new Primitives(true), new Primitives(true), new Primitives(true)});
-        assertEquals(9, primitives.getInt());
+        assertEquals(6, primitives.getInt());
     }
 
     public void testShouldAndBooleans() {

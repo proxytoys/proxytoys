@@ -1,6 +1,6 @@
 /*
  * Created on 04-May-2004
- * 
+ *
  * (c) 2003-2004 ThoughtWorks Ltd
  *
  * See license.txt for license details
@@ -12,14 +12,16 @@ import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.Invoker;
 
+// TODO: use the AOP alliance API: Mixin.object(Object, JoinPoint, PointCut[] cuts)
+
 /**
- * @author Dan North
+ * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
  */
 public class DecoratingInvoker implements Invoker {
     private final Invoker decorated;
     private final InvocationDecorator decorator;
-    
+
 	public DecoratingInvoker(Invoker decorated, InvocationDecorator decorator) {
         this.decorated = decorated;
         this.decorator = decorator;

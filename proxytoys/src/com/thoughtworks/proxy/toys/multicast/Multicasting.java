@@ -1,6 +1,6 @@
 /*
  * Created on 14-May-2004
- * 
+ *
  * (c) 2003-2004 ThoughtWorks Ltd
  *
  * See license.txt for license details
@@ -12,6 +12,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Aslak Helles&oslash;y
  */
 public class Multicasting {
 
@@ -33,7 +34,7 @@ public class Multicasting {
 	public static Object object(Object[] targets) {
 	    return object(new StandardProxyFactory(), targets);
 	}
-    
+
     /** It's a factory, stupid */
     private Multicasting(){}
 }

@@ -1,6 +1,6 @@
 /*
  * Created on 14-May-2004
- * 
+ *
  * (c) 2003-2004 ThoughtWorks Ltd
  *
  * See license.txt for license details
@@ -16,6 +16,7 @@ import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Aslak Helles&oslash;y
  */
 public class FailoverInvoker extends HotSwappingInvoker {
     private final Object[] delegates;
@@ -29,13 +30,12 @@ public class FailoverInvoker extends HotSwappingInvoker {
         this.delegates = delegates;
         this.exceptionClass = exceptionClass;
     }
-    
-    
 
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		this.currentProxy = proxy;
 		return super.invoke(proxy, method, args);
 	}
+
     protected Object invokeOnDelegate(Method method, Object[] args) throws Throwable {
         Object result = null;
         try {
@@ -45,7 +45,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
                 HotSwappingInvoker hiding = (HotSwappingInvoker) proxyFactory.getInvoker(currentProxy);
                 current++;
                 current = current % delegates.length;
-                hiding.hotswap(delegates[1]);
+                hiding.hotswap(delegates[current]);
                 result = super.invokeOnDelegate(method, args);
             } else {
                 throw e;
