@@ -7,6 +7,17 @@ import org.jmock.MockObjectTestCase;
  * @version $Revision: 1.3 $
  */
 public abstract class ProxyTestCase extends MockObjectTestCase {
+    /**
+     * A publicly settable <tt>ProxyFactory</tt>.
+     * 
+     * <p>The value of this factory is captured by the constructor
+     * of each test case, so the same test case can be used to test
+     * multiple factories.</p>
+     * 
+     * @see com.thoughtworks.proxy.factory.CglibProxyFactory
+     * @see com.thoughtworks.proxy.factory.StandardProxyFactory
+     * @see AllTests#suite()
+     */
     public static ProxyFactory FACTORY;
     
     protected final ProxyFactory proxyFactory;
