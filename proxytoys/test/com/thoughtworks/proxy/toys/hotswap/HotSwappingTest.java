@@ -48,4 +48,9 @@ public class HotSwappingTest extends ProxyTestCase {
         assertTrue(hotSwapList.equals(hotSwapList));
     }
 
+    public void testShouldWorkWithHashcode() {
+        List hotSwapList = (List) HotSwapping.object(List.class, getFactory(), (Object)null);
+        assertTrue(hotSwapList.hashCode() == hotSwapList.hashCode());
+    }
+
 }

@@ -29,4 +29,39 @@ public class CglibHotSwappingTest extends ProxyTestCase {
         Swappable swappableMap = (Swappable) hidingMap;
         swappableMap.hotswap(new HashMap());
     }
+
+    public static class Yin {
+        private final Yang yang;
+
+        public Yin(Yang yang) {
+            this.yang = yang;
+        }
+
+        public Yang getYang() {
+            return yang;
+        }
+    }
+
+    public static class Yang {
+        private final Yin yin;
+
+        public Yang(Yin yin) {
+            this.yin = yin;
+        }
+
+        public Yin getYin() {
+            return yin;
+        }
+    }
+
+    public void testShouldMakeMutualDependenciesPossible() {
+        Yin yin = (Yin) HotSwapping.object(Yin.class, getFactory(), null);
+        Yang realYang = new Yang(yin);
+        Yin realYin = new Yin(realYang);
+        ((Swappable) yin).hotswap(realYin);
+
+        assertTrue(yin.equals(realYang.getYin()));
+        assertFalse(realYang.equals(yin.getYang()));
+    }
+
 }

@@ -25,6 +25,8 @@ import com.thoughtworks.proxy.toys.nullobject.Null;
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
     private ProxyFactory standardProxyFactory = new StandardProxyFactory();
+    // Keeps track of what is currently being created - to avoid infinite recursion
+    private List creating = new ArrayList();
 
     class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
         public CGLIBInvocationHandlerAdapter(Invoker invoker) {
@@ -92,7 +94,13 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         Class[] params = constructor.getParameterTypes();
         Object[] args = new Object[params.length];
         for (int i = 0; i < args.length; i++) {
-            args[i] = Null.object(params[i], this);
+            if(!creating.contains(params[i])) {
+                creating.add(params[i]);
+                args[i] = Null.object(params[i], this);
+                creating.remove(params[i]);
+            } else {
+                args[i] = null;
+            }
         }
         Object result = enhancer.create(params, args);
         return result;

@@ -46,6 +46,8 @@ public class HotSwappingInvoker implements Invoker {
                 arg = proxyFactory.getInvoker(arg);
             }
             result = new Boolean(equals(arg));
+        } else if (method.equals(ClassHierarchyIntrospector.hashCode)) {
+            result = new Integer(hashCode());
         } else if (method.equals(hotswap)) {
             result = hotswap(args[0]);
         } else {
