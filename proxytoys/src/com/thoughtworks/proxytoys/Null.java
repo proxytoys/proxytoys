@@ -43,7 +43,7 @@ import java.util.TreeSet;
  */
 public class Null {
     
-	private static final SortedMap NULL_SORTED_MAP = new TreeMap() {
+	public static final SortedMap NULL_SORTED_MAP = new TreeMap() {
 		public Object put(Object key, Object value) {
 			throw new UnsupportedOperationException();
 		}
@@ -64,7 +64,7 @@ public class Null {
 		}
 	};
             
-	private static final SortedSet NULL_SORTED_SET = new TreeSet() {
+	public static final SortedSet NULL_SORTED_SET = new TreeSet() {
 		public boolean add(Object o) {
 			throw new UnsupportedOperationException();
 		}

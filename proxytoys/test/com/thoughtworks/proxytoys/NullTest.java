@@ -41,6 +41,8 @@ public class NullTest extends TestCase {
         Map getMap();
         List getList();
         Set getSet();
+        SortedSet getSortedSet();
+        SortedMap getSortedMap();
         
         // void
         void doVoidMethod();
@@ -52,7 +54,7 @@ public class NullTest extends TestCase {
         Foo getFoo();
     }
     
-    public void testShouldCreateObjectWithNullBehaviour() throws Exception {
+    public void testShouldReturnDefaultValuesForPrimitives() throws Exception {
         // execute
 		Foo foo = (Foo) Null.object(Foo.class);
         
@@ -65,16 +67,42 @@ public class NullTest extends TestCase {
         assertEquals(0, foo.getLong());
         assertEquals(0.0, foo.getFloat(), 0.0);
         assertEquals(0.0, foo.getDouble(), 0.0);
-
+	}
+    
+    public void testShouldReturnEmptyArrayForArrayMethods() throws Exception {
+        // execute
+		Foo foo = (Foo) Null.object(Foo.class);
+        
+        // verify
         assertEquals(0, foo.getIntArray().length);
         assertEquals(0, foo.getObjectArray().length);
-
+	}
+    
+    public void testShouldReturnStandardNullObjectsForCollections() throws Exception {
+        // execute
+		Foo foo = (Foo) Null.object(Foo.class);
+        
+        // verify
         assertSame(Collections.EMPTY_MAP, foo.getMap());
         assertSame(Collections.EMPTY_LIST, foo.getList());
         assertSame(Collections.EMPTY_SET, foo.getSet());
+        assertSame(Null.NULL_SORTED_SET, foo.getSortedSet());
+        assertSame(Null.NULL_SORTED_MAP, foo.getSortedMap());
+	}
+    
+    public void testShouldExecuteVoidMethods() throws Exception {
+        // execute
+		Foo foo = (Foo) Null.object(Foo.class);
         
+        // verify
         foo.doVoidMethod();
+	}
+    
+    public void testShouldReturnNullForMethodsThatReturnAnObject() throws Exception {
+        // execute
+		Foo foo = (Foo) Null.object(Foo.class);
         
+        // verify
         assertEquals(null, foo.getObject());
 	}
     
@@ -131,6 +159,7 @@ public class NullTest extends TestCase {
     
     public void testShouldThrowUnsupportedOperationWhenMutatingNullSortedMap() throws Exception {
         SortedMap map = (SortedMap) Null.object(SortedMap.class);
+        
         try {
             map.put("should fail", "really");
             fail("put");
@@ -155,11 +184,15 @@ public class NullTest extends TestCase {
         } catch (UnsupportedOperationException e) {
             // expected
         }
-        
+    }
+    
+    public void testShouldReturnImmutableNullCollectionsForNullSortedMap() throws Exception {
+        SortedMap map = (SortedMap) Null.object(SortedMap.class);
+
         assertSame(Collections.EMPTY_SET, map.keySet());
         assertSame(Collections.EMPTY_LIST, map.values());
         assertSame(Collections.EMPTY_SET, map.entrySet());
-    }
+	}
     
     public void testShouldReturnNullObjectIfMethodReturnsAnInterface() throws Exception {
 		// execute
