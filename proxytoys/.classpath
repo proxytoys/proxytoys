@@ -5,6 +5,6 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry sourcepath="/jmock/core/src" kind="lib" path="lib/jmock.jar"/>
 	<classpathentry kind="lib" path="lib/cglib-full-2.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.3.1_08"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

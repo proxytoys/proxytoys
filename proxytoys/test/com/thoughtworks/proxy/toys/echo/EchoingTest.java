@@ -18,7 +18,6 @@ import org.jmock.core.mixin.Return;
 import com.thoughtworks.proxy.ProxyTestCase;
 
 /**
- * @deprecated Echoing stuff is going to be replaced with a <tt>DecoratingInvoker</tt>
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class EchoingTest extends ProxyTestCase {
