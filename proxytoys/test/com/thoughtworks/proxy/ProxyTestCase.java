@@ -7,7 +7,8 @@ import org.jmock.MockObjectTestCase;
  * @version $Revision: 1.3 $
  */
 public abstract class ProxyTestCase extends MockObjectTestCase {
-    protected ProxyFactory proxyFactory;
+    public static ProxyFactory FACTORY;
+    public ProxyFactory proxyFactory;
 
     public ProxyTestCase() {
         proxyFactory = createProxyFactory();

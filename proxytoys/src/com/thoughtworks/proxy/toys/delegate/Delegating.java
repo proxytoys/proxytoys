@@ -14,9 +14,12 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Delegating {
-	private static ProxyFactory factory = new StandardProxyFactory();
     
-    public static Object newProxyInstance(Class type, Object delegate) {
+    public static Object object(Class type, Object delegate) {
+        return object(type, delegate, new StandardProxyFactory());
+    }
+    
+    public static Object object(Class type, Object delegate, ProxyFactory factory) {
         return factory.createProxy(new Class[] {type}, new DelegatingInvoker(delegate));
     }
     

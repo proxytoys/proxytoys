@@ -13,20 +13,21 @@ import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
 
 public class DecoratingInvoker extends DelegatingInvoker {
-    private final InvocationDecorator interceptor;
+    private final InvocationDecorator decorator;
 
-	public DecoratingInvoker(Object delegate, InvocationDecorator interceptor) {
+	public DecoratingInvoker(Object delegate, InvocationDecorator decorator) {
         super(delegate);
-        this.interceptor = interceptor;
+        this.decorator = decorator;
 	}
     
     public Object invoke(Object proxy, Method method, Object[]args) throws Throwable {
         try {
-            interceptor.beforeMethodStarts(proxy, method, args);
+            decorator.beforeMethodStarts(proxy, method, args);
             Object result = super.invoke(proxy, method, args);
-            return interceptor.decorateResult(result);
+            return decorator.decorateResult(result);
         } catch (Throwable t) {
-            throw interceptor.decorateException(t);
+            Throwable decorated = decorator.decorateException(t);
+            throw decorated;
         }
     }
 }

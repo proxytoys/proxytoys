@@ -20,12 +20,12 @@ public abstract class DecoratingTestCase extends ProxyTestCase {
     private static final String decorateException = "decorateException";
 	private static final String decorateResult = "decorateResult";
 	private static final String beforeMethodStarts = "beforeMethodStarts";
-	private static final String doSomething = "doSomething";
-    private static final Method doSomethingMethod;
+	private static final String getSomething = "getSomething";
+    private static final Method getSomethingMethod;
     
     static {
         try {
-			doSomethingMethod = Foo.class.getMethod(doSomething, null);
+			getSomethingMethod = Foo.class.getMethod(getSomething, null);
 		} catch (Exception e) {
 			throw new NoSuchMethodError("Foo.doSomething()");
 		}
@@ -36,7 +36,7 @@ public abstract class DecoratingTestCase extends ProxyTestCase {
     private Foo foo;
     
     public interface Foo {
-        String doSomething();
+        String getSomething();
     }
     
     public void setUp() throws Exception {
@@ -44,57 +44,63 @@ public abstract class DecoratingTestCase extends ProxyTestCase {
         fooMock.stubs();
         decoratorMock = new Mock(InvocationDecorator.class);
         decoratorMock.stubs();
+        foo = (Foo) Decorating.object(Foo.class, fooMock.proxy(),
+                (InvocationDecorator)decoratorMock.proxy());
     }
     
-    // TODO fixme!
-    public void TODO_testShouldInterceptMethodInvocation() throws Exception {
+    public void testShouldInterceptMethodInvocation() throws Exception {
 		// expect
-        decoratorMock.expects(once()).
-            method(beforeMethodStarts).with(eq(foo), eq(doSomethingMethod), ANYTHING);
+        decoratorMock.expects(once())
+			.method(beforeMethodStarts).with(same(foo), eq(getSomethingMethod), NULL);
         
         fooMock.expects(once())
-            .method(doSomething).withNoArguments()
+            .method(getSomething).withNoArguments()
             .after(decoratorMock, beforeMethodStarts)
             .will(returnValue("hello"));
         
 		// execute
-        foo = (Foo) Decorating.object(Foo.class, fooMock.proxy(),
-                (InvocationDecorator)decoratorMock.proxy());
-        foo.doSomething();
+        foo.getSomething();
 	}
     
-    public void _testShouldInterceptMethodSuccess() throws Exception {
+    public void testShouldInterceptMethodSuccess() throws Exception {
 		// expect
         fooMock.expects(once())
-            .method(doSomething).withNoArguments();
+            .method(getSomething).withNoArguments()
+			.will(returnValue("hello"));
     
         decoratorMock.expects(once())
-            .method(decorateResult).with(eq(null)).after(fooMock, doSomething);
+            .method(decorateResult).with(eq("hello")).after(fooMock, getSomething)
+			.will(returnValue("world"));
     
         // execute
-        foo = (Foo) Decorating.object(Foo.class, fooMock.proxy(),
-                (InvocationDecorator)decoratorMock.proxy());
-        foo.doSomething();
+        String result = foo.getSomething();
+        
+        // verify
+        assertEquals("world", result);
 	}
     
+    public static class MyException extends RuntimeException {}
+    
     public void testShouldInterceptMethodFailure() throws Exception {
-		// setup
-        RuntimeException exception = new RuntimeException();
+        
+        MyException exception = new MyException();
+        MyException decoratedException = new MyException();
 		
 		// expect
 		fooMock.expects(once())
-            .method(doSomething).withNoArguments().will(throwException(exception));
+            .method(getSomething).withNoArguments()
+			.will(throwException(exception));
     
         decoratorMock.expects(once())
-            .method(decorateException).with(eq(exception));
+            .method(decorateException).with(same(exception))
+			.will(returnValue(decoratedException));
     
         // execute
-        foo = (Foo) Decorating.object(Foo.class, fooMock.proxy(),
-                (InvocationDecorator)decoratorMock.proxy());
         try {
-			foo.doSomething();
+			foo.getSomething();
             fail("Mock should have thrown exception");
-		} catch (RuntimeException expected) {
+		} catch (MyException oops) {
+			assertSame(decoratedException, oops);
 		}
 	}
 }

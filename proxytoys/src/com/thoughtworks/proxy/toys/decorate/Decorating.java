@@ -14,11 +14,13 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Decorating {
-    private static ProxyFactory factory = new StandardProxyFactory();
+	public static Object object(Class type, Object delegate, InvocationDecorator decorator) {
+        return object(type, delegate, decorator, new StandardProxyFactory());
+	}
     
-	public static Object object(Class type, Object delegate, InvocationDecorator interceptor) {
+	public static Object object(Class type, Object delegate, InvocationDecorator decorator, ProxyFactory factory) {
         return factory.createProxy(new Class[] {type},
-                new DecoratingInvoker(delegate, interceptor));
+                new DecoratingInvoker(delegate, decorator));
 	}
     
     /** It's a factory, stupid */
