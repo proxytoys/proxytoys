@@ -21,7 +21,7 @@ public class DelegatingProxyTest extends TestCase {
     }
 
     public static class SimpleImpl {
-        public String getSomething() {
+        public String getSomething() throws RemoteException {
             return "some thing";
         }
     }

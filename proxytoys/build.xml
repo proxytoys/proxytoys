@@ -6,7 +6,7 @@
 	<property name="build.dir" location="build"/>
 	<property name="classes.dir" location="${build.dir}/classes"/>
 	<property name="test.classes.dir" location="${build.dir}/test-classes"/>
-	<property name="dist.dir" location="dist"/>
+	<property name="dist.dir" location="${build.dir}/dist"/>
 	<property name="jar.file" location="${dist.dir}/${ant.project.name}.jar"/>
 	
 	<target name="-init">
