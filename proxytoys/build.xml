@@ -1,66 +1,67 @@
 <project name="proxytoys" default="test">
-	<property name="project" value="${ant.project.name}"/>
-	
-	<property name="src.dir" location="src"/>
-	<property name="test.dir" location="test"/>
-	<property name="lib.dir" location="lib"/>
-	
-	<property name="build.dir" location="build"/>
-	<property name="classes.dir" location="${build.dir}/classes"/>
-	<property name="test.classes.dir" location="${build.dir}/test-classes"/>
-	<property name="dist.dir" location="${build.dir}/dist"/>
-	<property name="jar.file" location="${dist.dir}/${project}.jar"/>
-	
-	<target name="-init">
-		<mkdir dir="${build.dir}"/>
-	</target>
-	
-	<target name="compile" depends="-init">
-		<mkdir dir="${classes.dir}"/>
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes">
-			<classpath>
-				<fileset dir="${lib.dir}" includes="*.jar"/>
-			</classpath>
-		</javac>
-	</target>
+  <property name="project" value="${ant.project.name}"/>
+  
+  <property name="src.dir" location="src"/>
+  <property name="test.dir" location="test"/>
+  <property name="lib.dir" location="lib"/>
+  
+  <property name="build.dir" location="build"/>
+  <property name="classes.dir" location="${build.dir}/classes"/>
+  <property name="test.classes.dir" location="${build.dir}/test-classes"/>
+  <property name="dist.dir" location="${build.dir}/dist"/>
+  <property name="jar.file" location="${dist.dir}/${project}.jar"/>
+  
+  <target name="-init">
+    <mkdir dir="${build.dir}"/>
+  </target>
+  
+  <target name="compile" depends="-init">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes">
+      <classpath>
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+      </classpath>
+    </javac>
+  </target>
 
-	<target name="dist" depends="compile">
-		<mkdir dir="${dist.dir}"/>
-		<copy todir="${classes.dir}">
-			<fileset dir="${src.dir}" excludes="**/*.java"/>
-		</copy>
-		<jar basedir="${classes.dir}" destfile="${jar.file}"/>
-	</target>
-	
-	<target name="test.compile" depends="dist">
-		<mkdir dir="${test.classes.dir}"/>
-		<javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
-			<classpath>
-				<fileset dir="${lib.dir}" includes="*.jar"/>
-				<pathelement location="${jar.file}"/>
-			</classpath>
-		</javac>
-	</target>
-	
-	<target name="test" depends="test.compile">
-		<junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
-			<formatter type="xml"/>
-			<classpath>
-				<path location="${test.classes.dir}"/>
-				<fileset dir="${lib.dir}" includes="*.jar"/>
-				<path location="${jar.file}"/>
-			</classpath>
-			<test name="com.thoughtworks.AllTests" todir="${test.classes.dir}"/>
-		</junit>
-	</target>
-	
-	<target name="clean">
-		<delete dir="${build.dir}"/>
-	</target>
-	
-	<target name="clobber" depends="clean">
-		<delete dir="${dist.dir}"/>
-	</target>
-	
-	<target name="rebuild" depends="clobber, dist"/>
+  <target name="dist" depends="compile">
+    <mkdir dir="${dist.dir}"/>
+    <copy todir="${classes.dir}">
+      <fileset dir="${src.dir}" excludes="**/*.java"/>
+    </copy>
+    <jar basedir="${classes.dir}" destfile="${jar.file}"/>
+  </target>
+  
+  <target name="test.compile" depends="dist">
+    <mkdir dir="${test.classes.dir}"/>
+    <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
+      <classpath>
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+        <pathelement location="${jar.file}"/>
+      </classpath>
+    </javac>
+  </target>
+  
+  <target name="test" depends="test.compile">
+    <junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
+      <formatter type="xml"/>
+      <classpath>
+        <path location="${test.classes.dir}"/>
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+        <path location="${jar.file}"/>
+      </classpath>
+      <test name="com.thoughtworks.nothing.CGLIBNullTest" todir="${test.classes.dir}"/>
+      <test name="com.thoughtworks.nothing.StandardNullTest" todir="${test.classes.dir}"/>
+    </junit>
+  </target>
+  
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+  </target>
+  
+  <target name="clobber" depends="clean">
+    <delete dir="${dist.dir}"/>
+  </target>
+  
+  <target name="rebuild" depends="clobber, dist"/>
 </project>

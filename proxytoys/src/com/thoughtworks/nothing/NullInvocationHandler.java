@@ -1,34 +1,33 @@
 /*
  * Created on 24-Mar-2004
- * 
+ *
  * (c) 2003-2004 ThoughtWorks Ltd
  *
  * See license.txt for license details
  */
 package com.thoughtworks.nothing;
 
+import com.thoughtworks.proxytoys.Invoker;
+
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 /**
  * Invocation handler for Null Objects
- * 
+ *
  * @see Null
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
- * @author <a href="mailto:aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
+ * @author <a href="mailto:nospamx.aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
-
-class NullInvocationHandler implements InvocationHandler, Serializable {
+class NullInvocationHandler implements Invoker, Serializable {
     private static final Method equals;
     private static final Method hashCode;
     private static final Method toString;
-    
+
     static {
         try {
             equals = Object.class.getMethod("equals", new Class[]{Object.class});
@@ -40,14 +39,14 @@ class NullInvocationHandler implements InvocationHandler, Serializable {
     }
 
     private Class type;
-    
+
     public NullInvocationHandler(Class type) {
         this.type = type;
     }
-    
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result;
-        
+
 		// Object methods
 		if (toString.equals(method)) {
             result = "Null Object for " + type.getName();
@@ -61,8 +60,8 @@ class NullInvocationHandler implements InvocationHandler, Serializable {
         else if (hashCode.equals(method)) {
 			result = new Integer(type.hashCode());
         }
-        
-        // Null interface methods
+
+        // Just another null object
         else {
             result = Null.object(method.getReturnType());
         }
@@ -71,8 +70,8 @@ class NullInvocationHandler implements InvocationHandler, Serializable {
 
 	private Class getType(Object object) {
         final Class result;
-        if (Proxy.isProxyClass(object.getClass())) {
-            NullInvocationHandler handler = (NullInvocationHandler) Proxy.getInvocationHandler(object);
+        if (Null.proxyFactory.isProxyClass(object.getClass())) {
+            NullInvocationHandler handler = (NullInvocationHandler) Null.proxyFactory.getInvoker(object);
             result = handler.type;
         }
         else {
@@ -80,9 +79,9 @@ class NullInvocationHandler implements InvocationHandler, Serializable {
         }
         return result;
 	}
-    
+
     // Serialization
-    
+
     private void writeObject(ObjectOutputStream out) throws IOException {
         if (!nullObjectIsSerializable()) {
 		    throw new NotSerializableException(type.getName());
