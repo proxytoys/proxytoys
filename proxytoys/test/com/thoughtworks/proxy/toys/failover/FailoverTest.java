@@ -7,7 +7,7 @@ import com.thoughtworks.proxy.ProxyTestCase;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public abstract class FailoverTestCase extends ProxyTestCase {
+public class FailoverTest extends ProxyTestCase {
 
     public static interface FailsOnNthCall {
         void doIt();
@@ -38,7 +38,7 @@ public abstract class FailoverTestCase extends ProxyTestCase {
     public void testShouldFailoverToNextOnSpecialException() {
         FailsOnNthCall first = new FailsOnNthCallImpl(1);
         FailsOnNthCall second = new FailsOnNthCallImpl(1);
-        FailsOnNthCall failover = (FailsOnNthCall) Failover.object(FailsOnNthCall.class, proxyFactory, new Object[]{first, second}, RuntimeException.class);
+        FailsOnNthCall failover = (FailsOnNthCall) Failover.object(FailsOnNthCall.class, proxyFactory(), new Object[]{first, second}, RuntimeException.class);
         assertEquals(0, first.dunIt());
         assertEquals(0, second.dunIt());
         failover.doIt();

@@ -8,11 +8,23 @@ import org.jmock.MockObjectTestCase;
  */
 public abstract class ProxyTestCase extends MockObjectTestCase {
     public static ProxyFactory FACTORY;
-    public ProxyFactory proxyFactory;
+    private ProxyFactory proxyFactory;
 
-    public ProxyTestCase() {
-        proxyFactory = createProxyFactory();
-    }
+	protected ProxyTestCase() {
+		proxyFactory = createProxyFactory();
+	}
 
-    protected abstract ProxyFactory createProxyFactory();
+	protected ProxyFactory createProxyFactory() {
+		System.out.println(className(this) + ": " + className(FACTORY));
+		return FACTORY;
+	}
+
+    private String className(Object o) {
+        String name = o.getClass().getName();
+        return name.substring(name.lastIndexOf('.') + 1);
+	}
+
+	public ProxyFactory proxyFactory() {
+		return proxyFactory;
+	}
 }

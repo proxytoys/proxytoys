@@ -1,14 +1,14 @@
 package com.thoughtworks.proxy.toys.nullobject;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.CGLIBProxyFactory;
-import com.thoughtworks.proxy.toys.nullobject.Null;
+import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class CGLIBNullTest extends NullTestCase {
+public class CgNullTest extends ProxyTestCase {
 
     public static class ClassWithPrimitiveParametersInConstructor {
         private boolean bo;
@@ -33,12 +33,12 @@ public class CGLIBNullTest extends NullTestCase {
     public void testShouldBeAbleToInstantiateClassWithPrimitiveParametersInConstructor() {
         // The loop is to assert that the method can be called several times, and also measure performance.
         for (int i = 0; i < 10; i++) {
-            ClassWithPrimitiveParametersInConstructor o = (ClassWithPrimitiveParametersInConstructor) Null.object(ClassWithPrimitiveParametersInConstructor.class, proxyFactory);
+            ClassWithPrimitiveParametersInConstructor o = (ClassWithPrimitiveParametersInConstructor) Null.object(ClassWithPrimitiveParametersInConstructor.class, proxyFactory());
             assertNotNull(o);
         }
     }
 
     protected ProxyFactory createProxyFactory() {
-        return new CGLIBProxyFactory();
+        return new CglibProxyFactory();
     }
 }

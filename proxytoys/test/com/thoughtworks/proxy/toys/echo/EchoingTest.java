@@ -11,18 +11,16 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import junit.framework.TestCase;
-
 import org.jmock.Mock;
 import org.jmock.core.mixin.Invoked;
 import org.jmock.core.mixin.Return;
 
-import com.thoughtworks.proxy.toys.echo.Echoing;
+import com.thoughtworks.proxy.ProxyTestCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class EchoingTestCase extends TestCase {
+public class EchoingTest extends ProxyTestCase {
     
     private static final String getInner = "getInner";
 	public interface Simple {
@@ -40,7 +38,8 @@ public class EchoingTestCase extends TestCase {
     public void testShouldEchoMethodNameAndArgs() throws Exception {
         // setup
         Writer out = new StringWriter();
-    	Simple foo = (Simple) Echoing.object(Simple.class, new PrintWriter(out));
+    	Simple foo = (Simple) Echoing.object(
+                Simple.class, null, new PrintWriter(out), proxyFactory());
         
         // execute
         foo.doSomething();
@@ -52,7 +51,7 @@ public class EchoingTestCase extends TestCase {
     public void testShouldDelegateCalls() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple simple = (Simple) Echoing.object(Simple.class, simpleImpl, new PrintWriter(out));
+        Simple simple = (Simple) Echoing.object(Simple.class, simpleImpl, new PrintWriter(out), proxyFactory());
         
         // expect
         simpleMock.expects(Invoked.once()).method("doSomething");
@@ -81,7 +80,8 @@ public class EchoingTestCase extends TestCase {
     	Outer outer = (Outer)Echoing.object(
     	        Outer.class,
     	        outerMock.proxy(),
-    	        new PrintWriter(out));
+    	        new PrintWriter(out),
+                proxyFactory());
         
         // expect
         outerMock.expects(Invoked.once())
@@ -105,7 +105,7 @@ public class EchoingTestCase extends TestCase {
         // setup
         StringWriter out = new StringWriter();
         Outer outer = (Outer)Echoing.object(
-                Outer.class, null, new PrintWriter(out));
+                Outer.class, null, new PrintWriter(out), proxyFactory());
         
         // execute
         outer.getInner().getName();

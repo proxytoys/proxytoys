@@ -16,7 +16,7 @@ import com.thoughtworks.proxy.ProxyTestCase;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public abstract class DecoratingTestCase extends ProxyTestCase {
+public class DecoratingTest extends ProxyTestCase {
     private static final String decorateException = "decorateException";
 	private static final String decorateResult = "decorateResult";
 	private static final String beforeMethodStarts = "beforeMethodStarts";

@@ -14,7 +14,7 @@ import com.thoughtworks.proxy.ProxyTestCase;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public abstract class DelegatingTestCase extends ProxyTestCase {
+public class DelegatingTest extends ProxyTestCase {
     
     public interface Foo {
         String getSomething() throws RemoteException;
@@ -27,7 +27,7 @@ public abstract class DelegatingTestCase extends ProxyTestCase {
     }
 
     private Foo createProxy(Object impl) {
-        return (Foo)Delegating.object(Foo.class, impl);
+        return (Foo)Delegating.object(Foo.class, impl, proxyFactory());
     }
 
     public void testShouldDelegateMethodsCalledOnInterface() throws Exception {
