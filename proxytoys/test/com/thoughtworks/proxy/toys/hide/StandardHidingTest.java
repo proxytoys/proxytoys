@@ -7,7 +7,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class StandardHidingTest extends HidingTest {
+public class StandardHidingTest extends HidingTestCase {
     protected ProxyFactory createProxyFactory() {
         return new StandardProxyFactory();
     }

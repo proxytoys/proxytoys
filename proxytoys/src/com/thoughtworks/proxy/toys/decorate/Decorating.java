@@ -13,10 +13,10 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class DecoratingProxy {
+public class Decorating {
     private static ProxyFactory factory = new StandardProxyFactory();
     
-	public static Object newProxyInstance(Class type, Object delegate, InvocationDecorator interceptor) {
+	public static Object object(Class type, Object delegate, InvocationDecorator interceptor) {
         return factory.createProxy(new Class[] {type},
                 new DecoratingInvoker(delegate, interceptor));
 	}

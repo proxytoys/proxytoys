@@ -1,13 +1,13 @@
 package com.thoughtworks.proxy.toys.failover;
 
-import com.thoughtworks.proxy.ProxyTestCase;
-import com.thoughtworks.proxy.toys.failover.Failover;
+import com.thoughtworks.proxy.factory.ProxyTestCase;
+
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public abstract class FailoverTest extends ProxyTestCase {
+public abstract class FailoverTestCase extends ProxyTestCase {
 
     public static interface FailsOnNthCall {
         void doIt();

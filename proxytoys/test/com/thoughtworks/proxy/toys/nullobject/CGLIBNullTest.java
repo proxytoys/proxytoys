@@ -8,7 +8,7 @@ import com.thoughtworks.proxy.toys.nullobject.Null;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class CGLIBNullTest extends NullTest {
+public class CGLIBNullTest extends NullTestCase {
 
     public static class ClassWithPrimitiveParametersInConstructor {
         private boolean bo;

@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
-import com.thoughtworks.proxy.toys.decorate.DecoratingProxy;
+import com.thoughtworks.proxy.toys.decorate.Decorating;
 import com.thoughtworks.proxy.toys.decorate.InvocationDecorator;
 
 /**
@@ -60,7 +60,7 @@ public class DecoratingProxyTest extends MockObjectTestCase {
             .will(returnValue("hello"));
         
 		// execute
-        foo = (Foo) DecoratingProxy.newProxyInstance(Foo.class, fooMock.proxy(),
+        foo = (Foo) Decorating.object(Foo.class, fooMock.proxy(),
                 (InvocationDecorator)decoratorMock.proxy());
         foo.doSomething();
 	}
@@ -74,7 +74,7 @@ public class DecoratingProxyTest extends MockObjectTestCase {
             .method(decorateResult).with(eq(null)).after(fooMock, doSomething);
     
         // execute
-        foo = (Foo) DecoratingProxy.newProxyInstance(Foo.class, fooMock.proxy(),
+        foo = (Foo) Decorating.object(Foo.class, fooMock.proxy(),
                 (InvocationDecorator)decoratorMock.proxy());
         foo.doSomething();
 	}
@@ -91,7 +91,7 @@ public class DecoratingProxyTest extends MockObjectTestCase {
             .method(decorateException).with(eq(exception));
     
         // execute
-        foo = (Foo) DecoratingProxy.newProxyInstance(Foo.class, fooMock.proxy(),
+        foo = (Foo) Decorating.object(Foo.class, fooMock.proxy(),
                 (InvocationDecorator)decoratorMock.proxy());
         try {
 			foo.doSomething();

@@ -24,7 +24,7 @@
     </javac>
   </target>
 
-  <target name="dist" depends="compile">
+  <target name="jar" depends="compile">
     <mkdir dir="${dist.dir}"/>
     <copy todir="${classes.dir}">
       <fileset dir="${src.dir}" excludes="**/*.java"/>
@@ -32,7 +32,7 @@
     <jar basedir="${classes.dir}" destfile="${jar.file}"/>
   </target>
   
-  <target name="test.compile" depends="dist">
+  <target name="test.compile" depends="jar">
     <mkdir dir="${test.classes.dir}"/>
     <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
       <classpath>
@@ -42,15 +42,19 @@
     </javac>
   </target>
   
+  <!-- target name="test" depends="test.compile" -->
   <target name="test" depends="test.compile">
     <junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
       <formatter type="xml"/>
+      <formatter type="plain"/>
       <classpath>
         <path location="${test.classes.dir}"/>
         <fileset dir="${lib.dir}" includes="*.jar"/>
         <path location="${jar.file}"/>
       </classpath>
-      <test name="com.thoughtworks.AllTests" todir="${test.classes.dir}"/>
+      <batchtest todir="${test.classes.dir}">
+      	<fileset dir="${test.dir}" includes="**/*Test.java"/>
+      </batchtest>
     </junit>
   </target>
   
@@ -62,5 +66,5 @@
     <delete dir="${dist.dir}"/>
   </target>
   
-  <target name="rebuild" depends="clobber, dist"/>
+  <target name="rebuild" depends="clobber, jar"/>
 </project>

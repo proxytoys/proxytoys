@@ -21,18 +21,17 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
-import com.thoughtworks.proxy.ProxyTestCase;
-import com.thoughtworks.proxy.toys.nullobject.Null;
+import com.thoughtworks.proxy.factory.ProxyTestCase;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
-public abstract class NullTest extends ProxyTestCase {
-    protected Null nil;
+public abstract class NullTestCase extends ProxyTestCase {
+    protected NullInvoker nil;
 
-    protected NullTest() {
-        nil = new Null(null, proxyFactory);
+    protected NullTestCase() {
+        nil = new NullInvoker(null, proxyFactory);
     }
 
     public interface SomePrimitives {

@@ -49,7 +49,7 @@ public class HidingInvoker implements Invoker {
         } else {
             result = invokeMethod(proxy,  method, args);
             if(result != null && proxyFactory.canProxy(result.getClass())) {
-                result = object(result.getClass(), proxyFactory, result);
+                result = Hiding.object(result.getClass(), proxyFactory, result);
             }
         }
         executing = false;
@@ -60,7 +60,7 @@ public class HidingInvoker implements Invoker {
         return method.invoke(delegate, args);
     }
 
-    protected Object hotswap(Object newDelegate) {
+    public Object hotswap(Object newDelegate) {
         Object result = delegate;
         delegate = newDelegate;
         return result;
@@ -68,12 +68,5 @@ public class HidingInvoker implements Invoker {
 
     public Object proxy() {
         return proxyFactory.createProxy(new Class[]{type, Swappable.class}, this);
-    }
-
-    /**
-     * @return a proxy that hides the implementation and implements {@link Swappable}.
-     */
-    public static Object object(Class type, ProxyFactory proxyFactory, Object delegate) {
-        return new HidingInvoker(type, proxyFactory, delegate).proxy();
     }
 }

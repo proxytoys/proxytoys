@@ -13,7 +13,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class DelegatingProxy {
+public class Delegating {
 	private static ProxyFactory factory = new StandardProxyFactory();
     
     public static Object newProxyInstance(Class type, Object delegate) {

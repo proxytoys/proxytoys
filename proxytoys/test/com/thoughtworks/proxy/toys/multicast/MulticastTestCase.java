@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.thoughtworks.proxy.ProxyTestCase;
-import com.thoughtworks.proxy.toys.multicast.MulticastingInvoker;
+import com.thoughtworks.proxy.factory.ProxyTestCase;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public abstract class MulticastTest extends ProxyTestCase {
+public abstract class MulticastTestCase extends ProxyTestCase {
 
     public static interface Dog {
         Tail getTail();
@@ -64,7 +63,7 @@ public abstract class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) MulticastingInvoker.object(Dog.class, proxyFactory, new Dog[]{tim, tom});
+        Dog timAndTom = (Dog) Multicasting.object(Dog.class, proxyFactory, new Dog[]{tim, tom});
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -81,7 +80,7 @@ public abstract class MulticastTest extends ProxyTestCase {
         OtherTailImpl tomsTail = new OtherTailImpl();
         tom.add(tomsTail);
 
-        List timAndTom = (List) MulticastingInvoker.object(List.class, proxyFactory, new List[]{tim, tom});
+        List timAndTom = (List) Multicasting.object(List.class, proxyFactory, new List[]{tim, tom});
         Tail timAndTomsTails = (Tail) timAndTom.get(0);
         timAndTomsTails.wag();
 
@@ -96,7 +95,7 @@ public abstract class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) MulticastingInvoker.object(proxyFactory, new Dog[]{tim, tom});
+        Dog timAndTom = (Dog) Multicasting.object(proxyFactory, new Dog[]{tim, tom});
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -106,7 +105,7 @@ public abstract class MulticastTest extends ProxyTestCase {
 
     public void testShouldFailForIncompatibleTypes() {
         try {
-            MulticastingInvoker.object(List.class, proxyFactory, new Object[]{new HashMap()});
+            Multicasting.object(List.class, proxyFactory, new Object[]{new HashMap()});
             fail();
         } catch (IllegalArgumentException e) {
             // expected
@@ -115,7 +114,7 @@ public abstract class MulticastTest extends ProxyTestCase {
 
     public void testShouldFailForNull() {
         try {
-            MulticastingInvoker.object(List.class, proxyFactory, new Object[]{null});
+            Multicasting.object(List.class, proxyFactory, new Object[]{null});
             fail();
         } catch (IllegalArgumentException e) {
             // expected
@@ -126,7 +125,7 @@ public abstract class MulticastTest extends ProxyTestCase {
         TailImpl t1 = new TailImpl();
         TailImpl t2 = new TailImpl();
         TailImpl t3 = new TailImpl();
-        Tail tail = (Tail) MulticastingInvoker.object(new Class[]{Tail.class}, proxyFactory, new Object[]{t1, t2, t3});
+        Tail tail = (Tail) Multicasting.object(new Class[]{Tail.class}, proxyFactory, new Object[]{t1, t2, t3});
 
         assertFalse(t1.wasWagged());
         assertFalse(t2.wasWagged());

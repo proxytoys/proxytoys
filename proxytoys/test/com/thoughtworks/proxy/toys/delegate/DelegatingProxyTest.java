@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 
 import junit.framework.TestCase;
 
-import com.thoughtworks.proxy.toys.delegate.DelegatingProxy;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -29,7 +29,7 @@ public class DelegatingProxyTest extends TestCase {
     }
 
     private Foo createProxy(Object impl) {
-        return (Foo)DelegatingProxy.newProxyInstance(Foo.class, impl);
+        return (Foo)Delegating.newProxyInstance(Foo.class, impl);
     }
 
     public void testShouldDelegateMethodsCalledOnInterface() throws Exception {

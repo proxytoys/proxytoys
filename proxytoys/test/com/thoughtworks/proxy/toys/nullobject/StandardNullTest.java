@@ -7,7 +7,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class StandardNullTest extends NullTest {
+public class StandardNullTest extends NullTestCase {
 
     protected ProxyFactory createProxyFactory() {
         return new StandardProxyFactory();
