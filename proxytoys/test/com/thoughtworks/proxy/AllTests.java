@@ -52,7 +52,7 @@ public class AllTests {
 
     /**
      * Create a suite based on a particular {@link ProxyFactory} by setting
-     * the static {@link ProxyTestCase#FACTORY} property.
+     * the static {@link ProxyTestCase#PROXY_FACTORY} property.
      * 
      * <p>The <tt>addTestSuite(Class)</tt> method instantiates the test class
      * which picks up the current value of the static factory. It relies on
@@ -61,7 +61,7 @@ public class AllTests {
      */
 	private static Test createProxyFactorySuite(ProxyFactory factory, String type) {
 		TestSuite suite = new TestSuite("Tests using " + type + "ProxyFactory");
-		ProxyTestCase.FACTORY = factory;
+		ProxyTestCase.PROXY_FACTORY = factory;
 		suite.addTestSuite(DecoratingTest.class);
 		suite.addTestSuite(DelegatingTest.class);
 		suite.addTestSuite(EchoingTest.class);

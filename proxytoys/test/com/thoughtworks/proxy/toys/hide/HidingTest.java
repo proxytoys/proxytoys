@@ -15,7 +15,7 @@ public class HidingTest extends ProxyTestCase {
         List firstList = new ArrayList();
         firstList.add("first");
 
-        List proxyList = (List) Hiding.object(List.class, FACTORY, firstList);
+        List proxyList = (List) Hiding.object(List.class, getFactory(), firstList);
         assertTrue(proxyList.contains("first"));
 
         List secondList = new ArrayList();
@@ -30,8 +30,8 @@ public class HidingTest extends ProxyTestCase {
 
     public void testShouldDiscoverCyclicReferences() {
         List firstList = new ArrayList();
-        List hidingOne = (List) Hiding.object(List.class, FACTORY, firstList);
-        List hidingTwo = (List) Hiding.object(List.class, FACTORY, hidingOne);
+        List hidingOne = (List) Hiding.object(List.class, getFactory(), firstList);
+        List hidingTwo = (List) Hiding.object(List.class, getFactory(), hidingOne);
         ((Swappable)hidingOne).hotswap(hidingTwo);
 
         try {

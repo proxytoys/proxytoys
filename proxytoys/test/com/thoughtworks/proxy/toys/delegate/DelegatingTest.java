@@ -27,7 +27,7 @@ public class DelegatingTest extends ProxyTestCase {
     }
 
     private Foo createProxy(Object impl) {
-        return (Foo)Delegating.object(Foo.class, impl, FACTORY);
+        return (Foo)Delegating.object(Foo.class, impl, getFactory());
     }
 
     public void testShouldDelegateMethodsCalledOnInterface() throws Exception {

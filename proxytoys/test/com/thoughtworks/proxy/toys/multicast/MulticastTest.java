@@ -63,7 +63,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) Multicasting.object(Dog.class, FACTORY, new Dog[]{tim, tom});
+        Dog timAndTom = (Dog) Multicasting.object(Dog.class, getFactory(), new Dog[]{tim, tom});
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -80,7 +80,7 @@ public class MulticastTest extends ProxyTestCase {
         OtherTailImpl tomsTail = new OtherTailImpl();
         tom.add(tomsTail);
 
-        List timAndTom = (List) Multicasting.object(List.class, FACTORY, new List[]{tim, tom});
+        List timAndTom = (List) Multicasting.object(List.class, getFactory(), new List[]{tim, tom});
         Tail timAndTomsTails = (Tail) timAndTom.get(0);
         timAndTomsTails.wag();
 
@@ -95,7 +95,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) Multicasting.object(FACTORY, new Dog[]{tim, tom});
+        Dog timAndTom = (Dog) Multicasting.object(getFactory(), new Dog[]{tim, tom});
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -105,7 +105,7 @@ public class MulticastTest extends ProxyTestCase {
 
     public void testShouldFailForIncompatibleTypes() {
         try {
-            Multicasting.object(List.class, FACTORY, new Object[]{new HashMap()});
+            Multicasting.object(List.class, getFactory(), new Object[]{new HashMap()});
             fail();
         } catch (IllegalArgumentException e) {
             // expected
@@ -114,7 +114,7 @@ public class MulticastTest extends ProxyTestCase {
 
     public void testShouldFailForNull() {
         try {
-            Multicasting.object(List.class, FACTORY, new Object[]{null});
+            Multicasting.object(List.class, getFactory(), new Object[]{null});
             fail();
         } catch (IllegalArgumentException e) {
             // expected
@@ -125,7 +125,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl t1 = new TailImpl();
         TailImpl t2 = new TailImpl();
         TailImpl t3 = new TailImpl();
-        Tail tail = (Tail) Multicasting.object(new Class[]{Tail.class}, FACTORY, new Object[]{t1, t2, t3});
+        Tail tail = (Tail) Multicasting.object(new Class[]{Tail.class}, getFactory(), new Object[]{t1, t2, t3});
 
         assertFalse(t1.wasWagged());
         assertFalse(t2.wasWagged());
