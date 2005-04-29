@@ -129,8 +129,8 @@ public class Pool {
     public Object get() {
         final Object result;
         if (getAvailable() > 0) {
-            final ObjectReference delegate = (ObjectReference) availableInstances.remove(0);
-            result = new AutoPoolingInvoker(types, factory, delegate, true).proxy();
+            final ObjectReference delegate = (ObjectReference)availableInstances.remove(0);
+            result = new PoolingInvoker(types, factory, delegate, true).proxy();
             Object weakReference = new WeakReference(result);
             busyInstances.put(delegate.get(), weakReference);
         } else {
@@ -146,7 +146,7 @@ public class Pool {
      * @throws ClassCastException Thrown if object was not {@link Poolable}.
      */
     public void release(final Object object) {
-        ((Poolable) object).returnInstanceToPool();
+        ((Poolable)object).returnInstanceToPool();
     }
 
     /**
@@ -160,13 +160,13 @@ public class Pool {
             List freedInstances = new LinkedList();
             for (final Iterator iter = busyInstances.keySet().iterator(); iter.hasNext();) {
                 Object target = iter.next();
-                WeakReference ref = (WeakReference) busyInstances.get(target);
+                WeakReference ref = (WeakReference)busyInstances.get(target);
                 if (ref.get() == null) {
                     freedInstances.add(new SimpleReference(target));
                 }
             }
             for (Iterator iter = freedInstances.iterator(); iter.hasNext();) {
-                busyInstances.remove(((ObjectReference) iter.next()).get());
+                busyInstances.remove(((ObjectReference)iter.next()).get());
             }
             availableInstances.addAll(freedInstances);
         }
@@ -188,11 +188,10 @@ public class Pool {
     /**
      * The proxy invoker class.
      */
-    protected class AutoPoolingInvoker extends DelegatingInvoker {
+    protected class PoolingInvoker extends DelegatingInvoker {
         private final Class[] types;
 
-        protected AutoPoolingInvoker(
-                Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
+        protected PoolingInvoker(Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
             super(proxyFactory, delegateReference, staticTyping);
             this.types = types;
         }
