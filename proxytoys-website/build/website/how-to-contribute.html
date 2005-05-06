@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>ProxyToys - How to Contribute</title>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        
+    
+  
+    </head>
+    <body>
+
+        <div id="banner">
+            <a href="index.html"><img id="logo" src="logo.gif" alt="ProxyToys Logo"/></a>
+            <div id="title">How to Contribute</div>
+        </div>
+
+        <div id="center" class="Content2Column">  <!-- Content3Column for index -->
+            <div id="content">
+                <h1 class="FirstChild">How to Contribute</h1>
+
+                
+
+    <p>ProxyToys is nothing without contributions from the user community.  There are many ways to
+    contribute.  We are constantly working on the software and documentation, so it's a good
+    idea to contact the team on the <a href="mailing-lists.html">user or development</a> mailing lists
+    to avoid duplicating effort.</p>
+
+    <h2 id="documentation">Documentation</h2>
+    <p>One of the traditional weak points of open source software is the documentation.  Any
+    help with this aspect of the project will be welcomed with open arms, or at the very least
+    with open email clients!</p>
+
+    <h2 id="examples">Examples</h2>
+    <p>We are working on examples of using ProxyToys, but we can always do with more.</p>
+
+    <h2 id="feature-requests">Feature Requests</h2>
+    <p>If you want to request a new feature you can either make a request through the 
+    <a href="http://jira.codehaus.org/browse/PTOYS">issue tracker</a> or by sending a message to the
+    <a href="mailing-lists.html">development mailing list</a>.  The benefit of any new features
+    will be discussed on the mailing list, so its a good idea to sign up so that you can stick your oar in.</p>
+
+    <h2 id="bug-reports">Bug Reports</h2>
+    <p>You can report bugs through the <a href="http://jira.codehaus.org/browse/PTOYS">issue tracker</a> 
+    interface or the <a href="mailing-lists.html">development mailing list</a>.  Additional brownie
+    points are awarded for bug reports that include a failing unit test.</p>
+
+    <h2 id="patches">Bug Fixes</h2>
+    <p>If you want <em>lots</em> of brownie points, send a fix along with your bug report
+    and failing unit test.  Bug fixes are best sent as patches that we can apply to the
+    codebase.  Remember to tell us which version the patch should be applied against, or
+    we'll get very confused.  To be accepted into the codebase, patches must be released
+    under the <a href="license.html">same license as ProxyToys itself</a>.</p>
+
+    <h2 id="new-code">New Code</h2>
+    <p>If you have a new feature request, then we'll listen extra hard if you show us how it
+    works.  A new feature might be best implemented as a patch to an existing class
+    or as a new class.  The ProxyToys API contains many extension points that allow new functionality
+    to be integrated into the framework.  We are rather anal about testing, so if you send us
+    some code without any tests we will probably ask you to write the tests tests as well
+    before we add it to the codebase.</p>
+
+    <h2 id="your-own-extension">Write Your Own ProxyToys Extension</h2>
+    <p>If you have a project that builds upon ProxyToys we will be happy to announce your
+    project on the ProxyToys site.</p>
+
+    <h2>Become a Committer</h2>
+    <p>We follow the <a href="http://www.codehaus.org/Manifesto">Codehaus manifesto</a>
+    when it comes to expanding the core team.</p>
+
+  
+
+                <br><br>
+                
+            </div>
+        </div>
+
+        <div class="SidePanel" id="left">
+                <div class="MenuGroup">
+                    <h1>Software</h1>
+                    <ul>
+                                <li><a href="index.html">About XStream</a></li>
+                                <li><a href="news.html">News</a></li>
+                                <li><a href="changes.html">Change History</a></li>
+                                <li><a href="versioning.html">About Versioning</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Evaluating ProxyToys</h1>
+                    <ul>
+                                <li><a href="tutorial.html">Two Minute Tutorial</a></li>
+                                <li><a href="license.html">License</a></li>
+                                <li><a href="download.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Using ProxyToys</h1>
+                    <ul>
+                                <li><a href="architecture.html">Architecture Overview</a></li>
+                                <li><a href="converters.html">Converters</a></li>
+                                <li><a href="objectstream.html">Object Streams</a></li>
+                                <li><a href="faq.html">Frequently Asked Questions</a></li>
+                                <li><a href="mailing-lists.html">Mailing Lists</a></li>
+                                <li><a href="javadoc/index.html">JavaDoc</a></li>
+                                <li><a href="http://jira.codehaus.org/browse/PTOYS">Reporting Issues</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Developing ProxyToys</h1>
+                    <ul>
+                                <li class="currentLink">How to Contribute</li>
+                                <li><a href="team.html">Development Team</a></li>
+                                <li><a href="repository.html">Source Repository</a></li>
+                    </ul>
+                </div>
+        </div>
+
+<!--
+    <template:when var="isindex">
+      <div class="SidePanel" id="right">
+        <div class="NewsGroup">
+          <h1>Latest Version: 1.0.2</h1>
+          <p class="NewsMore"><a href="download.html">Download page...</a></p>
+        </div>
+
+        <div class="NewsGroup">
+          <h1><a href="news.html">News...</a></h1>
+          <template:include src="../content/news.html"
+                        elements="/html/body/*[@class='NewsItem' and position()<=5]"/>
+        </div>
+      </div>
+    </template:when>
+-->
+  </body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>ProxyToys - Change History</title>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        
+    
+  
+    </head>
+    <body>
+
+        <div id="banner">
+            <a href="index.html"><img id="logo" src="logo.gif" alt="ProxyToys Logo"/></a>
+            <div id="title">Change History</div>
+        </div>
+
+        <div id="center" class="Content2Column">  <!-- Content3Column for index -->
+            <div id="content">
+                <h1 class="FirstChild">Change History</h1>
+
+                
+
+    <p>Changes are split into three categories:</p>
+
+    <ul>
+      <li><b>Major changes</b>: The major new features that all users should know about.</li>
+      <li><b>Minor changes</b>: Any smaller changes, including bugfixes.</li>
+      <li><b>API changes</b>: Any changes to the API that could impact existing users.</li>
+    </ul>
+
+    <h1>Latest Snapshot</h1>
+
+    <p>Not officially released yet.</p>
+
+    <h2>Major changes</h2>
+
+    <ul>
+      <li>Added ElementMapper interface and default implementations to allow fine
+      grained control over element name to class mapper operations.</li>
+      <li>Added an XPP based reader and writer that uses a pull-parser to create a lightweight DOM tree.</li>
+    </ul>
+
+    <h2>Minor changes</h2>
+
+    <ul>
+      <li>Added XStream.fromXML(XMLReader xmlReader,Object root) method to
+        allow the population of an object graph starting with a live object root.</li>
+      <li>Added XMLReader.peek() method to allow access to the underlying hierarchical
+        object being unmarshalled.</li>
+    </ul>
+
+    <h2>API changes</h2>
+
+    <ul>
+      <li>Aligned the the methods in XStream to use the specified ObjectFactory in the constructor
+        instead of creating a SunReflectionObjectFactory.</li>
+    </ul>
+
+    <h1>Version 0.1</h1>
+
+    <p>Initial release.</p>
+
+  
+
+                <br><br>
+                
+            </div>
+        </div>
+
+        <div class="SidePanel" id="left">
+                <div class="MenuGroup">
+                    <h1>Software</h1>
+                    <ul>
+                                <li><a href="index.html">About XStream</a></li>
+                                <li><a href="news.html">News</a></li>
+                                <li class="currentLink">Change History</li>
+                                <li><a href="versioning.html">About Versioning</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Evaluating ProxyToys</h1>
+                    <ul>
+                                <li><a href="tutorial.html">Two Minute Tutorial</a></li>
+                                <li><a href="license.html">License</a></li>
+                                <li><a href="download.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Using ProxyToys</h1>
+                    <ul>
+                                <li><a href="architecture.html">Architecture Overview</a></li>
+                                <li><a href="converters.html">Converters</a></li>
+                                <li><a href="objectstream.html">Object Streams</a></li>
+                                <li><a href="faq.html">Frequently Asked Questions</a></li>
+                                <li><a href="mailing-lists.html">Mailing Lists</a></li>
+                                <li><a href="javadoc/index.html">JavaDoc</a></li>
+                                <li><a href="http://jira.codehaus.org/browse/PTOYS">Reporting Issues</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Developing ProxyToys</h1>
+                    <ul>
+                                <li><a href="how-to-contribute.html">How to Contribute</a></li>
+                                <li><a href="team.html">Development Team</a></li>
+                                <li><a href="repository.html">Source Repository</a></li>
+                    </ul>
+                </div>
+        </div>
+
+<!--
+    <template:when var="isindex">
+      <div class="SidePanel" id="right">
+        <div class="NewsGroup">
+          <h1>Latest Version: 1.0.2</h1>
+          <p class="NewsMore"><a href="download.html">Download page...</a></p>
+        </div>
+
+        <div class="NewsGroup">
+          <h1><a href="news.html">News...</a></h1>
+          <template:include src="../content/news.html"
+                        elements="/html/body/*[@class='NewsItem' and position()<=5]"/>
+        </div>
+      </div>
+    </template:when>
+-->
+  </body>
+</html>

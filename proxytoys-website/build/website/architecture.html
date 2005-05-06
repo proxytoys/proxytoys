@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>ProxyToys - Architecture Overview</title>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        
+        
+    
+    </head>
+    <body>
+
+        <div id="banner">
+            <a href="index.html"><img id="logo" src="logo.gif" alt="ProxyToys Logo"/></a>
+            <div id="title">Architecture Overview</div>
+        </div>
+
+        <div id="center" class="Content2Column">  <!-- Content3Column for index -->
+            <div id="content">
+                <h1 class="FirstChild">Architecture Overview</h1>
+
+                
+
+        <p>The architecture of XStream consists of the four main components:</p>
+
+        <ul>
+            <li><b>Converters</b></li>
+            <li><b>IO (Writer and Reader)</b></li>
+            <li><b>Context</b></li>
+            <li><b>Facade</b></li>
+        </ul>
+
+        <!-- ************ -->
+
+        <h1>Converters</h1>
+
+        <p>Whenever XStream encounters an object that needs to be converted to/from XML, it delegates to a suitable
+        <a href="javadoc/com/thoughtworks/xstream/converters/Converter.html">Converter</a> implementation associated
+        with the class of that Object.</p>
+
+        <p>XStream comes <a href="converters.html">bundled with many converters</a> for common types, including primitives,
+        String, Collections, arrays, null, Date, etc.</p>
+
+        <p>XStream also has a <i>default Converter</i>, that is used when no other Converters match a type. This uses
+        reflection to automatically generate the XML for all the fields in an object.</p>
+
+        <p>If an object is composed of other objects, the Converter may delegate to other Converters.</p>
+
+        <p class="highlight">To customize the XML for particular object type a new Converter should be implemented.</p>
+
+
+        <!-- ************ -->
+
+        <h1>IO (Writer and Reader)</h1>
+
+        <p>XStream is abstracted from the underlying XML data using the
+        <a href="javadoc/com/thoughtworks/xstream/io/HierarchicalStreamWriter.html">HierarchicalStreamWriter</a>
+        and <a href="javadoc/com/thoughtworks/xstream/io/HierarchicalStreamReader.html">HierarchicalStreamReader</a>
+        interfaces for serializing and deserializing respectively.</p>
+
+        <p>This abstraction allows XStream to read XML from direct streams using an XML parser or directly manipulate
+        existing structures (such as DOM). This prevents the overhead of having to reparse if XStream is working from
+        XML that has been partially processed by other libraries (for instance a SOAP library). It also avoids tying XStream
+        to a particular library.</p>
+
+        <p>XStream comes bundled with
+        <a href="javadoc/com/thoughtworks/xstream/io/xml/package-summary.html">reader and writer implementations</a> for
+        most major XML libraries.</p>
+
+        <p class="highlight">Writer and Readers can be implemented allowing XStream to serialize to most XML APIs.
+        Writers and Readers can also be created around tree based non XML structures.</p>
+
+        <!--
+            note: one reader/writer per context
+            note: why not sax
+        -->
+
+        <!-- ************ -->
+
+        <h1>Context</h1>
+
+        <p>When XStream serializes or deserializes some objects, it creates a
+        <a href="javadoc/com/thoughtworks/xstream/converters/MarshallingContext.html">MarshallingContext</a> or
+        <a href="javadoc/com/thoughtworks/xstream/converters/UnmarshallingContext">UnmarshallingContext</a>,
+        which handle the traversing of the data and delegation to the necessary Converters.</p>
+
+        <p class="highlight">The MarshallingContext/UnmarshallingContext is made available to converters allowing them
+        to tell XStream to process objects contained within other objects.</p>
+
+        <p>XStream provides three pairs of context implementations that traverse the object graph with slightly
+        different behaviors. The default can be changed using
+        <a href="javadoc/com/thoughtworks/xstream/XStream.html">XStream.setMode()</a>, passing in one of
+        the following parameters:</p>
+
+        <ul>
+            <li>
+                <b>XStream.XPATH_REFERENCES</b><br/>
+                <i>(Default)</i> Uses XPath references to signify duplicate references. This produces XML with the least
+                clutter.
+            </li>
+            <li>
+                <b>XStream.ID_REFERENCES</b><br/>
+                Uses ID references to signify duplicate references. In some scenarios, such as when using hand-written
+                XML, this is easier to work with.
+            </li>
+            <li>
+                <b>XStream.NO_REFERENCES</b><br/>
+                This disables object graph support and treats the object structure like a tree. Duplicate references are
+                treated as two seperate objects and circular references cause an exception. This is slightly faster and
+                uses less memory than the other two modes.
+            </li>
+        </ul>
+
+        <p class="highlight">A new context is created for each object graph that is serialized. Both the
+        <a href="javadoc/com/thoughtworks/xstream/converters/MarshallingContext.html">MarshallingContext</a> and
+        <a href="javadoc/com/thoughtworks/xstream/converters/UnmarshallingContext.html">UnmarshallingContext</a>
+        implement <a href="javadoc/com/thoughtworks/xstream/converters/DataHolder.html">DataHolder</a>,
+        a hashtable passed around whilst processing the object graph that can be used as the user sees fit (in a similar
+        way that the HttpServletRequest attributes are used in a web-application).</p>
+
+
+        <!-- ************ -->
+
+        <h1>XStream facade</h1>
+
+        <p>The main <a href="javadoc/com/thoughtworks/xstream/XStream.html">XStream</a> class is typically used as the
+        entry point. This assembles the necessary components of XStream (as described above; Context, Converter,
+        Writer/Reader and ClassMapper) and provides a simple to use API for common operations.</p>
+
+        <p class="highlight">Remember, the XStream class is just a facade - it can always be bypassed for more advanced
+        operations.</p>
+
+
+    
+
+                <br><br>
+                
+            </div>
+        </div>
+
+        <div class="SidePanel" id="left">
+                <div class="MenuGroup">
+                    <h1>Software</h1>
+                    <ul>
+                                <li><a href="index.html">About XStream</a></li>
+                                <li><a href="news.html">News</a></li>
+                                <li><a href="changes.html">Change History</a></li>
+                                <li><a href="versioning.html">About Versioning</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Evaluating ProxyToys</h1>
+                    <ul>
+                                <li><a href="tutorial.html">Two Minute Tutorial</a></li>
+                                <li><a href="license.html">License</a></li>
+                                <li><a href="download.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Using ProxyToys</h1>
+                    <ul>
+                                <li class="currentLink">Architecture Overview</li>
+                                <li><a href="converters.html">Converters</a></li>
+                                <li><a href="objectstream.html">Object Streams</a></li>
+                                <li><a href="faq.html">Frequently Asked Questions</a></li>
+                                <li><a href="mailing-lists.html">Mailing Lists</a></li>
+                                <li><a href="javadoc/index.html">JavaDoc</a></li>
+                                <li><a href="http://jira.codehaus.org/browse/PTOYS">Reporting Issues</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Developing ProxyToys</h1>
+                    <ul>
+                                <li><a href="how-to-contribute.html">How to Contribute</a></li>
+                                <li><a href="team.html">Development Team</a></li>
+                                <li><a href="repository.html">Source Repository</a></li>
+                    </ul>
+                </div>
+        </div>
+
+<!--
+    <template:when var="isindex">
+      <div class="SidePanel" id="right">
+        <div class="NewsGroup">
+          <h1>Latest Version: 1.0.2</h1>
+          <p class="NewsMore"><a href="download.html">Download page...</a></p>
+        </div>
+
+        <div class="NewsGroup">
+          <h1><a href="news.html">News...</a></h1>
+          <template:include src="../content/news.html"
+                        elements="/html/body/*[@class='NewsItem' and position()<=5]"/>
+        </div>
+      </div>
+    </template:when>
+-->
+  </body>
+</html>

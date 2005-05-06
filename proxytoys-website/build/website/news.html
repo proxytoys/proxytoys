@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>ProxyToys - News</title>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        
+    
+  
+    </head>
+    <body>
+
+        <div id="banner">
+            <a href="index.html"><img id="logo" src="logo.gif" alt="ProxyToys Logo"/></a>
+            <div id="title">News</div>
+        </div>
+
+        <div id="center" class="Content2Column">  <!-- Content3Column for index -->
+            <div id="content">
+                <h1 class="FirstChild">News</h1>
+
+                
+
+    <h2><b>Mar 7, 2005</b> XStream 1.1.1 released</h2>
+      <ul>
+		<li>Converters can be registered with a priority, allowing more <i>generic</i> filters to handle classes that don't have more specific converters.</li>
+		<li>Converters can now access underlying HierarchicalStreamReader/Writer implementations to make implementation specific calls.</li>
+		<li>Improved support for classes using ObjectInputFields and ObjectInputValidation to follow the serialization specification.</li>
+		<li>Default ClassLoader may be changed using XStream.setClassLoader().</li>
+		<li>Many bugfixes and performance enhancements.</li>
+      </ul>
+      <p>View the complete <a href="changes.html">change log</a> and <a href="download.html">download</a>.</p>
+
+    <h2><b>Jan 15, 2005</b> XStream 1.1 released</h2>
+      <ul>
+        <li>Improved support for serializing objects as per the <a href="http://java.sun.com/j2se/1.4.2/docs/guide/serialization/spec/serialTOC.html">Java Serialization</a> Specification:
+        <ul>
+            <li>Calls custom serialization methods, readObject(), writeObject(), readResolve() and writeReplace() in class, if defined.</li>
+            <li>Supports ObjectInputStream.getFields() and ObjectOutputStream.putFields() in custom serialization.</li>
+        </ul></li>
+        <li>Provides implementations of ObjectInputStream and ObjectOutputStream, allowing drop in replacements for standard serialization,
+        including support for streams of objects. [<a href="objectstream.html">More...</a>]</li>
+        <li>Reads and writes directly to most XML Java APIs: DOM, DOM4J, JDOM, XOM, Electric XML, StAX, Trax (write only), SAX (write only).
+        [<a href="javadoc/com/thoughtworks/xstream/io/xml/package-summary.html">More...</a>]</li>
+      </ul>
+      <p>View the complete <a href="changes.html">change log</a> and <a href="download.html">download</a>.</p>
+
+  
+
+                <br><br>
+                
+            </div>
+        </div>
+
+        <div class="SidePanel" id="left">
+                <div class="MenuGroup">
+                    <h1>Software</h1>
+                    <ul>
+                                <li><a href="index.html">About XStream</a></li>
+                                <li class="currentLink">News</li>
+                                <li><a href="changes.html">Change History</a></li>
+                                <li><a href="versioning.html">About Versioning</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Evaluating ProxyToys</h1>
+                    <ul>
+                                <li><a href="tutorial.html">Two Minute Tutorial</a></li>
+                                <li><a href="license.html">License</a></li>
+                                <li><a href="download.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Using ProxyToys</h1>
+                    <ul>
+                                <li><a href="architecture.html">Architecture Overview</a></li>
+                                <li><a href="converters.html">Converters</a></li>
+                                <li><a href="objectstream.html">Object Streams</a></li>
+                                <li><a href="faq.html">Frequently Asked Questions</a></li>
+                                <li><a href="mailing-lists.html">Mailing Lists</a></li>
+                                <li><a href="javadoc/index.html">JavaDoc</a></li>
+                                <li><a href="http://jira.codehaus.org/browse/PTOYS">Reporting Issues</a></li>
+                    </ul>
+                </div>
+                <div class="MenuGroup">
+                    <h1>Developing ProxyToys</h1>
+                    <ul>
+                                <li><a href="how-to-contribute.html">How to Contribute</a></li>
+                                <li><a href="team.html">Development Team</a></li>
+                                <li><a href="repository.html">Source Repository</a></li>
+                    </ul>
+                </div>
+        </div>
+
+<!--
+    <template:when var="isindex">
+      <div class="SidePanel" id="right">
+        <div class="NewsGroup">
+          <h1>Latest Version: 1.0.2</h1>
+          <p class="NewsMore"><a href="download.html">Download page...</a></p>
+        </div>
+
+        <div class="NewsGroup">
+          <h1><a href="news.html">News...</a></h1>
+          <template:include src="../content/news.html"
+                        elements="/html/body/*[@class='NewsItem' and position()<=5]"/>
+        </div>
+      </div>
+    </template:when>
+-->
+  </body>
+</html>

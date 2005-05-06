@@ -1,0 +1,31 @@
+<sitemap>
+    <section>
+        <name>Software</name>
+        <page>index.html</page>
+        <page>news.html</page>
+        <page>changes.html</page>
+        <page>versioning.html</page>
+    </section>
+    <section>
+        <name>Evaluating ProxyToys</name>
+        <page>tutorial.html</page>
+        <page>license.html</page>
+        <page>download.html</page>
+    </section>
+    <section>
+        <name>Using ProxyToys</name>
+        <page>architecture.html</page>
+        <page>converters.html</page>
+        <page>objectstream.html</page>
+        <page>faq.html</page>
+        <page>mailing-lists.html</page>
+        <link title="JavaDoc">javadoc/index.html</link>
+        <link title="Reporting Issues">http://jira.codehaus.org/browse/PTOYS</link>
+    </section>
+    <section>
+        <name>Developing ProxyToys</name>
+        <page>how-to-contribute.html</page>
+        <page>team.html</page>
+        <page>repository.html</page>
+    </section>
+</sitemap>
