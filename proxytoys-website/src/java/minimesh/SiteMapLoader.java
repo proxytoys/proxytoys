@@ -1,13 +1,12 @@
 package minimesh;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.basic.AbstractBasicConverter;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.converters.basic.AbstractBasicConverter;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 import java.io.File;
 import java.io.FileReader;

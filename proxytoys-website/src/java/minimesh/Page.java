@@ -1,19 +1,9 @@
 package minimesh;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.opensymphony.module.sitemesh.html.BasicRule;
-import com.opensymphony.module.sitemesh.html.BlockExtractingRule;
+import com.opensymphony.module.sitemesh.html.CustomTag;
 import com.opensymphony.module.sitemesh.html.HTMLProcessor;
 import com.opensymphony.module.sitemesh.html.Tag;
-import com.opensymphony.module.sitemesh.html.TextFilter;
 import com.opensymphony.module.sitemesh.html.rules.BodyTagRule;
 import com.opensymphony.module.sitemesh.html.rules.HeadExtractingRule;
 import com.opensymphony.module.sitemesh.html.rules.MetaTagRule;
@@ -21,6 +11,13 @@ import com.opensymphony.module.sitemesh.html.rules.PageBuilder;
 import com.opensymphony.module.sitemesh.html.rules.RegexReplacementTextFilter;
 import com.opensymphony.module.sitemesh.html.rules.TitleExtractingRule;
 import com.opensymphony.module.sitemesh.html.util.CharArray;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Properties;
 
 /**
  * A single page in a website, including title, filename and content.
@@ -77,6 +74,7 @@ public class Page {
         htmlProcessor.addRule(new TitleExtractingRule(pageBuilder));
         htmlProcessor.addRule(new MetaTagRule(pageBuilder));
         htmlProcessor.addRule(new LinkExtractingRule());
+        htmlProcessor.addRule(new AddFirstChildClassToHeader());
         // turn JIRA:XSTR-123 snippets into links
         htmlProcessor.addTextFilter(new RegexReplacementTextFilter("JIRA:(XSTR\\-[0-9]+)", "<a href=\"http://jira.codehaus.org/browse/$1\">$1</a>"));	
 
@@ -131,6 +129,29 @@ public class Page {
         public void process(Tag tag) {
             if (tag.hasAttribute("href", false)) {
                 links.add(tag.getAttributeValue("href", false));
+            }
+            tag.writeTo(currentBuffer());
+        }
+    }
+    
+    /**
+     * Rule for HTMLProcessor that adds class=""FirstChild" to the first header of the body 
+     * if it is the first element.
+     */
+    private class AddFirstChildClassToHeader extends BasicRule {
+        private boolean firstChildIsHeader = true;
+        public boolean shouldProcess(String tag) {
+            return tag.equalsIgnoreCase("p") || tag.matches("^[hH][1-9]$");
+        }
+
+        public void process(Tag tag) {
+            if (firstChildIsHeader) {
+                if (!tag.getName().equalsIgnoreCase("p")) {
+                    CustomTag customTag = new CustomTag(tag);
+                    customTag.addAttribute("class", "FirstChild");
+                    tag = customTag;
+                }
+                firstChildIsHeader = false;
             }
             tag.writeTo(currentBuffer());
         }
