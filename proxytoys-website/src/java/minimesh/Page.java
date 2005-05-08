@@ -76,7 +76,7 @@ public class Page {
         htmlProcessor.addRule(new LinkExtractingRule());
         htmlProcessor.addRule(new AddFirstChildClassToHeader());
         // turn JIRA:XSTR-123 snippets into links
-        htmlProcessor.addTextFilter(new RegexReplacementTextFilter("JIRA:(XSTR\\-[0-9]+)", "<a href=\"http://jira.codehaus.org/browse/$1\">$1</a>"));	
+        htmlProcessor.addTextFilter(new RegexReplacementTextFilter("JIRA:(PTOYS\\-[0-9]+)", "<a href=\"http://jira.codehaus.org/browse/$1\">$1</a>"));	
 
         // go!
         htmlProcessor.process();

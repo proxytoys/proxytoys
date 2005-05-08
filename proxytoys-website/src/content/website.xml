@@ -1,19 +1,16 @@
 <sitemap>
     <section>
-        <name>Software</name>
+        <name>ProxyToxy in General</name>
         <page>index.html</page>
         <page>news.html</page>
         <page>changes.html</page>
+        <page>license.html</page>
+        <page>download.html</page>
         <page>versioning.html</page>
     </section>
     <section>
-        <name>Evaluating ProxyToys</name>
-        <page>tutorial.html</page>
-        <page>license.html</page>
-        <page>download.html</page>
-    </section>
-    <section>
         <name>Using ProxyToys</name>
+        <page>tutorial.html</page>
         <page>architecture.html</page>
         <page>converters.html</page>
         <page>objectstream.html</page>
