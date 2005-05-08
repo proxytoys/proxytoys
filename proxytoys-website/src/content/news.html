@@ -5,29 +5,20 @@
 
   <body>
 
-    <h2><b>Mar 7, 2005</b> XStream 1.1.1 released</h2>
+    <h2><b>Jun 5, 2004</b> ProxyToys 0.1 released</h2>
+    	<p>Initial release of ProxyToys. Contains Proxy Factory implementation based on JDK 1.4 proxies
+    	or on CGLIB 2.0. Following special proxies are additionally deliviered:</p>
       <ul>
-		<li>Converters can be registered with a priority, allowing more <i>generic</i> filters to handle classes that don't have more specific converters.</li>
-		<li>Converters can now access underlying HierarchicalStreamReader/Writer implementations to make implementation specific calls.</li>
-		<li>Improved support for classes using ObjectInputFields and ObjectInputValidation to follow the serialization specification.</li>
-		<li>Default ClassLoader may be changed using XStream.setClassLoader().</li>
-		<li>Many bugfixes and performance enhancements.</li>
+		<li>Decorators - for simple AOP-like chained method interception.</li>
+		<li>Delegators - for delegating calls to different objects.</li>
+		<li>Echo proxy - for writing any call into a PrintStream before it is executed.</li>
+		<li>Failover proxy - fails over to a next object in case of an exception.</li>
+		<li>Hot swapping proxy - allows the exchange of the proxied object on the fly and supports implementation hiding.</li>
+		<li>Multicasting proxy - for multicasting a method invocation to multiple objects.</li>
+		<li>Null objects - for default implementations of classes that do nothing.</li>
       </ul>
-      <p>View the complete <a href="changes.html">change log</a> and <a href="download.html">download</a>.</p>
-
-    <h2><b>Jan 15, 2005</b> XStream 1.1 released</h2>
-      <ul>
-        <li>Improved support for serializing objects as per the <a href="http://java.sun.com/j2se/1.4.2/docs/guide/serialization/spec/serialTOC.html">Java Serialization</a> Specification:
-        <ul>
-            <li>Calls custom serialization methods, readObject(), writeObject(), readResolve() and writeReplace() in class, if defined.</li>
-            <li>Supports ObjectInputStream.getFields() and ObjectOutputStream.putFields() in custom serialization.</li>
-        </ul></li>
-        <li>Provides implementations of ObjectInputStream and ObjectOutputStream, allowing drop in replacements for standard serialization,
-        including support for streams of objects. [<a href="objectstream.html">More...</a>]</li>
-        <li>Reads and writes directly to most XML Java APIs: DOM, DOM4J, JDOM, XOM, Electric XML, StAX, Trax (write only), SAX (write only).
-        [<a href="javadoc/com/thoughtworks/xstream/io/xml/package-summary.html">More...</a>]</li>
-      </ul>
-      <p>View the complete <a href="changes.html">change log</a> and <a href="download.html">download</a>.</p>
+      <p><a href="download.html">Download it.</a>.</p>
+      <!-- p>View the complete <a href="changes.html">change log</a> and <a href="download.html">download</a>.</p -->
 
   </body>
 </html>

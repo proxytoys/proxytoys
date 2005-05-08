@@ -1,4 +1,4 @@
-Copyright (c) 2003-2004 Dan North, Aslak Hellesoy
+Copyright (c) 2003-2005 Dan North, Aslak Hellesoy, Joerg Schaible
 
 All rights reserved.
 
