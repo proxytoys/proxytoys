@@ -20,7 +20,6 @@ public class MulticastingInvoker implements Invoker {
     private final Class[] types;
     private final ProxyFactory proxyFactory;
     private final Object[] targets;
-    private final List invocationResults = new ArrayList();
 
     public MulticastingInvoker(Class[] type, ProxyFactory proxyFactory, Object[] targets) {
         this.types = type;
@@ -33,7 +32,7 @@ public class MulticastingInvoker implements Invoker {
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        invocationResults.clear();
+        final List invocationResults = new ArrayList();
         for (int i = 0; i < targets.length; i++) {
             if(method.getDeclaringClass().isInstance(targets[i])) {
                 Object result = method.invoke(targets[i], args);

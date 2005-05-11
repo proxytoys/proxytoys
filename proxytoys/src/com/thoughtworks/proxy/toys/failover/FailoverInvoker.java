@@ -42,11 +42,13 @@ public class FailoverInvoker extends HotSwappingInvoker {
             result = super.invokeOnDelegate(method, args);
         } catch (InvocationTargetException e) {
             if (exceptionClass.isInstance(e.getTargetException())) {
-                HotSwappingInvoker hiding = (HotSwappingInvoker) proxyFactory.getInvoker(currentProxy);
-                current++;
-                current = current % delegates.length;
-                hiding.hotswap(delegates[current]);
-                result = super.invokeOnDelegate(method, args);
+                synchronized (this) {
+                    HotSwappingInvoker hiding = (HotSwappingInvoker) proxyFactory.getInvoker(currentProxy);
+                    current++;
+                    current = current % delegates.length;
+                    hiding.hotswap(delegates[current]);
+                    result = super.invokeOnDelegate(method, args);
+                }
             } else {
                 throw e;
             }
