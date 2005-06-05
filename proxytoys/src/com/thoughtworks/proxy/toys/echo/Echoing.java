@@ -1,8 +1,8 @@
 /*
  * Created on 04-Feb-2004
- * 
+ *
  * (c) 2003-2004 ThoughtWorks
- * 
+ *
  * See license.txt for licence details
  */
 package com.thoughtworks.proxy.toys.echo;
@@ -15,6 +15,10 @@ import com.thoughtworks.proxy.toys.decorate.Decorating;
 
 
 /**
+ * Factory for echoing proxy instances.
+ * <p>
+ * The Echoing toy acts as a decorator where every method invocation is written to a PrintWriter first.
+ * </p>
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Echoing {
@@ -22,7 +26,7 @@ public class Echoing {
     public static Object object(Class type) {
         return object(type, null, null);
     }
-    
+
     public static Object object(Class type, PrintWriter out) {
         return object(type, null, out);
     }
@@ -38,7 +42,7 @@ public class Echoing {
     public static Object object(Class type, Object impl, PrintWriter out, ProxyFactory factory) {
         return Decorating.object(type, impl, new EchoDecorator(out));
     }
-    
+
     /** It's a factory, stupid */
     private Echoing(){}
 }

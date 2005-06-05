@@ -23,9 +23,9 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**
- * Utility class for creating Null Objects.
+ * Factory for creating Null Objects.
  *
- * A null object has deterministically boring behaviour as follows:
+ * <p>A null object instantiated by this toy has deterministically boring behaviour as follows:
  * <ul>
  * <li>If a method's return type is a <em>primitive</em>, the null object returns
  * the default for that type (e.g. <tt>false</tt> for <tt>boolean</tt>).
@@ -46,6 +46,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * <li>If the proxyFactory cannot create a proxy for the type, null is returned.
  * </ul>
  * </ul>
+ * </p>
  *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:nospamx.aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
@@ -54,46 +55,46 @@ public class Null {
 
     public static final Object NULL_OBJECT = new Object();
 
-	/** Immutable Null Object implementation of {@link SortedMap} */
-	public static final SortedMap NULL_SORTED_MAP = new TreeMap() {
-		public Object put(Object key, Object value) {
-			throw new UnsupportedOperationException();
-		}
-		public void clear() {
-			throw new UnsupportedOperationException();
-		}
-		public Object remove(Object key) {
-			throw new UnsupportedOperationException();
-		}
-		public Set keySet() {
-			return Collections.EMPTY_SET;
-		}
-		public Collection values() {
-			return Collections.EMPTY_LIST;
-		}
-		public Set entrySet() {
-			return Collections.EMPTY_SET;
-		}
-	};
+    /** Immutable Null Object implementation of {@link SortedMap} */
+    public static final SortedMap NULL_SORTED_MAP = new TreeMap() {
+        public Object put(Object key, Object value) {
+            throw new UnsupportedOperationException();
+        }
+        public void clear() {
+            throw new UnsupportedOperationException();
+        }
+        public Object remove(Object key) {
+            throw new UnsupportedOperationException();
+        }
+        public Set keySet() {
+            return Collections.EMPTY_SET;
+        }
+        public Collection values() {
+            return Collections.EMPTY_LIST;
+        }
+        public Set entrySet() {
+            return Collections.EMPTY_SET;
+        }
+    };
 
     /** Immutable Null Object implementation of {@link SortedSet} */
-	public static final SortedSet NULL_SORTED_SET = new TreeSet() {
-		public boolean add(Object o) {
-			throw new UnsupportedOperationException();
-		}
-		public void clear() {
-			throw new UnsupportedOperationException();
-		}
-		public boolean remove(Object o) {
-			throw new UnsupportedOperationException();
-		}
-		public boolean removeAll(Collection c) {
-			throw new UnsupportedOperationException();
-		}
-		public boolean retainAll(Collection c) {
-			throw new UnsupportedOperationException();
-		}
-	};
+    public static final SortedSet NULL_SORTED_SET = new TreeSet() {
+        public boolean add(Object o) {
+            throw new UnsupportedOperationException();
+        }
+        public void clear() {
+            throw new UnsupportedOperationException();
+        }
+        public boolean remove(Object o) {
+            throw new UnsupportedOperationException();
+        }
+        public boolean removeAll(Collection c) {
+            throw new UnsupportedOperationException();
+        }
+        public boolean retainAll(Collection c) {
+            throw new UnsupportedOperationException();
+        }
+    };
 
     public static Object object(Class type, ProxyFactory proxyFactory) {
         final Object result;
@@ -185,20 +186,20 @@ public class Null {
         return isStandardNullObject(object) || isNullProxyObject(object, proxyFactory);
     }
 
-	private static boolean isStandardNullObject(Object object) {
-		return object == Collections.EMPTY_LIST
+    private static boolean isStandardNullObject(Object object) {
+        return object == Collections.EMPTY_LIST
         || object == Collections.EMPTY_SET
         || object == Collections.EMPTY_MAP
         || object == NULL_SORTED_SET
         || object == NULL_SORTED_MAP
         || object == NULL_OBJECT;
-	}
+    }
 
-	private static boolean isNullProxyObject(Object object, ProxyFactory proxyFactory) {
-		return proxyFactory.isProxyClass(object.getClass())
-		&& proxyFactory.getInvoker(object) instanceof NullInvoker;
-	}
-    
+    private static boolean isNullProxyObject(Object object, ProxyFactory proxyFactory) {
+        return proxyFactory.isProxyClass(object.getClass())
+        && proxyFactory.getInvoker(object) instanceof NullInvoker;
+    }
+
     /** It's a factory, stupid */
     private Null(){}
 }

@@ -11,8 +11,29 @@ import java.io.Serializable;
  * @version $Revision: 1.3 $
  */
 public interface ProxyFactory extends Serializable {
+    /**
+     * Create a new proxy instance.
+     * @param types The types the proxy must emulate.
+     * @param invoker The invocation handler.
+     * @return Returns the new proxy instance.
+     */
     Object createProxy(Class[] types, Invoker invoker);
+    /**
+     * Test if the ProxyFactory implementation is capable of creating a proxy instance for the given type.
+     * @param type The type to create a proxy instance for.
+     * @return Returns <code>true</code> if the type is supported.
+     */
     boolean canProxy(Class type);
+    /**
+     * Test if the given type is a proxy class.
+     * @param type The type to examin.
+     * @return Returns <code>true</code> if the given type is a proxy class.
+     */
     boolean isProxyClass(Class type);
+    /**
+     * Retrieve the invocation handler of the proxy.
+     * @param proxy The proxy instance.
+     * @return The {@link Invoker} instance acting as invocation handler.
+     */
     Invoker getInvoker(Object proxy);
 }

@@ -9,11 +9,17 @@ import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 
 /**
+ * An abstract implementation of a ProxyFactory.
+ * <p>Precondition for the derived implementation is the
+ * support of an interface for the invocation handler, that has the same methods with the same
+ * signature as {@link java.lang.reflect.InvocationHandler}. Additionally it supports the method
+ * {@link #getInvoker} of the proxy instance.</p>
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
 abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
 
+    /** The getInvoker method. */
     public static final Method getInvoker;
 
     static {
@@ -25,16 +31,22 @@ abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
     }
 
     /**
+     * Generic implementation of a invocation handler with a JDK compatible method and signature.
      * <p>This is a serendipitous class - it can be extended, and the subclass
-     * made to implement either <tt>java.lang.reflect.InvocationHandler</tt> or
-     * the CGLIB <tt>InvocationHandler</tt> because they both conveniently
-     * have exactly the same <tt>invoke</tt> method with the same signature.</p>
-     * 
+     * made to implement either <tt>{@link java.lang.reflect.InvocationHandler}</tt>
+     * or the CGLIB <tt>{@link net.sf.cglib.proxy.InvocationHandler}</tt> because
+     * they both conveniently have exactly the same <tt>invoke</tt> method with the
+     * same signature.</p>
+     *
      * <p>Clever, eh?</p>
      */
     class CoincidentalInvocationHandlerAdapter implements Serializable {
         private final Invoker invoker;
 
+        /**
+         * Construct a CoincidentalInvocationHandlerAdapter.
+         * @param invocationInterceptor The invocation handler.
+         */
         public CoincidentalInvocationHandlerAdapter(Invoker invocationInterceptor) {
             this.invoker = invocationInterceptor;
         }
@@ -53,6 +65,10 @@ abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
         }
     }
 
+    /**
+     * {@inheritDoc} The implementation of this method relies on the implementation of the derived
+     * factory to add the interface {@link InvokerReference} to every proxy instance.
+     */
     public Invoker getInvoker(Object proxy) {
         InvokerReference ih = (InvokerReference) proxy;
         return ih.getInvoker();

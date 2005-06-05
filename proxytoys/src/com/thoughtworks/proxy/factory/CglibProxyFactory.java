@@ -20,14 +20,17 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.toys.nullobject.Null;
 
 /**
+ * A {@link com.thoughtworks.proxy.ProxyFactory} based on <a href="http://cglib.sourceforge.net/">CGLIB</a>.
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.2 $
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
     private ProxyFactory standardProxyFactory = new StandardProxyFactory();
+    // @todo Make thread-safe.
     // Keeps track of what is currently being created - to avoid infinite recursion
     private List creating = new ArrayList();
 
+    /** The native invocation handle. */
     class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
         public CGLIBInvocationHandlerAdapter(Invoker invoker) {
             super(invoker);
@@ -47,6 +50,12 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         boxedClasses.put(Float.TYPE, Float.class);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Note: If any type the proxy instance must fullfill are all interfaces, the factory will currently create a proxy based on the JDK.
+     * </p>
+     */
     public Object createProxy(Class[] types, final Invoker invoker) {
         Class clazz = getSingleClass(types);
         if (clazz == null) {

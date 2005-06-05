@@ -6,10 +6,12 @@ import java.lang.reflect.Proxy;
 import com.thoughtworks.proxy.Invoker;
 
 /**
+ * A {@link com.thoughtworks.proxy.ProxyFactory} based on a JDK greater or equal 1.3.
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.2 $
  */
 public class StandardProxyFactory extends AbstractProxyFactory {
+    /** The native InvocationHandler implementation. */
     class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
         public StandardInvocationHandlerAdapter(Invoker invoker) {
             super(invoker);
