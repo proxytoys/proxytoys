@@ -5,35 +5,35 @@
   </head>
 
   <body>
-  
+
     <h1>Motivation</h1>
 
     <p>Have you ever developed code that uses java.lang.reflect.Proxy and thought:<br>
-	<br>
-	<cite>"That Cglib library sure is cool. I wish I could leverage both standard proxies and 
-	Cglib proxies without changing my code".</cite><br>
-	<br>
-	With ProxyToys you can! ProxyToys is to proxy generation what Jakarta Commons Logging s to logging 
-	- an thin implementation neutral API for Proxy creation. Whether to use Standard Proxies or CGLIB is a
-	one-line code change.
-	</p>
+    <br>
+    <cite>"That CGLIB library sure is cool. I wish I could leverage both standard proxies and
+    CGLIB proxies without changing my code".</cite><br>
+    <br>
+    With ProxyToys you can! ProxyToys is to proxy generation what Jakarta Commons Logging is to logging
+    - an thin implementation neutral API for Proxy creation. Whether to use Standard Proxies or CGLIB is a
+    one-line code change.
+    </p>
 
     <h1>Features</h1>
 
-	<p>ProxyToys provides a collection of factories for creating "special" proxies such as:</p>
-	<ul>
-		<li>Null objects - for default implementations of classes that do nothing at all</li>
-		<li>Multicasting objects - for multicasting a method invocation to multiple objects</li>
-		<li>Hot swapping objects - allows implementation hiding that can be swapped, and mutual dependencies</li>
-		<li>Failover objects - fails over to a next object in case of exception</li>
-		<li>Decorators - for simple AOP-like chained method interception</li>
-	</ul>
+    <p>ProxyToys provides a collection of factories for creating "special" proxies such as:</p>
+    <ul>
+        <li>Null objects - for default implementations of classes that do nothing at all</li>
+        <li>Multicasting objects - for multicasting a method invocation to multiple objects</li>
+        <li>Hot swapping objects - allows implementation hiding that can be swapped, and mutual dependencies</li>
+        <li>Failover objects - fails over to a next object in case of exception</li>
+        <li>Decorators - for simple AOP-like chained method interception</li>
+    </ul>
 
     <h1>Dependencies</h1>
 
     <p>ProxyToys is a compact library. If you choose not to use the CGLIB features it requires
-	no additional libraries.</p>
-	
+    no additional libraries.</p>
+
 <!--
     <h1>Example</h1>
 -->
@@ -50,16 +50,16 @@
     </ul>
 
     <h2><b>Jun 5, 2004</b> ProxyToys 0.1 released</h2>
-    	<p>Initial release of ProxyToys. Contains Proxy Factory implementation based on JDK 1.4 proxies
-    	or on CGLIB 2.0. Following special proxies are additionally deliviered:</p>
+        <p>Initial release of ProxyToys. Contains Proxy Factory implementation based on JDK 1.4 proxies
+        or on CGLIB 2.0. Following special proxies are additionally deliviered:</p>
       <ul>
-		<li>Decorators - for simple AOP-like chained method interception.</li>
-		<li>Delegators - for delegating calls to different objects.</li>
-		<li>Echo proxy - for writing any call into a PrintStream before it is executed.</li>
-		<li>Failover proxy - fails over to a next object in case of an exception.</li>
-		<li>Hot swapping proxy - allows the exchange of the proxied object on the fly and supports implementation hiding.</li>
-		<li>Multicasting proxy - for multicasting a method invocation to multiple objects.</li>
-		<li>Null objects - for default implementations of classes that do nothing.</li>
+        <li>Decorators - for simple AOP-like chained method interception.</li>
+        <li>Delegators - for delegating calls to different objects.</li>
+        <li>Echo proxy - for writing any call into a PrintStream before it is executed.</li>
+        <li>Failover proxy - fails over to a next object in case of an exception.</li>
+        <li>Hot swapping proxy - allows the exchange of the proxied object on the fly and supports implementation hiding.</li>
+        <li>Multicasting proxy - for multicasting a method invocation to multiple objects.</li>
+        <li>Null objects - for default implementations of classes that do nothing.</li>
       </ul>
       <p><a href="download.html">Download it.</a>.</p>
       <!-- p>View the complete <a href="changes.html">change log</a> and <a href="download.html">download</a>.</p -->

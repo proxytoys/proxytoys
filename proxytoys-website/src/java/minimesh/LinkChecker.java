@@ -57,7 +57,7 @@ public class LinkChecker {
 
     protected boolean verifyLink(String link) {
         if (link.startsWith("mailto:")) {
-            // todo: valid email addresses should be cofigurable
+            // todo: valid email addresses should be configurable
             return true;
         } else if (link.startsWith("http://")) {
             // todo: HTTP get this address to check it's valid (cache result)
@@ -68,11 +68,16 @@ public class LinkChecker {
         } else if (link.startsWith("javadoc/")) {
             // todo: Check the class is valid
             return true;
-        } else if (knownPageFileNames.contains(link)) {
-            return true;
         } else {
-            return false;
+            if (link.lastIndexOf('#')>0) {
+                // todo: Check anchors
+                link = link.substring(0, link.lastIndexOf('#'));
+            }
+            if (knownPageFileNames.contains(link)) {
+                return true;
+            }
         }
+        return false;
     }
 
 }

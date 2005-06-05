@@ -78,10 +78,14 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
 }
 
-a:link { color: #0a0; }
-a:active { color: red; }
-a:hover { color: red; }
-a:visited { color: black; }
+hr {
+    border: 1px solid #ff4040;
+}
+
+a:link { color: #2BA527; }
+a:visited { color: #649BD1; }
+a:active { color: #ff4040; }
+a:hover { color: #ff4040; }
 
 iframe {
     width:100%;
@@ -144,6 +148,7 @@ ul, ol {
     background-color: #ffee77;
     color: black;
     vertical-align: bottom;
+//    background-image: url(wood.jpg);
 }
 
 #banner a { text-decoration: none; }
@@ -407,21 +412,34 @@ ul, ol {
 .Meta a:link { color: #C0C0C0; }
 .Meta a:visited { color: #C0C0C0; }
 .Meta a:active { color: red; }
-.Meta a:hover { color: red; }-----------------------
- *  Document meta-information
+.Meta a:hover { color: red; }
+
+/*---------------------------------------------------------------------------
+ *  Javadoc
  */
 
-.Meta {
-    margin-top: 64px;
-    font-size: smaller;
-    color: #C0C0C0;
-    text-align: right;
-}
+.logo           { width: 56px; height: 56px }
 
-.Meta a { text-decoration: underline; }
-.Meta a:link { color: #C0C0C0; }
-.Meta a:visited { color: #C0C0C0; }
-.Meta a:active { color: red; }
-.Meta a:hover { color: red; } a:visited { color: #C0C0C0; }
-.Meta a:active { color: red; }
-.Meta a:hover { color: red; } }; } }
+/* Table colors */
+.TableHeadingColor     { background: #2BA527; color:#ffee77}
+.TableSubHeadingColor  { background: #649BD1; color:#ffee77}
+.TableRowColor         { background: #ffee77}
+.TableHeadingColor td  { border: 1px solid #ff4040}
+.TableSubHeadingColor td { border: 1px solid #ff4040}
+.TableRowColor td      { border: 1px solid #ff4040}
+
+/* Font used in left-hand frame lists */
+.FrameTitleFont   { font-size: normal; color:#000000 }
+.FrameHeadingFont { font-size: normal; color:#ff4040 }
+.FrameItemFont    { font-size: normal; color:#000000 }
+
+/* Navigation bar fonts and colors */
+.NavBarCell1    { background-color:#ffee77;}
+.NavBarCell1Rev { background-color:#ffee77;}
+.NavBarFont1    { color:#2BA527;}
+.NavBarFont1Rev { color:#ff4040;}
+a:visited .NavBarFont1 { color: #649BD1; }
+a:active .NavBarFont1 { color: #ff4040; }
+a:hover .NavBarFont1{ color: #ff4040; }
+.NavBarCell2    { background-color:#FFFFFF;}
+.NavBarCell3    { background-color:#FFFFFF;}
