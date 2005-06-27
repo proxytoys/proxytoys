@@ -1,7 +1,7 @@
 /*
  * Created on 04-May-2004
  * 
- * (c) 2003-2004 ThoughtWorks Ltd
+ * (c) 2003-2005 ThoughtWorks Ltd
  *
  * See license.txt for license details
  */

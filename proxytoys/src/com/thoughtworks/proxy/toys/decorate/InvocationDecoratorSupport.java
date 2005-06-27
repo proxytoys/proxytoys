@@ -1,7 +1,7 @@
 /*
  * Created on 10-May-2004
  *
- * (c) 2003-2004 ThoughtWorks Ltd
+ * (c) 2003-2005 ThoughtWorks Ltd
  *
  * See license.txt for license details
  */
@@ -10,7 +10,10 @@ package com.thoughtworks.proxy.toys.decorate;
 import java.lang.reflect.Method;
 
 /**
+ * Identity implementation for a InvokerDecorator. The implementation will just pass through any values. Use this
+ * as base class for derived implementations, that do not override all of the methods.
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @since 0.1
  */
 public class InvocationDecoratorSupport implements InvocationDecorator {
 	public Object[] beforeMethodStarts(Object target, Method method, Object[] args) {

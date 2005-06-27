@@ -1,3 +1,10 @@
+/*
+ * Created on 03-May-2004
+ * 
+ * (c) 2003-2005 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
 package com.thoughtworks.proxy;
 
 import java.io.Serializable;
@@ -8,6 +15,7 @@ import java.lang.reflect.Method;
  * This is the main interface for any proxy implementation using a {@link ProxyFactory}.
  * An implementation realizes an invocation handler for the proxy. So it has the same
  * purpose as {@link java.lang.reflect.InvocationHandler}.
+ * @since 0.1
  */
 public interface Invoker extends Serializable {
     /**

@@ -1,3 +1,10 @@
+/*
+ * Created on 03-May-2004
+ * 
+ * (c) 2003-2005 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
 package com.thoughtworks.proxy.factory;
 
 import java.lang.reflect.InvocationHandler;
@@ -8,7 +15,7 @@ import com.thoughtworks.proxy.Invoker;
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on a JDK greater or equal 1.3.
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.2 $
+ * @since 0.1
  */
 public class StandardProxyFactory extends AbstractProxyFactory {
     /** The native InvocationHandler implementation. */

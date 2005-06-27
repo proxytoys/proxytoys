@@ -1,3 +1,10 @@
+/*
+ * Created on 03-May-2004
+ * 
+ * (c) 2003-2005 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
 package com.thoughtworks.proxy.factory;
 
 import java.io.Serializable;
@@ -15,7 +22,7 @@ import com.thoughtworks.proxy.ProxyFactory;
  * signature as {@link java.lang.reflect.InvocationHandler}. Additionally it supports the method
  * {@link #getInvoker} of the proxy instance.</p>
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.3 $
+ * @since 0.1
  */
 abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
 

@@ -1,3 +1,10 @@
+/*
+ * Created on 03-May-2004
+ * 
+ * (c) 2003-2005 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
 package com.thoughtworks.proxy.factory;
 
 import java.lang.reflect.Constructor;
@@ -22,7 +29,7 @@ import com.thoughtworks.proxy.toys.nullobject.Null;
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on <a href="http://cglib.sourceforge.net/">CGLIB</a>.
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.2 $
+ * @since 0.1
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
     private ProxyFactory standardProxyFactory = new StandardProxyFactory();

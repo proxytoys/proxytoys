@@ -1,3 +1,10 @@
+/*
+ * Created on 03-May-2004
+ * 
+ * (c) 2003-2005 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
 package com.thoughtworks.proxy;
 
 import java.io.Serializable;
@@ -8,7 +15,7 @@ import java.io.Serializable;
  * you to use Java's standard proxy mechanism interchangeably with e.g. CGLIB.
  *
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.3 $
+ * @since 0.1
  */
 public interface ProxyFactory extends Serializable {
     /**
