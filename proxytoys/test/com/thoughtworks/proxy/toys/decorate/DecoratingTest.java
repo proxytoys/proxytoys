@@ -60,7 +60,8 @@ public class DecoratingTest extends ProxyTestCase {
             .will(returnValue(toArray("decorated")));
         
         fooMock.expects(once())
-            .method(getSomething).with(eq("decorated"))
+            .method(getSomething)
+            .with(eq("decorated"))
             .after(decoratorMock, beforeMethodStarts)
             .will(returnValue("hello"));
         
@@ -79,7 +80,8 @@ public class DecoratingTest extends ProxyTestCase {
 			.will(returnValue("hello"));
     
         decoratorMock.expects(once())
-            .method(decorateResult).with(eq("hello"))
+            .method(decorateResult)
+            .with(same(foo), eq(getSomethingMethod), eq(toArray("ignored")), eq("hello"))
             .after(fooMock, getSomething)
 			.will(returnValue("world"));
     
@@ -105,7 +107,8 @@ public class DecoratingTest extends ProxyTestCase {
 			.will(throwException(exception));
     
         decoratorMock.expects(once())
-            .method(decorateTargetException).with(same(exception))
+            .method(decorateTargetException)
+            .with(same(foo), eq(getSomethingMethod), eq(toArray("ignored")), same(exception))
 			.will(returnValue(decoratedException));
     
         // execute
@@ -127,7 +130,7 @@ public class DecoratingTest extends ProxyTestCase {
 
 		foo = (Foo) Decorating.object(Foo.class, new MethodMissingImpl(),
 				new InvocationDecoratorSupport() {
-                    public Exception decorateInvocationException(Exception cause) {
+                    public Exception decorateInvocationException(Object proxy, Method method, Object[] args, Exception cause) {
                         thrown[0] = cause;
                         return decoratedException;
                     }

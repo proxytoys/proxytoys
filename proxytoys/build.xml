@@ -44,6 +44,13 @@
     </exec>
   </target>
 
+	<target name="jar-dist-scp" depends="jar">
+	  <exec dir="." executable="scp">
+	    <arg value="${jar.file}"/>
+	    <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars"/>
+	  </exec>
+	</target>
+
   <target name="test.compile" depends="jar">
     <mkdir dir="${test.classes.dir}"/>
     <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">

@@ -18,19 +18,18 @@ import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
  */
 public class EchoDecorator extends InvocationDecoratorSupport {
     private final PrintWriter out;
-    private Class returnType;
     
     public EchoDecorator(PrintWriter out) {
         this.out = out;
     }
     
-    public Object[] beforeMethodStarts(Object target, Method method, Object[] args) {
-        returnType = method.getReturnType();
+    public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
         printMethodCall(method, args);
-        return super.beforeMethodStarts(target, method, args);
+        return super.beforeMethodStarts(proxy, method, args);
     }
     
-    public Object decorateResult(Object result) {
+    public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
+        Class returnType = method.getReturnType();
         if (returnType.isInterface()) {
             result = Decorating.object(returnType, result, this);
         }

@@ -16,19 +16,19 @@ import java.lang.reflect.Method;
  * @since 0.1
  */
 public class InvocationDecoratorSupport implements InvocationDecorator {
-	public Object[] beforeMethodStarts(Object target, Method method, Object[] args) {
+	public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
         return args;
 	}
 
-    public Object decorateResult(Object result) {
+    public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
 		return result;
 	}
 
-	public Throwable decorateTargetException(Throwable cause) {
+	public Throwable decorateTargetException(Object proxy, Method method, Object[] args, Throwable cause) {
 		return cause;
 	}
 
-	public Exception decorateInvocationException(Exception cause) {
+	public Exception decorateInvocationException(Object proxy, Method method, Object[] args, Exception cause) {
         return cause;
 	}
 }

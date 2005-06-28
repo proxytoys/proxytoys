@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.kit.SimpleInvoker;
 
 // TODO: use the AOP alliance API: Mixin.object(Object, JoinPoint, PointCut[] cuts)
 
@@ -46,14 +47,14 @@ public class DecoratingInvoker implements Invoker {
     }
 
     public Object invoke(Object proxy, Method method, Object[]args) throws Throwable {
+        Object[] decoratedArgs = decorator.beforeMethodStarts(proxy, method, args);
         try {
-            Object[] decoratedArgs = decorator.beforeMethodStarts(proxy, method, args);
             Object result = decorated.invoke(proxy, method, decoratedArgs);
-            return decorator.decorateResult(result);
+            return decorator.decorateResult(proxy, method, decoratedArgs, result);
         } catch (InvocationTargetException e) {
-            throw decorator.decorateTargetException(e.getTargetException());
+            throw decorator.decorateTargetException(proxy, method, decoratedArgs, e.getTargetException());
         } catch (Exception e) {
-            throw decorator.decorateInvocationException(e);
+            throw decorator.decorateInvocationException(proxy, method, decoratedArgs, e);
         }
     }
 }
