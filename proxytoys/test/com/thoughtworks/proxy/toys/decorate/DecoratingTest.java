@@ -8,6 +8,10 @@
 package com.thoughtworks.proxy.toys.decorate;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import org.jmock.Mock;
 
