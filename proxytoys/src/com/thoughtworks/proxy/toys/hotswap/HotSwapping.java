@@ -8,6 +8,8 @@
 package com.thoughtworks.proxy.toys.hotswap;
 
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.kit.SimpleReference;
 import com.thoughtworks.proxy.toys.delegate.*;
 
 /**

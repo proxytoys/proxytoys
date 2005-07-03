@@ -9,8 +9,8 @@ package com.thoughtworks.proxy.toys.dispatch;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
-import com.thoughtworks.proxy.toys.delegate.ObjectReference;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;

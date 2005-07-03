@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.toys.delegate.SimpleReference;
+import com.thoughtworks.proxy.kit.SimpleReference;
 import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
 
 /**

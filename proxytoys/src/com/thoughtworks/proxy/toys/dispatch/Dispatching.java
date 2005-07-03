@@ -9,8 +9,8 @@ package com.thoughtworks.proxy.toys.dispatch;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.toys.delegate.ObjectReference;
-import com.thoughtworks.proxy.toys.delegate.SimpleReference;
+import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.kit.SimpleReference;
 
 /**
  * Proxy factory for dispatching proxy instances.

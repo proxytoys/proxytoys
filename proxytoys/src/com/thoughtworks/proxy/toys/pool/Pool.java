@@ -15,9 +15,9 @@ import java.util.Map;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.kit.SimpleReference;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
-import com.thoughtworks.proxy.toys.delegate.ObjectReference;
-import com.thoughtworks.proxy.toys.delegate.SimpleReference;
 
 
 /**

@@ -1,4 +1,11 @@
-package com.thoughtworks.proxy.toys.delegate;
+/*
+ * Created on 23-May-2004
+ *
+ * (c) 2003-2005 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
+package com.thoughtworks.proxy.kit;
 
 /**
  * A way to refer to objects that are stored in "awkward" places (for example inside a
