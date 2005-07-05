@@ -29,7 +29,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
         }
     }
 
-    private static interface CycleCheck {
+    protected static interface CycleCheck {
         void checkForCycle();
     }
     
