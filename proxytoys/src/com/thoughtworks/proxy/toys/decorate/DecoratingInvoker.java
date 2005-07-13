@@ -28,8 +28,8 @@ public class DecoratingInvoker implements Invoker {
 	/**
 	 * Construct a DecoratingInvoker decorating another Invoker.
 	 * 
-	 * @param decorated The decorated {@link Invoker}.
-	 * @param decorator The decorating instance.
+	 * @param decorated the decorated {@link Invoker}.
+	 * @param decorator the decorating instance.
 	 */
 	public DecoratingInvoker(Invoker decorated, InvocationDecorator decorator) {
         this.decorated = decorated;
@@ -39,8 +39,8 @@ public class DecoratingInvoker implements Invoker {
     /**
      * Construct a DecoratingInvoker decorating another object.
      * 
-     * @param delegate The decorated object.
-     * @param decorator The decorating instance.
+     * @param delegate the decorated object.
+     * @param decorator the decorating instance.
      */
     public DecoratingInvoker(Object delegate, InvocationDecorator decorator) {
         this(new SimpleInvoker(delegate), decorator);

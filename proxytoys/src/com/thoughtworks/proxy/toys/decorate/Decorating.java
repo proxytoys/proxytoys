@@ -27,10 +27,10 @@ public class Decorating {
 	/**
 	 * Create a decorating proxy implementing a specific type.
 	 * 
-	 * @param type The type of the created proxy.
-	 * @param delegate The decorated object.
-	 * @param decorator The decorator instance.
-	 * @return Returns a decorating proxy.
+	 * @param type the type of the created proxy.
+	 * @param delegate the decorated object.
+	 * @param decorator the decorator instance.
+	 * @return a decorating proxy.
 	 */
 	public static Object object(Class type, Object delegate, InvocationDecorator decorator) {
         return object(new Class[] {type}, delegate, decorator);
@@ -39,10 +39,10 @@ public class Decorating {
     /**
      * Create a decorating proxy implementing specific types.
      * 
-     * @param types The types of the created proxy.
-     * @param delegate The decorated object.
-     * @param decorator The decorator instance.
-     * @return Returns a decorating proxy.
+     * @param types the types of the created proxy.
+     * @param delegate the decorated object.
+     * @param decorator the decorator instance.
+     * @return a decorating proxy.
      */
 	public static Object object(Class[] types, Object delegate, InvocationDecorator decorator) {
         return object(types, delegate, decorator, new StandardProxyFactory());
@@ -52,11 +52,11 @@ public class Decorating {
     /**
      * Create a decorating proxy implementing specific types using a provided {@link ProxyFactory}.
      * 
-     * @param types The types of the created proxy.
-     * @param delegate The decorated object.
-     * @param decorator The decorator instance.
-     * @param factory The ProxyFactory to use for the proxy generation.
-     * @return Returns a decorating proxy.
+     * @param types the types of the created proxy.
+     * @param delegate the decorated object.
+     * @param decorator the decorator instance.
+     * @param factory the ProxyFactory to use for the proxy generation.
+     * @return a decorating proxy.
      */
 	public static Object object(Class[] types, Object delegate, InvocationDecorator decorator, ProxyFactory factory) {
         return factory.createProxy(types, new DecoratingInvoker(delegate, decorator));

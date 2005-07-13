@@ -9,6 +9,7 @@ package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.kit.ClassHierarchyIntrospector;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

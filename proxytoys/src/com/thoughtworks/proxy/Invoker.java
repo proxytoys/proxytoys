@@ -20,11 +20,11 @@ import java.lang.reflect.Method;
 public interface Invoker extends Serializable {
     /**
      * Invocation of a method of the proxied object.
-     * @param proxy The proxy instance.
-     * @param method The method to invoke.
-     * @param args The arguments of the mothod.
-     * @return Returns the result of the onvoked method.
-     * @throws Throwable Thrown if the invoked method has thrown.
+     * @param proxy the proxy instance.
+     * @param method the method to invoke.
+     * @param args the arguments of the mothod.
+     * @return the result of the onvoked method.
+     * @throws Throwable if the invoked method has thrown.
      */
     Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
 }

@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.kit.ClassHierarchyIntrospector;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

@@ -13,9 +13,9 @@ import java.lang.reflect.Method;
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.kit.ClassHierarchyIntrospector;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.SimpleReference;
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 
 /**
  * Invoker that delegates method calls to an object.
@@ -30,23 +30,33 @@ import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
  * @author J&ouml;rg Schaible
  */
 public class DelegatingInvoker implements Invoker {
-    /** delegate must implement the method's interface */
-    public static final boolean EXACT_METHOD = true;
-    /** delegate must have method with matching signature - not necessarily the same */
-    public static final boolean SAME_SIGNATURE_METHOD = false;
     
+    /** the {@link ProxyFactory} in use */
     protected final ProxyFactory proxyFactory;
+    /** the {@link ObjectReference} of the delegate */
     protected final ObjectReference delegateReference;
     private final boolean staticTyping;
 
-	public DelegatingInvoker(ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
+	/**
+	 * Construct a DelegatingInvoker.
+	 * 
+	 * @param proxyFactory the {@link ProxyFactory} to use
+	 * @param delegateReference the {@link ObjectReference} of the delegate
+	 * @param staticTyping {@link Delegating#STATIC_TYPING} or {@link Delegating#DYNAMIC_TYPING}
+	 */
+	public DelegatingInvoker(final ProxyFactory proxyFactory, final ObjectReference delegateReference, final boolean staticTyping) {
         this.proxyFactory = proxyFactory;
         this.delegateReference = delegateReference;
         this.staticTyping = staticTyping;
 	}
 
+	/**
+     * Construct a DelegatingInvoker with a {@link StandardProxyFactory} and {@link Delegating#DYNAMIC_TYPING}.
+	 * 
+	 * @param delegate the delegated object
+	 */
 	public DelegatingInvoker(final Object delegate) {
-        this(new StandardProxyFactory(), new SimpleReference(delegate), SAME_SIGNATURE_METHOD);
+        this(new StandardProxyFactory(), new SimpleReference(delegate), Delegating.DYNAMIC_TYPING);
 	}
 	
 	public Object invoke(Object proxy, Method method, Object[] args)
@@ -82,6 +92,9 @@ public class DelegatingInvoker implements Invoker {
 		return result;
 	}
 
+	/**
+	 * @return the delegated object
+	 */
 	protected Object delegate() {
 		return delegateReference.get();
 	}
@@ -91,14 +104,22 @@ public class DelegatingInvoker implements Invoker {
 	        return method;
 	    } else {
 	        try {
-				return delegate().getClass().getMethod(method.getName(), method.getParameterTypes());
+				return getDelegateMethod(method.getName(), method.getParameterTypes());
 			} catch (Exception e) {
                 throw new DelegationException("Problem invoking " + method, e, delegate());
 			}
 	    }
 	}
 
-	protected Object invokeOnDelegate(Method method, Object[] args) throws Throwable {
+	/**
+	 * Invoke the given method on the delegate.
+	 * 
+	 * @param method the method to invoke
+	 * @param args the arguments for the invocation
+	 * @return the method's result
+	 * @throws InvocationTargetException if the invoked method throws any exception
+	 */
+	protected Object invokeOnDelegate(Method method, Object[] args) throws InvocationTargetException {
 	    Object delegate = delegate();
 	    try {
 		    return method.invoke(delegate, args);
@@ -109,6 +130,14 @@ public class DelegatingInvoker implements Invoker {
         }
     }
 
+    /**
+     * Lookup a matching method on the delegate.
+     * 
+     * @param methodName the name of the searched method
+     * @param parameterTypes the argument types of the method
+     * @return the matching method
+     * @throws DelegationException if no matching method can be found
+     */
     protected Method getDelegateMethod(String methodName, Class[] parameterTypes) {
         try {
             return delegate().getClass().getMethod(methodName, parameterTypes);

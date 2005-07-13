@@ -1,4 +1,4 @@
-package com.thoughtworks.proxy.toys.multicast;
+package com.thoughtworks.proxy.kit;
 
 import java.beans.beancontext.BeanContext;
 import java.beans.beancontext.BeanContextServices;
@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Vector;
 
 import junit.framework.TestCase;
-
-import com.thoughtworks.proxy.toys.multicast.ClassHierarchyIntrospector;
 
 /**
  * @author Aslak Helles&oslash;y

@@ -10,6 +10,7 @@ package com.thoughtworks.proxy.toys.dispatch;
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
 import java.lang.reflect.Method;
@@ -34,7 +35,7 @@ public class DispatchingInvoker implements Invoker {
         invoker = new Invoker[types.length];
         methodSets = new Set[types.length];
         for (int i = 0; i < types.length; i++) {
-            invoker[i] = new DelegatingInvoker(proxyFactory, delegateReferences[i], DelegatingInvoker.EXACT_METHOD);
+            invoker[i] = new DelegatingInvoker(proxyFactory, delegateReferences[i], Delegating.STATIC_TYPING);
             methodSets[i] = new HashSet(Arrays.asList(types[i].getMethods()));
         }
     }

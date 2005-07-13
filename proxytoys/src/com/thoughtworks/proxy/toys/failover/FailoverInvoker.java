@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleReference;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
 
 /**
@@ -26,7 +27,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
 	private Object currentProxy;
 
     public FailoverInvoker(Class[] types, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
-        super(types, proxyFactory, new SimpleReference(delegates[0]), true);
+        super(types, proxyFactory, new SimpleReference(delegates[0]), Delegating.STATIC_TYPING);
         this.delegates = delegates;
         this.exceptionClass = exceptionClass;
     }
@@ -36,7 +37,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
 		return super.invoke(proxy, method, args);
 	}
 
-    protected Object invokeOnDelegate(Method method, Object[] args) throws Throwable {
+    protected Object invokeOnDelegate(Method method, Object[] args) throws InvocationTargetException {
         Object result = null;
         try {
             result = super.invokeOnDelegate(method, args);

@@ -52,7 +52,7 @@ abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
 
         /**
          * Construct a CoincidentalInvocationHandlerAdapter.
-         * @param invocationInterceptor The invocation handler.
+         * @param invocationInterceptor the invocation handler.
          */
         public CoincidentalInvocationHandlerAdapter(Invoker invocationInterceptor) {
             this.invoker = invocationInterceptor;

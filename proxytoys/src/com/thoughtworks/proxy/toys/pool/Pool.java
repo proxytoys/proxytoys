@@ -17,26 +17,26 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.SimpleReference;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
 
 /**
  * A simple pool implementation that collects its unused components of a specific type automatically.
  * <p>
- * The pool will only manage instances that were explicitly passed into the pool
- * before. For more sophisticated pooling strategies, derive from this class or wrap it.
+ * The pool will only manage instances that were explicitly passed into the pool before. For more sophisticated pooling
+ * strategies, derive from this class or wrap it.
  * </p>
  * <p>
- * The implementation will provide these instances wrapped by a proxy, that will return the
- * instance automatically, if it falls out of scope and would be collected by the garbage
- * collector. Because of the proxy every provided instance implements the {@link Poolable}
- * interface, that can be used to release th instance manually to the pool also.
+ * The implementation will provide these instances wrapped by a proxy, that will return the instance automatically, if it falls
+ * out of scope and would be collected by the garbage collector. Because of the proxy every provided instance implements the
+ * {@link Poolable} interface, that can be used to release th instance manually to the pool also.
  * </p>
  * <p>
- * Note, that the {@link StandardProxyFactory} is based on reflection and therefore only types
- * can be managed, that implements an interface.
+ * Note, that the {@link StandardProxyFactory} is based on reflection and therefore only types can be managed, that implements
+ * an interface.
  * </p>
- *
+ * 
  * @author J&ouml;rg Schaible
  * @since 0.2
  */
@@ -62,7 +62,7 @@ public class Pool {
 
     /**
      * Construct an Pool with a specific proxy factory.
-     *
+     * 
      * @param type the type of the instances
      * @param proxyFactory the proxy factory to use
      */
@@ -73,7 +73,7 @@ public class Pool {
 
     /**
      * Construct an Pool with the {@link StandardProxyFactory}.
-     *
+     * 
      * @param type the type of the instances
      */
     public Pool(final Class type) {
@@ -82,7 +82,7 @@ public class Pool {
 
     /**
      * Construct a populated Pool with a specific proxy factory.
-     *
+     * 
      * @param type the type of the instances
      * @param targets the instances to be managed
      * @param proxyFactory the proxy factory to use
@@ -94,7 +94,7 @@ public class Pool {
 
     /**
      * Construct an Pool with the {@link StandardProxyFactory}.
-     *
+     * 
      * @param type the type of the instances
      * @param targets the instances to be managed
      */
@@ -105,7 +105,7 @@ public class Pool {
 
     /**
      * Add a new instance resource to the pool.
-     *
+     * 
      * @param instance the new instance
      */
     public void add(final Object instance) {
@@ -114,7 +114,7 @@ public class Pool {
 
     /**
      * Add an array of new instance resources to the pool.
-     *
+     * 
      * @param instances the instances
      */
     public void add(final Object instances[]) {
@@ -130,7 +130,7 @@ public class Pool {
         final Object result;
         if (getAvailable() > 0) {
             final ObjectReference delegate = (ObjectReference)availableInstances.remove(0);
-            result = new PoolingInvoker(types, factory, delegate, true).proxy();
+            result = new PoolingInvoker(types, factory, delegate, Delegating.STATIC_TYPING).proxy();
             Object weakReference = new WeakReference(result);
             busyInstances.put(delegate.get(), weakReference);
         } else {
@@ -141,7 +141,7 @@ public class Pool {
 
     /**
      * Release a pool instance manually.
-     *
+     * 
      * @param object the instance to release
      * @throws ClassCastException Thrown if object was not {@link Poolable}.
      */
@@ -150,9 +150,9 @@ public class Pool {
     }
 
     /**
-     * Return the number of available instances of the pool. The method will also try to collect
-     * any pool instance that was freed by the garbage collector.
-     *
+     * Return the number of available instances of the pool. The method will also try to collect any pool instance that was
+     * freed by the garbage collector.
+     * 
      * @return Returns the number of available instances.
      */
     public int getAvailable() {

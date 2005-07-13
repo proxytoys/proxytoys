@@ -18,7 +18,7 @@ import com.thoughtworks.proxy.Invoker;
  */
 public interface InvokerReference {
     /**
-     * @return Returns the Invoker instance.
+     * @return the Invoker instance.
      */
     Invoker getInvoker();
 }

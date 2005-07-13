@@ -1,4 +1,4 @@
-package com.thoughtworks.proxy.toys.multicast;
+package com.thoughtworks.proxy.kit;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.InvokerReference;
@@ -8,9 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
 
+
 /**
  * Helper class for introspecting interface and class hierarchies.
- *
+ * 
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @version $Revision: 1.1 $
@@ -19,33 +20,36 @@ public class ClassHierarchyIntrospector {
     /**
      * the {@link Object#equals(Object)} method.
      */
-    public static Method equals;
+    public static final Method equals;
     /**
      * the {@link Object#hashCode()} method.
      */
-    public static Method hashCode;
+    public static final Method hashCode;
 
     static {
         try {
             equals = Object.class.getMethod("equals", new Class[]{Object.class});
             hashCode = Object.class.getMethod("hashCode", null);
         } catch (NoSuchMethodException e) {
-            ///CLOVER:OFF
+            // /CLOVER:OFF
             throw new InternalError();
-            ///CLOVER:ON
+            // /CLOVER:ON
         } catch (SecurityException e) {
-            ///CLOVER:OFF
+            // /CLOVER:OFF
             throw new InternalError();
-            ///CLOVER:ON
+            // /CLOVER:ON
         }
     }
 
-    private ClassHierarchyIntrospector() {
+    /**
+     * Constructor. Do not call, it is a factory. Used to allow derived factories.
+     */
+    protected ClassHierarchyIntrospector() {
     }
 
     /**
      * Get all the interfaces implemented by a list of objects.
-     *
+     * 
      * @param objects the list of objects to consider.
      * @return an array of interfaces.
      */
@@ -56,15 +60,13 @@ public class ClassHierarchyIntrospector {
                 getInterfaces(objects[i].getClass(), interfaces);
             }
         }
-        return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
+        return (Class[])interfaces.toArray(new Class[interfaces.size()]);
     }
 
     /**
-     * Get all interfaces of the given type.
-     * If the type is a class, the returned list contains any interface, that is
-     * implemented by the class. If the type is an interface, the all
-     * superinterfaces and the interface itself are included.
-     *
+     * Get all interfaces of the given type. If the type is a class, the returned list contains any interface, that is
+     * implemented by the class. If the type is an interface, the all superinterfaces and the interface itself are included.
+     * 
      * @param clazz type to explore.
      * @return an array with all interfaces. The array may be empty.
      */
@@ -72,16 +74,16 @@ public class ClassHierarchyIntrospector {
         Set interfaces = new HashSet();
         getInterfaces(clazz, interfaces);
         interfaces.remove(InvokerReference.class);
-        return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
+        return (Class[])interfaces.toArray(new Class[interfaces.size()]);
     }
 
     private static void getInterfaces(Class clazz, Set interfaces) {
         if (clazz.isInterface()) {
             interfaces.add(clazz);
         }
-        // Class.getInterfaces will return only the interfaces that are 
+        // Class.getInterfaces will return only the interfaces that are
         // implemented by the current class. Therefore we must loop up
-        // the hierarchy for the superclasses and the superinterfaces. 
+        // the hierarchy for the superclasses and the superinterfaces.
         while (clazz != null) {
             Class[] implemented = clazz.getInterfaces();
             for (int i = 0; i < implemented.length; i++) {
@@ -95,9 +97,9 @@ public class ClassHierarchyIntrospector {
 
     /**
      * Get most common superclass for all given objects.
-     *
+     * 
      * @param objects the array of objects to consider.
-     * @return the superclass or <code>{@link Void}.class</code> for an empty array.
+     * @return the superclass or <code>{@link Void Void.class}</code> for an empty array.
      */
     public static Class getMostCommonSuperclass(Object[] objects) {
         Class clazz = null;
@@ -130,6 +132,14 @@ public class ClassHierarchyIntrospector {
         return clazz;
     }
 
+    /**
+     * Add the given type to the given interfaces, if the given ProxyFactory supports proxy generation for real classes.
+     * 
+     * @param clazz the class type (<code>Object.class</code> will be ignored)
+     * @param interfaces the array of interfaces
+     * @param proxyFactory the {@link ProxyFactory} to examine
+     * @return the arry of types with or without the given class
+     */
     public static Class[] addIfClassProxyingSupportedAndNotObject(Class clazz, Class[] interfaces, ProxyFactory proxyFactory) {
         Class[] result;
         if (proxyFactory.canProxy(ArrayList.class) && !clazz.equals(Object.class)) {
