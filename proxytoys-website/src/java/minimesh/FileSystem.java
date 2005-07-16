@@ -8,9 +8,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+
 /**
  * Facade for underlying filesystem.
- *
+ * 
  * @author Joe Walnes
  */
 public class FileSystem {
@@ -19,7 +20,7 @@ public class FileSystem {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             try {
-                char[] data = new char[(int) file.length()];
+                char[] data = new char[(int)file.length()];
                 reader.read(data);
                 return data;
             } finally {

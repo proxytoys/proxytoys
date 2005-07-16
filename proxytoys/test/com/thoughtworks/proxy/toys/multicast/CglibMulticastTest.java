@@ -4,6 +4,7 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
+
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
@@ -30,12 +31,14 @@ public class CglibMulticastTest extends ProxyTestCase {
     }
 
     public void testShouldAddIntegers() {
-        Primitives primitives = (Primitives) Multicasting.object(getFactory(), new Object[]{new Primitives(true), new Primitives(true), new Primitives(true)});
+        Primitives primitives = (Primitives)Multicasting.object(getFactory(), new Object[]{
+                new Primitives(true), new Primitives(true), new Primitives(true)});
         assertEquals(6, primitives.getInt());
     }
 
     public void testShouldAndBooleans() {
-        Primitives primitives = (Primitives) Multicasting.object(getFactory(), new Object[]{new Primitives(true), new Primitives(false), new Primitives(false)});
+        Primitives primitives = (Primitives)Multicasting.object(getFactory(), new Object[]{
+                new Primitives(true), new Primitives(false), new Primitives(false)});
         assertFalse(primitives.getBoolean());
     }
 

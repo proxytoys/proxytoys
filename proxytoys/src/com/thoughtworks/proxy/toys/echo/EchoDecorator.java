@@ -7,27 +7,28 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
+import com.thoughtworks.proxy.toys.decorate.Decorating;
+import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
+
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
-import com.thoughtworks.proxy.toys.decorate.Decorating;
-import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class EchoDecorator extends InvocationDecoratorSupport {
     private final PrintWriter out;
-    
+
     public EchoDecorator(PrintWriter out) {
         this.out = out;
     }
-    
+
     public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
         printMethodCall(method, args);
         return super.beforeMethodStarts(proxy, method, args);
     }
-    
+
     public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
         Class returnType = method.getReturnType();
         if (returnType.isInterface()) {
@@ -39,7 +40,7 @@ public class EchoDecorator extends InvocationDecoratorSupport {
     private void printMethodCall(Method method, Object[] args) {
         StringBuffer buf = new StringBuffer(method.getDeclaringClass().getName());
         buf.append(".").append(method.getName());
-        
+
         if (args == null) {
             args = new Object[0];
             buf.append("(");

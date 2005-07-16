@@ -4,9 +4,9 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.InvokerReference;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.ArrayList;
 
 
 /**
@@ -145,7 +145,8 @@ public class ClassHierarchyIntrospector {
      * @param proxyFactory the {@link ProxyFactory} to examine
      * @return the arry of types with or without the given class
      */
-    public static Class[] addIfClassProxyingSupportedAndNotObject(final Class clazz, final Class[] interfaces, final ProxyFactory proxyFactory) {
+    public static Class[] addIfClassProxyingSupportedAndNotObject(
+            final Class clazz, final Class[] interfaces, final ProxyFactory proxyFactory) {
         final Class[] result;
         if (proxyFactory.canProxy(ArrayList.class) && !clazz.equals(Object.class)) {
             result = new Class[interfaces.length + 1];

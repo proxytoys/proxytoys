@@ -9,24 +9,25 @@ package com.thoughtworks.proxy.toys.dispatch;
 
 /**
  * An exception if a type cannot be dispatched.
+ * 
  * @author J&ouml;rg Schaible
  * @since 0.2
  */
 public class DispatchingException extends RuntimeException {
 
-	private final Class type;
+    private final Class type;
 
-	/**
-	 * Construct a DispatchingException with the offending type.
-	 * 
-	 * @param message the meaningful message
-	 * @param type the type, that cannot be dispatched
-	 */
-	public DispatchingException(final String message, final Class type) {
+    /**
+     * Construct a DispatchingException with the offending type.
+     * 
+     * @param message the meaningful message
+     * @param type the type, that cannot be dispatched
+     */
+    public DispatchingException(final String message, final Class type) {
         super(message);
-		this.type = type;
-	}
-    
+        this.type = type;
+    }
+
     /**
      * Returns the offending type.
      * 

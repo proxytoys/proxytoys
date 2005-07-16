@@ -1,13 +1,14 @@
 package minimesh;
 
-import java.util.List;
-import java.util.Iterator;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 
 /**
  * Verifies all the links in a SiteMap.
- *
+ * 
  * @author Joe Walnes
  */
 public class LinkChecker {
@@ -29,23 +30,24 @@ public class LinkChecker {
         knownPageFileNames = new HashSet();
         List allPages = siteMap.getAllPages();
         for (Iterator iterator = allPages.iterator(); iterator.hasNext();) {
-            Page page = (Page) iterator.next();
+            Page page = (Page)iterator.next();
             knownPageFileNames.add(page.getFilename());
         }
     }
 
     /**
      * Verifies all the links in the site. Returns true if all links are valid.
+     * 
      * @return
      */
     public boolean verify() {
         boolean success = true;
         List allPages = siteMap.getAllPages();
         for (Iterator iterator = allPages.iterator(); iterator.hasNext();) {
-            Page page = (Page) iterator.next();
+            Page page = (Page)iterator.next();
             Collection links = page.getLinks();
             for (Iterator iterator1 = links.iterator(); iterator1.hasNext();) {
-                String link = (String) iterator1.next();
+                String link = (String)iterator1.next();
                 if (!verifyLink(link)) {
                     success = false;
                     reporter.badLink(page, link);
@@ -69,7 +71,7 @@ public class LinkChecker {
             // todo: Check the class is valid
             return true;
         } else {
-            if (link.lastIndexOf('#')>0) {
+            if (link.lastIndexOf('#') > 0) {
                 // todo: Check anchors
                 link = link.substring(0, link.lastIndexOf('#'));
             }

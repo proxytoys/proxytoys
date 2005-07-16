@@ -43,6 +43,7 @@ public class DecorateToyExample {
                 System.out.print("Called: " + method.getName());
                 return super.beforeMethodStarts(proxy, method, args);
             }
+
             public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
                 System.out.println(" ==> " + result);
                 return result;

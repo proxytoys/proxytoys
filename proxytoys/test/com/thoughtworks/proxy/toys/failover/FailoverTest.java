@@ -11,6 +11,7 @@ public class FailoverTest extends ProxyTestCase {
 
     public static interface FailsOnNthCall {
         void doIt();
+
         int dunIt();
     }
 
@@ -38,7 +39,8 @@ public class FailoverTest extends ProxyTestCase {
     public void testShouldFailoverToNextOnSpecialException() {
         FailsOnNthCall first = new FailsOnNthCallImpl(1);
         FailsOnNthCall second = new FailsOnNthCallImpl(1);
-        FailsOnNthCall failover = (FailsOnNthCall) Failover.object(FailsOnNthCall.class, getFactory(), new Object[]{first, second}, RuntimeException.class);
+        FailsOnNthCall failover = (FailsOnNthCall)Failover.object(
+                FailsOnNthCall.class, getFactory(), new Object[]{first, second}, RuntimeException.class);
         assertEquals(0, first.dunIt());
         assertEquals(0, second.dunIt());
         failover.doIt();

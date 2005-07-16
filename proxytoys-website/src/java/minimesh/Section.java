@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
  * A section in a website, holding pages.
- *
+ * 
  * @author Joe Walnes
  */
 public class Section {

@@ -7,11 +7,12 @@
  */
 package com.thoughtworks.proxy.kit;
 
-
 import java.io.Serializable;
+
 
 /**
  * Simple implmenentation for an {@link ObjectReference}.
+ * 
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.2 $
  * @since 0.1

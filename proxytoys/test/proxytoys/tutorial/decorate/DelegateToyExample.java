@@ -35,7 +35,7 @@ public class DelegateToyExample {
         raf.seek(0);
         return (DataInput)Delegating.object(DataInput.class, raf, Delegating.STATIC_TYPING);
     }
-    
+
     public static void packageOverviewExample2() {
         try {
             File tempFile = File.createTempFile("Toy", null);
@@ -46,7 +46,7 @@ public class DelegateToyExample {
                 System.out.println("Data read: " + line);
                 DataOutput dataOutput = (DataOutput)dataInput;
                 dataOutput.writeBytes("This line will not be reached!");
-            } catch(ClassCastException e) {
+            } catch (ClassCastException e) {
                 System.out.println("Could not cast to DataOutput: " + e.getMessage());
             } finally {
                 tempFile.delete();

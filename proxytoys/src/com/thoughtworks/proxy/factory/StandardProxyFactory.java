@@ -7,13 +7,15 @@
  */
 package com.thoughtworks.proxy.factory;
 
+import com.thoughtworks.proxy.Invoker;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
-import com.thoughtworks.proxy.Invoker;
 
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on a JDK greater or equal 1.3.
+ * 
  * @author Aslak Helles&oslash;y
  * @since 0.1
  */

@@ -7,16 +7,18 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.kit.SimpleInvoker;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.kit.SimpleInvoker;
 
 // TODO: use the AOP alliance API: Mixin.object(Object, JoinPoint, PointCut[] cuts)
 
 /**
  * Invoker implementation for the decorating proxy. The implementation may decorate an object or another {@link Invoker}.
+ * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
  * @since 0.1
@@ -25,16 +27,16 @@ public class DecoratingInvoker implements Invoker {
     private final Invoker decorated;
     private final InvocationDecorator decorator;
 
-	/**
-	 * Construct a DecoratingInvoker decorating another Invoker.
-	 * 
-	 * @param decorated the decorated {@link Invoker}.
-	 * @param decorator the decorating instance.
-	 */
-	public DecoratingInvoker(final Invoker decorated, final InvocationDecorator decorator) {
+    /**
+     * Construct a DecoratingInvoker decorating another Invoker.
+     * 
+     * @param decorated the decorated {@link Invoker}.
+     * @param decorator the decorating instance.
+     */
+    public DecoratingInvoker(final Invoker decorated, final InvocationDecorator decorator) {
         this.decorated = decorated;
         this.decorator = decorator;
-	}
+    }
 
     /**
      * Construct a DecoratingInvoker decorating another object.
@@ -46,7 +48,7 @@ public class DecoratingInvoker implements Invoker {
         this(new SimpleInvoker(delegate), decorator);
     }
 
-    public Object invoke(final Object proxy, final Method method, final Object[]args) throws Throwable {
+    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         final Object[] decoratedArgs = decorator.beforeMethodStarts(proxy, method, args);
         try {
             final Object result = decorated.invoke(proxy, method, decoratedArgs);

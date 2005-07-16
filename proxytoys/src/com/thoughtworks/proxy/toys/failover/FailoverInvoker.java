@@ -7,13 +7,14 @@
  */
 package com.thoughtworks.proxy.toys.failover;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleReference;
 import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -24,7 +25,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
     private final Class exceptionClass;
 
     private int current;
-	private Object currentProxy;
+    private Object currentProxy;
 
     public FailoverInvoker(Class[] types, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
         super(types, proxyFactory, new SimpleReference(delegates[0]), Delegating.STATIC_TYPING);
@@ -32,10 +33,10 @@ public class FailoverInvoker extends HotSwappingInvoker {
         this.exceptionClass = exceptionClass;
     }
 
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		this.currentProxy = proxy;
-		return super.invoke(proxy, method, args);
-	}
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        this.currentProxy = proxy;
+        return super.invoke(proxy, method, args);
+    }
 
     protected Object invokeOnDelegate(Method method, Object[] args) throws InvocationTargetException {
         Object result = null;
@@ -44,7 +45,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
         } catch (InvocationTargetException e) {
             if (exceptionClass.isInstance(e.getTargetException())) {
                 synchronized (this) {
-                    HotSwappingInvoker hiding = (HotSwappingInvoker) proxyFactory.getInvoker(currentProxy);
+                    HotSwappingInvoker hiding = (HotSwappingInvoker)proxyFactory.getInvoker(currentProxy);
                     current++;
                     current = current % delegates.length;
                     hiding.hotswap(delegates[current]);
@@ -57,4 +58,4 @@ public class FailoverInvoker extends HotSwappingInvoker {
         return result;
     }
 
- }
+}

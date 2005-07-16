@@ -4,17 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
+
 /**
  * Command line entry point for building website.
- *
+ * 
  * @author Joe Walnes
  */
 public class Main {
 
     public static void main(String[] args) throws IOException {
         if (args.length != 3) {
-            System.err.println("Usage: java " + Main.class.getName()
-                    + " <path-to-website.xml> <path-to-skin> <output-dir>");
+            System.err.println("Usage: java " + Main.class.getName() + " <path-to-website.xml> <path-to-skin> <output-dir>");
             System.exit(-1);
         }
 
@@ -30,7 +30,7 @@ public class Main {
         Skin skin = new Skin(skinFile);
         outputDirectory.mkdirs();
         for (Iterator iterator = siteMap.getAllPages().iterator(); iterator.hasNext();) {
-            Page page = (Page) iterator.next();
+            Page page = (Page)iterator.next();
             System.out.println("Skinning " + page.getFilename() + " (" + page.getTitle() + ")");
             skin.skin(page, siteMap, outputDirectory);
         }

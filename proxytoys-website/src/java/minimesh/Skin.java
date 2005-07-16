@@ -13,9 +13,10 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * Provides HTML 'skin' around content, using a FreeMarker template.
- *
+ * 
  * @author Joe Walnes
  */
 public class Skin {

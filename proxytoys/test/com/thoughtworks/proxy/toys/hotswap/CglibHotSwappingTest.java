@@ -52,7 +52,6 @@ public class CglibHotSwappingTest extends ProxyTestCase {
         assertSame(yang, yin.getYang());
     }
 
-    
     /**
      * @author Aaron Knauf
      */

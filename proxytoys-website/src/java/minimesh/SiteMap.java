@@ -5,9 +5,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+
 /**
  * Holds the structure of a website.
- *
+ * 
  * @author Joe Walnes
  */
 public class SiteMap {
@@ -30,7 +31,7 @@ public class SiteMap {
     public List getAllPages() {
         List result = new ArrayList();
         for (Iterator i = sections.iterator(); i.hasNext();) {
-            Section section = (Section) i.next();
+            Section section = (Section)i.next();
             for (Iterator iterator = section.getPages().iterator(); iterator.hasNext();) {
                 Object item = iterator.next();
                 if (item instanceof Page) {

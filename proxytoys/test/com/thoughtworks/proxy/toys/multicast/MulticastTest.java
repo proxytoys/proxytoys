@@ -1,13 +1,14 @@
 package com.thoughtworks.proxy.toys.multicast;
 
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.ProxyTestCase;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.ProxyTestCase;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -67,7 +68,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) Multicasting.object(Dog.class, getFactory(), new Dog[]{tim, tom});
+        Dog timAndTom = (Dog)Multicasting.object(Dog.class, getFactory(), new Dog[]{tim, tom});
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -84,8 +85,8 @@ public class MulticastTest extends ProxyTestCase {
         OtherTailImpl tomsTail = new OtherTailImpl();
         tom.add(tomsTail);
 
-        List timAndTom = (List) Multicasting.object(List.class, getFactory(), new List[]{tim, tom});
-        Tail timAndTomsTails = (Tail) timAndTom.get(0);
+        List timAndTom = (List)Multicasting.object(List.class, getFactory(), new List[]{tim, tom});
+        Tail timAndTomsTails = (Tail)timAndTom.get(0);
         timAndTomsTails.wag();
 
         assertTrue(timsTail.wasWagged());
@@ -99,7 +100,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) Multicasting.object(getFactory(), new Dog[]{tim, tom});
+        Dog timAndTom = (Dog)Multicasting.object(getFactory(), new Dog[]{tim, tom});
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -129,8 +130,8 @@ public class MulticastTest extends ProxyTestCase {
         NotMap list = new NotMapImpl();
         Map map = new HashMap();
         Object multicast = Multicasting.object(getFactory(), new Object[]{list, map});
-        ((NotMap) multicast).add("hello");
-        ((Map) multicast).put("hello", "world");
+        ((NotMap)multicast).add("hello");
+        ((Map)multicast).put("hello", "world");
         assertEquals("hello", list.get(0));
         assertEquals("world", map.get("hello"));
     }
@@ -151,12 +152,11 @@ public class MulticastTest extends ProxyTestCase {
         assertSame(map, multicast);
     }
 
-
     public void TODOtestShouldInvokeMethodsInARoundRobinFashion() {
         TailImpl t1 = new TailImpl();
         TailImpl t2 = new TailImpl();
         TailImpl t3 = new TailImpl();
-        Tail tail = (Tail) Multicasting.object(new Class[]{Tail.class}, getFactory(), new Object[]{t1, t2, t3});
+        Tail tail = (Tail)Multicasting.object(new Class[]{Tail.class}, getFactory(), new Object[]{t1, t2, t3});
 
         assertFalse(t1.wasWagged());
         assertFalse(t2.wasWagged());

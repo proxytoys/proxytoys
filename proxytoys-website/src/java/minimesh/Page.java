@@ -19,11 +19,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Properties;
 
+
 /**
- * A single page in a website, including title, filename and content.
- *
- * All this information is loaded from an HTML file (using the SiteMesh library).
- *
+ * A single page in a website, including title, filename and content. All this information is loaded from an HTML file (using
+ * the SiteMesh library).
+ * 
  * @author Joe Walnes
  */
 public class Page {
@@ -76,7 +76,8 @@ public class Page {
         htmlProcessor.addRule(new LinkExtractingRule());
         htmlProcessor.addRule(new AddFirstChildClassToHeader());
         // turn JIRA:XSTR-123 snippets into links
-        htmlProcessor.addTextFilter(new RegexReplacementTextFilter("JIRA:(PTOYS\\-[0-9]+)", "<a href=\"http://jira.codehaus.org/browse/$1\">$1</a>"));	
+        htmlProcessor.addTextFilter(new RegexReplacementTextFilter(
+                "JIRA:(PTOYS\\-[0-9]+)", "<a href=\"http://jira.codehaus.org/browse/$1\">$1</a>"));
 
         // go!
         htmlProcessor.process();
@@ -133,13 +134,13 @@ public class Page {
             tag.writeTo(currentBuffer());
         }
     }
-    
+
     /**
-     * Rule for HTMLProcessor that adds class=""FirstChild" to the first header of the body 
-     * if it is the first element.
+     * Rule for HTMLProcessor that adds class=""FirstChild" to the first header of the body if it is the first element.
      */
     private class AddFirstChildClassToHeader extends BasicRule {
         private boolean firstChildIsHeader = true;
+
         public boolean shouldProcess(String tag) {
             return tag.equalsIgnoreCase("p") || tag.matches("^[hH][1-9]$");
         }
@@ -156,5 +157,5 @@ public class Page {
             tag.writeTo(currentBuffer());
         }
     }
-    
+
 }

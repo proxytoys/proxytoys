@@ -7,11 +7,11 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import java.io.PrintWriter;
-
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.toys.decorate.Decorating;
+
+import java.io.PrintWriter;
 
 
 /**
@@ -19,6 +19,7 @@ import com.thoughtworks.proxy.toys.decorate.Decorating;
  * <p>
  * The Echoing toy acts as a decorator where every method invocation is written to a PrintWriter first.
  * </p>
+ * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
 public class Echoing {
@@ -44,5 +45,6 @@ public class Echoing {
     }
 
     /** It's a factory, stupid */
-    private Echoing(){}
+    private Echoing() {
+    }
 }

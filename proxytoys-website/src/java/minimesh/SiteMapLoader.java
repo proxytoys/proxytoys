@@ -13,9 +13,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
+
 /**
  * Loads a SiteMap from an XML file.
- *
+ * 
  * @author Joe Walnes
  */
 public class SiteMapLoader {
@@ -33,7 +34,7 @@ public class SiteMapLoader {
 
         Reader reader = new FileReader(contentXml);
         try {
-            return (SiteMap) xstream.fromXML(reader);
+            return (SiteMap)xstream.fromXML(reader);
         } finally {
             reader.close();
         }
@@ -56,7 +57,7 @@ public class SiteMapLoader {
         }
 
         protected String toString(Object o) {
-            Page page = (Page) o;
+            Page page = (Page)o;
             return page.getFilename();
         }
     }
@@ -68,7 +69,7 @@ public class SiteMapLoader {
         }
 
         public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
-            Link link = (Link) source;
+            Link link = (Link)source;
             writer.addAttribute("title", link.getTitle());
             writer.setValue(link.getHref());
         }

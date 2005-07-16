@@ -5,6 +5,13 @@
  */
 package com.thoughtworks.proxy.toys.pool;
 
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.kit.SimpleReference;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
+import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
+
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -12,13 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.kit.ObjectReference;
-import com.thoughtworks.proxy.kit.SimpleReference;
-import com.thoughtworks.proxy.toys.delegate.Delegating;
-import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
 
 /**

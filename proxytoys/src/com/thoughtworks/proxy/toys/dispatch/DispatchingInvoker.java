@@ -63,7 +63,7 @@ public class DispatchingInvoker implements Invoker {
                     boolean isEqual = true;
                     for (int i = 0; isEqual && i < types.size(); ++i) {
                         final Class type = (Class)types.get(i);
-                        for(int j = 0; isEqual && j < invoker.types.size(); ++j) {
+                        for (int j = 0; isEqual && j < invoker.types.size(); ++j) {
                             if (invoker.types.get(j).equals(type)) {
                                 if (!invokers[i].equals(invoker.invokers[j])) {
                                     isEqual = false;

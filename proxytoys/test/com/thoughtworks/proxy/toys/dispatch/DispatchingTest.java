@@ -127,7 +127,7 @@ public class DispatchingTest extends ProxyTestCase {
                 new ArrayList(), "Hello", Thread.currentThread()}, getFactory());
         Object proxy2 = Dispatching.object(new Class[]{List.class, Runnable.class, Comparable.class}, new Object[]{
                 "Hello", new ArrayList(), Thread.currentThread()}, getFactory());
-        
+
         assertEquals(proxy1, proxy2);
     }
 
@@ -136,7 +136,7 @@ public class DispatchingTest extends ProxyTestCase {
                 new ArrayList(), "Foo", Thread.currentThread()}, getFactory());
         Object proxy2 = Dispatching.object(new Class[]{List.class, Runnable.class, Comparable.class}, new Object[]{
                 "Bar", new ArrayList(), Thread.currentThread()}, getFactory());
-        
+
         assertFalse(proxy1.equals(proxy2));
     }
 }

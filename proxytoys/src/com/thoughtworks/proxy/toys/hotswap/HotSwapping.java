@@ -10,7 +10,7 @@ package com.thoughtworks.proxy.toys.hotswap;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.SimpleReference;
-import com.thoughtworks.proxy.toys.delegate.*;
+
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -29,10 +29,11 @@ public class HotSwapping {
         return object(types, proxyFactory, delegateReference, staticTyping);
     }
 
-	public static Object object(Class[] types, ProxyFactory proxyFactory, ObjectReference objectReference, boolean staticTyping) {
-	    return new HotSwappingInvoker(types, proxyFactory, objectReference, staticTyping).proxy();
-	}
-    
+    public static Object object(Class[] types, ProxyFactory proxyFactory, ObjectReference objectReference, boolean staticTyping) {
+        return new HotSwappingInvoker(types, proxyFactory, objectReference, staticTyping).proxy();
+    }
+
     /** It's a factory, stupid */
-    private HotSwapping(){}
+    private HotSwapping() {
+    }
 }

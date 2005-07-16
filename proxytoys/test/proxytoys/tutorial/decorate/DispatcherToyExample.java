@@ -62,7 +62,7 @@ public class DispatcherToyExample {
                 ((DataOutput)proxy).writeBytes("One matches both");
                 file.seek(0);
                 System.out.println("Just written: " + ((DataInput)proxy).readLine());
-                
+
             } finally {
                 tempFile.delete();
             }

@@ -11,6 +11,7 @@ import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
 import java.lang.reflect.Method;
 
+
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
@@ -32,10 +33,10 @@ public class HotSwappingInvoker extends DelegatingInvoker {
     protected static interface CycleCheck {
         void checkForCycle();
     }
-    
+
     private final Class[] types;
     private transient boolean executed = false;
-    
+
     public HotSwappingInvoker(Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
         super(proxyFactory, delegateReference, staticTyping);
         this.types = types;
@@ -57,7 +58,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
             }
             return Void.TYPE;
         } else {
-			result = super.invoke(proxy, method, args);
+            result = super.invoke(proxy, method, args);
         }
         return result;
     }
@@ -75,7 +76,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
         Class[] typesWithSwappable = new Class[types.length + 2];
         System.arraycopy(types, 0, typesWithSwappable, 0, types.length);
         typesWithSwappable[types.length] = Swappable.class;
-        typesWithSwappable[types.length+1] = CycleCheck.class;
+        typesWithSwappable[types.length + 1] = CycleCheck.class;
         return proxyFactory.createProxy(typesWithSwappable, this);
     }
 }

@@ -7,6 +7,16 @@
  */
 package com.thoughtworks.proxy.factory;
 
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.nullobject.Null;
+
+import net.sf.cglib.core.CodeGenerationException;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.Factory;
+import net.sf.cglib.proxy.InvocationHandler;
+import net.sf.cglib.proxy.Proxy;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -16,18 +26,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.cglib.core.CodeGenerationException;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.Factory;
-import net.sf.cglib.proxy.InvocationHandler;
-import net.sf.cglib.proxy.Proxy;
-
-import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.toys.nullobject.Null;
 
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on <a href="http://cglib.sourceforge.net/">CGLIB</a>.
+ * 
  * @author Aslak Helles&oslash;y
  * @since 0.1
  */
@@ -60,7 +62,8 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     /**
      * {@inheritDoc}
      * <p>
-     * Note: If any type the proxy instance must fullfill are all interfaces, the factory will currently create a proxy based on the JDK.
+     * Note: If any type the proxy instance must fullfill are all interfaces, the factory will currently create a proxy based on
+     * the JDK.
      * </p>
      */
     public Object createProxy(final Class[] types, final Invoker invoker) {
@@ -69,7 +72,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
             // slightly faster
             return standardProxyFactory.createProxy(types, invoker);
         }
-        final Class[] interfaces =  getInterfaces(types);
+        final Class[] interfaces = getInterfaces(types);
         final Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(clazz);
         enhancer.setInterfaces(interfaces);
@@ -86,19 +89,19 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     private Class[] getInterfaces(final Class[] types) {
         final List interfaces = new ArrayList(Arrays.asList(types));
         for (final Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
-            final Class clazz = (Class) iterator.next();
-            if(!clazz.isInterface()) {
+            final Class clazz = (Class)iterator.next();
+            if (!clazz.isInterface()) {
                 iterator.remove();
             }
         }
         interfaces.add(InvokerReference.class);
-        return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
+        return (Class[])interfaces.toArray(new Class[interfaces.size()]);
     }
 
     private Class getSingleClass(final Class[] types) {
         for (int i = 0; i < types.length; i++) {
             final Class type = types[i];
-            if(!type.isInterface()) {
+            if (!type.isInterface()) {
                 return type;
             }
         }
@@ -110,7 +113,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         final Class[] params = constructor.getParameterTypes();
         final Object[] args = new Object[params.length];
         for (int i = 0; i < args.length; i++) {
-            if(!creating.contains(params[i])) {
+            if (!creating.contains(params[i])) {
                 creating.add(params[i]);
                 args[i] = Null.object(params[i], this);
                 creating.remove(params[i]);
@@ -139,6 +142,8 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     }
 
     public boolean isProxyClass(final Class type) {
-        return Factory.class.isAssignableFrom(type) || (!type.equals(Object.class) && Proxy.isProxyClass(type)) || standardProxyFactory.isProxyClass(type);
+        return Factory.class.isAssignableFrom(type)
+                || (!type.equals(Object.class) && Proxy.isProxyClass(type))
+                || standardProxyFactory.isProxyClass(type);
     }
 }
