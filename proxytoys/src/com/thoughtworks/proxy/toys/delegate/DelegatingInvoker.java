@@ -59,7 +59,7 @@ public class DelegatingInvoker implements Invoker {
         this(new StandardProxyFactory(), new SimpleReference(delegate), Delegating.DYNAMIC_TYPING);
 	}
 	
-	public Object invoke(Object proxy, Method method, Object[] args)
+	public Object invoke(final Object proxy, final Method method, final Object[] args)
 			throws Throwable {
 		final Object result;
         
@@ -99,7 +99,7 @@ public class DelegatingInvoker implements Invoker {
 		return delegateReference.get();
 	}
 
-	private Method getMethodToInvoke(Method method) {
+	private Method getMethodToInvoke(final Method method) {
 	    if(staticTyping) {
 	        return method;
 	    } else {
@@ -119,8 +119,8 @@ public class DelegatingInvoker implements Invoker {
 	 * @return the method's result
 	 * @throws InvocationTargetException if the invoked method throws any exception
 	 */
-	protected Object invokeOnDelegate(Method method, Object[] args) throws InvocationTargetException {
-	    Object delegate = delegate();
+	protected Object invokeOnDelegate(final Method method, final Object[] args) throws InvocationTargetException {
+	    final Object delegate = delegate();
 	    try {
 		    return method.invoke(delegate, args);
         } catch (InvocationTargetException e) {
@@ -138,11 +138,25 @@ public class DelegatingInvoker implements Invoker {
      * @return the matching method
      * @throws DelegationException if no matching method can be found
      */
-    protected Method getDelegateMethod(String methodName, Class[] parameterTypes) {
+    protected Method getDelegateMethod(final String methodName, final Class[] parameterTypes) {
         try {
             return delegate().getClass().getMethod(methodName, parameterTypes);
         } catch (Exception e) {
             throw new DelegationException("Unable to find method " + methodName, e, delegate());
         }
     }
+
+    /**
+     * Compares a DelegatingInvoker with another one for equality.
+     * Two DelegatingInvoker are equal, if they have both the same <tt>staticTyping</tt> flag and their delegees are equal.
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(final Object obj) {
+        if (obj instanceof DelegatingInvoker) {
+            final DelegatingInvoker invoker = (DelegatingInvoker)obj;
+            return invoker.staticTyping == staticTyping && delegate().equals(invoker.delegate());
+        }
+        return false;
+    }
+    
 }

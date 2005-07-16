@@ -32,7 +32,7 @@ public class Decorating {
 	 * @param decorator the decorator instance.
 	 * @return a decorating proxy.
 	 */
-	public static Object object(Class type, Object delegate, InvocationDecorator decorator) {
+	public static Object object(final Class type, final Object delegate, final InvocationDecorator decorator) {
         return object(new Class[] {type}, delegate, decorator);
 	}
 
@@ -44,7 +44,7 @@ public class Decorating {
      * @param decorator the decorator instance.
      * @return a decorating proxy.
      */
-	public static Object object(Class[] types, Object delegate, InvocationDecorator decorator) {
+	public static Object object(final Class[] types, final Object delegate, final InvocationDecorator decorator) {
         return object(types, delegate, decorator, new StandardProxyFactory());
 	}
 
@@ -58,7 +58,7 @@ public class Decorating {
      * @param factory the ProxyFactory to use for the proxy generation.
      * @return a decorating proxy.
      */
-	public static Object object(Class[] types, Object delegate, InvocationDecorator decorator, ProxyFactory factory) {
+	public static Object object(final Class[] types, final Object delegate, final InvocationDecorator decorator, final ProxyFactory factory) {
         return factory.createProxy(types, new DecoratingInvoker(delegate, decorator));
 	}
 

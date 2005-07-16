@@ -20,20 +20,12 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  */
 public class Dispatching {
     
-    public static Object object(Class type, Object delegate) {
-        return object(type, delegate, new StandardProxyFactory());
-    }
-    
-    public static Object object(Class[] types, Object[] delegates) {
+    public static Object object(final Class[] types, final Object[] delegates) {
         return object(types, delegates, new StandardProxyFactory());
     }
     
-    public static Object object(Class type, Object delegate, ProxyFactory factory) {
-        return object(new Class[]{type}, new Object[]{delegate}, new StandardProxyFactory());
-    }
-    
-    public static Object object(Class[] types, Object[] delegates, ProxyFactory factory) {
-        final ObjectReference[] references = new ObjectReference[types.length];
+    public static Object object(final Class[] types, final Object[] delegates, final ProxyFactory factory) {
+        final ObjectReference[] references = new ObjectReference[delegates.length];
         for (int i = 0; i < references.length; i++) {
              references[i] = new SimpleReference(delegates[i]);
         }

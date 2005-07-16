@@ -25,11 +25,16 @@ public class ClassHierarchyIntrospector {
      * the {@link Object#hashCode()} method.
      */
     public static final Method hashCode;
+    /**
+     * the {@link Object#toString()} method.
+     */
+    public static final Method toString;
 
     static {
         try {
             equals = Object.class.getMethod("equals", new Class[]{Object.class});
             hashCode = Object.class.getMethod("hashCode", null);
+            toString = Object.class.getMethod("toString", null);
         } catch (NoSuchMethodException e) {
             // /CLOVER:OFF
             throw new InternalError();
@@ -53,8 +58,8 @@ public class ClassHierarchyIntrospector {
      * @param objects the list of objects to consider.
      * @return an array of interfaces.
      */
-    public static Class[] getAllInterfaces(Object[] objects) {
-        Set interfaces = new HashSet();
+    public static Class[] getAllInterfaces(final Object[] objects) {
+        final Set interfaces = new HashSet();
         for (int i = 0; i < objects.length; i++) {
             if (objects[i] != null) {
                 getInterfaces(objects[i].getClass(), interfaces);
@@ -70,14 +75,14 @@ public class ClassHierarchyIntrospector {
      * @param clazz type to explore.
      * @return an array with all interfaces. The array may be empty.
      */
-    public static Class[] getAllInterfaces(Class clazz) {
-        Set interfaces = new HashSet();
+    public static Class[] getAllInterfaces(final Class clazz) {
+        final Set interfaces = new HashSet();
         getInterfaces(clazz, interfaces);
         interfaces.remove(InvokerReference.class);
         return (Class[])interfaces.toArray(new Class[interfaces.size()]);
     }
 
-    private static void getInterfaces(Class clazz, Set interfaces) {
+    private static void getInterfaces(Class clazz, final Set interfaces) {
         if (clazz.isInterface()) {
             interfaces.add(clazz);
         }
@@ -85,7 +90,7 @@ public class ClassHierarchyIntrospector {
         // implemented by the current class. Therefore we must loop up
         // the hierarchy for the superclasses and the superinterfaces.
         while (clazz != null) {
-            Class[] implemented = clazz.getInterfaces();
+            final Class[] implemented = clazz.getInterfaces();
             for (int i = 0; i < implemented.length; i++) {
                 if (!interfaces.contains(implemented[i])) {
                     getInterfaces(implemented[i], interfaces);
@@ -101,7 +106,7 @@ public class ClassHierarchyIntrospector {
      * @param objects the array of objects to consider.
      * @return the superclass or <code>{@link Void Void.class}</code> for an empty array.
      */
-    public static Class getMostCommonSuperclass(Object[] objects) {
+    public static Class getMostCommonSuperclass(final Object[] objects) {
         Class clazz = null;
         boolean found = false;
         if (objects != null && objects.length > 0) {
@@ -109,7 +114,7 @@ public class ClassHierarchyIntrospector {
                 for (int i = 0; i < objects.length; i++) {
                     found = true;
                     if (objects[i] != null) {
-                        Class currentClazz = objects[i].getClass();
+                        final Class currentClazz = objects[i].getClass();
                         if (clazz == null) {
                             clazz = currentClazz;
                         }
@@ -140,8 +145,8 @@ public class ClassHierarchyIntrospector {
      * @param proxyFactory the {@link ProxyFactory} to examine
      * @return the arry of types with or without the given class
      */
-    public static Class[] addIfClassProxyingSupportedAndNotObject(Class clazz, Class[] interfaces, ProxyFactory proxyFactory) {
-        Class[] result;
+    public static Class[] addIfClassProxyingSupportedAndNotObject(final Class clazz, final Class[] interfaces, final ProxyFactory proxyFactory) {
+        final Class[] result;
         if (proxyFactory.canProxy(ArrayList.class) && !clazz.equals(Object.class)) {
             result = new Class[interfaces.length + 1];
             result[0] = clazz;

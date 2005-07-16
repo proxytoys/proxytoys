@@ -27,11 +27,11 @@ public class SimpleInvoker implements Invoker {
      * 
      * @param target the invocation target.
      */
-    public SimpleInvoker(Object target) {
+    public SimpleInvoker(final Object target) {
         this.target = target;
     }
 
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         return (target == null ? null : method.invoke(target, args));
     }
 }

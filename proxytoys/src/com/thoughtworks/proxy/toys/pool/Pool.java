@@ -130,8 +130,8 @@ public class Pool {
         final Object result;
         if (getAvailable() > 0) {
             final ObjectReference delegate = (ObjectReference)availableInstances.remove(0);
-            result = new PoolingInvoker(types, factory, delegate, Delegating.STATIC_TYPING).proxy();
-            Object weakReference = new WeakReference(result);
+            result = new PoolingInvoker(factory, delegate, Delegating.STATIC_TYPING).proxy(types);
+            final Object weakReference = new WeakReference(result);
             busyInstances.put(delegate.get(), weakReference);
         } else {
             result = null;
@@ -157,10 +157,10 @@ public class Pool {
      */
     public int getAvailable() {
         if (busyInstances.size() > 0) {
-            List freedInstances = new LinkedList();
+            final List freedInstances = new LinkedList();
             for (final Iterator iter = busyInstances.keySet().iterator(); iter.hasNext();) {
-                Object target = iter.next();
-                WeakReference ref = (WeakReference)busyInstances.get(target);
+                final Object target = iter.next();
+                final WeakReference ref = (WeakReference)busyInstances.get(target);
                 if (ref.get() == null) {
                     freedInstances.add(new SimpleReference(target));
                 }
@@ -189,11 +189,9 @@ public class Pool {
      * The proxy invoker class.
      */
     protected class PoolingInvoker extends DelegatingInvoker {
-        private final Class[] types;
 
-        protected PoolingInvoker(Class[] types, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
+        protected PoolingInvoker(ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
             super(proxyFactory, delegateReference, staticTyping);
-            this.types = types;
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -210,7 +208,7 @@ public class Pool {
             return Void.TYPE;
         }
 
-        public Object proxy() {
+        public Object proxy(Class[] types) {
             return proxyFactory.createProxy(types, this);
         }
     }

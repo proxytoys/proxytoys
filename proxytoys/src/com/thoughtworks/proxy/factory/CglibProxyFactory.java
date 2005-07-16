@@ -63,14 +63,14 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * Note: If any type the proxy instance must fullfill are all interfaces, the factory will currently create a proxy based on the JDK.
      * </p>
      */
-    public Object createProxy(Class[] types, final Invoker invoker) {
-        Class clazz = getSingleClass(types);
+    public Object createProxy(final Class[] types, final Invoker invoker) {
+        final Class clazz = getSingleClass(types);
         if (clazz == null) {
             // slightly faster
             return standardProxyFactory.createProxy(types, invoker);
         }
-        Class[] interfaces =  getInterfaces(types);
-        Enhancer enhancer = new Enhancer();
+        final Class[] interfaces =  getInterfaces(types);
+        final Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(clazz);
         enhancer.setInterfaces(interfaces);
         enhancer.setCallback(new CGLIBInvocationHandlerAdapter(invoker));
@@ -83,10 +83,10 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         return createWithConstructor(clazz, enhancer);
     }
 
-    private Class[] getInterfaces(Class[] types) {
-        List interfaces = new ArrayList(Arrays.asList(types));
-        for (Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
-            Class clazz = (Class) iterator.next();
+    private Class[] getInterfaces(final Class[] types) {
+        final List interfaces = new ArrayList(Arrays.asList(types));
+        for (final Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
+            final Class clazz = (Class) iterator.next();
             if(!clazz.isInterface()) {
                 iterator.remove();
             }
@@ -95,9 +95,9 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
     }
 
-    private Class getSingleClass(Class[] types) {
+    private Class getSingleClass(final Class[] types) {
         for (int i = 0; i < types.length; i++) {
-            Class type = types[i];
+            final Class type = types[i];
             if(!type.isInterface()) {
                 return type;
             }
@@ -105,10 +105,10 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         return null;
     }
 
-    private Object createWithConstructor(Class type, Enhancer enhancer) {
-        Constructor constructor = getConstructor(type);
-        Class[] params = constructor.getParameterTypes();
-        Object[] args = new Object[params.length];
+    private Object createWithConstructor(final Class type, final Enhancer enhancer) {
+        final Constructor constructor = getConstructor(type);
+        final Class[] params = constructor.getParameterTypes();
+        final Object[] args = new Object[params.length];
         for (int i = 0; i < args.length; i++) {
             if(!creating.contains(params[i])) {
                 creating.add(params[i]);
@@ -118,11 +118,11 @@ public class CglibProxyFactory extends AbstractProxyFactory {
                 args[i] = null;
             }
         }
-        Object result = enhancer.create(params, args);
+        final Object result = enhancer.create(params, args);
         return result;
     }
 
-    private Constructor getConstructor(Class type) {
+    private Constructor getConstructor(final Class type) {
         Constructor constructor = null;
         try {
             constructor = type.getConstructor(null);
@@ -133,12 +133,12 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         return constructor;
     }
 
-    public boolean canProxy(Class type) {
+    public boolean canProxy(final Class type) {
         int modifiers = type.getModifiers();
         return !Modifier.isFinal(modifiers);
     }
 
-    public boolean isProxyClass(Class type) {
+    public boolean isProxyClass(final Class type) {
         return Factory.class.isAssignableFrom(type) || (!type.equals(Object.class) && Proxy.isProxyClass(type)) || standardProxyFactory.isProxyClass(type);
     }
 }

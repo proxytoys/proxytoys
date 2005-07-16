@@ -35,7 +35,7 @@ public class Delegating {
      * @param delegate the object the proxy delegates to.
      * @return a new proxy of the specified type.
      */
-    public static Object object(Class type, Object delegate) {
+    public static Object object(final Class type, final Object delegate) {
         return object(type, delegate, new StandardProxyFactory());
     }
 
@@ -47,8 +47,8 @@ public class Delegating {
      * @param staticTyping {@link #STATIC_TYPING} or {@link #DYNAMIC_TYPING}
      * @return a new proxy of the specified type.
      */
-    public static Object object(Class type, Object delegate, boolean staticTyping) {
-        ProxyFactory factory = new StandardProxyFactory();
+    public static Object object(final Class type, final Object delegate, final boolean staticTyping) {
+        final ProxyFactory factory = new StandardProxyFactory();
         return factory.createProxy(new Class[]{type}, new DelegatingInvoker(factory, new SimpleReference(delegate), staticTyping));
     }
 
@@ -60,7 +60,7 @@ public class Delegating {
      * @param factory the {@link ProxyFactory} to use creating the proxy.
      * @return a new proxy of the specified type.
      */
-    public static Object object(Class type, Object delegate, ProxyFactory factory) {
+    public static Object object(final Class type, final Object delegate, final ProxyFactory factory) {
         return factory
                 .createProxy(new Class[]{type}, new DelegatingInvoker(factory, new SimpleReference(delegate), DYNAMIC_TYPING));
     }

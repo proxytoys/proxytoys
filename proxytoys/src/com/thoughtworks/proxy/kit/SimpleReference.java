@@ -24,7 +24,7 @@ public class SimpleReference implements ObjectReference, Serializable {
      * 
      * @param reference The referenced object.
      */
-    public SimpleReference(Object reference) {
+    public SimpleReference(final Object reference) {
         set(reference);
     }
 
@@ -32,7 +32,7 @@ public class SimpleReference implements ObjectReference, Serializable {
         return instance;
     }
 
-    public void set(Object item) {
+    public void set(final Object item) {
         this.instance = item;
     }
 }

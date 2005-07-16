@@ -31,7 +31,7 @@ public class DecoratingInvoker implements Invoker {
 	 * @param decorated the decorated {@link Invoker}.
 	 * @param decorator the decorating instance.
 	 */
-	public DecoratingInvoker(Invoker decorated, InvocationDecorator decorator) {
+	public DecoratingInvoker(final Invoker decorated, final InvocationDecorator decorator) {
         this.decorated = decorated;
         this.decorator = decorator;
 	}
@@ -42,14 +42,14 @@ public class DecoratingInvoker implements Invoker {
      * @param delegate the decorated object.
      * @param decorator the decorating instance.
      */
-    public DecoratingInvoker(Object delegate, InvocationDecorator decorator) {
+    public DecoratingInvoker(final Object delegate, final InvocationDecorator decorator) {
         this(new SimpleInvoker(delegate), decorator);
     }
 
-    public Object invoke(Object proxy, Method method, Object[]args) throws Throwable {
-        Object[] decoratedArgs = decorator.beforeMethodStarts(proxy, method, args);
+    public Object invoke(final Object proxy, final Method method, final Object[]args) throws Throwable {
+        final Object[] decoratedArgs = decorator.beforeMethodStarts(proxy, method, args);
         try {
-            Object result = decorated.invoke(proxy, method, decoratedArgs);
+            final Object result = decorated.invoke(proxy, method, decoratedArgs);
             return decorator.decorateResult(proxy, method, decoratedArgs, result);
         } catch (InvocationTargetException e) {
             throw decorator.decorateTargetException(proxy, method, decoratedArgs, e.getTargetException());
