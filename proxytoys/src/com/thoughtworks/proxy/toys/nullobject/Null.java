@@ -157,11 +157,11 @@ public class Null {
      * Create a new Null Object:
      * 
      * <pre>
-     *      Foo foo = (Foo)
+     *       Foo foo = (Foo)
      * <tt>
      * Null.object
      * </tt>
-     * (Foo.class);
+     *  (Foo.class);
      * </pre>
      */
     public static Object object(Class type) {

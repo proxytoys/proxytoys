@@ -1,3 +1,10 @@
+/*
+ * Created on 11-May-2004
+ *
+ * (c) 2003-2005 ThoughtWorks
+ *
+ * See license.txt for license details
+ */
 package com.thoughtworks.proxy.kit;
 
 import com.thoughtworks.proxy.ProxyFactory;

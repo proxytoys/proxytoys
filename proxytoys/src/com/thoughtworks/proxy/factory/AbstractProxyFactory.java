@@ -63,6 +63,17 @@ abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
             this.invoker = invocationInterceptor;
         }
 
+        /**
+         * Invoke a method on an object.
+         * 
+         * @param proxy the prory on thatthe method was originally called
+         * @param method the method
+         * @param args the arguments of the call
+         * @return the return value of the call
+         * @throws Throwable if calling code throws or the call failed
+         * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+         * @see net.sf.cglib.proxy.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+         */
         public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
             if (method.equals(AbstractProxyFactory.getInvoker)) {
                 return invoker;

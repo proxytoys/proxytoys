@@ -1,7 +1,7 @@
 /*
  * Created on 03-May-2004
  *
- * (c) 2003-2005 ThoughtWorks Ltd
+ * (c) 2003-2005 ThoughtWorks
  *
  * See license.txt for license details
  */
@@ -23,6 +23,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @since 0.1
  */
 public class Decorating {

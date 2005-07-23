@@ -21,10 +21,25 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  */
 public class Dispatching {
 
+    /**
+     * Create a dispatching proxy of given types for the given objects.
+     * 
+     * @param types the types of the proxy
+     * @param delegates the objects, that will receive the calls
+     * @return the created proxy
+     */
     public static Object object(final Class[] types, final Object[] delegates) {
         return object(types, delegates, new StandardProxyFactory());
     }
 
+    /**
+     * Create a dispatching proxy of given types for the given objects using a special ProxyFactory implementation.
+     * 
+     * @param types the types of the proxy
+     * @param delegates the objects, that will receive the calls
+     * @param factory the {@link ProxyFactory} to use
+     * @return the created proxy
+     */
     public static Object object(final Class[] types, final Object[] delegates, final ProxyFactory factory) {
         final ObjectReference[] references = new ObjectReference[delegates.length];
         for (int i = 0; i < references.length; i++) {

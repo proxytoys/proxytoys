@@ -22,6 +22,11 @@ import java.lang.reflect.Proxy;
 public class StandardProxyFactory extends AbstractProxyFactory {
     /** The native InvocationHandler implementation. */
     class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
+        /**
+         * Construct a StandardInvocationHandlerAdapter.
+         * 
+         * @param invoker the wrapping invoker instance
+         */
         public StandardInvocationHandlerAdapter(Invoker invoker) {
             super(invoker);
         }

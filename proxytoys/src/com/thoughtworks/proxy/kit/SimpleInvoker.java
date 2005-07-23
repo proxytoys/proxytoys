@@ -20,7 +20,8 @@ import java.lang.reflect.Method;
  * @since 0.1
  */
 public class SimpleInvoker implements Invoker {
-    private final Object target;
+    /** the target of the invocations. */
+    protected final Object target;
 
     /**
      * Construct a SimpleInvoker.

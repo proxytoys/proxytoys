@@ -39,8 +39,13 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     // Keeps track of what is currently being created - to avoid infinite recursion
     private List creating = new ArrayList();
 
-    /** The native invocation handle. */
+    /** The native invocation handler. */
     class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
+        /**
+         * Construct a CGLIBInvocationHandlerAdapter.
+         * 
+         * @param invoker the wrapping invoker instance
+         */
         public CGLIBInvocationHandlerAdapter(Invoker invoker) {
             super(invoker);
         }
