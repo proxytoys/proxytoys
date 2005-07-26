@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @since 0.1
  */
 public class FailoverInvoker extends HotSwappingInvoker {
@@ -29,7 +30,6 @@ public class FailoverInvoker extends HotSwappingInvoker {
     private final Class exceptionClass;
 
     private int current;
-    private Object currentProxy;
 
     /**
      * Construct a FailoverInvoker.
@@ -40,7 +40,8 @@ public class FailoverInvoker extends HotSwappingInvoker {
      * @param exceptionClass the type of the exception
      * @throws IllegalArgumentException if <tt>exceptionClass</tt> is not a {@link Throwable}
      */
-    public FailoverInvoker(Class[] types, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
+    public FailoverInvoker(
+            final Class[] types, final ProxyFactory proxyFactory, final Object[] delegates, final Class exceptionClass) {
         super(types, proxyFactory, new SimpleReference(delegates[0]), Delegating.STATIC_TYPING);
         if (!Throwable.class.isAssignableFrom(exceptionClass)) {
             throw new IllegalArgumentException("exceptionClass is not a Throwable");
@@ -49,12 +50,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
         this.exceptionClass = exceptionClass;
     }
 
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        this.currentProxy = proxy;
-        return super.invoke(proxy, method, args);
-    }
-
-    protected Object invokeOnDelegate(Method method, Object[] args) throws InvocationTargetException {
+    protected Object invokeOnDelegate(final Method method, final Object[] args) throws InvocationTargetException {
         Object result = null;
         final int original = current;
         while (result == null) {
@@ -64,13 +60,12 @@ public class FailoverInvoker extends HotSwappingInvoker {
             } catch (InvocationTargetException e) {
                 if (exceptionClass.isInstance(e.getTargetException())) {
                     synchronized (this) {
-                        HotSwappingInvoker hiding = (HotSwappingInvoker)proxyFactory.getInvoker(currentProxy);
                         current++;
                         current = current % delegates.length;
                         if (original == current) {
                             throw e;
                         }
-                        hiding.hotswap(delegates[current]);
+                        hotswap(delegates[current]);
                     }
                 } else {
                     throw e;

@@ -26,11 +26,7 @@ import java.util.Date;
 public class FailoverToyExample {
 
     public static void packageOverviewExample1() {
-        Format[] formats = new Format[]{
-                NumberFormat.getInstance(),
-                DateFormat.getDateInstance(),
-                new MessageFormat("{1}, {0}"),
-        };
+        Format[] formats = new Format[]{NumberFormat.getInstance(), DateFormat.getDateInstance(), new MessageFormat("{1}, {0}"),};
         Format format = (Format)Failover.object(Format.class, new CglibProxyFactory(), formats, RuntimeException.class);
         System.out.println("Format a date: " + format.format(new Date()));
         System.out.println("Format a message: " + format.format(new String[]{"John", "Doe"}));
@@ -39,10 +35,10 @@ public class FailoverToyExample {
 
     public static void packageOverviewExample2() {
         DataInput[] dataInputs = new DataInput[]{
-                new DataInputStream(new ByteArrayInputStream(new byte[] {0, 'A', 0, 'n', 0, ' '})),
-                new DataInputStream(new ByteArrayInputStream(new byte[] {0, 'e', 0, 'x', 0, 'a', 0, 'm', 0, 'p', 0, 'l', 0, 'e'})),
-        };
-        DataInput dataInput = (DataInput)Failover.object(DataInput.class, new StandardProxyFactory(), dataInputs, IOException.class);
+                new DataInputStream(new ByteArrayInputStream(new byte[]{0, 'A', 0, 'n', 0, ' '})),
+                new DataInputStream(new ByteArrayInputStream(new byte[]{0, 'e', 0, 'x', 0, 'a', 0, 'm', 0, 'p', 0, 'l', 0, 'e'})),};
+        DataInput dataInput = (DataInput)Failover
+                .object(DataInput.class, new StandardProxyFactory(), dataInputs, IOException.class);
         StringBuffer buffer = new StringBuffer();
         try {
             while (buffer.append(dataInput.readChar()) != null)

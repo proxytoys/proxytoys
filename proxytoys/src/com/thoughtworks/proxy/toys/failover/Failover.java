@@ -29,7 +29,8 @@ public class Failover {
      * @param exceptionClass the type of the exceptions triggering failover
      * @return the generated proxy
      */
-    public static Object object(Class type, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
+    public static Object object(
+            final Class type, final ProxyFactory proxyFactory, final Object[] delegates, final Class exceptionClass) {
         return object(new Class[]{type}, proxyFactory, delegates, exceptionClass);
     }
 
@@ -43,7 +44,8 @@ public class Failover {
      * @param exceptionClass the type of the exceptions triggering failover
      * @return the generated proxy
      */
-    public static Object object(Class[] types, ProxyFactory proxyFactory, Object[] delegates, Class exceptionClass) {
+    public static Object object(
+            final Class[] types, final ProxyFactory proxyFactory, final Object[] delegates, final Class exceptionClass) {
         return new FailoverInvoker(types, proxyFactory, delegates, exceptionClass).proxy();
     }
 

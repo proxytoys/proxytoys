@@ -13,23 +13,58 @@ import com.thoughtworks.proxy.kit.SimpleReference;
 
 
 /**
+ * Factory for proxy instances that allow to exchange the delegated instance. Every created proxy will implement
+ * {@link Swappable}, that is used for the hot swap operation.
+ * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @since 0.1
  */
 public class HotSwapping {
 
-    public static Object object(Class type, ProxyFactory proxyFactory, Object delegate) {
+    /**
+     * Create a proxy with hot swapping capability for a specific type and API compatible delegates. The delegate does not have
+     * to implement the type of the proxy unless it has signature compatible methods.
+     * 
+     * @param type the type of the proxy
+     * @param proxyFactory the {@link ProxyFactory} to use
+     * @param delegate the delegated object
+     * @return the created proxy implementing the <tt>type</tt> and {@link Swappable}
+     */
+    public static Object object(final Class type, final ProxyFactory proxyFactory, final Object delegate) {
         return object(new Class[]{type}, proxyFactory, delegate, type.isInstance(delegate));
     }
 
     /**
-     * @return a proxy that hides the implementation and implements {@link Swappable}.
+     * Create a proxy with hot swapping capabilities for specifiy types of the delegate. The delegate must implement the given
+     * types, if the invoker is in static typing mode, otherwise it must only have signature compatible methods.
+     * 
+     * @param types the types of the proxy
+     * @param proxyFactory the {@link ProxyFactory} to use
+     * @param delegate the delegated object
+     * @param staticTyping {@link com.thoughtworks.proxy.toys.delegate.Delegating#STATIC_TYPING STATIC_TYPING} or
+     *            {@link com.thoughtworks.proxy.toys.delegate.Delegating#DYNAMIC_TYPING DYNAMIC_TYPING}
+     * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
      */
-    public static Object object(Class[] types, ProxyFactory proxyFactory, Object delegate, boolean staticTyping) {
+    public static Object object(
+            final Class[] types, final ProxyFactory proxyFactory, final Object delegate, final boolean staticTyping) {
         ObjectReference delegateReference = new SimpleReference(delegate);
         return object(types, proxyFactory, delegateReference, staticTyping);
     }
 
-    public static Object object(Class[] types, ProxyFactory proxyFactory, ObjectReference objectReference, boolean staticTyping) {
+    /**
+     * Create a proxy with hot swapping capabilities for specifiy types of the delegate given with an {@link ObjectReference}.
+     * The delegate must implement the given types, if the invoker is in static typing mode, otherwise it must only have
+     * signature compatible methods.
+     * 
+     * @param types the types of the proxy
+     * @param proxyFactory the {@link ProxyFactory} to use
+     * @param objectReference the {@link ObjectReference} with the delegate
+     * @param staticTyping {@link com.thoughtworks.proxy.toys.delegate.Delegating#STATIC_TYPING STATIC_TYPING} or
+     *            {@link com.thoughtworks.proxy.toys.delegate.Delegating#DYNAMIC_TYPING DYNAMIC_TYPING}
+     * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
+     */
+    public static Object object(
+            final Class[] types, final ProxyFactory proxyFactory, final ObjectReference objectReference, final boolean staticTyping) {
         return new HotSwappingInvoker(types, proxyFactory, objectReference, staticTyping).proxy();
     }
 
