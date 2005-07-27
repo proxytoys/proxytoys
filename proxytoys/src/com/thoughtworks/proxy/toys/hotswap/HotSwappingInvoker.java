@@ -49,6 +49,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
     private final Class[] types;
     private transient boolean executed = false;
+    private final transient ThreadLocal delegate;
 
     /**
      * Construct a HotSwappingInvoker.
@@ -64,27 +65,43 @@ public class HotSwappingInvoker extends DelegatingInvoker {
             final boolean staticTyping) {
         super(proxyFactory, delegateReference, staticTyping);
         this.types = types;
+        this.delegate = new ThreadLocal();
     }
 
-    public synchronized Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result;
-        if (method.equals(hotswap)) {
-            result = hotswap(args[0]);
-        } else if (method.equals(checkForCycle)) {
-            if (executed) {
-                throw new IllegalStateException("Cyclic dependency");
-            } else {
-                if (delegate() instanceof CycleCheck) {
-                    executed = true;
-                    ((CycleCheck)delegate()).checkForCycle();
-                    executed = false;
+        try {
+            delegate.set(delegate()); // ensure delegate will not change during invocation
+            if (method.equals(hotswap)) {
+                result = hotswap(args[0]);
+            } else if (method.equals(checkForCycle)) {
+                if (executed) {
+                    throw new IllegalStateException("Cyclic dependency");
+                } else {
+                    if (delegate() instanceof CycleCheck) {
+                        executed = true;
+                        ((CycleCheck)delegate()).checkForCycle();
+                        executed = false;
+                    }
                 }
+                return Void.TYPE;
+            } else {
+                result = super.invoke(proxy, method, args);
             }
-            return Void.TYPE;
-        } else {
-            result = super.invoke(proxy, method, args);
+        } finally {
+            delegate.set(null);
         }
         return result;
+    }
+
+    protected Object delegate() {
+        final Object currentDelegate;
+        currentDelegate = delegate.get();
+        if (currentDelegate == null) {
+            return super.delegate();
+        } else {
+            return currentDelegate;
+        }
     }
 
     /**
@@ -94,8 +111,10 @@ public class HotSwappingInvoker extends DelegatingInvoker {
      * @return the old delegate
      * @throws IllegalStateException if cyclic swapping action is detected
      */
-    protected synchronized Object hotswap(final Object newDelegate) {
+    protected Object hotswap(final Object newDelegate) {
         Object result = delegateReference.get();
+        // Note, for the cycle detection the delegate have to be set first
+        delegate.set(newDelegate);
         delegateReference.set(newDelegate);
         if (newDelegate instanceof CycleCheck) {
             ((CycleCheck)newDelegate).checkForCycle();

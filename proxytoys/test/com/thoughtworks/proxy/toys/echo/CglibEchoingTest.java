@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CglibEchoingTestCase extends ProxyTestCase {
+public class CglibEchoingTest extends ProxyTestCase {
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
     }

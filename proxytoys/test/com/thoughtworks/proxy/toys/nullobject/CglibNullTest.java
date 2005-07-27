@@ -7,7 +7,6 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.3 $
  */
 public class CglibNullTest extends ProxyTestCase {
 

@@ -23,7 +23,6 @@ import java.util.Vector;
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @version $Revision: 1.2 $
  */
 public class ClassHierarchyIntrospectorTest extends TestCase {
     public void testMostCommonSuperclassForClassesWithACommonBaseClass() {

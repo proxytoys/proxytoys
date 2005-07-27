@@ -7,9 +7,10 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.3 $
+ * @author J&ouml;rg Schaible
  */
 public class CglibMulticastTest extends ProxyTestCase {
+
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
     }
@@ -21,7 +22,31 @@ public class CglibMulticastTest extends ProxyTestCase {
             this.bool = bool;
         }
 
+        public byte getByte() {
+            return 2;
+        }
+
+        public char getChar() {
+            return 2;
+        }
+
+        public short getShort() {
+            return 2;
+        }
+
         public int getInt() {
+            return 2;
+        }
+
+        public long getLong() {
+            return 2;
+        }
+
+        public float getFloat() {
+            return 2;
+        }
+
+        public double getDouble() {
             return 2;
         }
 
@@ -30,15 +55,46 @@ public class CglibMulticastTest extends ProxyTestCase {
         }
     }
 
-    public void testShouldAddIntegers() {
-        Primitives primitives = (Primitives)Multicasting.object(getFactory(), new Object[]{
+    private Primitives primitives;
+
+    protected void setUp() throws Exception {
+        super.setUp();
+        primitives = (Primitives)Multicasting.object(getFactory(), new Object[]{
                 new Primitives(true), new Primitives(true), new Primitives(true)});
+    }
+
+    public void testShouldAddBytes() {
+        assertEquals(6, primitives.getByte());
+    }
+
+    public void testShouldAddChars() {
+        assertEquals(6, primitives.getChar());
+    }
+
+    public void testShouldAddShorts() {
+        assertEquals(6, primitives.getShort());
+    }
+
+    public void testShouldAddIntegers() {
         assertEquals(6, primitives.getInt());
     }
 
+    public void testShouldAddLong() {
+        assertEquals(6, primitives.getLong());
+    }
+
+    public void testShouldAddFloat() {
+        assertEquals(6, primitives.getFloat(), 0.0001);
+    }
+
+    public void testShouldAddDouble() {
+        assertEquals(6, primitives.getDouble(), 0.0001);
+    }
+
     public void testShouldAndBooleans() {
-        Primitives primitives = (Primitives)Multicasting.object(getFactory(), new Object[]{
-                new Primitives(true), new Primitives(false), new Primitives(false)});
+        assertTrue(primitives.getBoolean());
+        primitives = (Primitives)Multicasting.object(getFactory(), new Object[]{
+                new Primitives(true), new Primitives(true), new Primitives(false)});
         assertFalse(primitives.getBoolean());
     }
 

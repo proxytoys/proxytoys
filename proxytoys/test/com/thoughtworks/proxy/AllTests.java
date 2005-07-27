@@ -13,6 +13,7 @@ import com.thoughtworks.proxy.kit.ClassHierarchyIntrospectorTest;
 import com.thoughtworks.proxy.toys.decorate.DecoratingTest;
 import com.thoughtworks.proxy.toys.delegate.DelegatingTest;
 import com.thoughtworks.proxy.toys.dispatch.DispatchingTest;
+import com.thoughtworks.proxy.toys.echo.CglibEchoingTest;
 import com.thoughtworks.proxy.toys.echo.EchoingTest;
 import com.thoughtworks.proxy.toys.failover.FailoverTest;
 import com.thoughtworks.proxy.toys.hotswap.CglibHotSwappingTest;
@@ -43,6 +44,7 @@ public class AllTests {
         suite.addTest(createProxyFactorySuite(new CglibProxyFactory(), "Cglib"));
 
         // CGLIB-specific tests
+        suite.addTestSuite(CglibEchoingTest.class);
         suite.addTestSuite(CglibHotSwappingTest.class);
         suite.addTestSuite(CglibMulticastTest.class);
         suite.addTestSuite(CglibNullTest.class);

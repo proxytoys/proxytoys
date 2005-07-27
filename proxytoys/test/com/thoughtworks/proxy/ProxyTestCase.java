@@ -8,7 +8,6 @@ import org.jmock.MockObjectTestCase;
 /**
  * @author Dan North
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.3 $
  */
 public abstract class ProxyTestCase extends MockObjectTestCase {
     /**

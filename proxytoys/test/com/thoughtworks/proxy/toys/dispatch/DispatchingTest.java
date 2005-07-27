@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * @author J&ouml;rg Schaible
+ */
 public class DispatchingTest extends ProxyTestCase {
 
     public interface Foo {

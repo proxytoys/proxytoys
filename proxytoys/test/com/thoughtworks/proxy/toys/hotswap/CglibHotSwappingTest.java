@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.3 $
  */
 public class CglibHotSwappingTest extends ProxyTestCase {
     protected ProxyFactory createProxyFactory() {

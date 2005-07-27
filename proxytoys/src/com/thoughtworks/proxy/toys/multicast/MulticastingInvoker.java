@@ -1,3 +1,10 @@
+/*
+ * Created on 11-May-2004
+ *
+ * (c) 2003-2005 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
 package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.Invoker;
@@ -14,24 +21,36 @@ import java.util.List;
  * 
  * @author Aslak Helles&oslash;y
  * @author Chris Stevenson
- * @version $Revision: 1.3 $
+ * @since 0.0
  */
 public class MulticastingInvoker implements Invoker {
     private final Class[] types;
     private final ProxyFactory proxyFactory;
     private final Object[] targets;
 
-    public MulticastingInvoker(Class[] type, ProxyFactory proxyFactory, Object[] targets) {
+    /**
+     * Construct a MulticastingInvoker.
+     * 
+     * @param type the implemented types
+     * @param proxyFactory the {@link ProxyFactory} to use
+     * @param targets the target instances where the proxy delegates a call
+     */
+    public MulticastingInvoker(final Class[] type, final ProxyFactory proxyFactory, final Object[] targets) {
         this.types = type;
         this.proxyFactory = proxyFactory;
         this.targets = targets;
     }
 
-    Object proxy() {
+    /**
+     * Create a proxy for this Invoker.
+     * 
+     * @return the new proxy
+     */
+    public Object proxy() {
         return proxyFactory.createProxy(types, this);
     }
 
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         final List invocationResults = new ArrayList();
         for (int i = 0; i < targets.length; i++) {
             if (method.getDeclaringClass().isInstance(targets[i])) {
@@ -43,21 +62,54 @@ public class MulticastingInvoker implements Invoker {
         }
         if (invocationResults.size() == 0) {
             return null;
-        }
-        if (invocationResults.size() == 1) {
+        } else if (invocationResults.size() == 1) {
             return invocationResults.get(0);
-        }
-        if (method.getReturnType().equals(int.class)) {
+        } else if (method.getReturnType().equals(byte.class)) {
+            return addBytes(invocationResults.toArray());
+        } else if (method.getReturnType().equals(char.class)) {
+            return addChars(invocationResults.toArray());
+        } else if (method.getReturnType().equals(short.class)) {
+            return addShorts(invocationResults.toArray());
+        } else if (method.getReturnType().equals(int.class)) {
             return addIntegers(invocationResults.toArray());
+        } else if (method.getReturnType().equals(long.class)) {
+            return addLongs(invocationResults.toArray());
+        } else if (method.getReturnType().equals(float.class)) {
+            return addFloats(invocationResults.toArray());
+        } else if (method.getReturnType().equals(double.class)) {
+            return addDoubles(invocationResults.toArray());
+        } else if (method.getReturnType().equals(boolean.class)) {
+            return andBooleans(invocationResults.toArray());
+        } else {
+            return Multicasting.object(proxyFactory, invocationResults.toArray());
         }
-        if (method.getReturnType().equals(boolean.class)) {
-            return addBooleans(invocationResults.toArray());
-        }
-
-        return Multicasting.object(proxyFactory, invocationResults.toArray());
     }
 
-    private static Integer addIntegers(Object[] args) {
+    private static Byte addBytes(final Object[] args) {
+        byte result = 0;
+        for (int i = 0; i < args.length; i++) {
+            result += ((Byte)args[i]).byteValue();
+        }
+        return new Byte(result);
+    }
+
+    private static Character addChars(final Object[] args) {
+        char result = 0;
+        for (int i = 0; i < args.length; i++) {
+            result += ((Character)args[i]).charValue();
+        }
+        return new Character(result);
+    }
+
+    private static Short addShorts(final Object[] args) {
+        short result = 0;
+        for (int i = 0; i < args.length; i++) {
+            result += ((Short)args[i]).shortValue();
+        }
+        return new Short(result);
+    }
+
+    private static Integer addIntegers(final Object[] args) {
         int result = 0;
         for (int i = 0; i < args.length; i++) {
             result += ((Integer)args[i]).intValue();
@@ -65,7 +117,31 @@ public class MulticastingInvoker implements Invoker {
         return new Integer(result);
     }
 
-    private static Boolean addBooleans(Object[] args) {
+    private static Long addLongs(final Object[] args) {
+        long result = 0;
+        for (int i = 0; i < args.length; i++) {
+            result += ((Long)args[i]).longValue();
+        }
+        return new Long(result);
+    }
+
+    private static Float addFloats(final Object[] args) {
+        float result = 0;
+        for (int i = 0; i < args.length; i++) {
+            result += ((Float)args[i]).floatValue();
+        }
+        return new Float(result);
+    }
+
+    private static Double addDoubles(final Object[] args) {
+        double result = 0;
+        for (int i = 0; i < args.length; i++) {
+            result += ((Double)args[i]).doubleValue();
+        }
+        return new Double(result);
+    }
+
+    private static Boolean andBooleans(final Object[] args) {
         for (int i = 0; i < args.length; i++) {
             if (!((Boolean)args[i]).booleanValue()) {
                 return Boolean.FALSE;
@@ -73,5 +149,4 @@ public class MulticastingInvoker implements Invoker {
         }
         return Boolean.TRUE;
     }
-
 }

@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.3 $
  */
 public class HotSwappingTest extends ProxyTestCase {
 

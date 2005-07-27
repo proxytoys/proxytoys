@@ -13,7 +13,6 @@ import java.util.Map;
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @version $Revision: 1.3 $
  */
 public class MulticastTest extends ProxyTestCase {
 
@@ -152,6 +151,7 @@ public class MulticastTest extends ProxyTestCase {
         assertSame(map, multicast);
     }
 
+    // joehni: IMHo not a valid test case, looks more like an mix of failover and pool
     public void TODOtestShouldInvokeMethodsInARoundRobinFashion() {
         TailImpl t1 = new TailImpl();
         TailImpl t2 = new TailImpl();

@@ -62,6 +62,7 @@ public class DelegatingInvoker implements Invoker {
 
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         final Object result;
+        final Object delegate = delegate();
 
         // equals(...) and hashCode()
         if (method.equals(ClassHierarchyIntrospector.equals)) {
@@ -73,16 +74,16 @@ public class DelegatingInvoker implements Invoker {
                     arg = ((DelegatingInvoker)invoker).delegate();
                 }
             }
-            if (delegate() == null) {
+            if (delegate == null) {
                 result = arg == null ? Boolean.TRUE : Boolean.FALSE;
             } else {
-                result = delegate().equals(arg) ? Boolean.TRUE : Boolean.FALSE;
+                result = delegate.equals(arg) ? Boolean.TRUE : Boolean.FALSE;
             }
         } else if (method.equals(ClassHierarchyIntrospector.hashCode)) {
             result = new Integer(hashCode());
 
             // null delegate
-        } else if (delegate() == null) {
+        } else if (delegate == null) {
             result = null;
 
             // regular method call
