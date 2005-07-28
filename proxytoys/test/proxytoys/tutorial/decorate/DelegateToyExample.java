@@ -61,7 +61,7 @@ public class DelegateToyExample {
     public static void main(String[] args) {
         System.out.println();
         System.out.println();
-        System.out.println("Running Delegating Toy Examples");
+        System.out.println("Running Delegate Toy Examples");
         System.out.println();
         System.out.println("Example 1 of Package Overview:");
         packageOverviewExample1();

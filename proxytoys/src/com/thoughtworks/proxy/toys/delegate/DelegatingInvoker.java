@@ -10,7 +10,7 @@ package com.thoughtworks.proxy.toys.delegate;
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.kit.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.SimpleReference;
 
@@ -65,7 +65,7 @@ public class DelegatingInvoker implements Invoker {
         final Object delegate = delegate();
 
         // equals(...) and hashCode()
-        if (method.equals(ClassHierarchyIntrospector.equals)) {
+        if (method.equals(ReflectionUtils.equals)) {
             // TODO this whole section is really ugly and needs cleaning up
             Object arg = args[0];
             while (arg != null && proxyFactory.isProxyClass(arg.getClass())) {
@@ -79,7 +79,7 @@ public class DelegatingInvoker implements Invoker {
             } else {
                 result = delegate.equals(arg) ? Boolean.TRUE : Boolean.FALSE;
             }
-        } else if (method.equals(ClassHierarchyIntrospector.hashCode)) {
+        } else if (method.equals(ReflectionUtils.hashCode)) {
             result = new Integer(hashCode());
 
             // null delegate

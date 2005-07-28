@@ -76,7 +76,7 @@ public class DispatcherToyExample {
     public static void main(String[] args) {
         System.out.println();
         System.out.println();
-        System.out.println("Running Dispatching Toy Examples");
+        System.out.println("Running Dispatcher Toy Examples");
         System.out.println();
         System.out.println("Example 1 of Package Overview:");
         packageOverviewExample1();

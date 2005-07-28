@@ -58,7 +58,7 @@ public class DecorateToyExample {
     public static void main(String[] args) {
         System.out.println();
         System.out.println();
-        System.out.println("Running Decorating Toy Examples");
+        System.out.println("Running Decorate Toy Examples");
         System.out.println();
         System.out.println("Example 1 of Package Overview:");
         packageOverviewExample1();

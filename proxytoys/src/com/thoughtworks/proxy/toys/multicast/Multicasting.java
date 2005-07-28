@@ -9,7 +9,9 @@ package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.kit.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
+
+import java.util.Set;
 
 
 /**
@@ -32,12 +34,15 @@ public class Multicasting {
      * @param types the types that are implemented by the proxy
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param targets the target objects
-     * @return the new proxy or the only target
+     * @return the new proxy implementing {@link Multicast} or the only target
      */
     public static Object object(final Class[] types, final ProxyFactory proxyFactory, final Object[] targets) {
         if (targets.length == 1) {
             int i;
             for (i = 0; i < types.length; i++) {
+                if (types[i] == Multicast.class) {
+                    continue;
+                }
                 if (!types[i].isAssignableFrom(targets[0].getClass())) {
                     break;
                 }
@@ -59,7 +64,7 @@ public class Multicasting {
      * @param type the type that is implemented by the proxy
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param targets the target objects
-     * @return the new proxy or the only target
+     * @return the new proxy implementing {@link Multicast} or the only target
      */
     public static Object object(final Class type, final ProxyFactory proxyFactory, final Object[] targets) {
         return object(new Class[]{type}, proxyFactory, targets);
@@ -75,15 +80,15 @@ public class Multicasting {
      * 
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param targets the target objects
-     * @return the new proxy or the only target
+     * @return the new proxy implementing {@link Multicast} or the only target
      */
     public static Object object(final ProxyFactory proxyFactory, final Object[] targets) {
         if (targets.length > 1) {
-            final Class superclass = ClassHierarchyIntrospector.getMostCommonSuperclass(targets);
-            final Class[] interfaces = ClassHierarchyIntrospector.getAllInterfaces(targets);
-            final Class[] proxyTypes = ClassHierarchyIntrospector.addIfClassProxyingSupportedAndNotObject(
+            final Class superclass = ReflectionUtils.getMostCommonSuperclass(targets);
+            final Set interfaces = ReflectionUtils.getAllInterfaces(targets);
+            ReflectionUtils.addIfClassProxyingSupportedAndNotObject(
                     superclass, interfaces, proxyFactory);
-            return object(proxyTypes, proxyFactory, targets);
+            return object(ReflectionUtils.toClassArray(interfaces), proxyFactory, targets);
         } else {
             return targets[0];
         }
@@ -97,7 +102,7 @@ public class Multicasting {
      * </p>
      * 
      * @param targets the target objects
-     * @return the new proxy or the only target
+     * @return the new proxy implementing {@link Multicast} or the only target
      */
     public static Object object(final Object[] targets) {
         return object(new StandardProxyFactory(), targets);

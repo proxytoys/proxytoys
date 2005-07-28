@@ -9,7 +9,7 @@ package com.thoughtworks.proxy.toys.nullobject;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.kit.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -46,10 +46,10 @@ public class NullInvoker implements Invoker {
         // Object methods
         if (toString.equals(method)) {
             result = "Null Object for " + type.getName();
-        } else if (ClassHierarchyIntrospector.equals.equals(method)) {
+        } else if (ReflectionUtils.equals.equals(method)) {
             Object other = args[0];
             result = (Null.isNullObject(other, proxyFactory) && type.equals(getType(other))) ? Boolean.TRUE : Boolean.FALSE;
-        } else if (ClassHierarchyIntrospector.hashCode.equals(method)) {
+        } else if (ReflectionUtils.hashCode.equals(method)) {
             result = new Integer(type.hashCode());
         }
 

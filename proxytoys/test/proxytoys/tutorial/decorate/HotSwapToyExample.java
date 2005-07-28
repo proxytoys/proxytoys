@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 /**
  * @author J&ouml;rg Schaible
  */
-public class HotSwappingToyExample {
+public class HotSwapToyExample {
 
     public static void packageOverviewExample1() {
         ByteArrayOutputStream outStreamOdd = new ByteArrayOutputStream();
@@ -44,7 +44,7 @@ public class HotSwappingToyExample {
     public static void main(String[] args) {
         System.out.println();
         System.out.println();
-        System.out.println("Running HotSwapping Toy Examples");
+        System.out.println("Running HotSwap Toy Examples");
         System.out.println();
         System.out.println("Example 1 of Package Overview:");
         packageOverviewExample1();

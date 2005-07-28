@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 /**
  * @author J&ouml;rg Schaible
  */
-public class EchoingToyExample {
+public class EchoToyExample {
 
     public static void packageOverviewExample1() {
         Map map = (Map)Echoing.object(Map.class, new HashMap(), new CglibProxyFactory());
@@ -48,7 +48,7 @@ public class EchoingToyExample {
     public static void main(String[] args) {
         System.out.println();
         System.out.println();
-        System.out.println("Running Echoing Toy Examples");
+        System.out.println("Running Echo Toy Examples");
         System.out.println();
         System.out.println("Example 1 of Package Overview:");
         packageOverviewExample1();

@@ -10,6 +10,7 @@ package com.thoughtworks.proxy.toys.multicast;
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,32 @@ import java.util.List;
  * 
  * @author Aslak Helles&oslash;y
  * @author Chris Stevenson
- * @since 0.0
+ * @since 0.1
  */
 public class MulticastingInvoker implements Invoker {
+    private static final Method multicastTargetsDirect;
+    private static final Method multicastTargetsIndirect;
+    private static final Method getTargetsInArray;
+    private static final Method getTargetsInTypedArray;
+
+    static {
+        try {
+            multicastTargetsDirect = Multicast.class.getMethod("multicastTargets", new Class[]{Method.class, Object[].class});
+            multicastTargetsIndirect = Multicast.class.getMethod("multicastTargets", new Class[]{
+                    Class.class, String.class, Object[].class});
+            getTargetsInArray = Multicast.class.getMethod("getTargetsInArray", null);
+            getTargetsInTypedArray = Multicast.class.getMethod("getTargetsInArray", new Class[]{Class.class});
+        } catch (NoSuchMethodException e) {
+            // /CLOVER:OFF
+            throw new InternalError();
+            // /CLOVER:ON
+        } catch (SecurityException e) {
+            // /CLOVER:OFF
+            throw new InternalError();
+            // /CLOVER:ON
+        }
+    }
+
     private final Class[] types;
     private final ProxyFactory proxyFactory;
     private final Object[] targets;
@@ -47,10 +71,68 @@ public class MulticastingInvoker implements Invoker {
      * @return the new proxy
      */
     public Object proxy() {
-        return proxyFactory.createProxy(types, this);
+        final Class[] classes;
+        int i;
+        for (i = types.length; --i >= 0 && types[i] != Multicast.class;)
+            ;
+        if (i < 0) {
+            classes = new Class[types.length + 1];
+            if (classes.length > 1) {
+                System.arraycopy(types, 0, classes, 1, types.length);
+            }
+            classes[0] = Multicast.class;
+        } else {
+            classes = types;
+        }
+        return proxyFactory.createProxy(classes, this);
     }
 
-    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+    public Object invoke(final Object proxy, Method method, Object[] args) throws Throwable {
+        if (getTargetsInArray.equals(method)) {
+            return targets;
+        } else if (getTargetsInTypedArray.equals(method)) {
+            final Object[] elements = (Object[])Array.newInstance((Class)args[0], targets.length);
+            System.arraycopy(targets, 0, elements, 0, targets.length);
+            return elements;
+        } else if (multicastTargetsDirect.equals(method)) {
+            method = (Method)args[0];
+            args = (Object[])args[1];
+        } else if (multicastTargetsIndirect.equals(method)) {
+            final Class type = (Class)args[0];
+            final String methodName = (String)args[1];
+            final Object[] newArgs = args[2] == null ? new Object[0] : (Object[])args[2];
+            final Method[] methods = type.getMethods();
+            Method newMethod = null;
+            for (int i = 0; newMethod == null && i < methods.length; i++) {
+                if (methodName.equals(methods[i].getName())) {
+                    final Class[] argTypes = methods[i].getParameterTypes();
+                    if (argTypes.length == newArgs.length) {
+                        newMethod = methods[i];
+                        for (int j = 0; newMethod != null && j < argTypes.length; j++) {
+                            if (!argTypes[j].isAssignableFrom(newArgs[j].getClass())) {
+                                newMethod = null;
+                            }
+                        }
+                    }
+                }
+            }
+            if (newMethod == null) {
+                final StringBuffer name = new StringBuffer(type.getName());
+                name.append('.');
+                name.append(methodName);
+                name.append('(');
+                for (int i = 0; i < newArgs.length; i++) {
+                    if (i != 0) {
+                        name.append(", ");
+                    }
+                    name.append(newArgs[i].getClass().getName());
+                }
+                name.append(')');
+                throw new NoSuchMethodException(name.toString());
+            }
+            method = newMethod;
+            args = newArgs;
+        }
         final List invocationResults = new ArrayList();
         for (int i = 0; i < targets.length; i++) {
             if (method.getDeclaringClass().isInstance(targets[i])) {

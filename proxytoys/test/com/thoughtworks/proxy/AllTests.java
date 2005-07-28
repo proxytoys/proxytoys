@@ -8,8 +8,9 @@
 package com.thoughtworks.proxy;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactoryTest;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.kit.ClassHierarchyIntrospectorTest;
+import com.thoughtworks.proxy.kit.ReflectionUtilsTest;
 import com.thoughtworks.proxy.toys.decorate.DecoratingTest;
 import com.thoughtworks.proxy.toys.delegate.DelegatingTest;
 import com.thoughtworks.proxy.toys.dispatch.DispatchingTest;
@@ -44,13 +45,14 @@ public class AllTests {
         suite.addTest(createProxyFactorySuite(new CglibProxyFactory(), "Cglib"));
 
         // CGLIB-specific tests
+        suite.addTestSuite(CglibProxyFactoryTest.class);
         suite.addTestSuite(CglibEchoingTest.class);
         suite.addTestSuite(CglibHotSwappingTest.class);
         suite.addTestSuite(CglibMulticastTest.class);
         suite.addTestSuite(CglibNullTest.class);
 
         // Miscellaneous
-        suite.addTestSuite(ClassHierarchyIntrospectorTest.class);
+        suite.addTestSuite(ReflectionUtilsTest.class);
 
         return suite;
     }

@@ -11,7 +11,7 @@ import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.InvokerReference;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.kit.ClassHierarchyIntrospector;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
@@ -61,7 +61,7 @@ public class DispatchingInvoker implements Invoker {
     }
 
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-        if (method.equals(ClassHierarchyIntrospector.equals)) {
+        if (method.equals(ReflectionUtils.equals)) {
             final Object arg = args[0];
             if (new StandardProxyFactory().isProxyClass(arg.getClass())
                     && ((InvokerReference)arg).getInvoker() instanceof DispatchingInvoker) {
@@ -82,9 +82,9 @@ public class DispatchingInvoker implements Invoker {
                 }
             }
             return Boolean.FALSE;
-        } else if (method.equals(ClassHierarchyIntrospector.hashCode)) {
+        } else if (method.equals(ReflectionUtils.hashCode)) {
             return new Integer(hashCode());
-        } else if (method.equals(ClassHierarchyIntrospector.toString)) {
+        } else if (method.equals(ReflectionUtils.toString)) {
             return types.toString();
         } else {
             for (int i = 0; i < invokers.length; i++) {

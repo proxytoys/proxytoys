@@ -4,6 +4,7 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -149,6 +150,53 @@ public class MulticastTest extends ProxyTestCase {
         Object multicast = Multicasting.object(new Class[]{Map.class, Serializable.class}, factory, new Object[]{map});
         assertFalse(factory.isProxyClass(multicast.getClass()));
         assertSame(map, multicast);
+    }
+
+    public void testShouldCallDurectMethodForFinalTargets() throws NoSuchMethodException {
+        Method method = StringBuffer.class.getMethod("append", new Class[]{String.class});
+        StringBuffer buffer1 = new StringBuffer();
+        StringBuffer buffer2 = new StringBuffer();
+        Multicast multicast = (Multicast)Multicasting.object(getFactory(), new Object[]{buffer1, buffer2});
+        multicast.multicastTargets(method, new Object[]{"JUnit"});
+        assertEquals("JUnit", buffer1.toString());
+        assertEquals("JUnit", buffer2.toString());
+    }
+
+    public void testShouldCallAMatchingMethodForFinalTargets() throws NoSuchMethodException {
+        StringBuffer buffer1 = new StringBuffer();
+        StringBuffer buffer2 = new StringBuffer();
+        Multicast multicast = (Multicast)Multicasting.object(getFactory(), new Object[]{buffer1, buffer2});
+        multicast.multicastTargets(StringBuffer.class, "append", new Object[]{"JUnit"});
+        assertEquals("JUnit", buffer1.toString());
+        assertEquals("JUnit", buffer2.toString());
+    }
+
+    public void testShouldThrowNoSuchMethodExceptionForANonMatchingCall() {
+        Multicast multicast = (Multicast)Multicasting.object(getFactory(), new Object[]{new StringBuffer(), new StringBuffer()});
+        try {
+            multicast.multicastTargets(StringBuffer.class, "toString", new Object[]{"JUnit", new Integer(5)});
+            fail(NoSuchMethodException.class.getName() + " expected");
+        } catch (NoSuchMethodException e) {
+            assertEquals(e.getMessage(), StringBuffer.class.getName() + ".toString(java.lang.String, java.lang.Integer)");
+        }
+    }
+
+    public void testShouldReturnTargetsInTypedArray() throws Exception {
+        StringBuffer buffer1 = new StringBuffer();
+        StringBuffer buffer2 = new StringBuffer();
+        Multicast multicast = (Multicast)Multicasting.object(getFactory(), new Object[]{buffer1, buffer2});
+        StringBuffer[] buffers = (StringBuffer[])multicast.getTargetsInArray(StringBuffer.class);
+        assertSame(buffer1, buffers[0]);
+        assertSame(buffer2, buffers[1]);
+    }
+
+    public void testShouldReturnTargetsInArray() throws Exception {
+        StringBuffer buffer1 = new StringBuffer();
+        StringBuffer buffer2 = new StringBuffer();
+        Multicast multicast = (Multicast)Multicasting.object(getFactory(), new Object[]{buffer1, buffer2});
+        Object[] buffers = multicast.getTargetsInArray();
+        assertSame(buffer1, buffers[0]);
+        assertSame(buffer2, buffers[1]);
     }
 
     // joehni: IMHo not a valid test case, looks more like an mix of failover and pool
