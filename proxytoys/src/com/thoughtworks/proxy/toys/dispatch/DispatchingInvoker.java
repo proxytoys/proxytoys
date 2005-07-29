@@ -11,8 +11,8 @@ import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.InvokerReference;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 

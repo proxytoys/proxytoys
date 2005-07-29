@@ -69,8 +69,7 @@ public class ReflectionUtilsTest extends TestCase {
     }
 
     public void testMostCommonSuperclassForCollections() {
-        assertEquals(AbstractList.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
-                new LinkedList(), new Vector()}));
+        assertEquals(AbstractList.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{new LinkedList(), new Vector()}));
     }
 
     public void testAllInterfacesOfListShouldBeFound() {

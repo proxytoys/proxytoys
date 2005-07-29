@@ -3,7 +3,7 @@
  * Created on 26.07.2005 by Jörg Schaible
  * See license.txt for license details
  */
-package proxytoys.tutorial.decorate;
+package proxytoys.tutorial.overview;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.multicast.Multicast;
@@ -14,7 +14,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;

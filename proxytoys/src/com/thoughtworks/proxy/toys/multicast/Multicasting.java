@@ -86,8 +86,7 @@ public class Multicasting {
         if (targets.length > 1) {
             final Class superclass = ReflectionUtils.getMostCommonSuperclass(targets);
             final Set interfaces = ReflectionUtils.getAllInterfaces(targets);
-            ReflectionUtils.addIfClassProxyingSupportedAndNotObject(
-                    superclass, interfaces, proxyFactory);
+            ReflectionUtils.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, proxyFactory);
             return object(ReflectionUtils.toClassArray(interfaces), proxyFactory, targets);
         } else {
             return targets[0];
