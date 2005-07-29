@@ -1,7 +1,7 @@
 /*
  * Created on 24-Mar-2004
  *
- * (c) 2003-2004 ThoughtWorks Ltd
+ * (c) 2003-2005 ThoughtWorks Ltd
  *
  * See license.txt for license details
  */
@@ -23,30 +23,14 @@ import java.util.TreeSet;
 
 
 /**
- * Factory for creating Null Objects.
- * <p>
- * A null object instantiated by this toy has deterministically boring behaviour as follows:
- * <ul>
- * <li>If a method's return type is a <em>primitive</em>, the null object returns the default for that type (e.g.
- * <tt>false</tt> for <tt>boolean</tt>).
- * <li>If a method's return type is an array, the null object returns an empty array, which is usually nicer than just
- * returninng <tt>null</tt>. (In fact an empty array is just the null object for arrays.)
- * <li>If a method's return type is {@link Object}, an Object is returned.
- * <li>If the method's return type is any other type, the null object returns one of the following:
- * <ul>
- * <li>If the currently installed {@link ProxyFactory} can create a proxy for the type, a new null object for that type is
- * returned (so you can recurse or step through object graphs without surprises). (For the standard proxy factory this requires
- * the return type to be an interface).
- * <li>If the proxyFactory cannot create a proxy for the type, null is returned.
- * </ul>
- * </ul>
- * </p>
+ * Toy factory to create proxies acting as Null Objects.
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:nospamx.aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
 public class Null {
 
+    /** The Null {@link Object}. */
     public static final Object NULL_OBJECT = new Object();
 
     /** Immutable Null Object implementation of {@link SortedMap} */
@@ -56,11 +40,11 @@ public class Null {
         }
 
         public void clear() {
-            throw new UnsupportedOperationException();
+            // nothing to do
         }
 
         public Object remove(Object key) {
-            throw new UnsupportedOperationException();
+            return null;
         }
 
         public Set keySet() {
@@ -83,23 +67,36 @@ public class Null {
         }
 
         public void clear() {
-            throw new UnsupportedOperationException();
+            // nothing to do
         }
 
         public boolean remove(Object o) {
-            throw new UnsupportedOperationException();
+            return false;
         }
 
         public boolean removeAll(Collection c) {
-            throw new UnsupportedOperationException();
+            return false;
         }
 
         public boolean retainAll(Collection c) {
-            throw new UnsupportedOperationException();
+            return false;
         }
     };
 
-    public static Object object(Class type, ProxyFactory proxyFactory) {
+    /**
+     * Generate a Null Object proxy for a specific type.
+     * <p>
+     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the type
+     * cannot be proxied.
+     * </p>
+     * 
+     * @param type the type implemented by the proxy
+     * @param proxyFactory the {@link ProxyFactory} in use
+     * @return object, proxy or <code>null</code>
+     * @see com.thoughtworks.proxy.toys.nullobject
+     * @since 0.1
+     */
+    public static Object object(final Class type, final ProxyFactory proxyFactory) {
         final Object result;
 
         // Primitives
@@ -154,31 +151,39 @@ public class Null {
     }
 
     /**
-     * Create a new Null Object:
+     * Generate a Null Object proxy for a specific type using the {@link StandardProxyFactory}.
+     * <p>
+     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the type
+     * cannot be proxied.
+     * </p>
      * 
-     * <pre>
-     *          Foo foo = (Foo)
-     * <tt>
-     * Null.object
-     * </tt>
-     *     (Foo.class);
-     * </pre>
+     * @param type the type implemented by the proxy
+     * @return object, proxy or <code>null</code>
+     * @see com.thoughtworks.proxy.toys.nullobject
+     * @since 0.1
      */
-    public static Object object(Class type) {
+    public static Object object(final Class type) {
         return object(type, new StandardProxyFactory());
     }
 
     /**
-     * Determine whether an object was created by {@link Null#object(Class)}
+     * Determine whether an object was created by {@link Null#object(Class)}.
+     * 
+     * @param object the object to examine
+     * @return <code>true</code> if the object is a Null proxy.
      */
-    public static boolean isNullObject(Object object) {
+    public static boolean isNullObject(final Object object) {
         return isNullObject(object, new StandardProxyFactory());
     }
 
     /**
-     * Determine whether an object was created by {@link Null#object(Class, ProxyFactory)}
+     * Determine whether an object was created by {@link Null#object(Class, ProxyFactory)}.
+     * 
+     * @param object the object to examine
+     * @param proxyFactory the {@link ProxyFactory} to use
+     * @return <code>true</code> if the object is a Null proxy.
      */
-    public static boolean isNullObject(Object object, ProxyFactory proxyFactory) {
+    public static boolean isNullObject(final Object object, final ProxyFactory proxyFactory) {
         return isStandardNullObject(object) || isNullProxyObject(object, proxyFactory);
     }
 
@@ -191,7 +196,7 @@ public class Null {
                 || object == NULL_OBJECT;
     }
 
-    private static boolean isNullProxyObject(Object object, ProxyFactory proxyFactory) {
+    private static boolean isNullProxyObject(final Object object, final ProxyFactory proxyFactory) {
         return proxyFactory.isProxyClass(object.getClass()) && proxyFactory.getInvoker(object) instanceof NullInvoker;
     }
 

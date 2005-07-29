@@ -1,7 +1,7 @@
 /*
  * Created on 14-May-2004
  * 
- * (c) 2003-2004 ThoughtWorks Ltd
+ * (c) 2003-2005 ThoughtWorks Ltd
  *
  * See license.txt for license details
  */
@@ -19,7 +19,10 @@ import java.lang.reflect.Method;
 
 
 /**
+ * A {@link Invoker} implementation that returns always new Null objects.
+ * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @since 0.1
  */
 public class NullInvoker implements Invoker {
     private static final Method toString;
@@ -35,12 +38,18 @@ public class NullInvoker implements Invoker {
     private final Class type;
     private final ProxyFactory proxyFactory;
 
-    public NullInvoker(Class type, ProxyFactory proxyFactory) {
+    /**
+     * Construct a NullInvoker.
+     * 
+     * @param type the type of the proxy
+     * @param proxyFactory the {@link ProxyFactory} to use
+     */
+    public NullInvoker(final Class type, final ProxyFactory proxyFactory) {
         this.type = type;
         this.proxyFactory = proxyFactory;
     }
 
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         Object result;
 
         // Object methods
