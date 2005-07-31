@@ -9,6 +9,7 @@ package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -99,39 +100,8 @@ public class MulticastingInvoker implements Invoker {
             method = (Method)args[0];
             args = (Object[])args[1];
         } else if (multicastTargetsIndirect.equals(method)) {
-            final Class type = (Class)args[0];
-            final String methodName = (String)args[1];
             final Object[] newArgs = args[2] == null ? new Object[0] : (Object[])args[2];
-            final Method[] methods = type.getMethods();
-            Method newMethod = null;
-            for (int i = 0; newMethod == null && i < methods.length; i++) {
-                if (methodName.equals(methods[i].getName())) {
-                    final Class[] argTypes = methods[i].getParameterTypes();
-                    if (argTypes.length == newArgs.length) {
-                        newMethod = methods[i];
-                        for (int j = 0; newMethod != null && j < argTypes.length; j++) {
-                            if (!argTypes[j].isAssignableFrom(newArgs[j].getClass())) {
-                                newMethod = null;
-                            }
-                        }
-                    }
-                }
-            }
-            if (newMethod == null) {
-                final StringBuffer name = new StringBuffer(type.getName());
-                name.append('.');
-                name.append(methodName);
-                name.append('(');
-                for (int i = 0; i < newArgs.length; i++) {
-                    if (i != 0) {
-                        name.append(", ");
-                    }
-                    name.append(newArgs[i].getClass().getName());
-                }
-                name.append(')');
-                throw new NoSuchMethodException(name.toString());
-            }
-            method = newMethod;
+            method = ReflectionUtils.getMatchingMethod((Class)args[0], (String)args[1], newArgs);
             args = newArgs;
         }
         final List invocationResults = new ArrayList();

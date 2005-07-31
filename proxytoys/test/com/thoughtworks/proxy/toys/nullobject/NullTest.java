@@ -162,9 +162,8 @@ public class NullTest extends ProxyTestCase {
         assertTrue("Object", Null.isNullObject(Null.object(Object.class, getFactory())));
     }
 
-    public void testShouldThrowUnsupportedOperationWhenMutatingNullSortedSet() throws Exception {
+    public void testShouldThrowUnsupportedOperationWhenAddToNullSortedSet() throws Exception {
         SortedSet sortedSet = (SortedSet)Null.object(SortedSet.class, getFactory());
-
         Object object = new Object();
 
         try {
@@ -179,33 +178,19 @@ public class NullTest extends ProxyTestCase {
         } catch (UnsupportedOperationException e) {
             // expected
         }
-        try {
-            sortedSet.clear();
-            fail("clear");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-        try {
-            sortedSet.remove(object);
-            fail("remove");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-        try {
-            sortedSet.removeAll(Collections.singleton(object));
-            fail("removeAll");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-        try {
-            sortedSet.retainAll(Collections.singleton(object));
-            fail("retainAll");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
     }
 
-    public void testShouldThrowUnsupportedOperationWhenMutatingNullSortedMap() throws Exception {
+    public void testShouldIgnoreRemovingFromNullSortedSet() throws Exception {
+        SortedSet sortedSet = (SortedSet)Null.object(SortedSet.class, getFactory());
+        Object object = new Object();
+
+        sortedSet.clear();
+        sortedSet.remove(object);
+        sortedSet.removeAll(Collections.singleton(object));
+        sortedSet.retainAll(Collections.singleton(object));
+    }
+
+    public void testShouldThrowUnsupportedOperationWhenAddingToNullSortedMap() throws Exception {
         SortedMap map = (SortedMap)Null.object(SortedMap.class, getFactory());
 
         try {
@@ -220,18 +205,13 @@ public class NullTest extends ProxyTestCase {
         } catch (UnsupportedOperationException e) {
             // expected
         }
-        try {
-            map.clear();
-            fail("clear");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
-        try {
-            map.remove("should fail");
-            fail("remove");
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
+    }
+
+    public void testShouldIgnoreRemvingFromMutatingNullSortedMap() throws Exception {
+        SortedMap map = (SortedMap)Null.object(SortedMap.class, getFactory());
+
+        map.clear();
+        map.remove("should fail");
     }
 
     public void testShouldReturnImmutableNullCollectionsForNullSortedMap() throws Exception {

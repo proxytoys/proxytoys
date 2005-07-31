@@ -168,4 +168,74 @@ public class ReflectionUtils {
     public static Class[] toClassArray(final Collection collection) {
         return (Class[])collection.toArray(new Class[collection.size()]);
     }
+
+    /**
+     * Get the method of the given type, that has matching parameter types to the given arguments.
+     * 
+     * @param type the type
+     * @param methodName the name of the method to search
+     * @param args the arguments to match
+     * @return the matching {@link Method}
+     * @throws NoSuchMethodException if no matching {@link Method} exists
+     * @since 0.2
+     */
+    public static Method getMatchingMethod(final Class type, final String methodName, final Object[] args)
+            throws NoSuchMethodException {
+        final Object[] newArgs = args == null ? new Object[0] : (Object[])args;
+        final Method[] methods = type.getMethods();
+        final Set possibleMethods = new HashSet();
+        Method method = null;
+        for (int i = 0; method == null && i < methods.length; i++) {
+            if (methodName.equals(methods[i].getName())) {
+                final Class[] argTypes = methods[i].getParameterTypes();
+                if (argTypes.length == newArgs.length) {
+                    boolean exact = true;
+                    Method possibleMethod = methods[i];
+                    for (int j = 0; possibleMethod != null && j < argTypes.length; j++) {
+                        final Class newArgType = newArgs[j] != null ? newArgs[j].getClass() : Object.class;
+                        if ((argTypes[j].equals(byte.class) && newArgType.equals(Byte.class))
+                                || (argTypes[j].equals(char.class) && newArgType.equals(Character.class))
+                                || (argTypes[j].equals(short.class) && newArgType.equals(Short.class))
+                                || (argTypes[j].equals(int.class) && newArgType.equals(Integer.class))
+                                || (argTypes[j].equals(long.class) && newArgType.equals(Long.class))
+                                || (argTypes[j].equals(float.class) && newArgType.equals(Float.class))
+                                || (argTypes[j].equals(double.class) && newArgType.equals(Double.class))
+                                || (argTypes[j].equals(boolean.class) && newArgType.equals(Boolean.class))) {
+                            exact = true;
+                        } else if (!argTypes[j].isAssignableFrom(newArgType)) {
+                            possibleMethod = null;
+                            exact = false;
+                        } else if (!argTypes[j].isPrimitive()) {
+                            if (!argTypes[j].equals(newArgType)) {
+                                exact = false;
+                            }
+                        }
+                    }
+                    if (exact) {
+                        method = possibleMethod;
+                    } else if (possibleMethod != null) {
+                        possibleMethods.add(possibleMethod);
+                    }
+                }
+            }
+        }
+        if (method == null && possibleMethods.size() > 0) {
+            method = (Method)possibleMethods.iterator().next();
+        }
+        if (method == null) {
+            final StringBuffer name = new StringBuffer(type.getName());
+            name.append('.');
+            name.append(methodName);
+            name.append('(');
+            for (int i = 0; i < newArgs.length; i++) {
+                if (i != 0) {
+                    name.append(", ");
+                }
+                name.append(newArgs[i].getClass().getName());
+            }
+            name.append(')');
+            throw new NoSuchMethodException(name.toString());
+        }
+        return method;
+    }
 }

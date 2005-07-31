@@ -27,7 +27,7 @@ public class NullToyExample {
             System.out.println("Array is empty: " + file.list().length);
             System.out.println("toURL returns null, since URL is final: " + (file.toURL() == null));
             System.out.println("Parent file is Null proxy: " + Null.isNullObject(file.getParentFile(), factory));
-            
+
         } catch (MalformedURLException e) {
             // ignore
         }
