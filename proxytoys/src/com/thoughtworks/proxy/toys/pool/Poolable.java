@@ -1,4 +1,6 @@
 /*
+ * Created on 01-Jul-2004
+ * 
  * (c) 2004-2005 ThoughtWorks
  * 
  * See license.txt for licence details
@@ -11,6 +13,7 @@ package com.thoughtworks.proxy.toys.pool;
  * explicitly.
  * 
  * @author J&ouml;rg Schaible
+ * @since 0.2
  */
 public interface Poolable {
     /**
