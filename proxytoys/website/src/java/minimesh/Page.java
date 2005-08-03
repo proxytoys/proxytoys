@@ -8,9 +8,14 @@ import com.opensymphony.module.sitemesh.html.rules.BodyTagRule;
 import com.opensymphony.module.sitemesh.html.rules.HeadExtractingRule;
 import com.opensymphony.module.sitemesh.html.rules.MetaTagRule;
 import com.opensymphony.module.sitemesh.html.rules.PageBuilder;
-import com.opensymphony.module.sitemesh.html.rules.RegexReplacementTextFilter;
 import com.opensymphony.module.sitemesh.html.rules.TitleExtractingRule;
 import com.opensymphony.module.sitemesh.html.util.CharArray;
+
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,7 +81,7 @@ public class Page {
         htmlProcessor.addRule(new LinkExtractingRule());
         htmlProcessor.addRule(new AddFirstChildClassToHeader());
         // turn JIRA:XSTR-123 snippets into links
-        htmlProcessor.addTextFilter(new RegexReplacementTextFilter(
+        htmlProcessor.addTextFilter(new OROReplacementTextFilter(
                 "JIRA:(PTOYS\\-[0-9]+)", "<a href=\"http://jira.codehaus.org/browse/$1\">$1</a>"));
 
         // go!
@@ -115,7 +120,7 @@ public class Page {
 
     public static class CannotParsePageException extends RuntimeException {
         public CannotParsePageException(Throwable cause) {
-            super(cause);
+            super(cause.getMessage());
         }
     }
 
@@ -140,9 +145,20 @@ public class Page {
      */
     private class AddFirstChildClassToHeader extends BasicRule {
         private boolean firstChildIsHeader = true;
+        private final PatternMatcher matcher;
+        private final Pattern pattern;
+        
+        private AddFirstChildClassToHeader() {
+            matcher = new Perl5Matcher();
+            try {
+                pattern = new Perl5Compiler().compile("^[hH][1-9]$");
+            } catch (MalformedPatternException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
 
         public boolean shouldProcess(String tag) {
-            return tag.equalsIgnoreCase("p") || tag.matches("^[hH][1-9]$");
+            return tag.equalsIgnoreCase("p") || matcher.contains(tag,pattern);
         }
 
         public void process(Tag tag) {

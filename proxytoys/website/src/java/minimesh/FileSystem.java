@@ -6,7 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.StringTokenizer;
 
 
 /**
@@ -32,7 +34,11 @@ public class FileSystem {
     }
 
     public void copyAllFiles(File sourceDirectory, File targetDirectory, String suffixesToExclude) {
-        String[] badSuffixes = suffixesToExclude.split(",");
+        StringTokenizer tokenizer = new StringTokenizer(suffixesToExclude, ",");
+        String[] badSuffixes = new String[tokenizer.countTokens()];
+        for (int i = 0; i < badSuffixes.length; i++) {
+            badSuffixes[i] = tokenizer.nextToken();
+        }
         File[] files = sourceDirectory.listFiles();
         for (int i = 0; i < files.length; i++) {
             File file = files[i];
@@ -51,11 +57,14 @@ public class FileSystem {
 
     private void copyFile(File source, File destination) {
         try {
-            FileChannel sourceChannel = new FileInputStream(source).getChannel();
-            FileChannel destinationChannel = new FileOutputStream(destination).getChannel();
-            sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
-            sourceChannel.close();
-            destinationChannel.close();
+            InputStream sourceStream = new FileInputStream(source);
+            OutputStream destinationStream = new FileOutputStream(destination);
+            int c;
+            while((c = sourceStream.read()) != -1) {
+                destinationStream.write(c);
+            }
+            sourceStream.close();
+            destinationStream.close();
         } catch (IOException e) {
             throw new FileSystemException("Cannot copy " + source + " to " + destination, e);
         }
@@ -63,7 +72,7 @@ public class FileSystem {
 
     public static class FileSystemException extends RuntimeException {
         public FileSystemException(String message, Throwable throwable) {
-            super(message, throwable);
+            super(message);
         }
     }
 }

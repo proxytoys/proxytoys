@@ -12,11 +12,15 @@ import java.util.List;
  */
 public class Section {
 
-    private final String name;
-    private final List pages = new ArrayList();
+    private String name;
+    private List pages = new ArrayList();
 
     public Section(String name) {
         this.name = name;
+    }
+    
+    // XSteam with JDK 1.3 or non-Sun JDK
+    protected Section() {
     }
 
     public String getName() {

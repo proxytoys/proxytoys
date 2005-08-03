@@ -62,13 +62,13 @@ public class Skin {
 
     public static class CannotCreateSkinException extends RuntimeException {
         public CannotCreateSkinException(Throwable throwable) {
-            super(throwable);
+            super(throwable.getMessage());
         }
     }
 
     public static class CannotApplySkinException extends RuntimeException {
         public CannotApplySkinException(Throwable throwable) {
-            super(throwable);
+            super(throwable.getMessage());
         }
     }
 

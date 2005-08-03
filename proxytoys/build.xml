@@ -1,85 +1,139 @@
 <project name="proxytoys" default="test">
-  <property name="version" value="0.2-SNAPSHOT"/>
+    <property name="version" value="0.2-SNAPSHOT" />
 
-  <property name="project" value="${ant.project.name}"/>
-  <property name="src.dir" location="src"/>
-  <property name="test.dir" location="test"/>
-  <property name="lib.dir" location="lib"/>
-  
-  <property name="build.dir" location="build"/>
-  <property name="classes.dir" location="${build.dir}/classes"/>
-  <property name="test.classes.dir" location="${build.dir}/test-classes"/>
-  <property name="dist.dir" location="${build.dir}/dist"/>
-  <property name="jar.file" location="${dist.dir}/${project}-${version}.jar"/>
-  
-  <target name="-init">
-    <mkdir dir="${build.dir}"/>
-  </target>
-  
-  <target name="compile" depends="-init">
-    <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" source="1.3" target="1.3">
-      <classpath>
-        <fileset dir="${lib.dir}" includes="*.jar"/>
-      </classpath>
-    </javac>
-  </target>
+    <property name="project" value="${ant.project.name}" />
+    <property name="src.dir" location="src" />
+    <property name="test.dir" location="test" />
+    <property name="lib.dir" location="lib" />
 
-  <target name="jar" depends="compile">
-    <mkdir dir="${dist.dir}"/>
-    <copy todir="${classes.dir}">
-      <fileset dir="${src.dir}" excludes="**/*.java"/>
-    </copy>
-    <jar basedir="${classes.dir}" destfile="${jar.file}"/>
-  </target>
-  
-  <target name="jar-dist" depends="jar">
-    <copy file="${jar.file}" todir="/home/projects/proxytoys/dist/jars"/>
-  </target>
+    <property name="build.dir" location="build" />
+    <property name="classes.dir" location="${build.dir}/classes" />
+    <property name="test.classes.dir" location="${build.dir}/test-classes" />
+    <property name="dist.dir" location="${build.dir}/dist" />
+    <property name="jar.file" location="${dist.dir}/${project}-${version}.jar" />
 
-  <target name="jar-dist-plink" depends="jar">
-    <exec dir="." executable="pscp">
-      <arg value="${jar.file}"/>
-      <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars"/>
-    </exec>
-  </target>
+    <property name="publish.path" value="/home/projects/proxytoys/public_html" />
 
-	<target name="jar-dist-scp" depends="jar">
-	  <exec dir="." executable="scp">
-	    <arg value="${jar.file}"/>
-	    <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars"/>
-	  </exec>
-	</target>
+    <target name="-init">
+        <mkdir dir="${build.dir}" />
+    </target>
 
-  <target name="test.compile" depends="jar">
-    <mkdir dir="${test.classes.dir}"/>
-    <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
-      <classpath>
-        <fileset dir="${lib.dir}" includes="*.jar"/>
-        <pathelement location="${jar.file}"/>
-      </classpath>
-    </javac>
-  </target>
-  
-  <target name="test" depends="test.compile">
-    <junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
-      <formatter type="plain"/>
-      <classpath>
-        <path location="${test.classes.dir}"/>
-        <fileset dir="${lib.dir}" includes="*.jar"/>
-        <path location="${jar.file}"/>
-      </classpath>
-      <test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}"/>
-    </junit>
-  </target>
-  
-  <target name="clean">
-    <delete dir="${build.dir}"/>
-  </target>
-  
-  <target name="clobber" depends="clean">
-    <delete dir="${dist.dir}"/>
-  </target>
-  
-  <target name="rebuild" depends="clobber, jar"/>
+    <target name="compile" depends="-init">
+        <mkdir dir="${classes.dir}" />
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="yes" source="1.3" target="1.3">
+            <classpath>
+                <fileset dir="${lib.dir}" includes="*.jar" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="supporting-java">
+        <mkdir dir="build/website-classes" />
+        <javac srcdir="website/src/java" destdir="build/website-classes">
+            <classpath>
+                <fileset dir="website/lib">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${dist.dir}" />
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}" excludes="**/*.java" />
+        </copy>
+        <jar basedir="${classes.dir}" destfile="${jar.file}" />
+    </target>
+
+    <target name="jar-dist" depends="jar">
+        <copy file="${jar.file}" todir="/home/projects/proxytoys/dist/jars" />
+    </target>
+
+    <target name="jar-dist-plink" depends="jar">
+        <exec dir="." executable="pscp">
+            <arg value="${jar.file}" />
+            <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars" />
+        </exec>
+    </target>
+
+    <target name="jar-dist-scp" depends="jar">
+        <exec dir="." executable="scp">
+            <arg value="${jar.file}" />
+            <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars" />
+        </exec>
+    </target>
+
+    <target name="publish" depends="website" description="Publish website">
+        <copy todir="${publish.path}">
+            <fileset dir="build/website" />
+        </copy>
+    </target>
+
+    <target name="website" depends="supporting-java,javadoc" description="Build website">
+        <mkdir dir="build/website" />
+        <java classname="minimesh.Main" failonerror="true">
+            <classpath>
+                <fileset dir="website/lib">
+                    <include name="**/*.jar" />
+                </fileset>
+                <pathelement path="build/website-classes" />
+            </classpath>
+            <arg value="website/src/content/website.xml" />
+            <arg value="website/src/templates/skin.html" />
+            <arg value="build/website" />
+        </java>
+    </target>
+
+    <target name="javadoc">
+        <mkdir dir="build/website/javadoc" />
+        <javadoc destdir="build/website/javadoc" windowtitle="ProxyToys API Documentation" header="&lt;IMG class='logo' src='{@docroot}/../logo.gif' /&gt;" stylesheetfile="website/src/templates/javadoc.css" use="true" useexternalfile="true">
+
+            <packageset dir="src" />
+
+            <sourcepath>
+                <path path="src" />
+            </sourcepath>
+
+            <classpath>
+                <fileset dir="lib" />
+            </classpath>
+
+            <link href="http://java.sun.com/j2se/1.4.2/docs/api" />
+            <link href="http://www.junit.org/junit/javadoc/3.8.1" />
+            <link href="http://cglib.sourceforge.net/apidocs" />
+        </javadoc>
+    </target>
+
+    <target name="test.compile" depends="jar">
+        <mkdir dir="${test.classes.dir}" />
+        <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
+            <classpath>
+                <fileset dir="${lib.dir}" includes="*.jar" />
+                <pathelement location="${jar.file}" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="test" depends="test.compile">
+        <junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
+            <formatter type="plain" />
+            <classpath>
+                <path location="${test.classes.dir}" />
+                <fileset dir="${lib.dir}" includes="*.jar" />
+                <path location="${jar.file}" />
+            </classpath>
+            <test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}" />
+        </junit>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>
+
+    <target name="clobber" depends="clean">
+        <delete dir="${dist.dir}" />
+    </target>
+
+    <target name="rebuild" depends="clobber, jar, website" />
 </project>
