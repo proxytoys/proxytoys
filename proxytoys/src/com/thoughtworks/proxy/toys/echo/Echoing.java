@@ -22,6 +22,7 @@ import java.io.PrintWriter;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author J&ouml;rg Schaible
+ * @since 0.1
  */
 public class Echoing {
 
@@ -30,8 +31,9 @@ public class Echoing {
      * 
      * @param type the proxied type
      * @return the generated proxy
+     * @since 0.1
      */
-    public static Object object(Class type) {
+    public static Object object(final Class type) {
         return object(type, new PrintWriter(System.err));
     }
 
@@ -41,8 +43,9 @@ public class Echoing {
      * @param type the proxied type
      * @param out the PrintWriter receiving the output
      * @return the generated proxy
+     * @since 0.1
      */
-    public static Object object(Class type, PrintWriter out) {
+    public static Object object(final Class type, final PrintWriter out) {
         return object(type, null, out);
     }
 
@@ -52,8 +55,9 @@ public class Echoing {
      * @param type the proxied type
      * @param impl the delegated object
      * @return the generated proxy
+     * @since 0.1
      */
-    public static Object object(Class type, Object impl) {
+    public static Object object(final Class type, final Object impl) {
         return object(type, impl, new PrintWriter(System.err));
     }
 
@@ -65,8 +69,9 @@ public class Echoing {
      * @param impl the delegated object
      * @param factory the ProxyFactory to use
      * @return the generated proxy
+     * @since 0.2
      */
-    public static Object object(Class type, Object impl, ProxyFactory factory) {
+    public static Object object(final Class type, final Object impl, final ProxyFactory factory) {
         return object(type, impl, new PrintWriter(System.err), factory);
     }
 
@@ -77,8 +82,9 @@ public class Echoing {
      * @param impl the delegated object
      * @param out the PrintWriter receiving the output
      * @return the generated proxy
+     * @since 0.1
      */
-    public static Object object(Class type, Object impl, PrintWriter out) {
+    public static Object object(final Class type, final Object impl, final PrintWriter out) {
         return object(type, impl, out, new StandardProxyFactory());
     }
 
@@ -91,8 +97,9 @@ public class Echoing {
      * @param out the PrintWriter receiving the output
      * @param factory the ProxyFactory to use
      * @return the generated proxy
+     * @since 0.1
      */
-    public static Object object(Class type, Object impl, PrintWriter out, ProxyFactory factory) {
+    public static Object object(final Class type, final Object impl, final PrintWriter out, final ProxyFactory factory) {
         return Decorating.object(new Class[]{type}, impl, new EchoDecorator(out, factory), factory);
     }
 

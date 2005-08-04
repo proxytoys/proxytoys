@@ -39,7 +39,11 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     // Keeps track of what is currently being created - to avoid infinite recursion
     private List creating = new ArrayList();
 
-    /** The native invocation handler. */
+    /**
+     * The native invocation handler.
+     * 
+     * @since 0.1
+     */
     class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
         /**
          * Construct a CGLIBInvocationHandlerAdapter.
@@ -70,6 +74,8 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * Note: If any type the proxy instance must fullfill are all interfaces, the factory will currently create a proxy based on
      * the JDK.
      * </p>
+     * 
+     * @since 0.1
      */
     public Object createProxy(final Class[] types, final Invoker invoker) {
         final Class clazz = getSingleClass(types);

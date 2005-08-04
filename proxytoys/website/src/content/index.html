@@ -14,19 +14,29 @@
     CGLIB proxies without changing my code".</cite><br>
     <br>
     With ProxyToys you can! ProxyToys is to proxy generation what Jakarta Commons Logging is to logging
-    - an thin implementation neutral API for Proxy creation. Whether to use Standard Proxies or CGLIB is a
+    - an thin implementation neutral API for Proxy creation. Whether to use standard proxies or CGLIB is a
     one-line code change.
     </p>
 
     <h1>Features</h1>
 
-    <p>ProxyToys provides a collection of factories for creating "special" proxies such as:</p>
+    <p>API Compatible proxy factory providers:</p>
     <ul>
-        <li>Null objects - for default implementations of classes that do nothing at all</li>
-        <li>Multicasting objects - for multicasting a method invocation to multiple objects</li>
-        <li>Hot swapping objects - allows implementation hiding that can be swapped, and mutual dependencies</li>
-        <li>Failover objects - fails over to a next object in case of exception</li>
+        <li>Standard proxies of the JDK</li>
+        <li>CGLIB implementation</li>
+    </ul>
+
+    <p>ProxyToys provides a collection of toys acting as factories for creating "special" proxies such as:</p>
+    <ul>
         <li>Decorators - for simple AOP-like chained method interception</li>
+        <li>Delegates - for method invocation on a delegate object, that might have different type</li>
+        <li>Dispatcher proxy - single proxy instance dispatching method calls to different object with separate types</li>
+        <li>Echo proxy - for tracing method calls</li>
+        <li>Failover objects - fails over to a next object in case of exception</li>
+        <li>Hot swapping proxy - allows implementation hiding that can be swapped, and mutual dependencies</li>
+        <li>Multicasting objects - for multicasting a method invocation to multiple objects</li>
+        <li>Null objects - for default implementations of classes that do nothing at all</li>
+        <li>Pool - for a pool implemntation with proxied objects that return automatically to the pool</li>
     </ul>
 
     <h1>Dependencies</h1>
@@ -49,23 +59,19 @@
       <li><a href="tutorial.html">Use it</a>.</li>
     </ul>
 
-    <h2><b>Jun 5, 2004</b> ProxyToys 0.1 released</h2>
-       <p>Initial release of ProxyToys. Contains Proxy Factory implementation based on JDK 1.4 proxies
-       or on <a href="faq.html#Compatibility_CGLIB_Version">CGLIB 2.x</a>. Following special proxies are additionally 
-       deliviered:</p>
-       
+    <h2><b>Aug 5, 2005</b> ProxyToys Website Relaunch</h2>
+      <p>New website of ProxyToys as preparation for next release 0.2.
+      See documentation and resources:</p>
       <ul>
-        <li>Decorators - for simple AOP-like chained method interception.</li>
-        <li>Delegators - for delegating calls to different objects.</li>
-        <li>Echo proxy - for writing any call into a PrintStream before it is executed.</li>
-        <li>Failover proxy - fails over to a next object in case of an exception.</li>
-        <li>Hot swapping proxy - allows the exchange of the proxied object on the fly and supports implementation hiding.</li>
-        <li>Multicasting proxy - for multicasting a method invocation to multiple objects.</li>
-        <li>Null objects - for default implementations of classes that do nothing.</li>
+        <li>Online Javadocs</li>
+        <li>Examples</li>
+        <li>Mailing lists</li>
+        <li>FAQ</li>
+        <li>Access source code with Subversion</li>
+        <li>Changes</li>
       </ul>
-      
-      <p><a href="download.html">Download it.</a>.</p>
-      <!-- p>View the complete <a href="changes.html">change log</a> and <a href="download.html">download</a>.</p -->
+      <p>We provide with this relaunch also the ProxyToys 0.2 release candidate 1.
+      <a href="download.html">Download it</a>.</p>
 
   </body>
 </html>

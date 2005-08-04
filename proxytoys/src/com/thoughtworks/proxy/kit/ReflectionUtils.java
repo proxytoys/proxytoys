@@ -146,10 +146,10 @@ public class ReflectionUtils {
     }
 
     /**
-     * Add the given type to the given interfaces, if the given ProxyFactory supports proxy generation for this type.
+     * Add the given type to the set of interfaces, if the given ProxyFactory supports proxy generation for this type.
      * 
      * @param clazz the class type (<code>Object.class</code> will be ignored)
-     * @param interfaces the array of interfaces
+     * @param interfaces the set of interfaces
      * @param proxyFactory the {@link ProxyFactory} in use
      */
     public static void addIfClassProxyingSupportedAndNotObject(

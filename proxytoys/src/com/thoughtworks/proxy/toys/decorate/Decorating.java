@@ -34,6 +34,7 @@ public class Decorating {
      * @param delegate the decorated object.
      * @param decorator the decorator instance.
      * @return a decorating proxy.
+     * @since 0.1
      */
     public static Object object(final Class type, final Object delegate, final InvocationDecorator decorator) {
         return object(new Class[]{type}, delegate, decorator);
@@ -46,6 +47,7 @@ public class Decorating {
      * @param delegate the decorated object.
      * @param decorator the decorator instance.
      * @return a decorating proxy.
+     * @since 0.1
      */
     public static Object object(final Class[] types, final Object delegate, final InvocationDecorator decorator) {
         return object(types, delegate, decorator, new StandardProxyFactory());
@@ -59,6 +61,7 @@ public class Decorating {
      * @param decorator the decorator instance.
      * @param factory the ProxyFactory to use for the proxy generation.
      * @return a decorating proxy.
+     * @since 0.1
      */
     public static Object object(
             final Class[] types, final Object delegate, final InvocationDecorator decorator, final ProxyFactory factory) {

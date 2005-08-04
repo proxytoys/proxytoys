@@ -24,6 +24,7 @@ import java.util.List;
  * 
  * @author Aslak Helles&oslash;y
  * @author Chris Stevenson
+ * @author J&ouml;rg Schaible
  * @since 0.1
  */
 public class MulticastingInvoker implements Invoker {
@@ -60,6 +61,7 @@ public class MulticastingInvoker implements Invoker {
      * @param type the implemented types
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param targets the target instances where the proxy delegates a call
+     * @since 0.1
      */
     public MulticastingInvoker(final Class[] type, final ProxyFactory proxyFactory, final Object[] targets) {
         this.types = type;
@@ -71,6 +73,7 @@ public class MulticastingInvoker implements Invoker {
      * Create a proxy for this Invoker.
      * 
      * @return the new proxy
+     * @since 0.1
      */
     public Object proxy() {
         final Class[] classes;

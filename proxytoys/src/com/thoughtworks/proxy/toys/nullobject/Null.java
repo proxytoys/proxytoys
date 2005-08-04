@@ -27,6 +27,7 @@ import java.util.TreeSet;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:nospamx.aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
+ * @since 0.1
  */
 public class Null {
 
@@ -171,6 +172,7 @@ public class Null {
      * 
      * @param object the object to examine
      * @return <code>true</code> if the object is a Null proxy.
+     * @since 0.1
      */
     public static boolean isNullObject(final Object object) {
         return isNullObject(object, new StandardProxyFactory());
@@ -182,6 +184,7 @@ public class Null {
      * @param object the object to examine
      * @param proxyFactory the {@link ProxyFactory} to use
      * @return <code>true</code> if the object is a Null proxy.
+     * @since 0.1
      */
     public static boolean isNullObject(final Object object, final ProxyFactory proxyFactory) {
         return isStandardNullObject(object) || isNullProxyObject(object, proxyFactory);

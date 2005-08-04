@@ -22,6 +22,7 @@ public class DispatchingException extends RuntimeException {
      * 
      * @param message the meaningful message
      * @param type the type, that cannot be dispatched
+     * @since 0.2
      */
     public DispatchingException(final String message, final Class type) {
         super(message);
@@ -32,6 +33,7 @@ public class DispatchingException extends RuntimeException {
      * Returns the offending type.
      * 
      * @return the type
+     * @since 0.2
      */
     public Object getType() {
         return type;

@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * be handled, the invocation result will alway be <code>null</code>.
  * 
  * @author Aslak Helles&oslash;y
- * @since 0.1
+ * @since 0.2, 0.1 in package com.thoughtworks.proxy.toy.decorate
  */
 public class SimpleInvoker implements Invoker {
     /** the target of the invocations. */
@@ -27,6 +27,7 @@ public class SimpleInvoker implements Invoker {
      * Construct a SimpleInvoker.
      * 
      * @param target the invocation target.
+     * @since 0.2, 0.1 in package com.thoughtworks.proxy.toy.decorate
      */
     public SimpleInvoker(final Object target) {
         this.target = target;

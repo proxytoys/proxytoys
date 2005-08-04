@@ -4,7 +4,7 @@ package com.thoughtworks.proxy.toys.hotswap;
  * Interface implemented by all proxy instances created by {@link HotSwappingInvoker}.
  * 
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.4 $
+ * @since 0.1
  */
 public interface Swappable {
     /**
@@ -12,6 +12,7 @@ public interface Swappable {
      * 
      * @param newSubject the new subject the proxy will delegate to.
      * @return the old subject
+     * @since 0.1
      */
     Object hotswap(Object newSubject);
 }

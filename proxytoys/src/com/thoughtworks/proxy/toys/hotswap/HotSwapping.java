@@ -29,6 +29,7 @@ public class HotSwapping {
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param delegate the delegated object
      * @return the created proxy implementing the <tt>type</tt> and {@link Swappable}
+     * @since 0.1
      */
     public static Object object(final Class type, final ProxyFactory proxyFactory, final Object delegate) {
         return object(new Class[]{type}, proxyFactory, delegate, type.isInstance(delegate));
@@ -44,10 +45,11 @@ public class HotSwapping {
      * @param staticTyping {@link com.thoughtworks.proxy.toys.delegate.Delegating#STATIC_TYPING STATIC_TYPING} or
      *            {@link com.thoughtworks.proxy.toys.delegate.Delegating#DYNAMIC_TYPING DYNAMIC_TYPING}
      * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
+     * @since 0.1
      */
     public static Object object(
             final Class[] types, final ProxyFactory proxyFactory, final Object delegate, final boolean staticTyping) {
-        ObjectReference delegateReference = new SimpleReference(delegate);
+        final ObjectReference delegateReference = new SimpleReference(delegate);
         return object(types, proxyFactory, delegateReference, staticTyping);
     }
 
@@ -62,6 +64,7 @@ public class HotSwapping {
      * @param staticTyping {@link com.thoughtworks.proxy.toys.delegate.Delegating#STATIC_TYPING STATIC_TYPING} or
      *            {@link com.thoughtworks.proxy.toys.delegate.Delegating#DYNAMIC_TYPING DYNAMIC_TYPING}
      * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
+     * @since 0.1
      */
     public static Object object(
             final Class[] types, final ProxyFactory proxyFactory, final ObjectReference objectReference, final boolean staticTyping) {

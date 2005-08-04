@@ -14,8 +14,7 @@ import java.io.Serializable;
  * Simple implmenentation for an {@link ObjectReference}.
  * 
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.2 $
- * @since 0.1
+ * @since 0.2, 0.1 in package com.thoughtworks.proxy.toy.delegate
  */
 public class SimpleReference implements ObjectReference, Serializable {
     private Object instance;
@@ -24,6 +23,7 @@ public class SimpleReference implements ObjectReference, Serializable {
      * Construct a SimpleReference.
      * 
      * @param reference The referenced object.
+     * @since 0.2, 0.1 in package com.thoughtworks.proxy.toy.delegate
      */
     public SimpleReference(final Object reference) {
         set(reference);

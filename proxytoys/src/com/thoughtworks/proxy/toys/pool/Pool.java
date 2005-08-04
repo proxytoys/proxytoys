@@ -34,8 +34,8 @@ import java.util.Map;
  * The implementation will provide these instances wrapped by a proxy, that will return the instance automatically to the pool,
  * if it falls out of scope and is collected by the garbage collector. Since the pool only returns instances wrapped by a proxy
  * that implements the {@link Poolable} interface, this can be used to release th instance manually to the pool also. With an
- * implementation of the {@link Resetter} interface each element's status can be reset or the element can be dropped from
- * the pool at all, if it is exhausted.
+ * implementation of the {@link Resetter} interface each element's status can be reset or the element can be dropped from the
+ * pool at all, if it is exhausted.
  * </p>
  * 
  * @author J&ouml;rg Schaible
@@ -68,6 +68,7 @@ public class Pool {
      * 
      * @param type the type of the instances
      * @param resetter the resetter of the pooled elements
+     * @since 0.2
      */
     public Pool(final Class type, final Resetter resetter) {
         this(type, resetter, new StandardProxyFactory());
@@ -79,6 +80,7 @@ public class Pool {
      * @param type the type of the instances
      * @param resetter the resetter of the pooled elements
      * @param proxyFactory the proxy factory to use
+     * @since 0.2
      */
     public Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory) {
         this.types = new Class[]{type, Poolable.class};
@@ -90,6 +92,7 @@ public class Pool {
      * Add a new instance as resource to the pool.
      * 
      * @param instance the new instance
+     * @since 0.2
      */
     public synchronized void add(final Object instance) {
         availableInstances.add(new SimpleReference(instance));
@@ -99,6 +102,7 @@ public class Pool {
      * Add an array of new instances as resources to the pool.
      * 
      * @param instances the instances
+     * @since 0.2
      */
     public synchronized void add(final Object instances[]) {
         if (instances != null) {
@@ -113,6 +117,7 @@ public class Pool {
      * objects from the garbage collector. This can be foreced by calling {@link System#gc()} first.
      * 
      * @return an available instance from the pool or <em>null</em>.
+     * @since 0.2
      */
     public synchronized Object get() {
         final Object result;
@@ -133,6 +138,7 @@ public class Pool {
      * @param object the instance to release
      * @throws ClassCastException if object was not {@link Poolable}.
      * @throws IllegalArgumentException if the object was not from this pool.
+     * @since 0.2
      */
     public void release(final Object object) {
         final Poolable poolable = (Poolable)object;
@@ -148,6 +154,7 @@ public class Pool {
      * freed by the garbage collector. This can be foreced by calling {@link System#gc()} first.
      * 
      * @return the number of available instances.
+     * @since 0.2
      */
     public synchronized int getAvailable() {
         if (busyInstances.size() > 0) {
@@ -176,6 +183,7 @@ public class Pool {
      * Retrieve the number of instances managed by the pool.
      * 
      * @return the number of instances.
+     * @since 0.2
      */
     public synchronized int size() {
         return availableInstances.size() + busyInstances.size();
@@ -190,6 +198,8 @@ public class Pool {
 
     /**
      * The {@link com.thoughtworks.proxy.Invoker} of the proxy.
+     * 
+     * @since 0.2
      */
     protected class PoolingInvoker extends DelegatingInvoker {
 
@@ -199,6 +209,7 @@ public class Pool {
          * @param proxyFactory the {@link ProxyFactory} to use
          * @param delegateReference the {@link ObjectReference} with the delegate
          * @param staticTyping {@link Delegating#STATIC_TYPING} or {@link Delegating#DYNAMIC_TYPING}
+         * @since 0.2
          */
         protected PoolingInvoker(ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
             super(proxyFactory, delegateReference, staticTyping);
@@ -217,6 +228,7 @@ public class Pool {
          * Return the current instance to the pool.
          * 
          * @return {@link Void#TYPE}
+         * @since 0.2
          */
         public Object returnInstanceToPool() {
             Pool.this.returnInstanceToPool(delegateReference);
@@ -227,6 +239,7 @@ public class Pool {
          * Create a proxy for the types of the pool.
          * 
          * @return the new proxy instance
+         * @since 0.2
          */
         protected Object proxy() {
             return proxyFactory.createProxy(types, this);

@@ -33,6 +33,7 @@ public class DecoratingInvoker implements Invoker {
      * 
      * @param decorated the decorated {@link Invoker}.
      * @param decorator the decorating instance.
+     * @since 0.1
      */
     public DecoratingInvoker(final Invoker decorated, final InvocationDecorator decorator) {
         this.decorated = decorated;
@@ -44,6 +45,7 @@ public class DecoratingInvoker implements Invoker {
      * 
      * @param delegate the decorated object.
      * @param decorator the decorating instance.
+     * @since 0.1
      */
     public DecoratingInvoker(final Object delegate, final InvocationDecorator decorator) {
         this(new PrivateInvoker(delegate), decorator);

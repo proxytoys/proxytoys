@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
  * @author Paul Hammant
  * @author Dan North
  * @author J&ouml;rg Schaible
+ * @since 0.1
  */
 public class DelegatingInvoker implements Invoker {
 
@@ -44,6 +45,7 @@ public class DelegatingInvoker implements Invoker {
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param delegateReference the {@link ObjectReference} of the delegate
      * @param staticTyping {@link Delegating#STATIC_TYPING} or {@link Delegating#DYNAMIC_TYPING}
+     * @since 0.1
      */
     public DelegatingInvoker(final ProxyFactory proxyFactory, final ObjectReference delegateReference, final boolean staticTyping) {
         this.proxyFactory = proxyFactory;
@@ -55,6 +57,7 @@ public class DelegatingInvoker implements Invoker {
      * Construct a DelegatingInvoker with a {@link StandardProxyFactory} and {@link Delegating#DYNAMIC_TYPING}.
      * 
      * @param delegate the delegated object
+     * @since 0.1
      */
     public DelegatingInvoker(final Object delegate) {
         this(new StandardProxyFactory(), new SimpleReference(delegate), Delegating.DYNAMIC_TYPING);
@@ -94,7 +97,10 @@ public class DelegatingInvoker implements Invoker {
     }
 
     /**
+     * Retrieve the delegated object in derived classes.
+     * 
      * @return the delegated object
+     * @since 0.1
      */
     protected Object delegate() {
         return delegateReference.get();
@@ -119,6 +125,7 @@ public class DelegatingInvoker implements Invoker {
      * @param args the arguments for the invocation
      * @return the method's result
      * @throws InvocationTargetException if the invoked method throws any exception
+     * @since 0.1
      */
     protected Object invokeOnDelegate(final Method method, final Object[] args) throws InvocationTargetException {
         final Object delegate = delegate();
@@ -138,6 +145,7 @@ public class DelegatingInvoker implements Invoker {
      * @param parameterTypes the argument types of the method
      * @return the matching method
      * @throws DelegationException if no matching method can be found
+     * @since 0.1
      */
     protected Method getDelegateMethod(final String methodName, final Class[] parameterTypes) {
         try {
@@ -152,8 +160,10 @@ public class DelegatingInvoker implements Invoker {
      * <tt>staticTyping</tt> flag and their delegees are equal.
      * 
      * @see java.lang.Object#equals(java.lang.Object)
+     * @since 0.2
      */
     public boolean equals(final Object obj) {
+        // TODO Java spec recommends also to overload hashCode ...
         if (obj instanceof DelegatingInvoker) {
             final DelegatingInvoker invoker = (DelegatingInvoker)obj;
             return invoker.staticTyping == staticTyping && delegate().equals(invoker.delegate());

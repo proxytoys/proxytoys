@@ -24,6 +24,7 @@ public class DelegationException extends RuntimeException {
      * @param message the meaningful message.
      * @param cause a causing {@link Throwable}
      * @param delegate the delegated object
+     * @since 0.1
      */
     public DelegationException(final String message, final Throwable cause, final Object delegate) {
         super(message);
@@ -35,6 +36,7 @@ public class DelegationException extends RuntimeException {
      * Retruns the causing Throwable.
      * 
      * @return the {@link Throwable}
+     * @since 0.1
      */
 
     public Throwable getCause() {
@@ -45,6 +47,7 @@ public class DelegationException extends RuntimeException {
      * Returns the delegated object.
      * 
      * @return the delegated object
+     * @since 0.1
      */
     public Object getDelegate() {
         return delegate;

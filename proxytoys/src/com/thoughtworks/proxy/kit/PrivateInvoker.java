@@ -24,6 +24,7 @@ public class PrivateInvoker extends SimpleInvoker {
      * Construct a PrivateInvoker.
      * 
      * @param target the invocation target.
+     * @since 0.2
      */
     public PrivateInvoker(final Object target) {
         super(target);

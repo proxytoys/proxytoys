@@ -20,12 +20,17 @@ import java.lang.reflect.Proxy;
  * @since 0.1
  */
 public class StandardProxyFactory extends AbstractProxyFactory {
-    /** The native InvocationHandler implementation. */
+    /**
+     * The native InvocationHandler implementation.
+     * 
+     * @since 0.1
+     */
     class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
         /**
          * Construct a StandardInvocationHandlerAdapter.
          * 
          * @param invoker the wrapping invoker instance
+         * @since 0.1
          */
         public StandardInvocationHandlerAdapter(Invoker invoker) {
             super(invoker);

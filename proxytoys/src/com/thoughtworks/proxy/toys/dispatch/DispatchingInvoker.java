@@ -41,6 +41,7 @@ public class DispatchingInvoker implements Invoker {
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param types the types of the generated proxy
      * @param delegateReferences the {@link ObjectReference ObjectReferences} for the delegates
+     * @since 0.2
      */
     public DispatchingInvoker(final ProxyFactory proxyFactory, final Class[] types, final ObjectReference[] delegateReferences) {
         this.types = Arrays.asList(types);

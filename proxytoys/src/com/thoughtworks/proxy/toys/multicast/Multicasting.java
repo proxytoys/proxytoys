@@ -35,6 +35,7 @@ public class Multicasting {
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param targets the target objects
      * @return the new proxy implementing {@link Multicast} or the only target
+     * @since 0.1
      */
     public static Object object(final Class[] types, final ProxyFactory proxyFactory, final Object[] targets) {
         if (targets.length == 1) {
@@ -65,6 +66,7 @@ public class Multicasting {
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param targets the target objects
      * @return the new proxy implementing {@link Multicast} or the only target
+     * @since 0.1
      */
     public static Object object(final Class type, final ProxyFactory proxyFactory, final Object[] targets) {
         return object(new Class[]{type}, proxyFactory, targets);
@@ -81,6 +83,7 @@ public class Multicasting {
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param targets the target objects
      * @return the new proxy implementing {@link Multicast} or the only target
+     * @since 0.1
      */
     public static Object object(final ProxyFactory proxyFactory, final Object[] targets) {
         if (targets.length > 1) {
@@ -102,6 +105,7 @@ public class Multicasting {
      * 
      * @param targets the target objects
      * @return the new proxy implementing {@link Multicast} or the only target
+     * @since 0.1
      */
     public static Object object(final Object[] targets) {
         return object(new StandardProxyFactory(), targets);

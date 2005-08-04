@@ -12,7 +12,7 @@
     <property name="dist.dir" location="${build.dir}/dist" />
     <property name="jar.file" location="${dist.dir}/${project}-${version}.jar" />
 
-    <property name="publish.path" value="/home/projects/proxytoys/public_html" />
+    <property name="publish.path" value="/home/projects/proxytoys/docs/${version}" />
 
     <target name="-init">
         <mkdir dir="${build.dir}" />

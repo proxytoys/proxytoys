@@ -35,6 +35,7 @@ public class EchoDecorator extends InvocationDecoratorSupport {
      * 
      * @param out the {@link PrintWriter} receving the logs
      * @param factory the {@link ProxyFactory} to use
+     * @since 0.2, different arguments in 0.1
      */
     public EchoDecorator(final PrintWriter out, final ProxyFactory factory) {
         this.out = out;

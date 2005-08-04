@@ -50,6 +50,8 @@ abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
      * <p>
      * Clever, eh?
      * </p>
+     * 
+     * @since 0.1
      */
     class CoincidentalInvocationHandlerAdapter implements Serializable {
         private final Invoker invoker;
@@ -58,6 +60,7 @@ abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
          * Construct a CoincidentalInvocationHandlerAdapter.
          * 
          * @param invocationInterceptor the invocation handler.
+         * @since 0.1
          */
         public CoincidentalInvocationHandlerAdapter(final Invoker invocationInterceptor) {
             this.invoker = invocationInterceptor;
@@ -91,6 +94,8 @@ abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
     /**
      * {@inheritDoc} The implementation of this method relies on the implementation of the derived factory to add the interface
      * {@link InvokerReference} to every proxy instance.
+     * 
+     * @since 0.1
      */
     public Invoker getInvoker(final Object proxy) {
         final InvokerReference ih = (InvokerReference)proxy;

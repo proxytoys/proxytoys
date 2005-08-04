@@ -34,6 +34,7 @@ public class Delegating {
      * @param type the type of the created proxy,
      * @param delegate the object the proxy delegates to.
      * @return a new proxy of the specified type.
+     * @since 0.1
      */
     public static Object object(final Class type, final Object delegate) {
         return object(type, delegate, new StandardProxyFactory());
@@ -46,6 +47,7 @@ public class Delegating {
      * @param delegate the object the proxy delegates to.
      * @param staticTyping {@link #STATIC_TYPING} or {@link #DYNAMIC_TYPING}
      * @return a new proxy of the specified type.
+     * @since 0.2
      */
     public static Object object(final Class type, final Object delegate, final boolean staticTyping) {
         final ProxyFactory factory = new StandardProxyFactory();
@@ -59,6 +61,7 @@ public class Delegating {
      * @param delegate the object the proxy delegates to.
      * @param factory the {@link ProxyFactory} to use creating the proxy.
      * @return a new proxy of the specified type.
+     * @since 0.1
      */
     public static Object object(final Class type, final Object delegate, final ProxyFactory factory) {
         return factory

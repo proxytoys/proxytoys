@@ -27,6 +27,7 @@ public class Dispatching {
      * @param types the types of the proxy
      * @param delegates the objects, that will receive the calls
      * @return the created proxy
+     * @since 0.2
      */
     public static Object object(final Class[] types, final Object[] delegates) {
         return object(types, delegates, new StandardProxyFactory());
@@ -39,6 +40,7 @@ public class Dispatching {
      * @param delegates the objects, that will receive the calls
      * @param factory the {@link ProxyFactory} to use
      * @return the created proxy
+     * @since 0.2
      */
     public static Object object(final Class[] types, final Object[] delegates, final ProxyFactory factory) {
         final ObjectReference[] references = new ObjectReference[delegates.length];
