@@ -66,6 +66,15 @@ h2 {
     padding: 2px;
 }
 
+.Source pre {
+    padding: 4px;
+    font-family: courier new, monospace;
+    font-size: 11px;
+    border: 2px solid #ff4040;
+    background-color: #ffee77;
+    color: black;
+}
+
 
 .logo           { width: 56px; height: 56px }
 
