@@ -3,7 +3,7 @@
  * Created on 29-Jun-2005 by Jörg Schaible
  * See license.txt for license details
  */
-package proxytoys.tutorial.overview;
+package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.toys.dispatch.Dispatching;
 

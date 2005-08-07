@@ -16,6 +16,7 @@ import com.thoughtworks.proxy.ProxyFactory;
  * 
  * @author Aslak Helles&oslash;y
  * @since 0.1
+ * @see com.thoughtworks.proxy.toys.failover
  */
 public class Failover {
 

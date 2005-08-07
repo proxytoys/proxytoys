@@ -32,6 +32,7 @@ import java.util.Map;
  * 
  * @author Aslak Helles&oslash;y
  * @since 0.1
+ * @see com.thoughtworks.proxy.factory
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
     private ProxyFactory standardProxyFactory = new StandardProxyFactory();

@@ -21,6 +21,7 @@ import java.util.Set;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @since 0.1
+ * @see com.thoughtworks.proxy.toys.multicast
  */
 public class Multicasting {
 

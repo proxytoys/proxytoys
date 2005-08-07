@@ -25,6 +25,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @since 0.1
+ * @see com.thoughtworks.proxy.toys.decorate
  */
 public class Decorating {
     /**

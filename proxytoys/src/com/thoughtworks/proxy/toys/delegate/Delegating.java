@@ -21,6 +21,7 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @since 0.1
+ * @see com.thoughtworks.proxy.toys.delegate
  */
 public class Delegating {
     /** Delegate must implement the method's interface */

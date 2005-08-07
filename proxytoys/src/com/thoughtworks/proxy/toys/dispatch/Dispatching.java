@@ -18,6 +18,7 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  * 
  * @author J&ouml;rg Schaible
  * @since 0.2
+ * @see com.thoughtworks.proxy.toys.dispatch
  */
 public class Dispatching {
 

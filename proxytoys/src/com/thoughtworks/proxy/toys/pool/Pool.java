@@ -40,6 +40,7 @@ import java.util.Map;
  * 
  * @author J&ouml;rg Schaible
  * @since 0.2
+ * @see com.thoughtworks.proxy.toys.pool
  */
 public class Pool {
     private static final Method returnInstanceToPool;

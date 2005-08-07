@@ -107,7 +107,7 @@
 
     <target name="test.compile" depends="jar">
         <mkdir dir="${test.classes.dir}" />
-        <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}">
+        <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}" debug="yes" source="1.3" target="1.3">
             <classpath>
                 <fileset dir="${lib.dir}" includes="*.jar" />
                 <pathelement location="${jar.file}" />

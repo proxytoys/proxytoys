@@ -18,6 +18,7 @@ import java.lang.reflect.Proxy;
  * 
  * @author Aslak Helles&oslash;y
  * @since 0.1
+ * @see com.thoughtworks.proxy.factory
  */
 public class StandardProxyFactory extends AbstractProxyFactory {
     /**

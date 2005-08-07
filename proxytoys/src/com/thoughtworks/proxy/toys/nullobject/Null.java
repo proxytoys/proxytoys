@@ -28,6 +28,7 @@ import java.util.TreeSet;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:nospamx.aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  * @since 0.1
+ * @see com.thoughtworks.proxy.toys.nullobject
  */
 public class Null {
 

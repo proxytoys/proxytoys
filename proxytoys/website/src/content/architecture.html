@@ -4,6 +4,10 @@
     </head>
     <body>
 
+        <!-- ************ -->
+
+        <h1>Components</h1>
+
         <p>The architecture of ProxyToys consists of two main components:</p>
 
         <ul>
@@ -16,7 +20,7 @@
         <h1>Proxy Factories</h1>
 
         <p>Whenever you have a need to create a dynamic proxy, you may use an implementation of the
-        <a href="javadoc/com/thoughtworks/proxy/ProxyFactory">ProxyFactory</a> instead depending
+        <a href="javadoc/com/thoughtworks/proxy/ProxyFactory.html">ProxyFactory</a> instead depending
         directly on the proxy provided by the reflection API of the JDK.</p>
 
         <p>ProxyToys comes with two implementations of such a factory, one based on the reflection API
@@ -25,17 +29,20 @@
         <a href="faq.html#Compatibility_CGLIB">FAQ</a>.</p>
 
         <p class="highlight">Always depend on
-        <a href="javadoc/com/thoughtworks/proxy/ProxyFactory">ProxyFactory</a> and select the
+        <a href="javadoc/com/thoughtworks/proxy/ProxyFactory.html">ProxyFactory</a> and select the
         implementation of your choice.</p>
 
         <p>Other bytecode manipulation libraries may be used to implement alternative ProxyFactory
         implementations as long as they can support a compatible
-        <a href="javadoc/com/thoughtworks/proxy/Invoker">invoker interface </a>.</p>
+        <a href="javadoc/com/thoughtworks/proxy/Invoker.html">invoker interface </a>.</p>
 
 
         <!-- ************ -->
 
-        <h1>IO (Writer and Reader)</h1>
+        <h1>Toys</h1>
+
+
+
 
         <p>XStream is abstracted from the underlying XML data using the
         <a href="javadoc/com/thoughtworks/xstream/io/HierarchicalStreamWriter.html">HierarchicalStreamWriter</a>
