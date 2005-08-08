@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>ProxyFactory Implementations</title>
+    </head>
+    <body>
+    
+        <!-- ************ -->
+
+		<h1>StandardProxyFactory</h1>
+
+        <p>The <a href="javadoc/com/thoughtworks/proxy/factory/StandardProxyFactory.html">StandardProxyFactory</a>
+        is based on the <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/reflect/Proxy.html">Proxy</a> class. With
+        this implementation you can create proxies for interfaces. A single proxy may implement multiple interfaces as long all
+        of them have disjunct methods i.e. no two interfaces may have a method with same name and argument, but different
+        return types.</p>
+
+        <!-- ************ -->
+
+        <h1>CglibProxyFactory</h1>
+
+        <p>The <a href="javadoc/com/thoughtworks/proxy/factory/CglibProxyFactory.html">CglibProxyFactory</a>
+        is based on the <a href="http://cglib.sourceforge.net/">CGLIB</a> library. This factory has the same features as the
+        StandardProxyFactory. Additionally it can proxy a real class unless it is not final. If the proxy instance implements multiple
+        types, one of them can be a real class.</p>
+
+		<p><b>Note:</b> A proxy for a real class will internally build by CGLIB as a sublcass. Therefore you cannot create a proxy
+		for such a type if the class is final. This is also the reason for the limitation of one real class in a set of types, that should be
+		implemented by the proxy. An additional limitation exists for proxies based on a real class, since the 
+		<a href="javadoc/com/thoughtworks/proxy/Invoker.html">invoker instance</a> is not called for final methods. Also the
+		instantiation of such a proxy requires the initialization with the call to a constructor of the proxied base class. The
+		CglibProxyFactory tries to stub the constructor arguments with 
+		<a href="javadoc/com/thoughtworks/proxy/toys/nullobject/Null.html">Null objects</a> if no constructor without arguments
+		exist. This approach may fail in rare cases.</p>
+		
+    </body>
+</html>

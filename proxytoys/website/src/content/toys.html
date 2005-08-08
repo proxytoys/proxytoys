@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <title>Toys</title>
+    </head>
+    <body>
+    
+        <!-- ************ -->
+
+		<h1><a name="Decorating"><!--  --></a>Decorating Toy</h1>
+		
+		<p>The <a href="javadoc/com/thoughtworks/proxy/toys/decorate/Decorating.html">Decorating Toy</a> is factory for 
+		AOP-style proxies. Any method call is intercepted and can be decorated with an 
+		<a href="javadoc/com/thoughtworks/proxy/toys/decorate/InvocationDecorater.html">InvocationDecorater</a>
+		implementation. In addition to method calls, you may also intercept the return of the call or any thrown exception.
+		See the <a href="javadoc/com/thoughtworks/proxy/toys/decorate/package-summary.html">package description</a>
+		for examples.</p>
+
+        <!-- ************ -->
+
+        <h1><a name="Delegating"><!--  --></a>Delegating Toy</h1>
+
+		<p>The <a href="javadoc/com/thoughtworks/proxy/toys/delegate/Delegating.html">Delegating Toy</a> is a factory for
+		proxies, that delgate any call to another object. Depending on the operation mode of the proxy may the target object 
+		implement the proxy type or may just have compatible methods. This is a very common pattern and the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/delegate/DelegatingInvoker.html">DelegatingInvoker</a> is a
+		base class for some other proxy toys implementations. See the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/delegate/package-summary.html">package description</a> for
+		examples.</p>
+
+        <!-- ************ -->
+
+        <h1><a name="Dispatcher"><!--  --></a>Dispatching Toy</h1>
+
+		<p>The <a href="javadoc/com/thoughtworks/proxy/toys/dispatch/Delegating.html">Dispatching Toy</a> is a factory for
+		proxies, dispatch incoming method calls to different object depending their implemented interfaces. Each proxy implements
+		several unrelated interfaces and contains a collection of target objects. Each method call is invoked on one target object 
+		from this collection, that implements the interface of the calling method. Although the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/dispatch/DispatchingInvoker.html">DispatchingInvoker</a> is not
+		derived from a <a href="javadoc/com/thoughtworks/proxy/toys/delegate/DelegatingInvoker.html">DelegatingInvoker</a>
+		it utilizes this invoker internally. See the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/dispatch/package-summary.html">package description</a> for
+		examples.</p>
+
+        <!-- ************ -->
+
+        <h1><a name="Echo"><!--  --></a>Echoing Toy</h1>
+
+		<p>The <a href="javadoc/com/thoughtworks/proxy/toys/echo/Echoing.html">Echo Toy</a> is a factory for
+		proxies, that implement a classical trace functionality. It implements just an own
+		<a href="javadoc/com/thoughtworks/proxy/toys/decorate/InvocationDecorater.html">InvocationDecorater</a> 
+		(<a href="javadoc/com/thoughtworks/proxy/toys/echo/EchoDecorater.html">InvocationDecorater</a>), that
+		simply writes every method call, the return value and every thrown exception to a 
+		<a href="http://java.sun.com/j2se/1.4.2/docs/api/java/io/PrintWriter.html">PrintWriter</a>. See the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/echo/package-summary.html">package description</a> for
+		examples.</p>
+
+        <!-- ************ -->
+
+        <h1><a name="Failover"><!--  --></a>Failover Toy</h1>
+
+		<p>The <a href="javadoc/com/thoughtworks/proxy/toys/failover/Failover.html">Failover Toy</a> is a factory for
+		proxies, that implement a failover strategy. Each proxy has a pool of objects, that will be used one by one after a 
+		predefined exception type for the current target object is thrown during a method invocation. The 
+		<a href="javadoc/com/thoughtworks/proxy/toys/failover/FailoverInvoker.html">FailoverInvoker</a> is a subclass
+		of the <a href="javadoc/com/thoughtworks/proxy/toys/hotswap/HotSwappingInvoker.html">HotSwappingInvoker</a>.
+		See the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/failover/package-summary.html">package description</a> for
+		examples.</p>
+
+        <!-- ************ -->
+
+        <h1><a name="HotSwap"><!--  --></a>HotSwapping Toy</h1>
+
+		<p>The <a href="javadoc/com/thoughtworks/proxy/toys/hotswap/HotSwapping.html">Hot Swapping Toy</a> is a 
+		factory for proxies, that enable the transparent exchange of the target object for the method invocations. Each created 
+		proxy iimplements the <a href="javadoc/com/thoughtworks/proxy/toys/hotswap/Swappable.html">Swappable</a>
+		interface, that is used to do the exchange. Other object that have a reference to a hot swapping proxy, will not notice
+		the internal change of hte target object at all. The 
+		<a href="javadoc/com/thoughtworks/proxy/toys/hotswap/HotSwappingInvoker.html">HotSwappingInvoker</a> is a 
+		subclass of the <a href="javadoc/com/thoughtworks/proxy/toys/delegate/DelegatingInvoker.html">DelegatingInvoker</a>.
+		See the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/hotswap/package-summary.html">package description</a> for
+		examples.</p>
+
+        <!-- ************ -->
+
+        <h1><a name="Multicaster"><!--  --></a>Multicasting Toy</h1>
+
+		<p>The <a href="javadoc/com/thoughtworks/proxy/toys/multicast/Multicasting.html">Multicaster Toy</a> is a factory for
+		proxies, that will invoke a single method call on every object which they manage in a collection. The different return values
+		are collected and a new multicasting proxy is returned for the result collection. If the result of the invoked method is a 
+		primitive type, the proxy will sum up all the results and return this sum as result of the invocation. It does not matter if
+		one of the target object in the collection does not have a method like the one invoked on the proxy, those objects are
+		simply ignored for the routed method invocation. Each multicasting proxy additionally implements the
+		<a href="javadoc/com/thoughtworks/proxy/toys/multicast/Multicast.html">Multicast</a> interface, that permits access
+		to the target object collection of such a proxy. See the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/multicast/package-summary.html">package description</a> for
+		examples.</p>
+
+        <!-- ************ -->
+
+        <h1><a name="Null"><!--  --></a>Null Toy</h1>
+
+		<p>The <a href="javadoc/com/thoughtworks/proxy/toys/nullobject/Null.html">Null Toy</a> is a factory for
+		proxies, that work as dummy implementations. The proxy will ignore any called methods returning <tt>void</tt>,
+		will return the native <tt>null</tt> vale for all primitive types, will return a new Null proxy for all returned objects it
+		can create a new proxy for or simply <tt>null</tt>. See the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/nullobject/package-summary.html">package description</a> for
+		examples.</p>
+
+        <!-- ************ -->
+
+        <h1><a name="Pool"><!--  --></a>Pool Toy</h1>
+
+		<p>The <a href="javadoc/com/thoughtworks/proxy/toys/pool/Pool.html">Pool Toy</a> is a simple pool implementation
+		based on proxies. Each pool is stuffed with a number of objects that are used as pool resources. Any object returned from
+		the pool is wrapped with a proxy, that implements the
+		<a href="javadoc/com/thoughtworks/proxy/toys/pool/Poolable.html">Multicast</a> interface, that can be used to return
+		the object to the pool. Additionally any of these objects will return automatically to the pool if their proxy instance is garbage
+		collected. Before an object is added again to the pool after usage, a user-defined 
+		<a href="javadoc/com/thoughtworks/proxy/toys/pool/Resetter.html">Resetter</a> instance may do any reinitializations
+		with such an object or may even decide to discard the object at all. See the 
+		<a href="javadoc/com/thoughtworks/proxy/toys/pool/package-summary.html">package description</a> for
+		examples.</p>
+
+    </body>
+</html>
