@@ -23,7 +23,7 @@
         <h1>Proxy Factories</h1>
 
         <p>Whenever you have a need to create a dynamic proxy, you may use an implementation of the
-        <a href="javadoc/com/thoughtworks/proxy/ProxyFactory.html">ProxyFactory</a> instead depending
+        <a href="apidocs/com/thoughtworks/proxy/ProxyFactory.html">ProxyFactory</a> instead depending
         directly on the proxy provided by the reflection API of the JDK.</p>
 
         <p>ProxyToys comes with two implementations of such a factory, one based on the reflection API
@@ -32,12 +32,12 @@
         <a href="faq.html#Compatibility_CGLIB">FAQ</a>.</p>
 
         <p class="highlight">Always depend on
-        <a href="javadoc/com/thoughtworks/proxy/ProxyFactory.html">ProxyFactory</a> and select the
+        <a href="apidocs/com/thoughtworks/proxy/ProxyFactory.html">ProxyFactory</a> and select the
         implementation of your choice.</p>
 
         <p>Other bytecode manipulation libraries may be used to implement alternative ProxyFactory
         implementations as long as they can support or be used to build a compatible
-        <a href="javadoc/com/thoughtworks/proxy/Invoker.html">invoker interface</a>.</p>
+        <a href="apidocs/com/thoughtworks/proxy/Invoker.html">invoker interface</a>.</p>
 
 
         <!-- ************ -->
@@ -47,11 +47,11 @@
 		<p>The toys exist as solutions for common problems solved with proxy instances. Some are build on
 		top of another and you may derive your own specialized solution based on a available toy implementation.
 		Each toy has a proxy factory (with the exception of the 
-		<a href="javadoc/com/thoughtworks/proxy/toys/pool/Pool.html">Pool</a>) with static methods, that
+		<a href="apidocs/com/thoughtworks/proxy/toys/pool/Pool.html">Pool</a>) with static methods, that
 		can be invoked to create a proxy for a single or for multiple types with a special assignment.</p>
 		
 		<p>Each toys utilizes a special implementation of an 
-		<a href="javadoc/com/thoughtworks/proxy/Invoker.html">Invoker</a>, that is called for each method 
+		<a href="apidocs/com/thoughtworks/proxy/Invoker.html">Invoker</a>, that is called for each method 
 		invocation. In most toy implementations each proxy has its own Invoker instance. For very specialized
 		proxies, you might use a different strategy though.</p>
 

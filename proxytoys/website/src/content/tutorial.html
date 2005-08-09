@@ -9,7 +9,7 @@
 
     <h1>Create a ProxyFactory and use it to create a proxy</h1>
 
-    <p>See this simple example, that creates a <a href="javadoc/com/thoughtworks/proxy/ProxyFactory.html">ProxyFactory</a>
+    <p>See this simple example, that creates a <a href="apidocs/com/thoughtworks/proxy/ProxyFactory.html">ProxyFactory</a>
     based on the JDK. We just hide the ArrayList instance behind the List interface:</p>
 
 <div class="Source Java"><pre>ProxyFactory factory = new StandardProxyFactory();
@@ -22,19 +22,19 @@ System.out.println("First element of list: " + proxy.get(0));</pre></div>
     methods like <code>java.lang.ArrayList.ensureCapacity(int)</code> are not accessable.</p>
     
     <p>Just replace the instance of the 
-    <a href="javadoc/com/thoughtworks/proxy/factory/StandardProxyFactory.html">StandardProxyFactory</a> 
-    with <a href="javadoc/com/thoughtworks/proxy/factory/CglibProxyFactory.html">CglibProxyFactory</a> to use a different
+    <a href="apidocs/com/thoughtworks/proxy/factory/StandardProxyFactory.html">StandardProxyFactory</a> 
+    with <a href="apidocs/com/thoughtworks/proxy/factory/CglibProxyFactory.html">CglibProxyFactory</a> to use a different
     implementation. You have to put the cglib-nodep-2.1.jar into your classpath though.</p>
 
     <h1>Using the toys</h1>
 
     <p>Each toy is a factory for proxy instances, that solve a common usage pattern of a proxy instance.
-    Every toys (except the <a href="javadoc/com/thoughtworks/proxy/toy/pool/Pool.html">Pool</a>), has a factory with a
+    Every toys (except the <a href="apidocs/com/thoughtworks/proxy/toy/pool/Pool.html">Pool</a>), has a factory with a
     static interface:</p>
 
 <div class="highlight"><code>&lt;Toy&gt;.object(...);</code></div>
 
-    <p>As example see a usage of the <a href="javadoc/com/thoughtworks/proxy/toy/echo/Echoing.html">Echo</a> toy:</p>
+    <p>As example see a usage of the <a href="apidocs/com/thoughtworks/proxy/toy/echo/Echoing.html">Echo</a> toy:</p>
 
 <div class="Source Java"><pre>Map map = (Map)Echoing.object(Map.class, new HashMap());
 map.put("hello", "world");

@@ -86,8 +86,8 @@
     </target>
 
     <target name="javadoc">
-        <mkdir dir="build/website/javadoc" />
-        <javadoc destdir="build/website/javadoc" windowtitle="ProxyToys API Documentation" header="&lt;IMG class='logo' src='{@docroot}/../logo.gif' /&gt;" stylesheetfile="website/src/templates/javadoc.css" use="true" useexternalfile="true">
+        <mkdir dir="build/website/apidocs" />
+        <javadoc destdir="build/website/apidocs" windowtitle="ProxyToys API Documentation" header="&lt;IMG class='logo' src='{@docroot}/../logo.gif' /&gt;" stylesheetfile="website/src/templates/javadoc.css" use="true" useexternalfile="true">
 
             <packageset dir="src" />
 
