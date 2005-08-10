@@ -65,25 +65,27 @@ public class DelegatingInvoker implements Invoker {
 
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         final Object result;
-        final Object delegate = delegate();
+        Object delegate = delegate();
 
         // equals(...) and hashCode()
         if (method.equals(ReflectionUtils.equals)) {
-            // TODO this whole section is really ugly and needs cleaning up
-            Object arg = args[0];
-            while (arg != null && proxyFactory.isProxyClass(arg.getClass())) {
-                Invoker invoker = proxyFactory.getInvoker(arg);
+            // Note: equals will normally compare the classes directly, so we have to dereference
+            // all delegates and then swap the call (in case of our argument is also a delegation proxy).
+            final Object arg = args[0];
+            while (delegate != null && proxyFactory.isProxyClass(delegate.getClass())) {
+                Invoker invoker = proxyFactory.getInvoker(delegate);
                 if (invoker instanceof DelegatingInvoker) {
-                    arg = ((DelegatingInvoker)invoker).delegate();
+                    delegate = ((DelegatingInvoker)invoker).delegate();
                 }
             }
-            if (delegate == null) {
-                result = arg == null ? Boolean.TRUE : Boolean.FALSE;
+            if (arg == null) {
+                result = delegate == null ? Boolean.TRUE : Boolean.FALSE;
             } else {
-                result = delegate.equals(arg) ? Boolean.TRUE : Boolean.FALSE;
+                result = arg.equals(delegate) ? Boolean.TRUE : Boolean.FALSE;
             }
         } else if (method.equals(ReflectionUtils.hashCode)) {
-            result = new Integer(hashCode());
+            // equals and hashCode must be consistent
+            result = new Integer(delegate == null ? hashCode() : delegate.hashCode());
 
             // null delegate
         } else if (delegate == null) {

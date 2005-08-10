@@ -122,6 +122,30 @@ public class DelegatingTest extends ProxyTestCase {
         assertEquals(foo, createProxy(foo));
     }
 
+    public void testShouldHaveSameHashCodeAsItself() {
+        String string = new String("some thing");
+        foo = createProxy(string);
+        assertEquals(foo.hashCode(), foo.hashCode());
+    }
+
+    public void testShouldHaveSameHashCodeAsDelegatedInstance() {
+        String string = new String("some thing");
+        foo = createProxy(string);
+        assertEquals(foo.hashCode(), string.hashCode());
+    }
+
+    public void testShouldHaveSameHashCodeAsAnotherDelegatingProxyOnTheSameInstance() {
+        String string = new String("some thing");
+        foo = createProxy(string);
+        assertEquals(foo.hashCode(), createProxy(string).hashCode());
+    }
+
+    public void testShouldHaveSameHashCodeAsANestedProxyOnTheSameInstance() {
+        String string = new String("some thing");
+        foo = createProxy(string);
+        assertEquals(foo.hashCode(), createProxy(foo).hashCode());
+    }
+
     public static interface Faculty {
         int calc(int i, Faculty fac);
     };
