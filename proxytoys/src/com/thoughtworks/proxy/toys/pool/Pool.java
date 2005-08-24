@@ -31,15 +31,15 @@ import java.util.Map;
  * strategies, derive from this class or wrap it.
  * </p>
  * <p>
- * The implementation will provide these instances wrapped by a proxy, that will return the instance automatically to the pool,
- * if it falls out of scope and is collected by the garbage collector. Since the pool only returns instances wrapped by a proxy
- * that implements the {@link Poolable} interface, this can be used to release th instance manually to the pool also. With an
- * implementation of the {@link Resetter} interface each element's status can be reset or the element can be dropped from the
- * pool at all, if it is exhausted.
+ * The implementation will provide these instances wrapped by a proxy, that will return the instance automatically to
+ * the pool, if it falls out of scope and is collected by the garbage collector. Since the pool only returns instances
+ * wrapped by a proxy that implements the {@link Poolable} interface, this can be used to release th instance manually
+ * to the pool also. With an implementation of the {@link Resetter} interface each element's status can be reset or the
+ * element can be dropped from the pool at all, if it is exhausted.
  * </p>
  * <p>
- * A client can use the pool's monitor for an improved synchronization. Everytime an object returns to the pool, all waiting
- * Threads of the monitor will be notified.
+ * A client can use the pool's monitor for an improved synchronization. Everytime an object returns to the pool, all
+ * waiting Threads of the monitor will be notified.
  * </p>
  * 
  * @author J&ouml;rg Schaible
@@ -94,32 +94,42 @@ public class Pool {
     }
 
     /**
-     * Add a new instance as resource to the pool.
+     * Add a new instance as resource to the pool. The pool's monitor will be notified.
      * 
      * @param instance the new instance
+     * @throws NullPointerException if instance is <code>null</code>
      * @since 0.2
      */
     public synchronized void add(final Object instance) {
+        if (instance == null) {
+            throw new NullPointerException();
+        }
         availableInstances.add(new SimpleReference(instance));
+        notifyAll();
     }
 
     /**
-     * Add an array of new instances as resources to the pool.
+     * Add an array of new instances as resources to the pool. The pool's monitor will be notified.
      * 
      * @param instances the instances
+     * @throws NullPointerException if instance is <code>null</code>
      * @since 0.2
      */
     public synchronized void add(final Object instances[]) {
         if (instances != null) {
             for (int i = 0; i < instances.length; ++i) {
+                if (instances[i] == null) {
+                    throw new NullPointerException();
+                }
                 availableInstances.add(new SimpleReference(instances[i]));
             }
+            notifyAll();
         }
     }
 
     /**
-     * Get an instance from the pool. If no instance is immediately available, the method will check internally for returned
-     * objects from the garbage collector. This can be foreced by calling {@link System#gc()} first.
+     * Get an instance from the pool. If no instance is immediately available, the method will check internally for
+     * returned objects from the garbage collector. This can be foreced by calling {@link System#gc()} first.
      * 
      * @return an available instance from the pool or <em>null</em>.
      * @since 0.2
@@ -155,8 +165,9 @@ public class Pool {
     }
 
     /**
-     * Return the number of available instances of the pool. The method will also try to collect any pool instance that was
-     * freed by the garbage collector. This can be foreced by calling {@link System#gc()} first.
+     * Return the number of available instances of the pool. The method will also try to collect any pool instance that
+     * was freed by the garbage collector. This can be foreced by calling {@link System#gc()} first. The pool's monitor
+     * will be notified, if any object was collected and the {@link Resetter} retunred the object.
      * 
      * @return the number of available instances.
      * @since 0.2
@@ -234,7 +245,8 @@ public class Pool {
         }
 
         /**
-         * Return the current instance to the pool.
+         * Return the current instance to the pool. The pool's monitor will be notified, if the {@link Resetter} returns
+         * the object.
          * 
          * @return {@link Void#TYPE}
          * @since 0.2
