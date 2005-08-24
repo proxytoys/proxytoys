@@ -21,12 +21,16 @@ import java.lang.reflect.Proxy;
  * @see com.thoughtworks.proxy.factory
  */
 public class StandardProxyFactory extends AbstractProxyFactory {
+    private static final long serialVersionUID = 4430360631813383235L;
+
     /**
      * The native InvocationHandler implementation.
      * 
      * @since 0.1
      */
     class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
+        private static final long serialVersionUID = 141954540221604284L;
+
         /**
          * Construct a StandardInvocationHandlerAdapter.
          * 

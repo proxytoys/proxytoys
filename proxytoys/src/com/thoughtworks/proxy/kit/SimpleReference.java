@@ -17,6 +17,7 @@ import java.io.Serializable;
  * @since 0.2, 0.1 in package com.thoughtworks.proxy.toy.delegate
  */
 public class SimpleReference implements ObjectReference, Serializable {
+    private static final long serialVersionUID = 1L;
     private Object instance;
 
     /**

@@ -27,7 +27,7 @@ import java.lang.reflect.UndeclaredThrowableException;
  * @author Aslak Helles&oslash;y
  * @since 0.1
  */
-abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
+abstract class AbstractProxyFactory implements ProxyFactory {
 
     /** The getInvoker method. */
     public static final Method getInvoker;
@@ -54,6 +54,7 @@ abstract class AbstractProxyFactory implements ProxyFactory, Serializable {
      * @since 0.1
      */
     class CoincidentalInvocationHandlerAdapter implements Serializable {
+        private static final long serialVersionUID = -7406561726778120065L;
         private final Invoker invoker;
 
         /**

@@ -20,6 +20,8 @@ import java.lang.reflect.Method;
  * @since 0.2, 0.1 in package com.thoughtworks.proxy.toy.decorate
  */
 public class SimpleInvoker implements Invoker {
+    private static final long serialVersionUID = 1L;
+
     /** the target of the invocations. */
     protected final Object target;
 

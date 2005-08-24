@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
  * @since 0.2
  */
 public class PrivateInvoker extends SimpleInvoker {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Construct a PrivateInvoker.

@@ -36,13 +36,9 @@ public class PoolTest extends ProxyTestCase {
         }
     }
 
-    private static class NOP implements Resetter {
-        private boolean result;
-        public NOP(final boolean result) {
-            this.result = result;
-        }
+    private static class NotRetunringResetter implements Resetter {
         public boolean reset(Object object) {
-            return result;
+            return false;
         }
     };
 
@@ -59,7 +55,7 @@ public class PoolTest extends ProxyTestCase {
     }
 
     public void testInstancesCanBeAccessed() {
-        final Pool pool = new Pool(Identifiable.class, new NOP(true), getFactory());
+        final Pool pool = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Identifiable borrowed = (Identifiable)pool.get();
         assertNotNull(borrowed);
@@ -67,7 +63,7 @@ public class PoolTest extends ProxyTestCase {
     }
 
     public void testInstancesCanBeRecycled() {
-        final Pool pool = new Pool(Identifiable.class, new NOP(true), getFactory());
+        final Pool pool = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(3));
         Object borrowed0 = pool.get();
         Object borrowed1 = pool.get();
@@ -89,7 +85,7 @@ public class PoolTest extends ProxyTestCase {
     }
 
     public void testUnmanagedInstanceCannotBeReleased() {
-        final Pool pool = new Pool(Identifiable.class, new NOP(true), getFactory());
+        final Pool pool = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         try {
             pool.release(new InstanceCounter());
             fail("Thrown " + ClassCastException.class.getName() + " expected");
@@ -98,9 +94,9 @@ public class PoolTest extends ProxyTestCase {
     }
 
     public void testElementMustBeReturnedToOwnPool() {
-        final Pool pool1 = new Pool(Identifiable.class, new NOP(true), getFactory());
+        final Pool pool1 = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         pool1.add(createIdentifiables(1));
-        final Pool pool2 = new Pool(Identifiable.class, new NOP(true), getFactory());
+        final Pool pool2 = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         Object o1 = pool1.get();
         assertEquals(0, pool1.getAvailable());
         try {
@@ -112,7 +108,7 @@ public class PoolTest extends ProxyTestCase {
     }
 
     public void testPoolReturnsNullIfExhausted() {
-        final Pool pool = new Pool(Identifiable.class, new NOP(true), getFactory());
+        final Pool pool = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Object obj1 = pool.get();
         assertNotNull(obj1);
@@ -121,7 +117,7 @@ public class PoolTest extends ProxyTestCase {
     }
 
     public void testPoolSizeIsConstant() {
-        final Pool pool = new Pool(Identifiable.class, new NOP(true), getFactory());
+        final Pool pool = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(3));
         assertEquals(3, pool.size());
         Object obj1 = pool.get();
@@ -136,7 +132,7 @@ public class PoolTest extends ProxyTestCase {
     }
 
     public void testPoolGrowingManually() {
-        final Pool pool = new Pool(Identifiable.class, new NOP(true), getFactory());
+        final Pool pool = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Object obj1 = pool.get();
         assertEquals(0, pool.getAvailable());
@@ -149,9 +145,9 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(3, pool.getAvailable());
         assertEquals(5, pool.size());
     }
-    
+
     public void testReturnedElementWillNotReturnToPoolIfExhausted() throws Exception {
-        final Pool pool = new Pool(Identifiable.class, new NOP(false), getFactory());
+        final Pool pool = new Pool(Identifiable.class, new NotRetunringResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Object borrowed = pool.get();
         assertEquals(0, pool.getAvailable());
@@ -160,9 +156,9 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(0, pool.getAvailable());
         assertEquals(0, pool.size());
     }
-    
+
     public void testGarbageCollectedElementWillNotReturnToPoolIfExhausted() throws Exception {
-        final Pool pool = new Pool(Identifiable.class, new NOP(false), getFactory());
+        final Pool pool = new Pool(Identifiable.class, new NotRetunringResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Object borrowed = pool.get();
         assertEquals(0, pool.getAvailable());
@@ -172,27 +168,27 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(0, pool.getAvailable());
         assertEquals(0, pool.size());
     }
-    
+
     public void testReturnedElementIsResetted() throws Exception {
         final Mock mockResetter = mock(Resetter.class);
         mockResetter.expects(once()).method("reset").will(returnValue(true));
-        
+
         final Pool pool = new Pool(Identifiable.class, (Resetter)mockResetter.proxy(), getFactory());
         pool.add(createIdentifiables(1));
         Object borrowed = pool.get();
         ((Poolable)borrowed).returnInstanceToPool();
     }
-    
+
     public void testGarbageCollectedElementIsResetted() throws Exception {
         final Mock mockResetter = mock(Resetter.class);
         mockResetter.expects(once()).method("reset").will(returnValue(true));
-        
+
         final Pool pool = new Pool(Identifiable.class, (Resetter)mockResetter.proxy(), getFactory());
         pool.add(createIdentifiables(1));
         Object borrowed = pool.get();
         assertNotNull(borrowed);
-        borrowed=null;
+        borrowed = null;
         System.gc();
-        assertEquals(1,pool.getAvailable());
+        assertEquals(1, pool.getAvailable());
     }
 }

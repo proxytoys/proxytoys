@@ -35,6 +35,7 @@ import java.util.Map;
  * @see com.thoughtworks.proxy.factory
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
+    private static final long serialVersionUID = -5615928639194345818L;
     private ProxyFactory standardProxyFactory = new StandardProxyFactory();
     // @todo Make thread-safe.
     // Keeps track of what is currently being created - to avoid infinite recursion
@@ -46,6 +47,8 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * @since 0.1
      */
     class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
+        private static final long serialVersionUID = 418834172207536454L;
+
         /**
          * Construct a CGLIBInvocationHandlerAdapter.
          * 
