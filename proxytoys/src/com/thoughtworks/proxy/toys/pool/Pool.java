@@ -37,6 +37,10 @@ import java.util.Map;
  * implementation of the {@link Resetter} interface each element's status can be reset or the element can be dropped from the
  * pool at all, if it is exhausted.
  * </p>
+ * <p>
+ * A client can use the pool's monitor for an improved synchronization. Everytime an object returns to the pool, all waiting
+ * Threads of the monitor will be notified.
+ * </p>
  * 
  * @author J&ouml;rg Schaible
  * @since 0.2
@@ -176,6 +180,9 @@ public class Pool {
                 }
             }
             availableInstances.addAll(resettedInstances);
+            if (resettedInstances.size() > 0) {
+                notifyAll();
+            }
         }
         return availableInstances.size();
     }
@@ -194,6 +201,7 @@ public class Pool {
         busyInstances.remove(reference.get());
         if (resetter.reset(reference.get())) {
             availableInstances.add(reference);
+            notifyAll();
         }
     }
 
