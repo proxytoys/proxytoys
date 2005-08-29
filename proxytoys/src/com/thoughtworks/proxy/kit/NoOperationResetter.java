@@ -2,7 +2,8 @@
  * Copyright (C) 2005 Jörg Schaible
  * Created on 24.08.2005 by Jörg Schaible
  */
-package com.thoughtworks.proxy.toys.pool;
+package com.thoughtworks.proxy.kit;
+
 
 import java.io.Serializable;
 

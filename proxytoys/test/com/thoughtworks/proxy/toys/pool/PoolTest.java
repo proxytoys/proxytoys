@@ -6,6 +6,8 @@
 package com.thoughtworks.proxy.toys.pool;
 
 import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.kit.NoOperationResetter;
+import com.thoughtworks.proxy.kit.Resetter;
 
 import org.jmock.Mock;
 

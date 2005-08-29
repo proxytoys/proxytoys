@@ -5,7 +5,7 @@
  * 
  * See license.txt for licence details
  */
-package com.thoughtworks.proxy.toys.pool;
+package com.thoughtworks.proxy.kit;
 
 /**
  * Interface for a resetter component. This will automatically reset the state of the pooled element, when it is retunred to the

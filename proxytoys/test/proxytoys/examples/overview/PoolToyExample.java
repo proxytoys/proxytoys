@@ -5,9 +5,9 @@
  */
 package proxytoys.examples.overview;
 
+import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.toys.pool.Pool;
 import com.thoughtworks.proxy.toys.pool.Poolable;
-import com.thoughtworks.proxy.toys.pool.Resetter;
 
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
