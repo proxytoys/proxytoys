@@ -39,8 +39,9 @@ import java.util.Map;
  * element can be dropped from the pool at all, if it is exhausted.
  * </p>
  * <p>
- * A client can use the pool's monitor for an improved synchronization. Everytime an object returns to the pool, all
- * waiting Threads of the monitor will be notified.
+ * A client can use the pool's monitor for an improved synchronization. Everytime an object is returned to the pool, all
+ * waiting Threads of the monitor will be notified. This notification will happen independently of the result of the
+ * {@link Resetter#reset(Object)} method.
  * </p>
  * 
  * @author J&ouml;rg Schaible
@@ -192,7 +193,7 @@ public class Pool {
                 }
             }
             availableInstances.addAll(resettedInstances);
-            if (resettedInstances.size() > 0) {
+            if (freedInstances.size() > 0) {
                 notifyAll();
             }
         }
@@ -213,8 +214,8 @@ public class Pool {
         busyInstances.remove(reference.get());
         if (resetter.reset(reference.get())) {
             availableInstances.add(reference);
-            notifyAll();
         }
+        notifyAll();
     }
 
     /**
