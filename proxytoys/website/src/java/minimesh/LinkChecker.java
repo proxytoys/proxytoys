@@ -67,7 +67,7 @@ public class LinkChecker {
         } else if (link.startsWith("nntp://")) {
             // todo: News get this address to check it's valid (cache result)
             return true;
-        } else if (link.startsWith("javadoc/")) {
+        } else if (link.startsWith("apidocs/")) {
             // todo: Check the class is valid
             return true;
         } else {
