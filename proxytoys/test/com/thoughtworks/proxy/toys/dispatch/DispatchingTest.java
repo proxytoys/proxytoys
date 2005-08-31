@@ -8,9 +8,12 @@
 package com.thoughtworks.proxy.toys.dispatch;
 
 import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.kit.NoOperationResetter;
+import com.thoughtworks.proxy.kit.Resetter;
 
 import org.jmock.Mock;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +46,8 @@ public class DispatchingTest extends ProxyTestCase {
         Mock fooMock = mock(Foo.class);
         Mock barMock = mock(Bar.class);
 
-        Object foobar = Dispatching.object(
-                new Class[]{Foo.class, Bar.class}, new Object[]{fooMock.proxy(), barMock.proxy()}, getFactory());
+        Object foobar = Dispatching.object(new Class[]{Foo.class, Bar.class}, new Object[]{
+                fooMock.proxy(), barMock.proxy()}, getFactory());
 
         fooMock.expects(once()).method("getSomething").withNoArguments().will(returnValue("some thing"));
         barMock.expects(once()).method("doSomething").with(eq("some thing"));
@@ -58,8 +61,8 @@ public class DispatchingTest extends ProxyTestCase {
         Mock fooMock = mock(Foo.class);
         Mock fooMimicMock = mock(FooMimic.class);
 
-        Object foo = Dispatching.object(
-                new Class[]{Foo.class, FooMimic.class}, new Object[]{fooMock.proxy(), fooMimicMock.proxy()}, getFactory());
+        Object foo = Dispatching.object(new Class[]{Foo.class, FooMimic.class}, new Object[]{
+                fooMock.proxy(), fooMimicMock.proxy()}, getFactory());
 
         fooMock.expects(once()).method("getSomething").withNoArguments().will(returnValue("some thing"));
         // should be fooMimicMock ...
@@ -86,7 +89,8 @@ public class DispatchingTest extends ProxyTestCase {
     public void testOneDelegateCanMatchMultipleTypes() throws Exception {
         Mock fooBarMock = mock(FooBar.class);
 
-        Object foobar = Dispatching.object(new Class[]{Foo.class, Bar.class}, new Object[]{fooBarMock.proxy()}, getFactory());
+        Object foobar = Dispatching.object(
+                new Class[]{Foo.class, Bar.class}, new Object[]{fooBarMock.proxy()}, getFactory());
 
         fooBarMock.expects(once()).method("doSomething").with(eq("some thing"));
         fooBarMock.expects(once()).method("getSomething").withNoArguments().will(returnValue("some thing"));
@@ -118,7 +122,8 @@ public class DispatchingTest extends ProxyTestCase {
     public void testStringRepresentationContainsImplementedTypes() throws Exception {
         Mock fooBarMock = mock(FooBar.class);
 
-        Object foobar = Dispatching.object(new Class[]{Foo.class, Bar.class}, new Object[]{fooBarMock.proxy()}, getFactory());
+        Object foobar = Dispatching.object(
+                new Class[]{Foo.class, Bar.class}, new Object[]{fooBarMock.proxy()}, getFactory());
 
         String string = foobar.toString();
         assertTrue(string.indexOf(Foo.class.getName()) >= 0);
@@ -141,5 +146,24 @@ public class DispatchingTest extends ProxyTestCase {
                 "Bar", new ArrayList(), Thread.currentThread()}, getFactory());
 
         assertFalse(proxy1.equals(proxy2));
+    }
+
+    private void useSerializedProxy(Resetter resetter) {
+        assertTrue(resetter.reset(this));
+    }
+
+    public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Resetter)serializeWithJDK(Dispatching.object(
+                new Class[]{Resetter.class}, new Object[]{new NoOperationResetter()}, getFactory())));
+    }
+
+    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Resetter)serializeWithXStream(Dispatching.object(
+                new Class[]{Resetter.class}, new Object[]{new NoOperationResetter()}, getFactory())));
+    }
+
+    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Resetter)serializeWithXStreamAndPureReflection(Dispatching.object(
+                new Class[]{Resetter.class}, new Object[]{new NoOperationResetter()}, getFactory())));
     }
 }

@@ -18,6 +18,8 @@ import java.lang.reflect.Method;
  * @since 0.1
  */
 public class InvocationDecoratorSupport implements InvocationDecorator {
+    private static final long serialVersionUID = 1L;
+
     public Object[] beforeMethodStarts(final Object proxy, final Method method, final Object[] args) {
         return args;
     }

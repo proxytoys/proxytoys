@@ -16,6 +16,10 @@ import com.thoughtworks.proxy.kit.SimpleReference;
 import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -48,7 +52,7 @@ import java.util.Map;
  * @since 0.2
  * @see com.thoughtworks.proxy.toys.pool
  */
-public class Pool {
+public class Pool implements Serializable {
     private static final Method returnInstanceToPool;
 
     static {
@@ -60,15 +64,15 @@ public class Pool {
     }
 
     /** The interfaces of the pooled instances. */
-    protected final Class types[];
+    private Class types[];
     /** The proxy factory. */
-    protected final ProxyFactory factory;
+    private ProxyFactory factory;
     /** The busy instancess i.e. the ones currently in usage. */
-    protected final Map busyInstances = new HashMap();
+    private transient Map busyInstances;
     /** The available instancess. */
-    protected final List availableInstances = new ArrayList();
+    private transient List availableInstances;
     /** The resetter of the pooled elements. */
-    protected final Resetter resetter;
+    private Resetter resetter;
 
     /**
      * Construct an Pool using the {@link StandardProxyFactory}.
@@ -90,11 +94,17 @@ public class Pool {
      * @since 0.2
      */
     public Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory) {
+        this();
         this.types = new Class[]{type, Poolable.class};
         this.factory = proxyFactory;
         this.resetter = resetter;
     }
 
+    private Pool() {
+        busyInstances = new HashMap();
+        availableInstances = new ArrayList();
+    }
+    
     /**
      * Add a new instance as resource to the pool. The pool's monitor will be notified.
      * 
@@ -140,7 +150,7 @@ public class Pool {
         final Object result;
         if (availableInstances.size() > 0 || getAvailable() > 0) {
             final ObjectReference delegate = (ObjectReference)availableInstances.remove(0);
-            result = new PoolingInvoker(factory, delegate, Delegating.STATIC_TYPING).proxy();
+            result = new PoolingInvoker(this, factory, delegate, Delegating.STATIC_TYPING).proxy();
             final Object weakReference = new WeakReference(result);
             busyInstances.put(delegate.get(), weakReference);
         } else {
@@ -218,23 +228,39 @@ public class Pool {
         notifyAll();
     }
 
+    private void writeObject(final ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        busyInstances = new HashMap();
+        availableInstances = new ArrayList();
+    }
+    
     /**
      * The {@link com.thoughtworks.proxy.Invoker} of the proxy.
      * 
      * @since 0.2
      */
-    protected class PoolingInvoker extends DelegatingInvoker {
+    protected static class PoolingInvoker extends DelegatingInvoker {
+
+        // explicit reference for serialization via reflection
+        private Pool pool;
 
         /**
          * Construct a PoolingInvoker.
          * 
+         * @param pool the corresponding {@link Pool}
          * @param proxyFactory the {@link ProxyFactory} to use
          * @param delegateReference the {@link ObjectReference} with the delegate
          * @param staticTyping {@link Delegating#STATIC_TYPING} or {@link Delegating#DYNAMIC_TYPING}
          * @since 0.2
          */
-        protected PoolingInvoker(ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
+        protected PoolingInvoker(
+                Pool pool, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
             super(proxyFactory, delegateReference, staticTyping);
+            this.pool = pool;
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -254,7 +280,7 @@ public class Pool {
          * @since 0.2
          */
         public Object returnInstanceToPool() {
-            Pool.this.returnInstanceToPool(delegateReference);
+            pool.returnInstanceToPool(getDelegateReference());
             return Void.TYPE;
         }
 
@@ -265,11 +291,11 @@ public class Pool {
          * @since 0.2
          */
         protected Object proxy() {
-            return proxyFactory.createProxy(types, this);
+            return getProxyFactory().createProxy(pool.types, this);
         }
 
         private Pool getPoolInstance() {
-            return Pool.this;
+            return pool;
         }
     }
 }

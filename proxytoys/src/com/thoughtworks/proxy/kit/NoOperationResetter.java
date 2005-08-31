@@ -1,6 +1,9 @@
 /*
- * Copyright (C) 2005 Jörg Schaible
- * Created on 24.08.2005 by Jörg Schaible
+ * Created on 24-Aug-2005
+ *
+ * (c) 2005 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.kit;
 

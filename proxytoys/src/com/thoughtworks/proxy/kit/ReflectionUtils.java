@@ -10,6 +10,10 @@ package com.thoughtworks.proxy.kit;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.InvokerReference;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
@@ -237,5 +241,40 @@ public class ReflectionUtils {
             throw new NoSuchMethodException(name.toString());
         }
         return method;
+    }
+    
+    /**
+     * Write a {@link Method} into an {@link ObjectOutputStream}.
+     * 
+     * @param out the stream
+     * @param method the {@link Method} to write
+     * @throws IOException if writing causes a problem
+     * @since 1.2
+     */
+    public static void writeMethod(final ObjectOutputStream out, final Method method) throws IOException {
+        out.writeObject(method.getDeclaringClass());
+        out.writeObject(method.getName());
+        out.writeObject(method.getParameterTypes());
+    }
+    
+    /**
+     * Read a {@link Method} from an {@link ObjectInputStream}.
+     * 
+     * @param in the stream
+     * @return the read {@link Method}
+     * @throws IOException if reading causes a problem
+     * @throws ClassNotFoundException if class types from objects of the InputStream cannot be found
+     * @throws InvalidObjectException if the {@link Method} cannot be found
+     * @since 1.2
+     */
+    public static Method readMethod(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        final Class type = (Class)in.readObject();
+        final String name = (String)in.readObject();
+        final Class[] parameters = (Class[])in.readObject();
+        try {
+            return type.getMethod(name, parameters);
+        } catch (final NoSuchMethodException e) {
+            throw new InvalidObjectException(e.getMessage());
+        }
     }
 }

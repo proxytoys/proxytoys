@@ -32,7 +32,7 @@ public class PrivateInvoker extends SimpleInvoker {
     }
 
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-        if (target != null && !method.isAccessible()) {
+        if (getTarget() != null && !method.isAccessible()) {
             method.setAccessible(true);
         }
         return super.invoke(proxy, method, args);

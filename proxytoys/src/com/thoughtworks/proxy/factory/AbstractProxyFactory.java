@@ -53,9 +53,9 @@ abstract class AbstractProxyFactory implements ProxyFactory {
      * 
      * @since 0.1
      */
-    class CoincidentalInvocationHandlerAdapter implements Serializable {
+    static class CoincidentalInvocationHandlerAdapter implements Serializable {
         private static final long serialVersionUID = -7406561726778120065L;
-        private final Invoker invoker;
+        private Invoker invoker;
 
         /**
          * Construct a CoincidentalInvocationHandlerAdapter.

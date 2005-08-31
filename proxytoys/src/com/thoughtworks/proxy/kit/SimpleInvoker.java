@@ -22,8 +22,7 @@ import java.lang.reflect.Method;
 public class SimpleInvoker implements Invoker {
     private static final long serialVersionUID = 1L;
 
-    /** the target of the invocations. */
-    protected final Object target;
+    private Object target;
 
     /**
      * Construct a SimpleInvoker.
@@ -37,5 +36,15 @@ public class SimpleInvoker implements Invoker {
 
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         return (target == null ? null : method.invoke(target, args));
+    }
+    
+    /**
+     * Retrieve the target of the invocations.
+     * 
+     * @return the target object
+     * @since 0.2
+     */
+    protected Object getTarget() {
+        return target;
     }
 }

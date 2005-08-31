@@ -50,7 +50,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
         void checkForCycle();
     }
 
-    private final Class[] types;
+    private Class[] types;
     private transient boolean executed = false;
     private transient ThreadLocal delegate;
 
@@ -115,10 +115,11 @@ public class HotSwappingInvoker extends DelegatingInvoker {
      * @since 0.1
      */
     protected Object hotswap(final Object newDelegate) {
-        Object result = delegateReference.get();
+        ObjectReference ref = getDelegateReference();
+        Object result = ref.get();
         // Note, for the cycle detection the delegate have to be set first
         delegate.set(newDelegate);
-        delegateReference.set(newDelegate);
+        ref.set(newDelegate);
         if (newDelegate instanceof CycleCheck) {
             ((CycleCheck)newDelegate).checkForCycle();
         }
@@ -136,7 +137,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
         System.arraycopy(types, 0, typesWithSwappable, 0, types.length);
         typesWithSwappable[types.length] = Swappable.class;
         typesWithSwappable[types.length + 1] = CycleCheck.class;
-        return proxyFactory.createProxy(typesWithSwappable, this);
+        return getProxyFactory().createProxy(typesWithSwappable, this);
     }
 
     private void writeObject(final ObjectOutputStream out) throws IOException {

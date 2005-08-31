@@ -8,9 +8,14 @@
 package com.thoughtworks.proxy.toys.decorate;
 
 import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.kit.NoOperationResetter;
+import com.thoughtworks.proxy.kit.Resetter;
+
+import junit.framework.TestCase;
 
 import org.jmock.Mock;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 
@@ -54,11 +59,11 @@ public class DecoratingTest extends ProxyTestCase {
 
     public void testShouldInterceptMethodInvocation() throws Exception {
         // expect
-        decoratorMock.expects(once()).method(beforeMethodStarts).with(same(foo), eq(getSomethingMethod), eq(toArray("foo"))).will(
-                returnValue(toArray("decorated")));
+        decoratorMock.expects(once()).method(beforeMethodStarts).with(
+                same(foo), eq(getSomethingMethod), eq(toArray("foo"))).will(returnValue(toArray("decorated")));
 
-        fooMock.expects(once()).method(getSomething).with(eq("decorated")).after(decoratorMock, beforeMethodStarts).will(
-                returnValue("hello"));
+        fooMock.expects(once()).method(getSomething).with(eq("decorated")).after(decoratorMock, beforeMethodStarts)
+                .will(returnValue("hello"));
 
         // execute
         foo.getSomething("foo");
@@ -66,13 +71,14 @@ public class DecoratingTest extends ProxyTestCase {
 
     public void testShouldInterceptMethodSuccess() throws Exception {
         // expect
-        decoratorMock.expects(once()).method(beforeMethodStarts).withAnyArguments().will(returnValue(toArray("ignored")));
+        decoratorMock.expects(once()).method(beforeMethodStarts).withAnyArguments().will(
+                returnValue(toArray("ignored")));
 
         fooMock.expects(once()).method(getSomething).withAnyArguments().will(returnValue("hello"));
 
         decoratorMock.expects(once()).method(decorateResult).with(
-                same(foo), eq(getSomethingMethod), eq(toArray("ignored")), eq("hello")).after(fooMock, getSomething).will(
-                returnValue("world"));
+                same(foo), eq(getSomethingMethod), eq(toArray("ignored")), eq("hello")).after(fooMock, getSomething)
+                .will(returnValue("world"));
 
         // execute
         String result = foo.getSomething("before");
@@ -94,7 +100,8 @@ public class DecoratingTest extends ProxyTestCase {
         fooMock.expects(once()).method(getSomething).will(throwException(exception));
 
         decoratorMock.expects(once()).method(decorateTargetException).with(
-                same(foo), eq(getSomethingMethod), eq(toArray("ignored")), same(exception)).will(returnValue(decoratedException));
+                same(foo), eq(getSomethingMethod), eq(toArray("ignored")), same(exception)).will(
+                returnValue(decoratedException));
 
         // execute
         try {
@@ -127,5 +134,34 @@ public class DecoratingTest extends ProxyTestCase {
             fail("Mock should have thrown exception");
         } catch (MyException expected) {
         }
+    }
+
+    static class AssertingDecorator extends InvocationDecoratorSupport {
+        private static final long serialVersionUID = 1L;
+
+        public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
+            assertTrue(args[0] instanceof TestCase);
+            return super.beforeMethodStarts(proxy, method, args);
+        }
+
+    }
+
+    private void useSerializedProxy(Resetter resetter) {
+        assertTrue(resetter.reset(this));
+    }
+
+    public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Resetter)serializeWithJDK(Decorating.object(
+                new Class[]{Resetter.class}, new NoOperationResetter(), new AssertingDecorator(), getFactory())));
+    }
+
+    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Resetter)serializeWithXStream(Decorating.object(
+                new Class[]{Resetter.class}, new NoOperationResetter(), new AssertingDecorator(), getFactory())));
+    }
+
+    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Resetter)serializeWithXStreamAndPureReflection(Decorating.object(
+                new Class[]{Resetter.class}, new NoOperationResetter(), new AssertingDecorator(), getFactory())));
     }
 }

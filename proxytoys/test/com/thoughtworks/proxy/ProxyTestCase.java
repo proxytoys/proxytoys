@@ -1,8 +1,17 @@
 package com.thoughtworks.proxy;
 
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 
 import org.jmock.MockObjectTestCase;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 /**
@@ -41,5 +50,34 @@ public abstract class ProxyTestCase extends MockObjectTestCase {
 
     public ProxyFactory getFactory() {
         return proxyFactory;
+    }
+    
+    protected Object serializeWithJDK(Object toSerialize) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
+        ObjectOutputStream outStream = new ObjectOutputStream(outBuffer);
+        outStream.writeObject(toSerialize);
+        outStream.close();
+        ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
+        ObjectInputStream inStream = new ObjectInputStream(inBuffer);
+        Object serialized = inStream.readObject();
+        inStream.close();
+        assertNotNull(serialized);
+        return serialized;
+    }
+    
+    protected Object serializeWithXStream(Object toSerialize) throws IOException, ClassNotFoundException {
+        final XStream xstream = new XStream(new XppDriver());
+        final String xml = xstream.toXML(toSerialize);
+        Object serialized = xstream.fromXML(xml);
+        assertNotNull(serialized);
+        return serialized;
+    }
+    
+    protected Object serializeWithXStreamAndPureReflection(Object toSerialize) throws IOException, ClassNotFoundException {
+        final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
+        final String xml = xstream.toXML(toSerialize);
+        Object serialized = xstream.fromXML(xml);
+        assertNotNull(serialized);
+        return serialized;
     }
 }

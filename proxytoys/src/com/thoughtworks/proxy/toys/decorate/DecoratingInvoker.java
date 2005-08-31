@@ -25,8 +25,9 @@ import java.lang.reflect.Method;
  * @since 0.1
  */
 public class DecoratingInvoker implements Invoker {
-    private final Invoker decorated;
-    private final InvocationDecorator decorator;
+    private static final long serialVersionUID = 8293471912861497447L;
+    private Invoker decorated;
+    private InvocationDecorator decorator;
 
     /**
      * Construct a DecoratingInvoker decorating another Invoker.

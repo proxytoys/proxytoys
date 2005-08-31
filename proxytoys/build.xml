@@ -34,6 +34,7 @@
                 <fileset dir="website/lib">
                     <include name="**/*.jar" />
                 </fileset>
+                <fileset dir="${lib.dir}" includes="*.jar" />
             </classpath>
         </javac>
     </target>
@@ -77,6 +78,7 @@
                 <fileset dir="website/lib">
                     <include name="**/*.jar" />
                 </fileset>
+                <fileset dir="${lib.dir}" includes="*.jar" />
                 <pathelement path="build/website-classes" />
             </classpath>
             <arg value="website/src/content/website.xml" />

@@ -32,12 +32,10 @@ import java.lang.reflect.Method;
  * @since 0.1
  */
 public class DelegatingInvoker implements Invoker {
-
-    /** the {@link ProxyFactory} in use */
-    protected final ProxyFactory proxyFactory;
-    /** the {@link ObjectReference} of the delegate */
-    protected final ObjectReference delegateReference;
-    private final boolean staticTyping;
+    private static final long serialVersionUID = -4437574780659460771L;
+    private ProxyFactory proxyFactory;
+    private ObjectReference delegateReference;
+    private boolean staticTyping;
 
     /**
      * Construct a DelegatingInvoker.
@@ -158,6 +156,26 @@ public class DelegatingInvoker implements Invoker {
     }
 
     /**
+     * Retrieve the {@link ObjectReference} of the delegate.
+     * 
+     * @return the reference of hte delegate
+     * @since 0.2
+     */
+    protected ObjectReference getDelegateReference() {
+        return this.delegateReference;
+    }
+
+    /**
+     * Retrieve the {@link ProxyFactory} to use.
+     * 
+     * @return the ProxyFactory
+     * @since 0.2
+     */
+    protected ProxyFactory getProxyFactory() {
+        return this.proxyFactory;
+    }
+
+    /**
      * Compares a DelegatingInvoker with another one for equality. Two DelegatingInvoker are equal, if they have both the same
      * <tt>staticTyping</tt> flag and their delegees are equal.
      * 
@@ -165,12 +183,22 @@ public class DelegatingInvoker implements Invoker {
      * @since 0.2
      */
     public boolean equals(final Object obj) {
-        // TODO Java spec recommends also to overload hashCode ...
         if (obj instanceof DelegatingInvoker) {
             final DelegatingInvoker invoker = (DelegatingInvoker)obj;
             return invoker.staticTyping == staticTyping && delegate().equals(invoker.delegate());
         }
         return false;
+    }
+
+    public int hashCode() {
+        final Object delegate = delegate();
+        int hashCode = delegate == null ? System.identityHashCode(this) : delegate.hashCode();
+        if (staticTyping) {
+            hashCode = ~hashCode;
+        } else {
+            hashCode = -hashCode;
+        }
+        return hashCode;
     }
 
 }

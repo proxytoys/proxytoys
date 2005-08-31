@@ -5,14 +5,20 @@ import junit.framework.TestCase;
 import java.beans.beancontext.BeanContext;
 import java.beans.beancontext.BeanContextServices;
 import java.beans.beancontext.BeanContextServicesListener;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.LinkedList;
@@ -70,7 +76,8 @@ public class ReflectionUtilsTest extends TestCase {
     }
 
     public void testMostCommonSuperclassForCollections() {
-        assertEquals(AbstractList.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{new LinkedList(), new Vector()}));
+        assertEquals(AbstractList.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
+                new LinkedList(), new Vector()}));
     }
 
     public void testAllInterfacesOfListShouldBeFound() {
@@ -83,11 +90,15 @@ public class ReflectionUtilsTest extends TestCase {
     }
 
     public void testMatchingMethodIsFound() throws Exception {
-        Method appendChar = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{new Character('c')});
-        Method appendCharArray = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{new char[]{'c'}});
-        Method appendShort = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{new Short((short)0)});
+        Method appendChar = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{new Character(
+                'c')});
+        Method appendCharArray = ReflectionUtils.getMatchingMethod(
+                StringBuffer.class, "append", new Object[]{new char[]{'c'}});
+        Method appendShort = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{new Short(
+                (short)0)});
         Method appendObject = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{this});
-        Method appendObject2 = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{new Exception()});
+        Method appendObject2 = ReflectionUtils.getMatchingMethod(
+                StringBuffer.class, "append", new Object[]{new Exception()});
         assertNotNull(appendChar);
         assertNotNull(appendCharArray);
         assertNotNull(appendShort);
@@ -116,7 +127,54 @@ public class ReflectionUtilsTest extends TestCase {
             fail("Thrown " + NoSuchMethodException.class.getName() + " expected");
         } catch (final NoSuchMethodException e) {
             assertTrue(e.getMessage().indexOf(
-                    StringBuffer.class.getName() + ".append(" + this.getClass().getName() + ", " + Class.class.getName() + ")") >= 0);
+                    StringBuffer.class.getName()
+                            + ".append("
+                            + this.getClass().getName()
+                            + ", "
+                            + Class.class.getName()
+                            + ")") >= 0);
+        }
+    }
+
+    public void testMethodCanBeSerialized() throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
+        ObjectOutputStream outStream = new ObjectOutputStream(outBuffer);
+        ReflectionUtils.writeMethod(outStream, ReflectionUtils.equals);
+        outStream.close();
+        ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
+        ObjectInputStream inStream = new ObjectInputStream(inBuffer);
+        assertSame(Object.class, inStream.readObject());
+        assertEquals("equals", inStream.readObject());
+        assertTrue(Arrays.equals(new Class[]{Object.class}, (Object[])inStream.readObject()));
+        inStream.close();
+    }
+
+    public void testMethodCanBeDeserialized() throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
+        ObjectOutputStream outStream = new ObjectOutputStream(outBuffer);
+        outStream.writeObject(Object.class);
+        outStream.writeObject("equals");
+        outStream.writeObject(new Class[]{Object.class});
+        outStream.close();
+        ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
+        ObjectInputStream inStream = new ObjectInputStream(inBuffer);
+        assertEquals(ReflectionUtils.equals, ReflectionUtils.readMethod(inStream));
+    }
+
+    public void testUnknownDeserializedMethodThrowsInvalidObjectException() throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
+        ObjectOutputStream outStream = new ObjectOutputStream(outBuffer);
+        outStream.writeObject(Object.class);
+        outStream.writeObject("equals");
+        outStream.writeObject(new Class[0]);
+        outStream.close();
+        ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
+        ObjectInputStream inStream = new ObjectInputStream(inBuffer);
+        try {
+            ReflectionUtils.readMethod(inStream);
+            fail("Thrown " + InvalidObjectException.class.getName() + " expected");
+        } catch (final InvalidObjectException e) {
+            // ok
         }
     }
 }

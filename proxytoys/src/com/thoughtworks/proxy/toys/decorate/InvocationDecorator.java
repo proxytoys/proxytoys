@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 
 
@@ -16,7 +17,7 @@ import java.lang.reflect.Method;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @since 0.1
  */
-public interface InvocationDecorator {
+public interface InvocationDecorator extends Serializable {
 
     /**
      * Called before a method is invoked on an object, to possibly decorate the arguments being passed to the method invocation.

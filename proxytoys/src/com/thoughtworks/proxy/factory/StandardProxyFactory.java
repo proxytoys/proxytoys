@@ -28,7 +28,7 @@ public class StandardProxyFactory extends AbstractProxyFactory {
      * 
      * @since 0.1
      */
-    class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
+    static class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
         private static final long serialVersionUID = 141954540221604284L;
 
         /**
