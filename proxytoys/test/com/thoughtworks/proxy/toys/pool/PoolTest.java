@@ -218,8 +218,12 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(1, pool.getAvailable());
     }
 
-    private void useSerializedProxy(Pool pool) {
+    private void useSerializedProxy(final Pool pool) {
         assertEquals(2, pool.size());
+        Object borrowed0 = pool.get();
+        Object borrowed1 = pool.get();
+        assertNotNull(borrowed0);
+        assertNotNull(borrowed1);
     }
 
     public void testSerializeWithJDK() throws IOException, ClassNotFoundException {

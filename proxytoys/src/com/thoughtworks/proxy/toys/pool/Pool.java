@@ -278,7 +278,7 @@ public class Pool implements Serializable {
         out.defaultWriteObject();
         final List instances = new ArrayList(availableInstances);
         for (final Iterator iter = busyInstances.keySet().iterator(); iter.hasNext();) {
-            instances.add(iter.next());
+            instances.add(new SimpleReference(iter.next()));
         }
         int mode = serializationMode;
         if (mode == SERIALIZATION_FORCE) {
