@@ -28,6 +28,7 @@ import java.util.List;
  * @since 0.1
  */
 public class MulticastingInvoker implements Invoker {
+    private static final long serialVersionUID = 1L;
     private static final Method multicastTargetsDirect;
     private static final Method multicastTargetsIndirect;
     private static final Method getTargetsInArray;
@@ -51,9 +52,9 @@ public class MulticastingInvoker implements Invoker {
         }
     }
 
-    private final Class[] types;
-    private final ProxyFactory proxyFactory;
-    private final Object[] targets;
+    private Class[] types;
+    private ProxyFactory proxyFactory;
+    private Object[] targets;
 
     /**
      * Construct a MulticastingInvoker.

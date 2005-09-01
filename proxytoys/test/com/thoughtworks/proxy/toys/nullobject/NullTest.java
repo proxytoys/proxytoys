@@ -134,7 +134,8 @@ public class NullTest extends ProxyTestCase {
 
     public void testShouldExecuteVoidMethods() throws Exception {
         // execute
-        InterfaceWithVoidMethod nullObject = (InterfaceWithVoidMethod)Null.object(InterfaceWithVoidMethod.class, getFactory());
+        InterfaceWithVoidMethod nullObject = (InterfaceWithVoidMethod)Null.object(
+                InterfaceWithVoidMethod.class, getFactory());
 
         // verify
         nullObject.doVoidMethod();
@@ -146,8 +147,8 @@ public class NullTest extends ProxyTestCase {
 
     public void testShouldNotReturnNullForMethodsThatReturnAnObject() throws Exception {
         // execute
-        InterfaceWithObjectMethod nullObject = (InterfaceWithObjectMethod)Null
-                .object(InterfaceWithObjectMethod.class, getFactory());
+        InterfaceWithObjectMethod nullObject = (InterfaceWithObjectMethod)Null.object(
+                InterfaceWithObjectMethod.class, getFactory());
 
         // verify
         assertNotNull(nullObject.getObject());
@@ -270,7 +271,8 @@ public class NullTest extends ProxyTestCase {
     }
 
     public void testShouldHaveSameHashcodeAsAnotherNullObjectOfTheSameType() throws Exception {
-        assertEquals(Null.object(Collection.class, getFactory()).hashCode(), Null.object(Collection.class, getFactory()).hashCode());
+        assertEquals(Null.object(Collection.class, getFactory()).hashCode(), Null
+                .object(Collection.class, getFactory()).hashCode());
     }
 
     private static void assertNotEquals(int i1, int i2) {
@@ -278,7 +280,8 @@ public class NullTest extends ProxyTestCase {
     }
 
     public void testShouldUsuallyHaveDifferentHashcodeFromAnotherNullObjectOfDifferentType() throws Exception {
-        assertNotEquals(Null.object(Collection.class, getFactory()).hashCode(), Null.object(List.class, getFactory()).hashCode());
+        assertNotEquals(Null.object(Collection.class, getFactory()).hashCode(), Null.object(List.class, getFactory())
+                .hashCode());
     }
 
     public void testShouldCreateEmptyStringForNullString() {
@@ -291,23 +294,7 @@ public class NullTest extends ProxyTestCase {
     }
 
     public interface ShouldSerialize extends Serializable {
-    }
-
-    public void testShouldBeSerializableIfInterfaceIsSerializable() throws Exception {
-        // setup
-        Object nullObject = Null.object(ShouldSerialize.class, getFactory());
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bytes);
-
-        // execute
-        out.writeObject(nullObject);
-        ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray()));
-        Object result = in.readObject();
-
-        // verify
-        assertNotNull("not null", result);
-        assertTrue("is Null Object", Null.isNullObject(result));
-        assertTrue("is correct type", result instanceof ShouldSerialize);
+        boolean test();
     }
 
     public interface ShouldNotSerialize {
@@ -332,5 +319,23 @@ public class NullTest extends ProxyTestCase {
             fail("Should throw exception");
         } catch (IOException expected) {
         }
+    }
+
+    private void useSerializedProxy(ShouldSerialize serialized) {
+        assertFalse(serialized.test());
+        assertTrue("is Null Object", Null.isNullObject(serialized));
+        assertTrue("is correct type", serialized instanceof ShouldSerialize);
+    }
+
+    public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
+        useSerializedProxy((ShouldSerialize)serializeWithJDK(Null.object(ShouldSerialize.class, getFactory())));
+    }
+
+    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+        useSerializedProxy((ShouldSerialize)serializeWithXStream(Null.object(ShouldSerialize.class, getFactory())));
+    }
+
+    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+        useSerializedProxy((ShouldSerialize)serializeWithXStreamAndPureReflection(Null.object(ShouldSerialize.class, getFactory())));
     }
 }

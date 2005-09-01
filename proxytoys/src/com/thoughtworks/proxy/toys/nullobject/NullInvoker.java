@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
  * @since 0.1
  */
 public class NullInvoker implements Invoker {
+    private static final long serialVersionUID = -4713875509846468548L;
     private static final Method toString;
 
     static {
@@ -35,8 +36,8 @@ public class NullInvoker implements Invoker {
         }
     }
 
-    private final Class type;
-    private final ProxyFactory proxyFactory;
+    private Class type;
+    private ProxyFactory proxyFactory;
 
     /**
      * Construct a NullInvoker.

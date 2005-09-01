@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 /**
  * @author Dan North
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  */
 public abstract class ProxyTestCase extends MockObjectTestCase {
     /**

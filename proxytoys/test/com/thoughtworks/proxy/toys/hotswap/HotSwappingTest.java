@@ -2,6 +2,8 @@ package com.thoughtworks.proxy.toys.hotswap;
 
 import com.thoughtworks.proxy.ProxyTestCase;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,13 +70,13 @@ public class HotSwappingTest extends ProxyTestCase {
         void screw();
     }
 
-    public static class ScredriverImpl implements Screwdriver {
+    public static class ScredriverImpl implements Screwdriver, Serializable {
         public void screw() {
             fail("should not be called");
         }
     }
 
-    public static class Person {
+    public static class Person implements Serializable {
         public boolean wasScrewed;
 
         public void screw() {
@@ -87,6 +89,29 @@ public class HotSwappingTest extends ProxyTestCase {
         Screwdriver sd = (Screwdriver)HotSwapping.object(Screwdriver.class, getFactory(), person);
         sd.screw();
         assertTrue(person.wasScrewed);
+    }
+
+    private void useSerializedProxy(Screwdriver sd) {
+        sd.screw();
+        Person person = new Person();
+        ((Swappable)sd).hotswap(person);
+        sd.screw();
+        assertTrue(person.wasScrewed);
+    }
+
+    public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Screwdriver)serializeWithJDK(HotSwapping.object(
+                Screwdriver.class, getFactory(), new Person())));
+    }
+
+    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Screwdriver)serializeWithXStream(HotSwapping.object(
+                Screwdriver.class, getFactory(), new Person())));
+    }
+
+    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Screwdriver)serializeWithXStreamAndPureReflection(HotSwapping.object(
+                Screwdriver.class, getFactory(), new Person())));
     }
 
 }

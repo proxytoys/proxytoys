@@ -26,9 +26,9 @@ import java.lang.reflect.Method;
  * @since 0.1
  */
 public class FailoverInvoker extends HotSwappingInvoker {
-    private final Object[] delegates;
-    private final Class exceptionClass;
-
+    private static final long serialVersionUID = -8289095570093619184L;
+    private Object[] delegates;
+    private Class exceptionClass;
     private int current;
 
     /**

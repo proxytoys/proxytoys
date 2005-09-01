@@ -2,7 +2,11 @@ package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.kit.NoOperationResetter;
+import com.thoughtworks.proxy.kit.Resetter;
+import com.thoughtworks.proxy.toys.dispatch.Dispatching;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -23,10 +27,11 @@ public class MulticastTest extends ProxyTestCase {
 
     public static interface Tail {
         void wag();
+        boolean wasWagged();
     }
 
-    public static class DogImpl implements Dog {
-        private final Tail tail;
+    public static class DogImpl implements Dog, Serializable {
+        private Tail tail;
 
         public DogImpl(Tail tail) {
             this.tail = tail;
@@ -37,7 +42,7 @@ public class MulticastTest extends ProxyTestCase {
         }
     }
 
-    public static class TailImpl implements Tail {
+    public static class TailImpl implements Tail, Serializable {
         private boolean wagged = false;
 
         public void wag() {
@@ -152,7 +157,7 @@ public class MulticastTest extends ProxyTestCase {
         assertSame(map, multicast);
     }
 
-    public void testShouldCallDurectMethodForFinalTargets() throws NoSuchMethodException {
+    public void testShouldCallDirectMethodForFinalTargets() throws NoSuchMethodException {
         Method method = StringBuffer.class.getMethod("append", new Class[]{String.class});
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
@@ -199,7 +204,7 @@ public class MulticastTest extends ProxyTestCase {
         assertSame(buffer2, buffers[1]);
     }
 
-    // joehni: IMHo not a valid test case, looks more like an mix of failover and pool
+    // joehni: IMHO not a valid test case, looks more like an mix of failover and pool
     public void TODOtestShouldInvokeMethodsInARoundRobinFashion() {
         TailImpl t1 = new TailImpl();
         TailImpl t2 = new TailImpl();
@@ -215,6 +220,37 @@ public class MulticastTest extends ProxyTestCase {
         assertTrue(t1.wasWagged());
         assertFalse(t2.wasWagged());
         assertFalse(t3.wasWagged());
+    }
+
+    private void useSerializedProxy(Tail tail) {
+        assertFalse(tail.wasWagged());
+        tail.wag();
+        assertTrue(tail.wasWagged());
+        Multicast multicast = (Multicast)tail;
+        assertEquals(2,multicast.getTargetsInArray().length);
+    }
+    
+    private Tail prepareTimAndTimsTail() {
+        TailImpl timsTail = new TailImpl();
+        Dog tim = new DogImpl(timsTail);
+
+        TailImpl tomsTail = new TailImpl();
+        Dog tom = new DogImpl(tomsTail);
+
+        Dog timAndTom = (Dog)Multicasting.object(Dog.class, getFactory(), new Dog[]{tim, tom});
+        return timAndTom.getTail();
+    }
+
+    public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Tail)serializeWithJDK(prepareTimAndTimsTail()));
+    }
+
+    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Tail)serializeWithXStream(prepareTimAndTimsTail()));
+    }
+
+    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+        useSerializedProxy((Tail)serializeWithXStreamAndPureReflection(prepareTimAndTimsTail()));
     }
 
 }

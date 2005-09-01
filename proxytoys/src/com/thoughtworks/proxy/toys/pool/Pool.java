@@ -16,7 +16,9 @@ import com.thoughtworks.proxy.kit.SimpleReference;
 import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -53,6 +55,7 @@ import java.util.Map;
  * @see com.thoughtworks.proxy.toys.pool
  */
 public class Pool implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Method returnInstanceToPool;
 
     static {
@@ -63,16 +66,28 @@ public class Pool implements Serializable {
         }
     }
 
-    /** The interfaces of the pooled instances. */
+    /**
+     * <code>SERIALIZATION_FORCE</code> is the value for serialization of the pool with or without serializable
+     * objects. If the obejcts cannot be serialized, the pool is emtpy after serialization und must be populated again.
+     */
+    public final static int SERIALIZATION_FORCE = 1;
+    /**
+     * <code>SERIALIZATION_STANDARD</code> is the value for the standard serialization of the pool with its objects.
+     * If the obejcts cannot be serialized, a {@link NotSerializableException} is thrown.
+     */
+    public final static int SERIALIZATION_STANDARD = 0;
+    /**
+     * <code>SERIALIZATION_NONE</code> is the value for serialization of the pool without the objects. The pool is
+     * emtpy after serialization und must be populated again.
+     */
+    public final static int SERIALIZATION_NONE = -1;
+
     private Class types[];
-    /** The proxy factory. */
     private ProxyFactory factory;
-    /** The busy instancess i.e. the ones currently in usage. */
     private transient Map busyInstances;
-    /** The available instancess. */
     private transient List availableInstances;
-    /** The resetter of the pooled elements. */
     private Resetter resetter;
+    private int serializationMode;
 
     /**
      * Construct an Pool using the {@link StandardProxyFactory}.
@@ -100,11 +115,42 @@ public class Pool implements Serializable {
         this.resetter = resetter;
     }
 
+    /**
+     * Construct a populated Pool with a specific proxy factory and a serialization mode. This mode specify the
+     * behaviour in case of a serialization of the Pool:
+     * <ul>
+     * <li>{@link #SERIALIZATION_STANDARD}: the standard mode, i.e. all elements of the pool are also serialized and a
+     * {@link NotSerializableException} may thrown</li>
+     * <li>{@link #SERIALIZATION_NONE}: no element of the pool is also serialized and it must be populated again after
+     * serialization</li>
+     * <li>{@link #SERIALIZATION_FORCE}: all element of the pool are serialized, if possible. Otherwise the pool is
+     * empty after serialization and must be populated again.</li>
+     * </ul>
+     * 
+     * @param type the type of the instances
+     * @param resetter the resetter of the pooled elements
+     * @param proxyFactory the proxy factory to use
+     * @param serializationMode <code>true</code> if serialization is done even if the pooled objects are not
+     *            serializable. The deserialized Pool will not have any objects in the Pool though.
+     * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
+     * @since 0.2
+     */
+    public Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory, final int serializationMode) {
+        this();
+        this.types = new Class[]{type, Poolable.class};
+        this.factory = proxyFactory;
+        this.resetter = resetter;
+        this.serializationMode = serializationMode;
+        if (Math.abs(serializationMode) > 1) {
+            throw new IllegalArgumentException("Invalid serialization mode");
+        }
+    }
+
     private Pool() {
         busyInstances = new HashMap();
         availableInstances = new ArrayList();
     }
-    
+
     /**
      * Add a new instance as resource to the pool. The pool's monitor will be notified.
      * 
@@ -228,22 +274,44 @@ public class Pool implements Serializable {
         notifyAll();
     }
 
-    private void writeObject(final ObjectOutputStream out) throws IOException {
+    private synchronized void writeObject(final ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
+        final List instances = new ArrayList(availableInstances);
+        for (final Iterator iter = busyInstances.keySet().iterator(); iter.hasNext();) {
+            instances.add(iter.next());
+        }
+        int mode = serializationMode;
+        if (mode == SERIALIZATION_FORCE) {
+            try {
+                final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                final ObjectOutputStream testStream = new ObjectOutputStream(buffer);
+                testStream.writeObject(instances); // force NotSerializableException
+                testStream.close();
+                mode = SERIALIZATION_STANDARD;
+            } catch (final NotSerializableException e) {
+                mode = SERIALIZATION_NONE;
+            }
+        }
+        if (mode == SERIALIZATION_STANDARD) {
+            out.writeObject(instances);
+        } else {
+            out.writeObject(new ArrayList());
+        }
     }
 
-    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private synchronized void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        availableInstances = (List)in.readObject();
         busyInstances = new HashMap();
-        availableInstances = new ArrayList();
     }
-    
+
     /**
      * The {@link com.thoughtworks.proxy.Invoker} of the proxy.
      * 
      * @since 0.2
      */
     protected static class PoolingInvoker extends DelegatingInvoker {
+        private static final long serialVersionUID = 1L;
 
         // explicit reference for serialization via reflection
         private Pool pool;

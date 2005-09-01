@@ -46,7 +46,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * 
      * @since 0.1
      */
-    class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
+    static class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
         private static final long serialVersionUID = 418834172207536454L;
 
         /**
