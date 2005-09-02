@@ -36,10 +36,8 @@ import java.util.Map;
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
     private static final long serialVersionUID = -5615928639194345818L;
-    private ProxyFactory standardProxyFactory = new StandardProxyFactory();
-    // @todo Make thread-safe.
-    // Keeps track of what is currently being created - to avoid infinite recursion
-    private List creating = new ArrayList();
+    private static final ThreadLocal cycleGuard = new ThreadLocal();
+    private static final ProxyFactory standardProxyFactory = new StandardProxyFactory();
 
     /**
      * The native invocation handler.
@@ -127,11 +125,18 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         final Constructor constructor = getConstructor(type);
         final Class[] params = constructor.getParameterTypes();
         final Object[] args = new Object[params.length];
+        if (cycleGuard.get() == null) {
+            cycleGuard.set(new ArrayList());
+        }
+        final List creating = (List)cycleGuard.get();
         for (int i = 0; i < args.length; i++) {
             if (!creating.contains(params[i])) {
                 creating.add(params[i]);
-                args[i] = Null.object(params[i], this);
-                creating.remove(params[i]);
+                try {
+                    args[i] = Null.object(params[i], this);
+                } finally {
+                    creating.remove(params[i]);
+                }
             } else {
                 args[i] = null;
             }
