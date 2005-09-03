@@ -10,7 +10,11 @@
     <property name="classes.dir" location="${build.dir}/classes" />
     <property name="test.classes.dir" location="${build.dir}/test-classes" />
     <property name="dist.dir" location="${build.dir}/dist" />
-    <property name="jar.file" location="${dist.dir}/${project}-${version}.jar" />
+    <property name="srcdist.dir" location="${build.dir}/srcdist" />
+    <property name="jar.file" location="${build.dir}/${project}-${version}.jar" />
+    <property name="dist.file" location="${build.dir}/${project}-${version}.zip" />
+    <property name="src.file" location="${build.dir}/${project}-src-${version}.zip" />
+    <property name="license.file" location="${build.dir}/${project}-${version}.txt" />
 
     <property name="publish.path" value="/home/projects/proxytoys/docs/${version}" />
 
@@ -42,28 +46,59 @@
     </target>
 
     <target name="jar" depends="compile">
-        <mkdir dir="${dist.dir}" />
         <copy todir="${classes.dir}">
-            <fileset dir="${src.dir}" excludes="**/*.java" />
+            <fileset dir="${src.dir}">
+                <exclude name="**/*.java" />
+                <exclude name="**/*.html" />
+            </fileset>
         </copy>
+        <mkdir dir="${classes.dir}/META-INF" />
+        <copy file="LICENSE.txt" todir="${classes.dir}/META-INF"/>
         <jar basedir="${classes.dir}" destfile="${jar.file}" />
     </target>
 
-    <target name="jar-dist" depends="jar">
+    <target name="jar-dist" depends="srcdist">
         <copy file="${jar.file}" todir="/home/projects/proxytoys/dist/jars" />
+        <copy file="${dist.file}" todir="/home/projects/proxytoys/dist/distributions" />
+        <copy file="${src.file}" todir="/home/projects/proxytoys/dist/distributions" />
+        <copy file="${license.file}" todir="/home/projects/proxytoys/dist/licenses" />
     </target>
 
-    <target name="jar-dist-plink" depends="jar">
+    <target name="jar-dist-plink" depends="srcdist">
         <exec dir="." executable="pscp">
             <arg value="${jar.file}" />
             <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars" />
         </exec>
+        <exec dir="." executable="pscp">
+            <arg value="${dist.file}" />
+            <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/distributions" />
+        </exec>
+        <exec dir="." executable="pscp">
+            <arg value="${src.file}" />
+            <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/distributions" />
+        </exec>
+        <exec dir="." executable="pscp">
+            <arg value="${license.file}" />
+            <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/licenses" />
+        </exec>
     </target>
 
-    <target name="jar-dist-scp" depends="jar">
+    <target name="jar-dist-scp" depends="srcdist">
         <exec dir="." executable="scp">
             <arg value="${jar.file}" />
             <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars" />
+        </exec>
+        <exec dir="." executable="scp">
+            <arg value="${dist.file}" />
+            <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/distributions" />
+        </exec>
+        <exec dir="." executable="scp">
+            <arg value="${src.file}" />
+            <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/distributions" />
+        </exec>
+        <exec dir="." executable="scp">
+            <arg value="${license.file}" />
+            <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/licenses" />
         </exec>
     </target>
 
@@ -107,6 +142,42 @@
             <link href="http://www.junit.org/junit/javadoc/3.8.1" />
             <link href="http://cglib.sourceforge.net/apidocs" />
         </javadoc>
+    </target>
+
+    <target name="distribution" depends="jar,website">
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${dist.dir}/docs"/>
+
+        <copy todir="${dist.dir}">
+            <fileset dir=".">
+                <include name="lib/cglib*.jar"/>
+                <include name="LICENSE.txt"/>
+            </fileset>
+        </copy>
+        <copy todir="${dist.dir}/docs">
+            <fileset dir="build/website" />
+        </copy>
+        <copy file="${jar.file}" todir="${dist.dir}"/>
+
+        <zip destfile="${dist.file}" basedir="${dist.dir}" />
+        <copy file="LICENSE.txt" tofile="${license.file}" />
+    </target>
+
+    <target name="srcdist" depends="distribution">
+        <mkdir dir="${srcdist.dir}"/>
+
+        <copy todir="${srcdist.dir}">
+            <fileset dir=".">
+                <include name="src/**"/>
+                <include name="test/**"/>
+                <include name="lib/*.jar"/>
+                <exclude name="lib/cglib*.jar"/>
+                <include name="build.xml"/>
+                <include name="LICENSE.txt"/>
+            </fileset>
+        </copy>
+
+        <zip destfile="${src.file}" basedir="${srcdist.dir}" />
     </target>
 
     <target name="test.compile" depends="jar">
