@@ -14,8 +14,6 @@
 
     <h1>Version 0.2</h1>
 
-    <p>Available currently as Release Candidate 1</p>
-
     <h2>Major changes</h2>
 
     <ul>
@@ -26,6 +24,7 @@
       <li>Multicaster proxies implement now Multicast.</li>
       <li>A lot of Javadoc and package overviews with examples.</li>
       <li>Removed Future object (JIRA:PTOYS-2)</li>
+      <li>Ensure proxies can be serialized by JDK and XStream even with JDK 1.3.</li>
     </ul>
 
     <h2>Minor changes</h2>
@@ -40,6 +39,8 @@
       <li>Multicaster will no longer try and fail to proxy final classes.</li>
       <li>Multicaster handles now all primitive types.</li>
       <li>Hot swapping proxy could not handle concrete classes (fix by Aaron Knauf).</li>
+      <li>Fixed implicit and unnecessary references of the proxy instance to the ProxyFactory.</li>
+      <li>Delegating proxies cache the matching methods internally.</li>
     </ul>
 
     <h2>API changes</h2>
@@ -50,7 +51,9 @@
       <li>Moved ObjectReference and SimpleReference into new package com.thoughtworks.proxy.kit.</li>
       <li>SimpleInvoker into new package com.thoughtworks.proxy.kit.</li>
       <li>InvocationDecorator methods now all receive at any time the proxy, the called method and the arguments.</li>
-      <li>DelegatingInvoker no longer has public constants, use always Delegating.STATIC_TYPING or Delegating.DYNAMIC_TYPING</li>
+      <li>DelegatingInvoker no longer has public constants, use always Delegating.MODE_XXX constants</li>
+      <li>The delegation mode is no longer set by a boolean (STATIC_TYPE or DYNAMIC_TYPE), but an integer value now (MODE_XXX).</li>
+      <li>DelegatingInvoker no longer has public constants, use always Delegating.MODE_XXX constants</li>
     </ul>
 
     <h1>Version 0.1</h1>

@@ -89,6 +89,10 @@ public class Page {
         this.head = headBuffer.toString();
         this.body = bodyBuffer.toString();
     }
+    
+    public boolean isIndex() {
+        return "index.html".equals(filename);
+    }
 
     public String getTitle() {
         if (properties.containsKey("meta.short")) {

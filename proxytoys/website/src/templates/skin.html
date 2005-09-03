@@ -12,12 +12,12 @@
             <div id="title">${title}</div>
         </div>
 
-        <div id="center" class="Content2Column">  <!-- Content3Column for index -->
+        <div id="center" class="${centerClass}">
             <div id="content">
 
                 ${body}
 
-                <br><br>
+                <br/><br/>
                 
             </div>
         </div>
@@ -38,22 +38,33 @@
                 </div>
             </#list>
         </div>
-
-<!--
-    <template:when var="isindex">
+        
+      <#if page.index>
       <div class="SidePanel" id="right">
         <div class="NewsGroup">
-          <h1>Latest Version: 1.0.2</h1>
-          <p class="NewsMore"><a href="download.html">Download page...</a></p>
+          <h1>Latest Versions</h1>
+	        <div class="NewsItem">
+	          <p>Stable:<span class="NewsVersion"><a href="download.html#stable">0.2</a></span></p>
+	        </div>
+	        <div class="NewsItem">
+	          <p>Development:<span class="NewsVersion"><a href="download.html#snapshot">SNAPSHOT</a></span></p>
+	        </div>
         </div>
 
         <div class="NewsGroup">
-          <h1><a href="news.html">News...</a></h1>
-          <template:include src="../content/news.html"
-                        elements="/html/body/*[@class='NewsItem' and position()<=5]"/>
+          <h1>News</h1>
+	        <div class="NewsItem">
+	          <p>Sep 3, 2005<br/><a href="news.html#20050903">ProxyToys 0.2 released</a></p>
+	        </div>
+	        <div class="NewsItem">
+	          <p>Aug 8, 2005<br/><a href="news.html#20050808">ProxyToys Website Relaunch</a></p>
+	        </div>
+	        <div class="NewsItem">
+	          <p>Sep 3, 2005<br/><a href="news.html#20040605">ProxyToys 0.2 released</a></p>
+	        </div>
         </div>
       </div>
-    </template:when>
--->
+      </#if>
+
   </body>
 </html>
