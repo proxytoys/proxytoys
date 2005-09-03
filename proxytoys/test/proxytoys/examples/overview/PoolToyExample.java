@@ -19,11 +19,12 @@ import java.util.zip.Checksum;
 public class PoolToyExample {
 
     public static void packageOverviewExample1() {
-        Pool pool = new Pool(Checksum.class, new Resetter(){
+        Pool pool = new Pool(Checksum.class, new Resetter() {
             public boolean reset(final Object object) {
                 ((Checksum)object).reset();
                 return true;
-            }});
+            }
+        });
         pool.add(new CRC32());
         if (true) {
             Checksum checksum = (Checksum)pool.get();

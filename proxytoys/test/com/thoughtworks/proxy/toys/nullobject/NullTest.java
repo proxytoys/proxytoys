@@ -324,18 +324,18 @@ public class NullTest extends ProxyTestCase {
     private void useSerializedProxy(ShouldSerialize serialized) {
         assertFalse(serialized.test());
         assertTrue("is Null Object", Null.isNullObject(serialized));
-        assertTrue("is correct type", serialized instanceof ShouldSerialize);
     }
 
     public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
         useSerializedProxy((ShouldSerialize)serializeWithJDK(Null.object(ShouldSerialize.class, getFactory())));
     }
 
-    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStream() {
         useSerializedProxy((ShouldSerialize)serializeWithXStream(Null.object(ShouldSerialize.class, getFactory())));
     }
 
-    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
-        useSerializedProxy((ShouldSerialize)serializeWithXStreamAndPureReflection(Null.object(ShouldSerialize.class, getFactory())));
+    public void testSerializeWithXStreamInPureReflectionMode() {
+        useSerializedProxy((ShouldSerialize)serializeWithXStreamAndPureReflection(Null.object(
+                ShouldSerialize.class, getFactory())));
     }
 }

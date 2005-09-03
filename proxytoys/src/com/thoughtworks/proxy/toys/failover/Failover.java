@@ -11,8 +11,8 @@ import com.thoughtworks.proxy.ProxyFactory;
 
 
 /**
- * Factory for proxy instances handling failover.. Delegates to one object as long as there is no exception, fails over to the
- * next when an exception occurs.
+ * Factory for proxy instances handling failover.. Delegates to one object as long as there is no exception, fails over
+ * to the next when an exception occurs.
  * 
  * @author Aslak Helles&oslash;y
  * @since 0.1
@@ -21,8 +21,8 @@ import com.thoughtworks.proxy.ProxyFactory;
 public class Failover {
 
     /**
-     * Create a proxy of a specific type with failover capability using the given objects. The provided exception type determins
-     * the type of exceptions that trigger the failover.
+     * Create a proxy of a specific type with failover capability using the given objects. The provided exception type
+     * determins the type of exceptions that trigger the failover.
      * 
      * @param type the type of the proxy
      * @param proxyFactory the {@link ProxyFactory} to use

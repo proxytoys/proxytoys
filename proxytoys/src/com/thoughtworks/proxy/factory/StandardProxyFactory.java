@@ -28,7 +28,8 @@ public class StandardProxyFactory extends AbstractProxyFactory {
      * 
      * @since 0.1
      */
-    static class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
+    static class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements
+            InvocationHandler {
         private static final long serialVersionUID = 141954540221604284L;
 
         /**
@@ -46,7 +47,8 @@ public class StandardProxyFactory extends AbstractProxyFactory {
         final Class[] interfaces = new Class[types.length + 1];
         System.arraycopy(types, 0, interfaces, 0, types.length);
         interfaces[types.length] = InvokerReference.class;
-        return Proxy.newProxyInstance(getClass().getClassLoader(), interfaces, new StandardInvocationHandlerAdapter(invoker));
+        return Proxy.newProxyInstance(getClass().getClassLoader(), interfaces, new StandardInvocationHandlerAdapter(
+                invoker));
     }
 
     public boolean canProxy(final Class type) {

@@ -11,6 +11,7 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,7 +70,8 @@ public class ClassHierarchyIntrospector {
 
     /**
      * Get all interfaces of the given type. If the type is a class, the returned list contains any interface, that is
-     * implemented by the class. If the type is an interface, the all superinterfaces and the interface itself are included.
+     * implemented by the class. If the type is an interface, the all superinterfaces and the interface itself are
+     * included.
      * 
      * @param clazz type to explore.
      * @return an array with all interfaces. The array may be empty.
@@ -103,6 +105,7 @@ public class ClassHierarchyIntrospector {
     public static Class[] addIfClassProxyingSupportedAndNotObject(
             final Class clazz, final Class[] interfaces, final ProxyFactory proxyFactory) {
         Set types = new HashSet();
+        types.addAll(Arrays.asList(interfaces));
         ReflectionUtils.addIfClassProxyingSupportedAndNotObject(clazz, types, proxyFactory);
         return (Class[])types.toArray(new Class[types.size()]);
     }

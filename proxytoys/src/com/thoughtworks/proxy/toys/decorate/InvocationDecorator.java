@@ -20,7 +20,8 @@ import java.lang.reflect.Method;
 public interface InvocationDecorator extends Serializable {
 
     /**
-     * Called before a method is invoked on an object, to possibly decorate the arguments being passed to the method invocation.
+     * Called before a method is invoked on an object, to possibly decorate the arguments being passed to the method
+     * invocation.
      * 
      * @param proxy the proxy the method will be invoked on
      * @param method the method to be invoked

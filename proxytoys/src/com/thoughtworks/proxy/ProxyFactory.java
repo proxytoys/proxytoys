@@ -11,8 +11,8 @@ import java.io.Serializable;
 
 
 /**
- * Abstraction layer for proxy generation. Depending on this interface (rather than {@link java.lang.reflect.Proxy} directly)
- * will allow you to use Java's standard proxy mechanism interchangeably with e.g. CGLIB.
+ * Abstraction layer for proxy generation. Depending on this interface (rather than {@link java.lang.reflect.Proxy}
+ * directly) will allow you to use Java's standard proxy mechanism interchangeably with e.g. CGLIB.
  * 
  * @author Aslak Helles&oslash;y
  * @since 0.1

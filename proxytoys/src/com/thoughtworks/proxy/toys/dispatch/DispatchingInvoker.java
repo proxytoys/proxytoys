@@ -56,7 +56,7 @@ public class DispatchingInvoker implements Invoker {
         for (int i = 0; i < types.length; i++) {
             for (int j = 0; j < delegateReferences.length; j++) {
                 if (types[i].isAssignableFrom(delegateReferences[j].get().getClass())) {
-                    invokers[i] = new DelegatingInvoker(proxyFactory, delegateReferences[j], Delegating.STATIC_TYPING);
+                    invokers[i] = new DelegatingInvoker(proxyFactory, delegateReferences[j], Delegating.MODE_DIRECT);
                     methodSets[i] = new HashSet(Arrays.asList(types[i].getMethods()));
                     break;
                 }

@@ -38,14 +38,14 @@ public class ReflectionUtilsTest extends TestCase {
                 new OutputStreamWriter(System.out), new StringWriter()}));
     }
 
-    public void testMostCommonSuperclassForClassesAreInSameHierarchy() throws IOException {
+    public void testMostCommonSuperclassForClassesAreInSameHierarchy() {
         assertEquals(OutputStreamWriter.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out)}));
         assertEquals(OutputStreamWriter.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out)}));
     }
 
-    public void testMostCommonSuperclassForClassesInSameOrDifferentHierarchy() throws IOException {
+    public void testMostCommonSuperclassForClassesInSameOrDifferentHierarchy() {
         assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new FileWriter(FileDescriptor.out), new StringWriter(), new OutputStreamWriter(System.out)}));
         assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{

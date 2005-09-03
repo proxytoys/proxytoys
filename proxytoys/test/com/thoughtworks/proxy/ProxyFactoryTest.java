@@ -5,6 +5,7 @@ import com.thoughtworks.proxy.toys.nullobject.Null;
 
 import java.io.IOException;
 
+
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -14,7 +15,7 @@ public class ProxyFactoryTest extends ProxyTestCase {
         assertFalse(getFactory().canProxy(Void.class));
         assertFalse(getFactory().canProxy(void.class));
     }
-    
+
     private void useSerializedFactory(ProxyFactory factory) {
         Resetter resetter = (Resetter)Null.object(Resetter.class);
         assertFalse(resetter.reset(this));
@@ -24,11 +25,11 @@ public class ProxyFactoryTest extends ProxyTestCase {
         useSerializedFactory((ProxyFactory)serializeWithJDK(getFactory()));
     }
 
-    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStream() {
         useSerializedFactory((ProxyFactory)serializeWithXStream(getFactory()));
     }
 
-    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStreamInPureReflectionMode() {
         useSerializedFactory((ProxyFactory)serializeWithXStreamAndPureReflection(getFactory()));
     }
 }

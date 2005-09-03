@@ -45,7 +45,8 @@ public class MulticastToyExample {
             list2.add(new Integer(3));
             List listCombined = (List)Multicasting.object(new List[]{list1, list2});
             Multicast values = (Multicast)listCombined.get(0);
-            System.out.println("Sum of the first integers: " + values.multicastTargets(Integer.class, "intValue", null).toString());
+            System.out.println("Sum of the first integers: "
+                    + values.multicastTargets(Integer.class, "intValue", null).toString());
         } catch (NoSuchMethodException e) {
             // Integer.class has a intValue method
         }
@@ -54,8 +55,8 @@ public class MulticastToyExample {
     public static void packageOverviewExample3() {
         File workingDir = new File(".");
         List files = Arrays.asList(workingDir.list());
-        Object multicast = Multicasting.object(new Class[]{File.class, List.class}, new CglibProxyFactory(), new Object[]{
-                workingDir, files});
+        Object multicast = Multicasting.object(
+                new Class[]{File.class, List.class}, new CglibProxyFactory(), new Object[]{workingDir, files});
         System.out.println("Current working directory: " + ((File)multicast).getAbsolutePath());
         System.out.println("Files in working directory: " + ((List)multicast).size());
     }

@@ -18,8 +18,8 @@ import java.lang.reflect.Method;
 /**
  * A {@link InvocationDecoratorSupport} implementation that echoes any invocation to a {@link PrintWriter}.
  * <p>
- * The implementation will try to create new proxies for every return value, that can be proxied by the {@link ProxyFactory} in
- * use.
+ * The implementation will try to create new proxies for every return value, that can be proxied by the
+ * {@link ProxyFactory} in use.
  * </p>
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
  * @since 0.1
  */
 public class EchoDecorator extends InvocationDecoratorSupport {
+    private static final long serialVersionUID = 1L;
     private final PrintWriter out;
     private final ProxyFactory factory;
 
@@ -58,12 +59,14 @@ public class EchoDecorator extends InvocationDecoratorSupport {
         return result;
     }
 
-    public Throwable decorateTargetException(final Object proxy, final Method method, final Object[] args, final Throwable cause) {
+    public Throwable decorateTargetException(
+            final Object proxy, final Method method, final Object[] args, final Throwable cause) {
         printTargetException(cause);
         return super.decorateTargetException(proxy, method, args, cause);
     }
 
-    public Exception decorateInvocationException(final Object proxy, final Method method, final Object[] args, final Exception cause) {
+    public Exception decorateInvocationException(
+            final Object proxy, final Method method, final Object[] args, final Exception cause) {
         printInvocationException(cause);
         return super.decorateInvocationException(proxy, method, args, cause);
     }

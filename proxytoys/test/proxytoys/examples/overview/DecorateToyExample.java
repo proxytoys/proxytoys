@@ -23,14 +23,15 @@ public class DecorateToyExample {
 
     public static void packageOverviewExample1() {
         List list = Arrays.asList(new String[]{"1", "2", "3"});
-        Iterator intIter = (Iterator)Decorating.object(Iterator.class, list.iterator(), new InvocationDecoratorSupport() {
-            public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
-                if (method.getName().equals("next"))
-                    return Integer.valueOf((String)result);
-                else
-                    return result;
-            }
-        });
+        Iterator intIter = (Iterator)Decorating.object(
+                Iterator.class, list.iterator(), new InvocationDecoratorSupport() {
+                    public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
+                        if (method.getName().equals("next"))
+                            return Integer.valueOf((String)result);
+                        else
+                            return result;
+                    }
+                });
         while (intIter.hasNext()) {
             Integer i = (Integer)intIter.next();
             System.out.println(i);

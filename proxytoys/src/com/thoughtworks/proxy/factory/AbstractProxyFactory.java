@@ -19,9 +19,9 @@ import java.lang.reflect.UndeclaredThrowableException;
 /**
  * An abstract implementation of a ProxyFactory.
  * <p>
- * Precondition for the derived implementation is the support of an interface for the invocation handler, that has the same
- * methods with the same signature as {@link java.lang.reflect.InvocationHandler}. Additionally it supports the method
- * {@link #getInvoker} of the proxy instance.
+ * Precondition for the derived implementation is the support of an interface for the invocation handler, that has the
+ * same methods with the same signature as {@link java.lang.reflect.InvocationHandler}. Additionally it supports the
+ * method {@link #getInvoker} of the proxy instance.
  * </p>
  * 
  * @author Aslak Helles&oslash;y
@@ -44,8 +44,9 @@ abstract class AbstractProxyFactory implements ProxyFactory {
      * Generic implementation of a invocation handler with a JDK compatible method and signature.
      * <p>
      * This is a serendipitous class - it can be extended, and the subclass made to implement either
-     * <tt>{@link java.lang.reflect.InvocationHandler}</tt> or the CGLIB <tt>{@link net.sf.cglib.proxy.InvocationHandler}</tt>
-     * because they both conveniently have exactly the same <tt>invoke</tt> method with the same signature.
+     * <tt>{@link java.lang.reflect.InvocationHandler}</tt> or the CGLIB
+     * <tt>{@link net.sf.cglib.proxy.InvocationHandler}</tt> because they both conveniently have exactly the same
+     * <tt>invoke</tt> method with the same signature.
      * </p>
      * <p>
      * Clever, eh?
@@ -75,8 +76,10 @@ abstract class AbstractProxyFactory implements ProxyFactory {
          * @param args the arguments of the call
          * @return the return value of the call
          * @throws Throwable if calling code throws or the call failed
-         * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
-         * @see net.sf.cglib.proxy.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+         * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method,
+         *      java.lang.Object[])
+         * @see net.sf.cglib.proxy.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method,
+         *      java.lang.Object[])
          */
         public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
             if (method.equals(AbstractProxyFactory.getInvoker)) {
@@ -93,8 +96,8 @@ abstract class AbstractProxyFactory implements ProxyFactory {
     }
 
     /**
-     * {@inheritDoc} The implementation of this method relies on the implementation of the derived factory to add the interface
-     * {@link InvokerReference} to every proxy instance.
+     * {@inheritDoc} The implementation of this method relies on the implementation of the derived factory to add the
+     * interface {@link InvokerReference} to every proxy instance.
      * 
      * @since 0.1
      */

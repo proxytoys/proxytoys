@@ -16,9 +16,9 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 /**
  * Toy factory to create proxies decorating an object in an AOP style.
  * <p>
- * An InvocationDecorator is used for the additional functionality. It is called before the original method is called, after the
- * original method was called, after the original method has thrown an exceptionor when an exception occurs, calling the method
- * of the decorated object.
+ * An InvocationDecorator is used for the additional functionality. It is called before the original method is called,
+ * after the original method was called, after the original method has thrown an exceptionor when an exception occurs,
+ * calling the method of the decorated object.
  * </p>
  * 
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>

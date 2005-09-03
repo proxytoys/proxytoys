@@ -34,7 +34,7 @@ public class DelegateToyExample {
         RandomAccessFile raf = new RandomAccessFile(f, "rw");
         raf.writeBytes("Content");
         raf.seek(0);
-        return (DataInput)Delegating.object(DataInput.class, raf, Delegating.STATIC_TYPING);
+        return (DataInput)Delegating.object(DataInput.class, raf, Delegating.MODE_DIRECT);
     }
 
     public static void packageOverviewExample2() {

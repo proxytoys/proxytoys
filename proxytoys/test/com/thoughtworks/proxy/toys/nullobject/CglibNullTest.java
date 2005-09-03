@@ -19,7 +19,8 @@ public class CglibNullTest extends ProxyTestCase {
         private float fl;
         private double db;
 
-        public ClassWithPrimitiveParametersInConstructor(boolean bo, byte by, char ch, int in, long lo, float fl, double db) {
+        public ClassWithPrimitiveParametersInConstructor(
+                boolean bo, byte by, char ch, int in, long lo, float fl, double db) {
             assertEquals(this.bo, bo);
             assertEquals(this.by, by);
             assertEquals(this.ch, ch);

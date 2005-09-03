@@ -44,7 +44,8 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * 
      * @since 0.1
      */
-    static class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
+    static class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements
+            InvocationHandler {
         private static final long serialVersionUID = 418834172207536454L;
 
         /**
@@ -73,8 +74,8 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     /**
      * {@inheritDoc}
      * <p>
-     * Note: If any type the proxy instance must fullfill are all interfaces, the factory will currently create a proxy based on
-     * the JDK.
+     * Note: If any type the proxy instance must fullfill are all interfaces, the factory will currently create a proxy
+     * based on the JDK.
      * </p>
      * 
      * @since 0.1

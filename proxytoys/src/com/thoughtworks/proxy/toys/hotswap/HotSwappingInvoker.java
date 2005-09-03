@@ -9,6 +9,7 @@ package com.thoughtworks.proxy.toys.hotswap;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 
 import java.io.IOException;
@@ -19,12 +20,14 @@ import java.lang.reflect.Method;
 
 /**
  * A {@link DelegatingInvoker} implementation that allows the exchange of the delegate.
+ * 
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  * @since 0.1
  */
 public class HotSwappingInvoker extends DelegatingInvoker {
+    private static final long serialVersionUID = 1L;
     private static final Method hotswap;
     private static final Method checkForCycle;
 
@@ -39,11 +42,13 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
     /**
      * Internal interface used to detect cyclic swapping activity.
+     * 
      * @since 0.2
      */
     protected static interface CycleCheck {
         /**
          * Checks for a cyclic swap action.
+         * 
          * @throws IllegalStateException if cycle detected
          * @since 0.2
          */
@@ -56,19 +61,38 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
     /**
      * Construct a HotSwappingInvoker.
+     * 
+     * @param types the types of the proxy
+     * @param proxyFactory the {@link ProxyFactory} to use
+     * @param delegateReference the {@link ObjectReference} with the delegate
+     * @param delegationMode {@link com.thoughtworks.proxy.toys.delegate.Delegating#MODE_DIRECT MODE_DIRECT} or
+     *            {@link com.thoughtworks.proxy.toys.delegate.Delegating#MODE_SIGNATURE MODE_SIGNATURE}
+     * @since 0.2
+     */
+    public HotSwappingInvoker(
+            final Class[] types, final ProxyFactory proxyFactory, final ObjectReference delegateReference,
+            final int delegationMode) {
+        super(proxyFactory, delegateReference, delegationMode);
+        this.types = types;
+        this.delegate = new ThreadLocal();
+    }
+
+    /**
+     * Construct a HotSwappingInvoker.
+     * 
      * @param types the types of the proxy
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param delegateReference the {@link ObjectReference} with the delegate
      * @param staticTyping {@link com.thoughtworks.proxy.toys.delegate.Delegating#STATIC_TYPING STATIC_TYPING} or
      *            {@link com.thoughtworks.proxy.toys.delegate.Delegating#DYNAMIC_TYPING DYNAMIC_TYPING}
      * @since 0.1
+     * @deprecated since 0.2, use
+     *             {@link HotSwappingInvoker#HotSwappingInvoker(Class[], ProxyFactory, ObjectReference, int)}
      */
     public HotSwappingInvoker(
             final Class[] types, final ProxyFactory proxyFactory, final ObjectReference delegateReference,
             final boolean staticTyping) {
-        super(proxyFactory, delegateReference, staticTyping);
-        this.types = types;
-        this.delegate = new ThreadLocal();
+        this(types, proxyFactory, delegateReference, staticTyping ? Delegating.MODE_DIRECT : Delegating.MODE_SIGNATURE);
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -109,6 +133,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
     /**
      * Exchange the current delegate.
+     * 
      * @param newDelegate the new delegate
      * @return the old delegate
      * @throws IllegalStateException if cyclic swapping action is detected
@@ -129,6 +154,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
     /**
      * Create a proxy for this Invoker. The proxy implements all the types given as parameter to the constructor and
      * implements additionally the {@link Swappable} interface.
+     * 
      * @return the new proxy
      * @since 0.1
      */

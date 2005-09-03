@@ -196,7 +196,7 @@ public class Pool implements Serializable {
         final Object result;
         if (availableInstances.size() > 0 || getAvailable() > 0) {
             final ObjectReference delegate = (ObjectReference)availableInstances.remove(0);
-            result = new PoolingInvoker(this, factory, delegate, Delegating.STATIC_TYPING).proxy();
+            result = new PoolingInvoker(this, factory, delegate, Delegating.MODE_DIRECT).proxy();
             final Object weakReference = new WeakReference(result);
             busyInstances.put(delegate.get(), weakReference);
         } else {
@@ -322,12 +322,12 @@ public class Pool implements Serializable {
          * @param pool the corresponding {@link Pool}
          * @param proxyFactory the {@link ProxyFactory} to use
          * @param delegateReference the {@link ObjectReference} with the delegate
-         * @param staticTyping {@link Delegating#STATIC_TYPING} or {@link Delegating#DYNAMIC_TYPING}
+         * @param delegationMode onde of the {@linkplain Delegating delgation modes}
          * @since 0.2
          */
         protected PoolingInvoker(
-                Pool pool, ProxyFactory proxyFactory, ObjectReference delegateReference, boolean staticTyping) {
-            super(proxyFactory, delegateReference, staticTyping);
+                Pool pool, ProxyFactory proxyFactory, ObjectReference delegateReference, int delegationMode) {
+            super(proxyFactory, delegateReference, delegationMode);
             this.pool = pool;
         }
 

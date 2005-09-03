@@ -58,7 +58,9 @@ public class NullInvoker implements Invoker {
             result = "Null Object for " + type.getName();
         } else if (ReflectionUtils.equals.equals(method)) {
             Object other = args[0];
-            result = (Null.isNullObject(other, proxyFactory) && type.equals(getType(other))) ? Boolean.TRUE : Boolean.FALSE;
+            result = (Null.isNullObject(other, proxyFactory) && type.equals(getType(other)))
+                                                                                            ? Boolean.TRUE
+                                                                                            : Boolean.FALSE;
         } else if (ReflectionUtils.hashCode.equals(method)) {
             result = new Integer(type.hashCode());
         }

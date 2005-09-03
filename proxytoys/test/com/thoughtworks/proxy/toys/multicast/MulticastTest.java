@@ -2,9 +2,6 @@ package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
-import com.thoughtworks.proxy.kit.NoOperationResetter;
-import com.thoughtworks.proxy.kit.Resetter;
-import com.thoughtworks.proxy.toys.dispatch.Dispatching;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,6 +24,7 @@ public class MulticastTest extends ProxyTestCase {
 
     public static interface Tail {
         void wag();
+
         boolean wasWagged();
     }
 
@@ -177,12 +175,14 @@ public class MulticastTest extends ProxyTestCase {
     }
 
     public void testShouldThrowNoSuchMethodExceptionForANonMatchingCall() {
-        Multicast multicast = (Multicast)Multicasting.object(getFactory(), new Object[]{new StringBuffer(), new StringBuffer()});
+        Multicast multicast = (Multicast)Multicasting.object(getFactory(), new Object[]{
+                new StringBuffer(), new StringBuffer()});
         try {
             multicast.multicastTargets(StringBuffer.class, "toString", new Object[]{"JUnit", new Integer(5)});
             fail(NoSuchMethodException.class.getName() + " expected");
         } catch (NoSuchMethodException e) {
-            assertEquals(e.getMessage(), StringBuffer.class.getName() + ".toString(java.lang.String, java.lang.Integer)");
+            assertEquals(e.getMessage(), StringBuffer.class.getName()
+                    + ".toString(java.lang.String, java.lang.Integer)");
         }
     }
 
@@ -227,9 +227,9 @@ public class MulticastTest extends ProxyTestCase {
         tail.wag();
         assertTrue(tail.wasWagged());
         Multicast multicast = (Multicast)tail;
-        assertEquals(2,multicast.getTargetsInArray().length);
+        assertEquals(2, multicast.getTargetsInArray().length);
     }
-    
+
     private Tail prepareTimAndTimsTail() {
         TailImpl timsTail = new TailImpl();
         Dog tim = new DogImpl(timsTail);
@@ -245,11 +245,11 @@ public class MulticastTest extends ProxyTestCase {
         useSerializedProxy((Tail)serializeWithJDK(prepareTimAndTimsTail()));
     }
 
-    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStream() {
         useSerializedProxy((Tail)serializeWithXStream(prepareTimAndTimsTail()));
     }
 
-    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStreamInPureReflectionMode() {
         useSerializedProxy((Tail)serializeWithXStreamAndPureReflection(prepareTimAndTimsTail()));
     }
 

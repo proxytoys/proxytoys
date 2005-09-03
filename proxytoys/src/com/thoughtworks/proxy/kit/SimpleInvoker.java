@@ -13,8 +13,8 @@ import java.lang.reflect.Method;
 
 
 /**
- * A simple {@link Invoker} implementation, that routes any call to a target object. A <code>null</code> value as target can
- * be handled, the invocation result will alway be <code>null</code>.
+ * A simple {@link Invoker} implementation, that routes any call to a target object. A <code>null</code> value as
+ * target can be handled, the invocation result will alway be <code>null</code>.
  * 
  * @author Aslak Helles&oslash;y
  * @since 0.2, 0.1 in package com.thoughtworks.proxy.toy.decorate
@@ -37,7 +37,7 @@ public class SimpleInvoker implements Invoker {
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         return (target == null ? null : method.invoke(target, args));
     }
-    
+
     /**
      * Retrieve the target of the invocations.
      * 

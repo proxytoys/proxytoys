@@ -63,8 +63,8 @@ public class Echoing {
     }
 
     /**
-     * Create a echoing proxy for a type that delegates to an object and use a special {@link ProxyFactory} implementation as
-     * well as the system error channel to report.
+     * Create a echoing proxy for a type that delegates to an object and use a special {@link ProxyFactory}
+     * implementation as well as the system error channel to report.
      * 
      * @param type the proxied type
      * @param impl the delegated object
@@ -90,8 +90,8 @@ public class Echoing {
     }
 
     /**
-     * Create a echoing proxy for a type that delegates to an object and use a special {@link ProxyFactory} implementation as
-     * well as reports to a given {@link PrintWriter}.
+     * Create a echoing proxy for a type that delegates to an object and use a special {@link ProxyFactory}
+     * implementation as well as reports to a given {@link PrintWriter}.
      * 
      * @param type the proxied type
      * @param impl the delegated object

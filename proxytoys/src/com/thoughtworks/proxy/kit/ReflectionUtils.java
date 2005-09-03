@@ -82,7 +82,8 @@ public class ReflectionUtils {
 
     /**
      * Get all interfaces of the given type. If the type is a class, the returned set contains any interface, that is
-     * implemented by the class. If the type is an interface, the all superinterfaces and the interface itself are included.
+     * implemented by the class. If the type is an interface, the all superinterfaces and the interface itself are
+     * included.
      * 
      * @param clazz type to explore.
      * @return a {@link Set} with all interfaces. The set may be empty.
@@ -242,7 +243,7 @@ public class ReflectionUtils {
         }
         return method;
     }
-    
+
     /**
      * Write a {@link Method} into an {@link ObjectOutputStream}.
      * 
@@ -256,7 +257,7 @@ public class ReflectionUtils {
         out.writeObject(method.getName());
         out.writeObject(method.getParameterTypes());
     }
-    
+
     /**
      * Read a {@link Method} from an {@link ObjectInputStream}.
      * 

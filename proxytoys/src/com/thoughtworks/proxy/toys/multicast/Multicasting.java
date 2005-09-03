@@ -28,8 +28,8 @@ public class Multicasting {
     /**
      * Generate a proxy for the specified types calling the methods on the given targets.
      * <p>
-     * Note, that the method will only return a proxy if necessary. If there is only one target instance and this instance
-     * implements all of the specified types, then there is no point in creating a proxy.
+     * Note, that the method will only return a proxy if necessary. If there is only one target instance and this
+     * instance implements all of the specified types, then there is no point in creating a proxy.
      * </p>
      * 
      * @param types the types that are implemented by the proxy
@@ -59,8 +59,8 @@ public class Multicasting {
     /**
      * Generate a proxy for the specified type calling the methods on the given targets.
      * <p>
-     * Note, that the method will only return a proxy if necessary. If there is only one target instance and this instance
-     * implements the specified type, then there is no point in creating a proxy.
+     * Note, that the method will only return a proxy if necessary. If there is only one target instance and this
+     * instance implements the specified type, then there is no point in creating a proxy.
      * </p>
      * 
      * @param type the type that is implemented by the proxy
@@ -76,9 +76,9 @@ public class Multicasting {
     /**
      * Generate a proxy that is calling the methods on the given targets.
      * <p>
-     * The type of the proxy is a combination of all interfaces implemented by all targets and their most common super class (if
-     * supported by the {@link ProxyFactory}). Note, that the method will only return a proxy if necessary. If there is only
-     * one target instance, then there is no point in creating a proxy.
+     * The type of the proxy is a combination of all interfaces implemented by all targets and their most common super
+     * class (if supported by the {@link ProxyFactory}). Note, that the method will only return a proxy if necessary.
+     * If there is only one target instance, then there is no point in creating a proxy.
      * </p>
      * 
      * @param proxyFactory the {@link ProxyFactory} to use
@@ -100,8 +100,9 @@ public class Multicasting {
     /**
      * Generate a proxy that is calling the methods on the given targets using a {@link StandardProxyFactory}.
      * <p>
-     * The type of the proxy is a combination of all interfaces implemented by all targets. Note, that the method will only
-     * return a proxy if necessary. If there is only one target instance, then there is no point in creating a proxy.
+     * The type of the proxy is a combination of all interfaces implemented by all targets. Note, that the method will
+     * only return a proxy if necessary. If there is only one target instance, then there is no point in creating a
+     * proxy.
      * </p>
      * 
      * @param targets the target objects

@@ -3,6 +3,7 @@ package com.thoughtworks.proxy.toys.hotswap;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class CglibHotSwappingTest extends ProxyTestCase {
      */
     public void testShouldProxyConcreteClass() {
         Class[] proxyTypes = new Class[]{ArrayList.class, List.class, Cloneable.class, Serializable.class};
-        Object proxy = HotSwapping.object(proxyTypes, getFactory(), new ArrayList(), true);
+        Object proxy = HotSwapping.object(proxyTypes, getFactory(), new ArrayList(), Delegating.MODE_DIRECT);
         assertNotNull(proxy);
     }
 }

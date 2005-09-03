@@ -14,7 +14,7 @@ package com.thoughtworks.proxy.toys.dispatch;
  * @since 0.2
  */
 public class DispatchingException extends RuntimeException {
-
+    private static final long serialVersionUID = 1L;
     private final Class type;
 
     /**

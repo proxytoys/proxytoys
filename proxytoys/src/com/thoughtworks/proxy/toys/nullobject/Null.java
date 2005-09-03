@@ -37,6 +37,8 @@ public class Null {
 
     /** Immutable Null Object implementation of {@link SortedMap} */
     public static final SortedMap NULL_SORTED_MAP = new TreeMap() {
+        private static final long serialVersionUID = -4388170961744587609L;
+
         public Object put(Object key, Object value) {
             throw new UnsupportedOperationException();
         }
@@ -64,6 +66,8 @@ public class Null {
 
     /** Immutable Null Object implementation of {@link SortedSet} */
     public static final SortedSet NULL_SORTED_SET = new TreeSet() {
+        private static final long serialVersionUID = 809722154285517876L;
+
         public boolean add(Object o) {
             throw new UnsupportedOperationException();
         }
@@ -88,8 +92,8 @@ public class Null {
     /**
      * Generate a Null Object proxy for a specific type.
      * <p>
-     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the type
-     * cannot be proxied.
+     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
+     * type cannot be proxied.
      * </p>
      * 
      * @param type the type implemented by the proxy
@@ -155,8 +159,8 @@ public class Null {
     /**
      * Generate a Null Object proxy for a specific type using the {@link StandardProxyFactory}.
      * <p>
-     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the type
-     * cannot be proxied.
+     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
+     * type cannot be proxied.
      * </p>
      * 
      * @param type the type implemented by the proxy

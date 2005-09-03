@@ -16,7 +16,8 @@ package com.thoughtworks.proxy.kit;
  */
 public interface ObjectReference {
     /**
-     * Retrieve an actual reference to the object. Returns null if the reference is not available or has not been populated yet.
+     * Retrieve an actual reference to the object. Returns null if the reference is not available or has not been
+     * populated yet.
      * 
      * @return an actual reference to the object.
      * @since 0.2, 0.1 in package com.thoughtworks.proxy.toy.delegate

@@ -155,12 +155,12 @@ public class DecoratingTest extends ProxyTestCase {
                 new Class[]{Resetter.class}, new NoOperationResetter(), new AssertingDecorator(), getFactory())));
     }
 
-    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStream() {
         useSerializedProxy((Resetter)serializeWithXStream(Decorating.object(
                 new Class[]{Resetter.class}, new NoOperationResetter(), new AssertingDecorator(), getFactory())));
     }
 
-    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStreamInPureReflectionMode() {
         useSerializedProxy((Resetter)serializeWithXStreamAndPureReflection(Decorating.object(
                 new Class[]{Resetter.class}, new NoOperationResetter(), new AssertingDecorator(), getFactory())));
     }

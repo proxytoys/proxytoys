@@ -234,7 +234,7 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStream() {
         final Pool pool = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(2));
         Object borrowed = pool.get();
@@ -242,7 +242,7 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStreamInPureReflectionMode() {
         final Pool pool = new Pool(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(2));
         Object borrowed = pool.get();
@@ -259,7 +259,7 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testForcedSerializationWithXStream() throws IOException, ClassNotFoundException {
+    public void testForcedSerializationWithXStream() {
         final Pool pool = new Pool(
                 Identifiable.class, new NoOperationResetter(), getFactory(), Pool.SERIALIZATION_FORCE);
         pool.add(createIdentifiables(2));
@@ -268,7 +268,7 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testForcedSerializationWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+    public void testForcedSerializationWithXStreamInPureReflectionMode() {
         final Pool pool = new Pool(
                 Identifiable.class, new NoOperationResetter(), getFactory(), Pool.SERIALIZATION_FORCE);
         pool.add(createIdentifiables(2));

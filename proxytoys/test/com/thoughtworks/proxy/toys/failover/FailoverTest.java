@@ -56,9 +56,9 @@ public class FailoverTest extends ProxyTestCase {
     }
 
     private void useSerializedProxy(FailsOnNthCall failoverr) {
-        assertEquals(1,failoverr.dunIt());
+        assertEquals(1, failoverr.dunIt());
         failoverr.doIt();
-        assertEquals(1,failoverr.dunIt());
+        assertEquals(1, failoverr.dunIt());
         try {
             failoverr.doIt();
             fail("Thrown " + RuntimeException.class.getName() + " expected");
@@ -74,7 +74,7 @@ public class FailoverTest extends ProxyTestCase {
         useSerializedProxy((FailsOnNthCall)serializeWithJDK(failover));
     }
 
-    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStream() {
         final FailsOnNthCall failover = (FailsOnNthCall)Failover.object(
                 FailsOnNthCall.class, getFactory(), new Object[]{new FailsOnNthCallImpl(1), new FailsOnNthCallImpl(1)},
                 RuntimeException.class);
@@ -82,7 +82,7 @@ public class FailoverTest extends ProxyTestCase {
         useSerializedProxy((FailsOnNthCall)serializeWithXStream(failover));
     }
 
-    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStreamInPureReflectionMode() {
         final FailsOnNthCall failover = (FailsOnNthCall)Failover.object(
                 FailsOnNthCall.class, getFactory(), new Object[]{new FailsOnNthCallImpl(1), new FailsOnNthCallImpl(1)},
                 RuntimeException.class);

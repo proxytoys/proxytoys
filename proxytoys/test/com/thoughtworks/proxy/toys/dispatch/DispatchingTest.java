@@ -157,12 +157,12 @@ public class DispatchingTest extends ProxyTestCase {
                 new Class[]{Resetter.class}, new Object[]{new NoOperationResetter()}, getFactory())));
     }
 
-    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStream() {
         useSerializedProxy((Resetter)serializeWithXStream(Dispatching.object(
                 new Class[]{Resetter.class}, new Object[]{new NoOperationResetter()}, getFactory())));
     }
 
-    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStreamInPureReflectionMode() {
         useSerializedProxy((Resetter)serializeWithXStreamAndPureReflection(Dispatching.object(
                 new Class[]{Resetter.class}, new Object[]{new NoOperationResetter()}, getFactory())));
     }

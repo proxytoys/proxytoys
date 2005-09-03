@@ -58,12 +58,12 @@ public class AllTests {
     }
 
     /**
-     * Create a suite based on a particular {@link ProxyFactory} by setting the static {@link ProxyTestCase#PROXY_FACTORY}
-     * property.
+     * Create a suite based on a particular {@link ProxyFactory} by setting the static
+     * {@link ProxyTestCase#PROXY_FACTORY} property.
      * <p>
-     * The <tt>addTestSuite(Class)</tt> method instantiates the test class which picks up the current value of the static
-     * factory. It relies on the fact that the test runner instantiates all the test classes up front when it builds the
-     * <tt>Suite</tt>, and then runs them all in a second pass.
+     * The <tt>addTestSuite(Class)</tt> method instantiates the test class which picks up the current value of the
+     * static factory. It relies on the fact that the test runner instantiates all the test classes up front when it
+     * builds the <tt>Suite</tt>, and then runs them all in a second pass.
      * </p>
      */
     private static Test createProxyFactorySuite(ProxyFactory factory, String type) {

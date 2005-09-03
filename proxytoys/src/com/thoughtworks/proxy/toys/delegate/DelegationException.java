@@ -1,7 +1,7 @@
 /*
  * Created on 17-May-2004
  * 
- * (c) 2003-2004 ThoughtWorks Ltd
+ * (c) 2003-2005 ThoughtWorks Ltd
  *
  * See license.txt for license details
  */
@@ -15,6 +15,7 @@ package com.thoughtworks.proxy.toys.delegate;
  */
 public class DelegationException extends RuntimeException {
 
+    private static final long serialVersionUID = -8777676199121620549L;
     private final Throwable cause;
     private final Object delegate;
 

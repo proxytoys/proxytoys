@@ -11,8 +11,8 @@ import java.lang.reflect.Method;
 
 
 /**
- * Interface that is implemented by all multicasting proxies. Cast the proxy to access the proxied elements again or to call a
- * method on them independent of the type of the proxy.
+ * Interface that is implemented by all multicasting proxies. Cast the proxy to access the proxied elements again or to
+ * call a method on them independent of the type of the proxy.
  * 
  * @author J&ouml;rg Schaible
  * @since 0.2
@@ -22,13 +22,13 @@ public interface Multicast {
     /**
      * Multicast a matching method call, that is not available with the types implemented by the proxy.
      * <p>
-     * Use this possibility to operate on objects, that can typically not be proxied e.g. if the class type of the target object
-     * is final like it is for a lot of basic classes of <tt>java.lang</tt>. The result of the call follow the normal rules
-     * for multicast invocations.
+     * Use this possibility to operate on objects, that can typically not be proxied e.g. if the class type of the
+     * target object is final like it is for a lot of basic classes of <tt>java.lang</tt>. The result of the call
+     * follow the normal rules for multicast invocations.
      * </p>
      * <p>
-     * Note that the implementation of this function must search the best fitting method. It is much more efficient to call the
-     * overloaded version of this function with the appropriate method object.
+     * Note that the implementation of this function must search the best fitting method. It is much more efficient to
+     * call the overloaded version of this function with the appropriate method object.
      * </p>
      * 
      * @param type the type that has a method with the given name and matching arguments
@@ -44,9 +44,9 @@ public interface Multicast {
     /**
      * Multicast a direct method call, that is not available with the types implemented by the proxy.
      * <p>
-     * Use this possibility to operate on objects, that can typically not be proxied e.g. if the class type of the target object
-     * is final like it is for a lot of basic classes of <tt>java.lang</tt>. The result of the call follow the normal rules
-     * for multicast invocations.
+     * Use this possibility to operate on objects, that can typically not be proxied e.g. if the class type of the
+     * target object is final like it is for a lot of basic classes of <tt>java.lang</tt>. The result of the call
+     * follow the normal rules for multicast invocations.
      * </p>
      * 
      * @param method the method to call

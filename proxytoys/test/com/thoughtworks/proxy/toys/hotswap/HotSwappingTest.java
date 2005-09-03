@@ -104,12 +104,12 @@ public class HotSwappingTest extends ProxyTestCase {
                 Screwdriver.class, getFactory(), new Person())));
     }
 
-    public void testSerializeWithXStream() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStream() {
         useSerializedProxy((Screwdriver)serializeWithXStream(HotSwapping.object(
                 Screwdriver.class, getFactory(), new Person())));
     }
 
-    public void testSerializeWithXStreamInPureReflectionMode() throws IOException, ClassNotFoundException {
+    public void testSerializeWithXStreamInPureReflectionMode() {
         useSerializedProxy((Screwdriver)serializeWithXStreamAndPureReflection(HotSwapping.object(
                 Screwdriver.class, getFactory(), new Person())));
     }

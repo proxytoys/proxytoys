@@ -12,9 +12,9 @@ import java.lang.reflect.Method;
 
 
 /**
- * Generic interface for any call made to a proxy instance. This is the main interface for any proxy implementation using a
- * {@link ProxyFactory}. An implementation realizes an invocation handler for the proxy. So it has the same purpose as
- * {@link java.lang.reflect.InvocationHandler}.
+ * Generic interface for any call made to a proxy instance. This is the main interface for any proxy implementation
+ * using a {@link ProxyFactory}. An implementation realizes an invocation handler for the proxy. So it has the same
+ * purpose as {@link java.lang.reflect.InvocationHandler}.
  * 
  * @since 0.1
  */

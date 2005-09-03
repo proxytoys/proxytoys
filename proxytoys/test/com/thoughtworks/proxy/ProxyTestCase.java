@@ -23,7 +23,8 @@ public abstract class ProxyTestCase extends MockObjectTestCase {
     /**
      * A publicly settable <tt>ProxyFactory</tt>.
      * <p>
-     * The value of this factory is captured by the constructor of each test case, so the class can have a default constructor.
+     * The value of this factory is captured by the constructor of each test case, so the class can have a default
+     * constructor.
      * </p>
      * <p>
      * Note: by the time the tests run this will have changed, which is why there is an instance variable too.
@@ -52,7 +53,7 @@ public abstract class ProxyTestCase extends MockObjectTestCase {
     public ProxyFactory getFactory() {
         return proxyFactory;
     }
-    
+
     protected Object serializeWithJDK(Object toSerialize) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
         ObjectOutputStream outStream = new ObjectOutputStream(outBuffer);
@@ -65,16 +66,16 @@ public abstract class ProxyTestCase extends MockObjectTestCase {
         assertNotNull(serialized);
         return serialized;
     }
-    
-    protected Object serializeWithXStream(Object toSerialize) throws IOException, ClassNotFoundException {
+
+    protected Object serializeWithXStream(Object toSerialize) {
         final XStream xstream = new XStream(new XppDriver());
         final String xml = xstream.toXML(toSerialize);
         Object serialized = xstream.fromXML(xml);
         assertNotNull(serialized);
         return serialized;
     }
-    
-    protected Object serializeWithXStreamAndPureReflection(Object toSerialize) throws IOException, ClassNotFoundException {
+
+    protected Object serializeWithXStreamAndPureReflection(Object toSerialize) {
         final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
         final String xml = xstream.toXML(toSerialize);
         Object serialized = xstream.fromXML(xml);
