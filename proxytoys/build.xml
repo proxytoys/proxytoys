@@ -1,5 +1,5 @@
 <project name="proxytoys" default="test">
-    <property name="version" value="0.2-SNAPSHOT" />
+    <property name="version" value="0.2" />
 
     <property name="project" value="${ant.project.name}" />
     <property name="src.dir" location="src" />
