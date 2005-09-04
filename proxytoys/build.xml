@@ -57,18 +57,24 @@
         <jar basedir="${classes.dir}" destfile="${jar.file}" />
     </target>
 
-    <target name="jar-dist" depends="srcdist">
+    <target name="jar-dist" depends="jar">
         <copy file="${jar.file}" todir="/home/projects/proxytoys/dist/jars" />
+    </target>
+
+    <target name="dist" depends="srcdist, jar-dist">
         <copy file="${dist.file}" todir="/home/projects/proxytoys/dist/distributions" />
         <copy file="${src.file}" todir="/home/projects/proxytoys/dist/distributions" />
         <copy file="${license.file}" todir="/home/projects/proxytoys/dist/licenses" />
     </target>
 
-    <target name="jar-dist-plink" depends="srcdist">
+    <target name="jar-dist-plink" depends="jar">
         <exec dir="." executable="pscp">
             <arg value="${jar.file}" />
             <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars" />
         </exec>
+    </target>
+
+    <target name="dist-plink" depends="srcdist, jar-dist-plink">
         <exec dir="." executable="pscp">
             <arg value="${dist.file}" />
             <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/distributions" />
@@ -83,11 +89,14 @@
         </exec>
     </target>
 
-    <target name="jar-dist-scp" depends="srcdist">
+    <target name="jar-dist-scp" depends="jar">
         <exec dir="." executable="scp">
             <arg value="${jar.file}" />
             <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/jars" />
         </exec>
+    </target>
+
+    <target name="dist-scp" depends="srcdist, jar-dist-scp">
         <exec dir="." executable="scp">
             <arg value="${dist.file}" />
             <arg value="${username}@beaver.codehaus.org:/home/projects/proxytoys/dist/distributions" />
