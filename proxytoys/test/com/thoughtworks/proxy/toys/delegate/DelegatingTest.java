@@ -190,4 +190,15 @@ public class DelegatingTest extends ProxyTestCase {
         System.gc();
         assertEquals("finalized", buffer.toString());
     }
+    
+    static class CompatibleFoo {
+        public String getSomething() {
+            return "Foo";
+        }
+    }
+    
+    public void testDefaultProxyIsSignatureCompatible() throws RemoteException {
+        Foo foo = createProxy(new CompatibleFoo());
+        assertEquals("Foo", foo.getSomething());
+    }
 }

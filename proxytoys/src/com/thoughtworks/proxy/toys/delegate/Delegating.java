@@ -44,7 +44,7 @@ public class Delegating {
     public static final int MODE_SIGNATURE = 1;
 
     /**
-     * Creating a delegating proxy for a special object.
+     * Creating a delegating proxy for a signature compatible object.
      * 
      * @param type the type of the created proxy,
      * @param delegate the object the proxy delegates to.
@@ -56,7 +56,7 @@ public class Delegating {
     }
 
     /**
-     * Creating a delegating proxy for a special object.
+     * Creating a delegating proxy for an object with a defined delegation mode.
      * 
      * @param type the type of the created proxy,
      * @param delegate the object the proxy delegates to.
@@ -66,13 +66,11 @@ public class Delegating {
      * @since 0.2
      */
     public static Object object(final Class type, final Object delegate, final int delegationMode) {
-        final ProxyFactory factory = new StandardProxyFactory();
-        return factory.createProxy(new Class[]{type}, new DelegatingInvoker(
-                factory, new SimpleReference(delegate), delegationMode));
+        return object(type, delegate,new StandardProxyFactory(),delegationMode);
     }
 
     /**
-     * Creating a delegating proxy for a special object using a special {@link ProxyFactory}.
+     * Creating a delegating proxy for a signature compatible object using a special {@link ProxyFactory}.
      * 
      * @param type the type of the created proxy,
      * @param delegate the object the proxy delegates to.
@@ -81,8 +79,22 @@ public class Delegating {
      * @since 0.1
      */
     public static Object object(final Class type, final Object delegate, final ProxyFactory factory) {
+        return object(type, delegate, factory, MODE_SIGNATURE);
+    }
+
+    /**
+     * Creating a delegating proxy for an object with a defined delegation mode using a special {@link ProxyFactory}.
+     * 
+     * @param type the type of the created proxy,
+     * @param delegate the object the proxy delegates to.
+     * @param factory the {@link ProxyFactory} to use creating the proxy.
+     * @param delegationMode one of the delegation modes {@link #MODE_DIRECT} or {@link #MODE_SIGNATURE}
+     * @return a new proxy of the specified type.
+     * @since 0.2.1
+     */
+    public static Object object(final Class type, final Object delegate, final ProxyFactory factory, final int delegationMode) {
         return factory.createProxy(new Class[]{type}, new DelegatingInvoker(
-                factory, new SimpleReference(delegate), MODE_DIRECT));
+                factory, new SimpleReference(delegate), delegationMode));
     }
 
     /** It's a factory, stupid */
