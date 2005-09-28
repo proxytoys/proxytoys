@@ -5,16 +5,23 @@
     <property name="src.dir" location="src" />
     <property name="test.dir" location="test" />
     <property name="lib.dir" location="lib" />
+    <property name="website.src.dir" location="website/src" />
+    <property name="website.lib.dir" location="website/lib" />
 
     <property name="build.dir" location="build" />
     <property name="classes.dir" location="${build.dir}/classes" />
     <property name="test.classes.dir" location="${build.dir}/test-classes" />
+    <property name="test.reports.dir" location="${build.dir}/test-reports" />
+    <property name="website.classes.dir" location="${build.dir}/website-classes" />
     <property name="dist.dir" location="${build.dir}/dist" />
     <property name="srcdist.dir" location="${build.dir}/srcdist" />
     <property name="jar.file" location="${build.dir}/${project}-${version}.jar" />
     <property name="dist.file" location="${build.dir}/${project}-${version}.zip" />
     <property name="src.file" location="${build.dir}/${project}-src-${version}.zip" />
     <property name="license.file" location="${build.dir}/${project}-${version}.txt" />
+    <property name="website.dir" location="${build.dir}/website" />
+    <property name="javadoc.dir" location="${website.dir}/apidocs" />
+    <property name="junit.haltonfailure" value="true"/>
 
     <property name="publish.path" value="/home/projects/proxytoys/docs/${version}" />
 
@@ -34,10 +41,10 @@
     </target>
 
     <target name="supporting-java">
-        <mkdir dir="build/website-classes" />
-        <javac srcdir="website/src/java" destdir="build/website-classes">
+        <mkdir dir="${website.classes.dir}" />
+        <javac srcdir="website/src/java" destdir="${website.classes.dir}">
             <classpath>
-                <fileset dir="website/lib">
+                <fileset dir="${website.lib.dir}">
                     <include name="**/*.jar" />
                 </fileset>
                 <fileset dir="${lib.dir}" includes="*.jar" />
@@ -113,29 +120,13 @@
 
     <target name="publish" depends="website" description="Publish website">
         <copy todir="${publish.path}">
-            <fileset dir="build/website" />
+            <fileset dir="${website.dir}" />
         </copy>
     </target>
 
-    <target name="website" depends="supporting-java,javadoc" description="Build website">
-        <mkdir dir="build/website" />
-        <java classname="minimesh.Main" failonerror="true">
-            <classpath>
-                <fileset dir="website/lib">
-                    <include name="**/*.jar" />
-                </fileset>
-                <fileset dir="${lib.dir}" includes="*.jar" />
-                <pathelement path="build/website-classes" />
-            </classpath>
-            <arg value="website/src/content/website.xml" />
-            <arg value="website/src/templates/skin.html" />
-            <arg value="build/website" />
-        </java>
-    </target>
-
     <target name="javadoc">
-        <mkdir dir="build/website/apidocs" />
-        <javadoc destdir="build/website/apidocs" windowtitle="ProxyToys API Documentation" header="&lt;IMG class='logo' src='{@docroot}/../logo.gif' /&gt;" stylesheetfile="website/src/templates/javadoc.css" use="true" useexternalfile="true">
+        <mkdir dir="${javadoc.dir}" />
+        <javadoc destdir="${javadoc.dir}" windowtitle="ProxyToys API Documentation" header="&lt;IMG class='logo' src='{@docroot}/../logo.gif' /&gt;" stylesheetfile="${website.src.dir}/templates/javadoc.css" use="true" useexternalfile="true">
 
             <packageset dir="src" />
 
@@ -153,6 +144,54 @@
         </javadoc>
     </target>
 
+    <target name="test.compile" depends="jar">
+        <mkdir dir="${test.classes.dir}" />
+        <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}" debug="yes" source="1.3" target="1.3">
+            <classpath>
+                <fileset dir="${lib.dir}" includes="*.jar" />
+                <pathelement location="${jar.file}" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="test" depends="test.compile">
+        <mkdir dir="${test.reports.dir}" />
+        <junit fork="yes" forkmode="once" showoutput="yes" printsummary="yes" haltonfailure="${junit.haltonfailure}">
+            <sysproperty key="java.awt.headless" value="true"/>
+            <formatter type="plain" />
+            <formatter type="xml"/>
+            <classpath>
+                <path location="${test.classes.dir}" />
+                <fileset dir="${lib.dir}" includes="*.jar" />
+                <path location="${jar.file}" />
+            </classpath>
+            <test name="com.thoughtworks.proxy.AllTests" todir="${test.reports.dir}" />
+        </junit>
+        <junitreport todir="${test.reports.dir}">
+            <fileset dir="${test.reports.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="noframes" todir="${test.reports.dir}" styledir="${website.src.dir}/templates"/>
+        </junitreport>
+     </target>
+
+    <target name="website" depends="supporting-java, javadoc, test" description="Build website">
+        <copy file="${test.reports.dir}/junit-noframes.html" todir="${website.src.dir}/content" />
+        <java classname="minimesh.Main" failonerror="true">
+            <classpath>
+                <fileset dir="${website.lib.dir}">
+                    <include name="**/*.jar" />
+                </fileset>
+                <fileset dir="${lib.dir}" includes="*.jar" />
+                <pathelement path="${website.classes.dir}" />
+            </classpath>
+            <arg value="${website.src.dir}/content/website.xml" />
+            <arg value="${website.src.dir}/templates/skin.html" />
+            <arg value="${website.dir}" />
+        </java>
+        <delete file="${website.src.dir}/content/junit-noframes.html" />
+    </target>
+
     <target name="distribution" depends="jar,website">
         <mkdir dir="${dist.dir}"/>
         <mkdir dir="${dist.dir}/docs"/>
@@ -164,7 +203,7 @@
             </fileset>
         </copy>
         <copy todir="${dist.dir}/docs">
-            <fileset dir="build/website" />
+            <fileset dir="${website.dir}" />
         </copy>
         <copy file="${jar.file}" todir="${dist.dir}"/>
 
@@ -189,28 +228,6 @@
         <zip destfile="${src.file}" basedir="${srcdist.dir}" />
     </target>
 
-    <target name="test.compile" depends="jar">
-        <mkdir dir="${test.classes.dir}" />
-        <javac fork="true" srcdir="${test.dir}" destdir="${test.classes.dir}" debug="yes" source="1.3" target="1.3">
-            <classpath>
-                <fileset dir="${lib.dir}" includes="*.jar" />
-                <pathelement location="${jar.file}" />
-            </classpath>
-        </javac>
-    </target>
-
-    <target name="test" depends="test.compile">
-        <junit fork="yes" showoutput="yes" printsummary="yes" haltonfailure="true">
-            <formatter type="plain" />
-            <classpath>
-                <path location="${test.classes.dir}" />
-                <fileset dir="${lib.dir}" includes="*.jar" />
-                <path location="${jar.file}" />
-            </classpath>
-            <test name="com.thoughtworks.proxy.AllTests" todir="${test.classes.dir}" />
-        </junit>
-    </target>
-
     <target name="clean">
         <delete dir="${build.dir}" />
     </target>
@@ -220,4 +237,6 @@
     </target>
 
     <target name="rebuild" depends="clobber, jar, website" />
+    
+    <target name="continuous-integration" depends="clean, test" />
 </project>

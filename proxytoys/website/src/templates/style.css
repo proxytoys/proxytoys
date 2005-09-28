@@ -277,13 +277,22 @@ ul, ol {
     margin-bottom: 8px;
 }
 
-
 #content .Inline {
     display: inline;
 }
 
 .RuleOfThumb {
     font-weight: bold;
+}
+
+/* JUnit report */
+
+.Error {
+  font-weight:bold; color:red;
+}
+
+.Failure {
+  font-weight:bold; color:purple;
 }
 
 /*---------------------------------------------------------------------------

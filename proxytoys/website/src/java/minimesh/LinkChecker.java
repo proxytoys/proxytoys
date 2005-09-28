@@ -61,6 +61,8 @@ public class LinkChecker {
         if (link.startsWith("mailto:")) {
             // todo: valid email addresses should be configurable
             return true;
+        } else if (link.startsWith("javascript:")) {
+            return true;
         } else if (link.startsWith("http://")) {
             // todo: HTTP get this address to check it's valid (cache result)
             return true;
@@ -71,8 +73,12 @@ public class LinkChecker {
             // todo: Check the class is valid
             return true;
         } else {
-            if (link.lastIndexOf('#') > 0) {
+            int anchorIdx = link.lastIndexOf('#');
+            if (anchorIdx >= 0) {
                 // todo: Check anchors
+                if (anchorIdx == 0) {
+                    return true;
+                }
                 link = link.substring(0, link.lastIndexOf('#'));
             }
             if (knownPageFileNames.contains(link)) {
