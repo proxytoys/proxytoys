@@ -55,7 +55,8 @@ public class DelegatingTest extends ProxyTestCase {
 
     public void testShouldDelegateMethodsCalledOnInterface() throws Exception {
         // expect
-        fooMock.expects(once()).method("getSomething").withNoArguments().will(returnValue("some thing"));
+        fooMock.expects(once()).method("getSomething").withNoArguments().will(
+                returnValue("some thing"));
 
         // execute
         final String result = foo.getSomething();
@@ -69,7 +70,8 @@ public class DelegatingTest extends ProxyTestCase {
         Exception cause = new UnsupportedOperationException("sorry");
 
         // expect
-        fooMock.expects(once()).method("getSomething").withNoArguments().will(throwException(cause));
+        fooMock.expects(once()).method("getSomething").withNoArguments()
+                .will(throwException(cause));
 
         // execute
         try {
@@ -183,20 +185,22 @@ public class DelegatingTest extends ProxyTestCase {
 
     public void testShouldHandleFinalizeOnProxyAndDelegate() throws Exception {
         final StringBuffer buffer = new StringBuffer();
-        foo = createProxy(new FinalizingImpl(buffer));
-        foo = null;
+        {
+            foo = createProxy(new FinalizingImpl(buffer));
+            foo = null;
+        }
         System.gc();
         Thread.sleep(10);
         System.gc();
         assertEquals("finalized", buffer.toString());
     }
-    
+
     static class CompatibleFoo {
         public String getSomething() {
             return "Foo";
         }
     }
-    
+
     public void testDefaultProxyIsSignatureCompatible() throws RemoteException {
         Foo foo = createProxy(new CompatibleFoo());
         assertEquals("Foo", foo.getSomething());
