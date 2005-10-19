@@ -186,7 +186,7 @@ public class DelegatingTest extends ProxyTestCase {
         foo = createProxy(new FinalizingImpl(buffer));
         foo = null;
         System.gc();
-        Thread.yield();
+        Thread.sleep(10);
         System.gc();
         assertEquals("finalized", buffer.toString());
     }
