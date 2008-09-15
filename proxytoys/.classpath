@@ -7,7 +7,7 @@
 	<classpathentry output="build/website-classes" kind="src" path="website/src/java"/>
 	<classpathentry kind="lib" path="lib/jmock-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/cglib-nodep-2.1_2.jar"/>
-	<classpathentry kind="lib" path="website/lib/sitemesh-2.2.1.jar"/>
+	<classpathentry kind="lib" path="website/lib/sitemesh-20051115.jar"/>
 	<classpathentry kind="lib" path="website/lib/freemarker-2.3.3.jar"/>
 	<classpathentry kind="lib" path="website/lib/oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="lib/xpp3-1.1.3.4-RC8_min.jar"/>
