@@ -1,4 +1,7 @@
 <sitemap>
+	<properties>
+		<property name="javadoc-location" value="apidocs" />
+	</properties>
     <section>
         <name>ProxyToxy in General</name>
         <page>index.html</page>
@@ -16,7 +19,7 @@
         <page>toys.html</page>
         <page>faq.html</page>
         <page>mailing-lists.html</page>
-        <link title="JavaDoc">javadoc/index.html</link>
+        <link title="JavaDoc">apidocs/index.html</link>
         <link title="Reporting Issues">http://jira.codehaus.org/browse/PTOYS</link>
     </section>
     <section>
@@ -25,6 +28,6 @@
         <page>team.html</page>
         <page>repository.html</page>
         <link title="Build Status">http://ci.codehaus.org/beetlejuice/viewProjectSummary.action?projectName=ProxyToys</link>
-        <page>junit-noframes.html</page>
+        <!-- page>junit-noframes.html</page -->
     </section>
 </sitemap>
