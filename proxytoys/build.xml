@@ -13,7 +13,6 @@
     <property name="test.classes.dir" location="${build.dir}/test-classes" />
     <property name="test.reports.dir" location="${build.dir}/test-reports" />
     <property name="website.classes.dir" location="${build.dir}/website-classes" />
-    <property name="website.content.dir" location="${build.dir}/website-content" />
     <property name="dist.dir" location="${build.dir}/dist" />
     <property name="srcdist.dir" location="${build.dir}/srcdist" />
     <property name="jar.file" location="${build.dir}/${project}-${version}.jar" />
@@ -177,11 +176,7 @@
      </target>
 
     <target name="website" depends="supporting-java, javadoc, test" description="Build website">
-        <mkdir dir="${website.content.dir}" />
-        <copy todir="${website.content.dir}">
-            <fileset dir="${website.src.dir}/content" />
-        </copy>
-        <copy file="${test.reports.dir}/junit-noframes.html" todir="${website.content.dir}" />
+        <copy file="${test.reports.dir}/junit-noframes.html" todir="${website.src.dir}/content" />
         <java classname="minimesh.Main" failonerror="true">
             <classpath>
                 <fileset dir="${website.lib.dir}">
@@ -190,10 +185,11 @@
                 <fileset dir="${lib.dir}" includes="*.jar" />
                 <pathelement path="${website.classes.dir}" />
             </classpath>
-            <arg value="${website.content.dir}/website.xml" />
+            <arg value="${website.src.dir}/content/website.xml" />
             <arg value="${website.src.dir}/templates/skin.html" />
             <arg value="${website.dir}" />
         </java>
+        <delete file="${website.src.dir}/content/junit-noframes.html" />
     </target>
 
     <target name="distribution" depends="jar,website">
