@@ -2,8 +2,8 @@
     <property name="version" value="1.0-SNAPSHOT" />
 
     <property name="project" value="${ant.project.name}" />
-    <property name="src.dir" location="src" />
-    <property name="test.dir" location="test" />
+    <property name="src.dir" location="src/main/java" />
+    <property name="test.dir" location="src/test/java" />
     <property name="lib.dir" location="lib" />
     <property name="website.src.dir" location="website/src" />
     <property name="website.lib.dir" location="website/lib" />
