@@ -25,6 +25,5 @@
         <page>team.html</page>
         <page>repository.html</page>
         <link title="Build Status">http://ci.codehaus.org/beetlejuice/viewProjectSummary.action?projectName=ProxyToys</link>
-        <page>junit-noframes.html</page>
     </section>
 </sitemap>
