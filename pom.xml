@@ -9,6 +9,7 @@
 	<modules>
 		<module>proxytoys</module>
 		<module>website</module>
+		<module>example-code</module>
 	</modules>
 	<organization>
 		<name>Codehaus</name>
