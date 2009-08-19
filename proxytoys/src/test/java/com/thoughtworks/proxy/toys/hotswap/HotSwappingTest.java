@@ -1,12 +1,15 @@
 package com.thoughtworks.proxy.toys.hotswap;
 
 import com.thoughtworks.proxy.ProxyTestCase;
+import static com.thoughtworks.proxy.toys.hotswap.HotSwapping.hotSwappable;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -15,16 +18,16 @@ import java.util.List;
 public class HotSwappingTest extends ProxyTestCase {
 
     public void testShouldBeAbleToHotSwap() {
-        List firstList = new ArrayList();
+        List<String> firstList = new ArrayList<String>();
         firstList.add("first");
 
-        List proxyList = (List)HotSwapping.object(List.class, getFactory(), firstList);
+        List proxyList = hotSwappable(List.class).with(firstList).build(getFactory());
         assertTrue(proxyList.contains("first"));
 
-        List secondList = new ArrayList();
+        List<String> secondList = new ArrayList<String>();
         secondList.add("second");
 
-        Swappable swappable = (Swappable)proxyList;
+        Swappable swappable = (Swappable) proxyList;
         assertSame(firstList, swappable.hotswap(secondList));
 
         assertFalse(proxyList.contains("first"));
@@ -33,12 +36,12 @@ public class HotSwappingTest extends ProxyTestCase {
 
     public void testShouldDiscoverCyclicReferences() {
         List firstList = new ArrayList();
-        List hidingOne = (List)HotSwapping.object(List.class, getFactory(), firstList);
-        List hidingTwo = (List)HotSwapping.object(List.class, getFactory(), hidingOne);
-        List hidingThree = (List)HotSwapping.object(List.class, getFactory(), hidingTwo);
+        List hidingOne = hotSwappable(List.class).with(firstList).build(getFactory());
+        List hidingTwo = hotSwappable(List.class).with(hidingOne).build(getFactory());
+        List hidingThree = hotSwappable(List.class).with(hidingTwo).build(getFactory());
 
         try {
-            ((Swappable)hidingOne).hotswap(hidingThree);
+            ((Swappable) hidingOne).hotswap(hidingThree);
             fail();
         } catch (IllegalStateException e) {
             // expected
@@ -46,23 +49,20 @@ public class HotSwappingTest extends ProxyTestCase {
     }
 
     public void testShouldNotHotswapRecursively() {
-        List list = new ArrayList();
-        HashMap map = new HashMap();
-        map.put("hello", "world");
-        list.add(map);
-        List hidingList = (List)HotSwapping.object(List.class, getFactory(), list);
+        List<Map<String, String>> list = singletonList(singletonMap("hello", "world"));
+        List hidingList = hotSwappable(List.class).with(list).build(getFactory());
         Object shouldNotBeSwappableMap = hidingList.get(0);
         assertFalse(shouldNotBeSwappableMap instanceof Swappable);
     }
 
     public void testShouldWorkWithEquals() {
-        List hotSwapList = (List)HotSwapping.object(List.class, getFactory(), (Object)null);
+        List hotSwapList = hotSwappable(List.class).with(null).build(getFactory());
         assertFalse(hotSwapList.equals(new ArrayList()));
         assertTrue(hotSwapList.equals(hotSwapList));
     }
 
     public void testShouldWorkWithHashcode() {
-        List hotSwapList = (List)HotSwapping.object(List.class, getFactory(), (Object)null);
+        List hotSwapList = hotSwappable(List.class).with(null).build(getFactory());
         assertTrue(hotSwapList.hashCode() == hotSwapList.hashCode());
     }
 
@@ -86,7 +86,7 @@ public class HotSwappingTest extends ProxyTestCase {
 
     public void testShouldForwardToObjectOfDifferentTypeIfTypeForgivingIsTrue() {
         Person person = new Person();
-        Screwdriver sd = (Screwdriver)HotSwapping.object(Screwdriver.class, getFactory(), person);
+        Screwdriver sd = hotSwappable(Screwdriver.class).with(person).build(getFactory());
         sd.screw();
         assertTrue(person.wasScrewed);
     }
@@ -100,18 +100,18 @@ public class HotSwappingTest extends ProxyTestCase {
     }
 
     public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedProxy((Screwdriver)serializeWithJDK(HotSwapping.object(
-                Screwdriver.class, getFactory(), new Person())));
+        Screwdriver sd = hotSwappable(Screwdriver.class).with(new Person()).build(getFactory());
+        useSerializedProxy((Screwdriver)serializeWithJDK(sd));
     }
 
     public void testSerializeWithXStream() {
-        useSerializedProxy((Screwdriver)serializeWithXStream(HotSwapping.object(
-                Screwdriver.class, getFactory(), new Person())));
+        Object sd = hotSwappable(Screwdriver.class).with(new Person()).build(getFactory());
+        useSerializedProxy((Screwdriver)serializeWithXStream(sd));
     }
 
     public void testSerializeWithXStreamInPureReflectionMode() {
-        useSerializedProxy((Screwdriver)serializeWithXStreamAndPureReflection(HotSwapping.object(
-                Screwdriver.class, getFactory(), new Person())));
+        Screwdriver sd = hotSwappable(Screwdriver.class).with(new Person()).build(getFactory());
+        useSerializedProxy((Screwdriver)serializeWithXStreamAndPureReflection(sd));
     }
 
 }

@@ -9,7 +9,7 @@ package com.thoughtworks.proxy.toys.failover;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleReference;
-import com.thoughtworks.proxy.toys.delegate.Delegating;
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
 
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +44,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
      */
     public FailoverInvoker(
             final Class[] types, final ProxyFactory proxyFactory, final Object[] delegates, final Class exceptionClass) {
-        super(types, proxyFactory, new SimpleReference(delegates[0]), Delegating.MODE_DIRECT);
+        super(types, proxyFactory, new SimpleReference(delegates[0]), DIRECT);
         if (!Throwable.class.isAssignableFrom(exceptionClass)) {
             throw new IllegalArgumentException("exceptionClass is not a Throwable");
         }

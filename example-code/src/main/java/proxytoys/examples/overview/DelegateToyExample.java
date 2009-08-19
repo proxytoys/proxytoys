@@ -7,6 +7,7 @@ package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.toys.delegate.Delegating;
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -34,7 +35,7 @@ public class DelegateToyExample {
         RandomAccessFile raf = new RandomAccessFile(f, "rw");
         raf.writeBytes("Content");
         raf.seek(0);
-        return (DataInput)Delegating.object(DataInput.class, raf, Delegating.MODE_DIRECT);
+        return (DataInput)Delegating.object(DataInput.class, raf, DIRECT);
     }
 
     public static void packageOverviewExample2() {

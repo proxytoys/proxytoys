@@ -13,8 +13,8 @@ import com.thoughtworks.proxy.factory.InvokerReference;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.ReflectionUtils;
-import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -56,7 +56,7 @@ public class DispatchingInvoker implements Invoker {
         for (int i = 0; i < types.length; i++) {
             for (int j = 0; j < delegateReferences.length; j++) {
                 if (types[i].isAssignableFrom(delegateReferences[j].get().getClass())) {
-                    invokers[i] = new DelegatingInvoker(proxyFactory, delegateReferences[j], Delegating.MODE_DIRECT);
+                    invokers[i] = new DelegatingInvoker(proxyFactory, delegateReferences[j], DIRECT);
                     methodSets[i] = new HashSet(Arrays.asList(types[i].getMethods()));
                     break;
                 }

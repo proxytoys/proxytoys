@@ -44,8 +44,8 @@ public class ReflectionUtils {
     static {
         try {
             equals = Object.class.getMethod("equals", new Class[]{Object.class});
-            hashCode = Object.class.getMethod("hashCode", null);
-            toString = Object.class.getMethod("toString", null);
+            hashCode = Object.class.getMethod("hashCode");
+            toString = Object.class.getMethod("toString");
         } catch (NoSuchMethodException e) {
             // /CLOVER:OFF
             throw new InternalError();

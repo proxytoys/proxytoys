@@ -6,7 +6,7 @@
 package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
+import static com.thoughtworks.proxy.toys.hotswap.HotSwapping.hotSwappable;
 import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 import java.io.ByteArrayOutputStream;
@@ -22,7 +22,7 @@ public class HotSwapToyExample {
     public static void packageOverviewExample1() {
         ByteArrayOutputStream outStreamOdd = new ByteArrayOutputStream();
         ByteArrayOutputStream outStreamEven = new ByteArrayOutputStream();
-        OutputStream out = (OutputStream)HotSwapping.object(OutputStream.class, new CglibProxyFactory(), null);
+        OutputStream out = hotSwappable(OutputStream.class).with(null).build(new CglibProxyFactory());
         PrintWriter writer = new PrintWriter(out);
         for (int i = 0; i < 10; ++i) {
             Swappable swappable = (Swappable)out;

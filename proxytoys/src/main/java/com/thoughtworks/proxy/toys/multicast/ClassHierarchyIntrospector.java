@@ -41,7 +41,7 @@ public class ClassHierarchyIntrospector {
     static {
         try {
             equals = Object.class.getMethod("equals", new Class[]{Object.class});
-            hashCode = Object.class.getMethod("hashCode", null);
+            hashCode = Object.class.getMethod("hashCode");
         } catch (NoSuchMethodException e) {
             // /CLOVER:OFF
             throw new InternalError();

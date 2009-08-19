@@ -101,56 +101,56 @@ public class DelegatingTest extends ProxyTestCase {
     }
 
     public void testShouldCompareEqualToItself() {
-        String string = new String("some thing");
+        String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo, foo);
     }
 
     public void testShouldCompareEqualToDelegatedInstance() {
-        String string = new String("some thing");
+        String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo, string);
     }
 
     public void testShouldCompareEqualToAnotherDelegatingProxyOnTheSameInstance() {
-        String string = new String("some thing");
+        String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo, createProxy(string));
     }
 
     public void testShouldCompareEqualToANestedProxyOnTheSameInstance() {
-        String string = new String("some thing");
+        String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo, createProxy(foo));
     }
 
     public void testShouldHaveSameHashCodeAsItself() {
-        String string = new String("some thing");
+        String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo.hashCode(), foo.hashCode());
     }
 
     public void testShouldHaveSameHashCodeAsDelegatedInstance() {
-        String string = new String("some thing");
+        String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo.hashCode(), string.hashCode());
     }
 
     public void testShouldHaveSameHashCodeAsAnotherDelegatingProxyOnTheSameInstance() {
-        String string = new String("some thing");
+        String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo.hashCode(), createProxy(string).hashCode());
     }
 
     public void testShouldHaveSameHashCodeAsANestedProxyOnTheSameInstance() {
-        String string = new String("some thing");
+        String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo.hashCode(), createProxy(foo).hashCode());
     }
 
     public static interface Faculty {
         int calc(int i, Faculty fac);
-    };
+    }
 
     public void testShouldSupportIndirectRecursion() {
         Faculty fac = new Faculty() {

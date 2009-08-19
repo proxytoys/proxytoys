@@ -13,6 +13,8 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.kit.SimpleReference;
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -41,7 +43,7 @@ public class DelegatingInvoker implements Invoker {
     private transient Map methodCache;
     private ProxyFactory proxyFactory;
     private ObjectReference delegateReference;
-    private int delegationMode;
+    private DelegationMode delegationMode;
 
     /**
      * Construct a DelegatingInvoker.
@@ -53,39 +55,22 @@ public class DelegatingInvoker implements Invoker {
      *             {@link Delegating}
      * @since 0.2
      */
-    public DelegatingInvoker(
-            final ProxyFactory proxyFactory, final ObjectReference delegateReference, final int delegationMode) {
+    public DelegatingInvoker(final ProxyFactory proxyFactory, final ObjectReference delegateReference,
+            final DelegationMode delegationMode) {
         this.proxyFactory = proxyFactory;
         this.delegateReference = delegateReference;
         this.delegationMode = delegationMode;
-        if (delegationMode > 1) {
-            throw new IllegalArgumentException("Invalid delegation mode");
-        }
         this.methodCache = new HashMap();
     }
 
     /**
-     * Construct a DelegatingInvoker.
-     * 
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @param delegateReference the {@link ObjectReference} of the delegate
-     * @param staticTyping {@link Delegating#STATIC_TYPING} or {@link Delegating#DYNAMIC_TYPING}
-     * @since 0.1
-     * @deprecated since 0.2, use {@link DelegatingInvoker#DelegatingInvoker(ProxyFactory, ObjectReference, int)}
-     */
-    public DelegatingInvoker(
-            final ProxyFactory proxyFactory, final ObjectReference delegateReference, final boolean staticTyping) {
-        this(proxyFactory, delegateReference, staticTyping ? Delegating.MODE_DIRECT : Delegating.MODE_SIGNATURE);
-    }
-
-    /**
-     * Construct a DelegatingInvoker with a {@link StandardProxyFactory} and {@link Delegating#MODE_SIGNATURE}.
+     * Construct a DelegatingInvoker with a {@link StandardProxyFactory} and {@link DelegationMode#SIGNATURE}.
      * 
      * @param delegate the delegated object
      * @since 0.1
      */
     public DelegatingInvoker(final Object delegate) {
-        this(new StandardProxyFactory(), new SimpleReference(delegate), Delegating.MODE_SIGNATURE);
+        this(new StandardProxyFactory(), new SimpleReference(delegate), SIGNATURE);
     }
 
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
@@ -148,7 +133,7 @@ public class DelegatingInvoker implements Invoker {
      * @since 0.2
      */
     protected Method getMethodToInvoke(final Method method, final Object[] args) {
-        if (delegationMode == Delegating.MODE_DIRECT) {
+        if (delegationMode == DIRECT) {
             return method;
         } else {
             final String methodName = method.getName();
@@ -217,19 +202,8 @@ public class DelegatingInvoker implements Invoker {
 
     public int hashCode() {
         final Object delegate = delegate();
-        int hashCode = delegate == null ? System.identityHashCode(this) : delegate.hashCode();
-        switch (delegationMode) {
-        case Delegating.MODE_DIRECT:
-            hashCode = ~hashCode;
-            break;
-        case Delegating.MODE_SIGNATURE:
-            hashCode = -hashCode;
-            break;
-        // case Delegating.MODE_MATCHING:
-        // hashCode = -(~hashCode);
-        // break;
-        }
-        return hashCode;
+        return delegationMode.delegationHashcode(delegate == null
+                ? System.identityHashCode(this) : delegate.hashCode());
     }
 
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {

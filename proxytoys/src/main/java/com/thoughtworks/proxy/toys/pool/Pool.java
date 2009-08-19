@@ -13,8 +13,9 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.kit.SimpleReference;
-import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
+import com.thoughtworks.proxy.toys.delegate.DelegationMode;
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class Pool implements Serializable {
 
     static {
         try {
-            returnInstanceToPool = Poolable.class.getMethod("returnInstanceToPool", null);
+            returnInstanceToPool = Poolable.class.getMethod("returnInstanceToPool");
         } catch (NoSuchMethodException e) {
             throw new InternalError();
         }
@@ -196,7 +197,7 @@ public class Pool implements Serializable {
         final Object result;
         if (availableInstances.size() > 0 || getAvailable() > 0) {
             final ObjectReference delegate = (ObjectReference)availableInstances.remove(0);
-            result = new PoolingInvoker(this, factory, delegate, Delegating.MODE_DIRECT).proxy();
+            result = new PoolingInvoker(this, factory, delegate, DIRECT).proxy();
             final Object weakReference = new WeakReference(result);
             busyInstances.put(delegate.get(), weakReference);
         } else {
@@ -322,11 +323,11 @@ public class Pool implements Serializable {
          * @param pool the corresponding {@link Pool}
          * @param proxyFactory the {@link ProxyFactory} to use
          * @param delegateReference the {@link ObjectReference} with the delegate
-         * @param delegationMode onde of the {@linkplain Delegating delgation modes}
+         * @param delegationMode one of the {@linkplain DelegationMode delgation modes}
          * @since 0.2
          */
         protected PoolingInvoker(
-                Pool pool, ProxyFactory proxyFactory, ObjectReference delegateReference, int delegationMode) {
+                Pool pool, ProxyFactory proxyFactory, ObjectReference delegateReference, DelegationMode delegationMode) {
             super(proxyFactory, delegateReference, delegationMode);
             this.pool = pool;
         }

@@ -63,7 +63,7 @@ public class MulticastToyExample {
 
     public static void packageOverviewExample4() {
         try {
-            Method method = String.class.getMethod("length", null);
+            Method method = String.class.getMethod("length");
             Multicast multicast = (Multicast)Multicasting.object(new Object[]{"ProxyToys", "is", "great"});
             System.out.println("Total number of characters: " + multicast.multicastTargets(method, null));
             String[] strings = (String[])multicast.getTargetsInArray(String.class);

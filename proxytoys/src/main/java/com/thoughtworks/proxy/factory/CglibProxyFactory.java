@@ -149,7 +149,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     private Constructor getConstructor(final Class type) {
         Constructor constructor = null;
         try {
-            constructor = type.getConstructor(null);
+            constructor = type.getConstructor((Class[]) null);
         } catch (NoSuchMethodException e) {
             constructor = type.getConstructors()[0];
 

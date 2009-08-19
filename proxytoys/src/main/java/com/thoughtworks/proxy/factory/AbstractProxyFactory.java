@@ -34,7 +34,7 @@ abstract class AbstractProxyFactory implements ProxyFactory {
 
     static {
         try {
-            getInvoker = InvokerReference.class.getMethod("getInvoker", null);
+            getInvoker = InvokerReference.class.getMethod("getInvoker");
         } catch (NoSuchMethodException e) {
             throw new InternalError();
         }

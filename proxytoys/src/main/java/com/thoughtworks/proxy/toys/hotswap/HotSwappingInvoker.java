@@ -9,8 +9,8 @@ package com.thoughtworks.proxy.toys.hotswap;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
-import com.thoughtworks.proxy.toys.delegate.Delegating;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
+import com.thoughtworks.proxy.toys.delegate.DelegationMode;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,7 +34,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
     static {
         try {
             hotswap = Swappable.class.getMethod("hotswap", new Class[]{Object.class});
-            checkForCycle = CycleCheck.class.getMethod("checkForCycle", null);
+            checkForCycle = CycleCheck.class.getMethod("checkForCycle");
         } catch (NoSuchMethodException e) {
             throw new InternalError();
         }
@@ -65,34 +65,16 @@ public class HotSwappingInvoker extends DelegatingInvoker {
      * @param types the types of the proxy
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param delegateReference the {@link ObjectReference} with the delegate
-     * @param delegationMode {@link com.thoughtworks.proxy.toys.delegate.Delegating#MODE_DIRECT MODE_DIRECT} or
-     *            {@link com.thoughtworks.proxy.toys.delegate.Delegating#MODE_SIGNATURE MODE_SIGNATURE}
+     * @param delegationMode {@link DelegationMode#DIRECT MODE_DIRECT} or
+     *        {@link DelegationMode#SIGNATURE MODE_SIGNATURE}
      * @since 0.2
      */
     public HotSwappingInvoker(
             final Class[] types, final ProxyFactory proxyFactory, final ObjectReference delegateReference,
-            final int delegationMode) {
+            final DelegationMode delegationMode) {
         super(proxyFactory, delegateReference, delegationMode);
         this.types = types;
         this.delegate = new ThreadLocal();
-    }
-
-    /**
-     * Construct a HotSwappingInvoker.
-     * 
-     * @param types the types of the proxy
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @param delegateReference the {@link ObjectReference} with the delegate
-     * @param staticTyping {@link com.thoughtworks.proxy.toys.delegate.Delegating#STATIC_TYPING STATIC_TYPING} or
-     *            {@link com.thoughtworks.proxy.toys.delegate.Delegating#DYNAMIC_TYPING DYNAMIC_TYPING}
-     * @since 0.1
-     * @deprecated since 0.2, use
-     *             {@link HotSwappingInvoker#HotSwappingInvoker(Class[], ProxyFactory, ObjectReference, int)}
-     */
-    public HotSwappingInvoker(
-            final Class[] types, final ProxyFactory proxyFactory, final ObjectReference delegateReference,
-            final boolean staticTyping) {
-        this(types, proxyFactory, delegateReference, staticTyping ? Delegating.MODE_DIRECT : Delegating.MODE_SIGNATURE);
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -159,6 +141,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
      * @since 0.1
      */
     public Object proxy() {
+        //TODO: generify
         Class[] typesWithSwappable = new Class[types.length + 2];
         System.arraycopy(types, 0, typesWithSwappable, 0, types.length);
         typesWithSwappable[types.length] = Swappable.class;
