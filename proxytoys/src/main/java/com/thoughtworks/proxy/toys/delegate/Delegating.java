@@ -8,9 +8,9 @@
 package com.thoughtworks.proxy.toys.delegate;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import static com.thoughtworks.proxy.toys.delegate.DelegationMode.*;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleReference;
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
 
 /**
@@ -20,70 +20,38 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  * an object compatible, e.g. when an object implements the methods of an interface, but does not implement the
  * interface itself.
  * </p>
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
- * @since 0.1
  * @see com.thoughtworks.proxy.toys.delegate
+ * @since 0.1
  */
-public class Delegating {
+public class Delegating<T> {
 
-    /**
-     * Creating a delegating proxy for a signature compatible object.
-     * 
-     * @param type the type of the created proxy,
-     * @param delegate the object the proxy delegates to.
-     * @return a new proxy of the specified type.
-     * @since 0.1
-     */
-    public static Object object(final Class type, final Object delegate) {
-        return object(type, delegate, new StandardProxyFactory());
+    private Class<T> type;
+    private Object delegate;
+    private DelegationMode delegationMode = SIGNATURE;
+
+    private Delegating(Class<T> type, Object delegate) {
+        this.type = type;
+        this.delegate = delegate;
     }
 
-    /**
-     * Creating a delegating proxy for an object with a defined delegation mode.
-     * 
-     * @param type the type of the created proxy,
-     * @param delegate the object the proxy delegates to.
-     * @param delegationMode one of the delegation modes {@link DelegationMode#DIRECT} or {@link DelegationMode#SIGNATURE}
-     * @return a new proxy of the specified type.
-     * @throws IllegalArgumentException if the <tt>delegationMode</tt> is not one of the predefined constants
-     * @since 0.2
-     */
-    public static Object object(final Class type, final Object delegate, final DelegationMode delegationMode) {
-        return object(type, delegate,new StandardProxyFactory(), delegationMode);
+    public static <T> Delegating<T> delegate(Class<T> type, Object delegate) {
+        return new Delegating<T>(type, delegate);
     }
 
-    /**
-     * Creating a delegating proxy for a signature compatible object using a special {@link ProxyFactory}.
-     * 
-     * @param type the type of the created proxy,
-     * @param delegate the object the proxy delegates to.
-     * @param factory the {@link ProxyFactory} to use creating the proxy.
-     * @return a new proxy of the specified type.
-     * @since 0.1
-     */
-    public static Object object(final Class type, final Object delegate, final ProxyFactory factory) {
-        return object(type, delegate, factory, SIGNATURE);
+    public Delegating<T> withDelegationMode(DelegationMode mode) {
+        this.delegationMode = mode;
+        return this;
     }
 
-    /**
-     * Creating a delegating proxy for an object with a defined delegation mode using a special {@link ProxyFactory}.
-     * 
-     * @param type the type of the created proxy,
-     * @param delegate the object the proxy delegates to.
-     * @param factory the {@link ProxyFactory} to use creating the proxy.
-     * @param delegationMode one of the delegation modes {@link DelegationMode#DIRECT}
-     *          or {@link DelegationMode#SIGNATURE}
-     * @return a new proxy of the specified type.
-     * @since 0.2.1
-     */
-    
-    public static Object object(final Class type, final Object delegate, final ProxyFactory factory, final DelegationMode delegationMode) {
+    public Object build() {
+        return build(new StandardProxyFactory());
+    }
+
+    public Object build(ProxyFactory factory) {
         return factory.createProxy(new Class[]{type}, new DelegatingInvoker(
                 factory, new SimpleReference(delegate), delegationMode));
     }
 
-    /** It's a factory, stupid */
-    private Delegating() {
-    }
 }

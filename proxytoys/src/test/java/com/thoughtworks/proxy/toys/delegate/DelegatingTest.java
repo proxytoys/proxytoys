@@ -8,7 +8,7 @@
 package com.thoughtworks.proxy.toys.delegate;
 
 import com.thoughtworks.proxy.ProxyTestCase;
-
+import static com.thoughtworks.proxy.toys.delegate.Delegating.delegate;
 import org.jmock.Mock;
 
 import java.rmi.RemoteException;
@@ -50,7 +50,7 @@ public class DelegatingTest extends ProxyTestCase {
     }
 
     private Foo createProxy(Object impl) {
-        return (Foo)Delegating.object(Foo.class, impl, getFactory());
+        return (Foo) delegate(Foo.class, impl).build(getFactory());
     }
 
     public void testShouldDelegateMethodsCalledOnInterface() throws Exception {
@@ -158,7 +158,7 @@ public class DelegatingTest extends ProxyTestCase {
                 return i == 1 ? 1 : i * fac.calc(i - 1, fac);
             }
         };
-        Faculty proxy = (Faculty)Delegating.object(Faculty.class, fac, getFactory());
+        Faculty proxy = (Faculty) delegate(Faculty.class, fac).build(getFactory());
         assertEquals(120, fac.calc(5, fac));
         assertEquals(120, proxy.calc(5, proxy));
     }
