@@ -30,7 +30,7 @@ public class DecoratingTest extends ProxyTestCase {
 
     static {
         try {
-            getSomethingMethod = Foo.class.getMethod(getSomething, new Class[]{String.class});
+            getSomethingMethod = Foo.class.getMethod(getSomething, String.class);
         } catch (Exception e) {
             throw new NoSuchMethodError("Foo.getSomething(String)");
         }
@@ -49,7 +49,7 @@ public class DecoratingTest extends ProxyTestCase {
         decoratorMock = new Mock(InvocationDecorator.class);
         decoratorMock.stubs();
         assertNotNull(fooMock.proxy());
-        foo =  decoratable(Foo.class).with(fooMock.proxy(), (InvocationDecorator) decoratorMock.proxy()).build();
+        foo = decoratable(Foo.class).with(fooMock.proxy(), (InvocationDecorator) decoratorMock.proxy()).build();
     }
 
     private Object[] toArray(Object value) {
@@ -124,7 +124,7 @@ public class DecoratingTest extends ProxyTestCase {
             public Exception decorateInvocationException(Object proxy, Method method, Object[] args, Exception cause) {
                 thrown[0] = cause;
                 return decoratedException;
-            }             
+            }
         }).build();
 
         // execute
@@ -151,16 +151,16 @@ public class DecoratingTest extends ProxyTestCase {
 
     public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
         useSerializedProxy((Resetter) serializeWithJDK(decoratable(
-                new Class[]{Resetter.class}).with(new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
+                Resetter.class).with(new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
     }
 
     public void testSerializeWithXStream() {
         useSerializedProxy((Resetter) serializeWithXStream(decoratable(
-                new Class[]{Resetter.class}).with(new NoOperationResetter(), new AssertingDecorator()).build( getFactory())));
+                Resetter.class).with(new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
     }
 
     public void testSerializeWithXStreamInPureReflectionMode() {
         useSerializedProxy((Resetter) serializeWithXStreamAndPureReflection(decoratable(
-                new Class[]{Resetter.class}).with( new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
+                Resetter.class).with(new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
     }
 }

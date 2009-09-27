@@ -97,7 +97,7 @@ public class DelegatingInvoker implements Invoker {
             // equals and hashCode must be consistent
             result = new Integer(delegate == null ? hashCode() : delegate.hashCode());
 
-            // null delegate
+            // null delegatable
         } else if (delegate == null) {
             result = null;
 

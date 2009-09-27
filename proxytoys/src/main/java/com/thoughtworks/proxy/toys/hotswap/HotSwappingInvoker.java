@@ -80,7 +80,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result;
         try {
-            delegate.set(delegate()); // ensure delegate will not change during invocation
+            delegate.set(delegate()); // ensure delegatable will not change during invocation
             if (method.equals(hotswap)) {
                 result = hotswap(args[0]);
             } else if (method.equals(checkForCycle)) {
@@ -124,7 +124,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
     protected Object hotswap(final Object newDelegate) {
         ObjectReference ref = getDelegateReference();
         Object result = ref.get();
-        // Note, for the cycle detection the delegate have to be set first
+        // Note, for the cycle detection the delegatable have to be set first
         delegate.set(newDelegate);
         ref.set(newDelegate);
         if (newDelegate instanceof CycleCheck) {

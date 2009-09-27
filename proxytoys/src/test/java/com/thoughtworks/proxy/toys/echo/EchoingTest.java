@@ -8,7 +8,7 @@
 package com.thoughtworks.proxy.toys.echo;
 
 import com.thoughtworks.proxy.ProxyTestCase;
-import static com.thoughtworks.proxy.toys.echo.Echoing.echo;
+import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
 import org.jmock.Mock;
 
 import java.io.PrintWriter;
@@ -38,7 +38,7 @@ public class EchoingTest extends ProxyTestCase {
     public void testShouldEchoMethodNameAndArgs() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple foo = (Simple) echo(Simple.class).withPrintWriter(new PrintWriter(out)).build(getFactory());
+        Simple foo = (Simple) echoable(Simple.class).withPrintWriter(new PrintWriter(out)).build(getFactory());
 
         // execute
         foo.doSomething();
@@ -50,7 +50,7 @@ public class EchoingTest extends ProxyTestCase {
     public void testShouldDelegateCalls() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple foo = (Simple) echo(Simple.class).withPrintWriter(new PrintWriter(out)).withDelegateObject(simpleImpl).build(getFactory());
+        Simple foo = (Simple) echoable(Simple.class).withPrintWriter(new PrintWriter(out)).withDelegateObject(simpleImpl).build(getFactory());
 
         // expect
         simpleMock.expects(once()).method("doSomething");
@@ -76,7 +76,7 @@ public class EchoingTest extends ProxyTestCase {
         Mock outerMock = new Mock(Outer.class);
         StringWriter out = new StringWriter();
 
-        Outer outer = (Outer) echo(Outer.class).withDelegateObject(outerMock.proxy()).withPrintWriter(new PrintWriter(out)).build(getFactory());
+        Outer outer = (Outer) echoable(Outer.class).withDelegateObject(outerMock.proxy()).withPrintWriter(new PrintWriter(out)).build(getFactory());
 
         // expect
         outerMock.expects(once()).method(getInner).withNoArguments().will(returnValue(innerMock.proxy()));
@@ -95,7 +95,7 @@ public class EchoingTest extends ProxyTestCase {
     public void testShouldRecursivelyReturnEchoProxiesEvenForMissingImplementations() throws Exception {
         // setup
         StringWriter out = new StringWriter();
-        Outer outer = (Outer) echo(Outer.class).withPrintWriter(new PrintWriter(out)).build(getFactory());
+        Outer outer = (Outer) echoable(Outer.class).withPrintWriter(new PrintWriter(out)).build(getFactory());
 
         // execute
         outer.getInner().getName();

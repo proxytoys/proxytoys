@@ -31,25 +31,54 @@ public class Echoing<T> {
     private Object delegate;
     private PrintWriter printWriter = new PrintWriter(System.err);
 
+    /**
+     * specify the printWriter
+     *
+     * @param printWriter which receives the output
+     * @return the factory that will proxy instances of the supplied type.
+     */
     public Echoing withPrintWriter(final PrintWriter printWriter) {
         this.printWriter = printWriter;
         return this;
     }
 
+    /**
+     * specify the delegate
+     *
+     * @param delegate the object the proxy delegates to.
+     * @return the factory that will proxy instances of the supplied type.
+     */
     public Echoing withDelegateObject(final Object delegate) {
         this.delegate = delegate;
         return this;
     }
 
-    public Object build() {
+    /**
+     * Creating a delegating proxy for an object using a special {@link StandardProxyFactory}
+     *
+     * @return the created proxy implementing the <tt>type</tt>
+     */
+    public T build() {
         return build(new StandardProxyFactory());
     }
 
-    public Object build(final ProxyFactory proxyFactory) {
-        return decoratable(new Class[]{type}).with(delegate, new EchoDecorator(printWriter, proxyFactory)).build(proxyFactory);
+    /**
+     * Creating a delegating proxy for an object using a special {@link ProxyFactory}
+     *
+     * @param proxyFactory the @{link ProxyFactory} to use.
+     * @return the created proxy implementing the <tt>type</tt>
+     */
+    public T build(final ProxyFactory proxyFactory) {
+        return (T) decoratable(new Class[]{type}).with(delegate, new EchoDecorator(printWriter, proxyFactory)).build(proxyFactory);
     }
+     /**
+     * Creates a factory for proxy instances that allow delegation.
+     *
+     * @param type     the type of the proxy when it is finally created.
+     * @return a factory that will proxy instances of the supplied type.
+     */
 
-    public static <T> Echoing<T> echo(final Class<T> type) {
+    public static <T> Echoing<T> echoable(final Class<T> type) {
         return new Echoing<T>(type);
     }
 

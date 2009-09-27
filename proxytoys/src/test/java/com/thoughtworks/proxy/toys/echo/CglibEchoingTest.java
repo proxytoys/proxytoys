@@ -7,7 +7,7 @@ package com.thoughtworks.proxy.toys.echo;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import static com.thoughtworks.proxy.toys.echo.Echoing.echo;
+import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -23,7 +23,7 @@ public class CglibEchoingTest extends ProxyTestCase {
 
     public void testShouldProxyRealInstance() {
         final StringWriter out = new StringWriter();
-        final List<File> list = (List<File>) echo(List.class).withDelegateObject(new ArrayList()).withPrintWriter(new PrintWriter(out)).build(createProxyFactory());
+        final List<File> list = (List<File>) echoable(List.class).withDelegateObject(new ArrayList()).withPrintWriter(new PrintWriter(out)).build(createProxyFactory());
         list.add(new File("."));
         final File file = list.get(0);
         file.exists();
