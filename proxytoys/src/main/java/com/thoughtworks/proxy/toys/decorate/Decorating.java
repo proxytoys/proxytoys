@@ -20,56 +20,42 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * after the original method was called, after the original method has thrown an exceptionor when an exception occurs,
  * calling the method of the decorated object.
  * </p>
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @since 0.1
  * @see com.thoughtworks.proxy.toys.decorate
+ * @since 0.1
  */
-public class Decorating {
-    /**
-     * Create a decorating proxy implementing a specific type.
-     * 
-     * @param type the type of the created proxy.
-     * @param delegate the decorated object.
-     * @param decorator the decorator instance.
-     * @return a decorating proxy.
-     * @since 0.1
-     */
-    public static Object object(final Class type, final Object delegate, final InvocationDecorator decorator) {
-        return object(new Class[]{type}, delegate, decorator);
+public class Decorating<T> {
+    
+    private Object delegate;
+    private Class<T>[] types;
+    private InvocationDecorator decorator;
+
+    private Decorating(final Class<T>... types) {
+        this.types = types;
     }
 
-    /**
-     * Create a decorating proxy implementing specific types.
-     * 
-     * @param types the types of the created proxy.
-     * @param delegate the decorated object.
-     * @param decorator the decorator instance.
-     * @return a decorating proxy.
-     * @since 0.1
-     */
-    public static Object object(final Class[] types, final Object delegate, final InvocationDecorator decorator) {
-        return object(types, delegate, decorator, new StandardProxyFactory());
+    public static <T> Decorating<T> decoratable(final Class<T> type) {
+        return new Decorating<T>(type);
     }
 
-    /**
-     * Create a decorating proxy implementing specific types using a provided {@link ProxyFactory}.
-     * 
-     * @param types the types of the created proxy.
-     * @param delegate the decorated object.
-     * @param decorator the decorator instance.
-     * @param factory the ProxyFactory to use for the proxy generation.
-     * @return a decorating proxy.
-     * @since 0.1
-     */
-    public static Object object(
-            final Class[] types, final Object delegate, final InvocationDecorator decorator, final ProxyFactory factory) {
-        return factory.createProxy(types, new DecoratingInvoker(delegate, decorator));
+    public static <T> Decorating<T> decoratable(final Class<T>[] types) {
+        return new Decorating<T>(types);
     }
 
-    /** It's a factory, stupid */
-    private Decorating() {
+    public Decorating<T> with(Object delegate, InvocationDecorator decorator) {
+        this.delegate = delegate;
+        this.decorator = decorator;
+        return this;
+    }
+
+    public T build() {
+        return (T) new StandardProxyFactory().createProxy(types, new DecoratingInvoker(delegate, decorator));
+    }
+
+    public T build(final ProxyFactory proxyFactory) {
+        return (T) proxyFactory.createProxy(types, new DecoratingInvoker(delegate, decorator));
     }
 }

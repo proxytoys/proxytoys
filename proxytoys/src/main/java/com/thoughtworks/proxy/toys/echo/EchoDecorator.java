@@ -10,6 +10,7 @@ package com.thoughtworks.proxy.toys.echo;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.toys.decorate.Decorating;
 import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
+import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
@@ -21,7 +22,7 @@ import java.lang.reflect.Method;
  * The implementation will try to create new proxies for every return value, that can be proxied by the
  * {@link ProxyFactory} in use.
  * </p>
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author J&ouml;rg Schaible
  * @since 0.1
@@ -33,8 +34,8 @@ public class EchoDecorator extends InvocationDecoratorSupport {
 
     /**
      * Construct an EchoingDecorator.
-     * 
-     * @param out the {@link PrintWriter} receving the logs
+     *
+     * @param out     the {@link PrintWriter} receving the logs
      * @param factory the {@link ProxyFactory} to use
      * @since 0.2, different arguments in 0.1
      */
@@ -52,9 +53,9 @@ public class EchoDecorator extends InvocationDecoratorSupport {
         final Class returnType = method.getReturnType();
         printMethodResult(result);
         if (returnType != Object.class && factory.canProxy(returnType)) {
-            result = Decorating.object(new Class[]{returnType}, result, this, factory);
+            result = decoratable(new Class[]{returnType}).with(result, this).build(factory);
         } else if (result != null && returnType == Object.class && factory.canProxy(result.getClass())) {
-            result = Decorating.object(new Class[]{result.getClass()}, result, this, factory);
+            result = decoratable(new Class[]{result.getClass()}).with(result, this).build(factory);
         }
         return result;
     }

@@ -10,14 +10,12 @@ package com.thoughtworks.proxy.toys.decorate;
 import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.Resetter;
-
+import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
 import junit.framework.TestCase;
-
 import org.jmock.Mock;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -29,6 +27,7 @@ public class DecoratingTest extends ProxyTestCase {
     private static final String getSomething = "getSomething";
 
     private static final Method getSomethingMethod;
+
     static {
         try {
             getSomethingMethod = Foo.class.getMethod(getSomething, new Class[]{String.class});
@@ -50,7 +49,7 @@ public class DecoratingTest extends ProxyTestCase {
         decoratorMock = new Mock(InvocationDecorator.class);
         decoratorMock.stubs();
         assertNotNull(fooMock.proxy());
-        foo = (Foo)Decorating.object(Foo.class, fooMock.proxy(), (InvocationDecorator)decoratorMock.proxy());
+        foo =  decoratable(Foo.class).with(fooMock.proxy(), (InvocationDecorator) decoratorMock.proxy()).build();
     }
 
     private Object[] toArray(Object value) {
@@ -121,12 +120,12 @@ public class DecoratingTest extends ProxyTestCase {
         final Throwable[] thrown = new Throwable[1]; // hack for inner class
         final MyException decoratedException = new MyException();
 
-        foo = (Foo)Decorating.object(Foo.class, new MethodMissingImpl(), new InvocationDecoratorSupport() {
+        foo = decoratable(Foo.class).with(new MethodMissingImpl(), new InvocationDecoratorSupport() {
             public Exception decorateInvocationException(Object proxy, Method method, Object[] args, Exception cause) {
                 thrown[0] = cause;
                 return decoratedException;
-            }
-        });
+            }             
+        }).build();
 
         // execute
         try {
@@ -151,17 +150,17 @@ public class DecoratingTest extends ProxyTestCase {
     }
 
     public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedProxy((Resetter)serializeWithJDK(Decorating.object(
-                new Class[]{Resetter.class}, new NoOperationResetter(), new AssertingDecorator(), getFactory())));
+        useSerializedProxy((Resetter) serializeWithJDK(decoratable(
+                new Class[]{Resetter.class}).with(new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
     }
 
     public void testSerializeWithXStream() {
-        useSerializedProxy((Resetter)serializeWithXStream(Decorating.object(
-                new Class[]{Resetter.class}, new NoOperationResetter(), new AssertingDecorator(), getFactory())));
+        useSerializedProxy((Resetter) serializeWithXStream(decoratable(
+                new Class[]{Resetter.class}).with(new NoOperationResetter(), new AssertingDecorator()).build( getFactory())));
     }
 
     public void testSerializeWithXStreamInPureReflectionMode() {
-        useSerializedProxy((Resetter)serializeWithXStreamAndPureReflection(Decorating.object(
-                new Class[]{Resetter.class}, new NoOperationResetter(), new AssertingDecorator(), getFactory())));
+        useSerializedProxy((Resetter) serializeWithXStreamAndPureReflection(decoratable(
+                new Class[]{Resetter.class}).with( new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
     }
 }

@@ -8,6 +8,7 @@ package proxytoys.examples.overview;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.decorate.Decorating;
 import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
+import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -23,15 +24,15 @@ public class DecorateToyExample {
 
     public static void packageOverviewExample1() {
         List list = Arrays.asList(new String[]{"1", "2", "3"});
-        Iterator intIter = (Iterator)Decorating.object(
-                Iterator.class, list.iterator(), new InvocationDecoratorSupport() {
+        Iterator intIter = decoratable(
+                Iterator.class).with(list.iterator(), new InvocationDecoratorSupport() {
                     public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
                         if (method.getName().equals("next"))
                             return Integer.valueOf((String)result);
                         else
                             return result;
                     }
-                });
+                }).build();
         while (intIter.hasNext()) {
             Integer i = (Integer)intIter.next();
             System.out.println(i);
@@ -40,7 +41,7 @@ public class DecorateToyExample {
 
     public static void packageOverviewExample2() {
         File file = new File(".");
-        File decoratedFile = (File)Decorating.object(new Class[]{File.class}, file, new InvocationDecoratorSupport() {
+        File decoratedFile = (File)decoratable(new Class[]{File.class}).with( file, new InvocationDecoratorSupport() {
             public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
                 System.out.print("Called: " + method.getName());
                 return super.beforeMethodStarts(proxy, method, args);
@@ -50,7 +51,7 @@ public class DecorateToyExample {
                 System.out.println(" ==> " + result);
                 return result;
             }
-        }, new CglibProxyFactory());
+        }).build(new CglibProxyFactory());
         decoratedFile.exists();
         decoratedFile.isFile();
         decoratedFile.isDirectory();
