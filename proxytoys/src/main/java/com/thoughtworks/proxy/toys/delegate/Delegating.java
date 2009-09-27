@@ -77,6 +77,7 @@ public class Delegating {
      * @return a new proxy of the specified type.
      * @since 0.2.1
      */
+    
     public static Object object(final Class type, final Object delegate, final ProxyFactory factory, final DelegationMode delegationMode) {
         return factory.createProxy(new Class[]{type}, new DelegatingInvoker(
                 factory, new SimpleReference(delegate), delegationMode));

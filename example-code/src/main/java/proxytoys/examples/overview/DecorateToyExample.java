@@ -23,7 +23,7 @@ import java.util.List;
 public class DecorateToyExample {
 
     public static void packageOverviewExample1() {
-        List list = Arrays.asList(new String[]{"1", "2", "3"});
+        List list = Arrays.asList("1", "2", "3");
         Iterator intIter = decoratable(
                 Iterator.class).with(list.iterator(), new InvocationDecoratorSupport() {
                     public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {

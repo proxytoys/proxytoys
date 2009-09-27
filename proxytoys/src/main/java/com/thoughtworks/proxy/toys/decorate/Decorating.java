@@ -28,7 +28,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * @since 0.1
  */
 public class Decorating<T> {
-    
+
     private Object delegate;
     private Class<T>[] types;
     private InvocationDecorator decorator;
@@ -48,7 +48,7 @@ public class Decorating<T> {
     }
 
     public T build() {
-        return (T) new StandardProxyFactory().createProxy(types, new DecoratingInvoker(delegate, decorator));
+        return build(new StandardProxyFactory());
     }
 
     public T build(final ProxyFactory proxyFactory) {

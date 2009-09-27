@@ -6,14 +6,10 @@
 package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.echo.Echoing;
+import static com.thoughtworks.proxy.toys.echo.Echoing.echo;
 
 import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 
 /**
@@ -22,19 +18,19 @@ import java.util.NoSuchElementException;
 public class EchoToyExample {
 
     public static void packageOverviewExample1() {
-        Map map = (Map)Echoing.object(Map.class, new HashMap(), new CglibProxyFactory());
+        Map map = (Map) echo(Map.class).withDelegateObject(new HashMap()).build(new CglibProxyFactory());
         map.put("Date", new Date());
         map.put("File", new File("."));
         try {
             Iterator iter = map.keySet().iterator();
             while (true) {
-                String key = (String)iter.next();
+                String key = (String) iter.next();
                 Object value = map.get(key);
                 if (value instanceof Date) {
-                    Date date = (Date)value;
+                    Date date = (Date) value;
                     date.setTime(4711);
                 } else if (value instanceof File) {
-                    File file = (File)value;
+                    File file = (File) value;
                     if (file.exists()) {
                         file.renameTo(new File(".."));
                     }

@@ -8,7 +8,7 @@
 package com.thoughtworks.proxy.toys.echo;
 
 import com.thoughtworks.proxy.ProxyTestCase;
-
+import static com.thoughtworks.proxy.toys.echo.Echoing.echo;
 import org.jmock.Mock;
 
 import java.io.PrintWriter;
@@ -32,13 +32,13 @@ public class EchoingTest extends ProxyTestCase {
 
     public void setUp() throws Exception {
         simpleMock = mock(Simple.class);
-        simpleImpl = (Simple)simpleMock.proxy();
+        simpleImpl = (Simple) simpleMock.proxy();
     }
 
     public void testShouldEchoMethodNameAndArgs() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple foo = (Simple)Echoing.object(Simple.class, null, new PrintWriter(out), getFactory());
+        Simple foo = (Simple) echo(Simple.class).withPrintWriter(new PrintWriter(out)).build(getFactory());
 
         // execute
         foo.doSomething();
@@ -50,13 +50,13 @@ public class EchoingTest extends ProxyTestCase {
     public void testShouldDelegateCalls() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple simple = (Simple)Echoing.object(Simple.class, simpleImpl, new PrintWriter(out), getFactory());
+        Simple foo = (Simple) echo(Simple.class).withPrintWriter(new PrintWriter(out)).withDelegateObject(simpleImpl).build(getFactory());
 
         // expect
         simpleMock.expects(once()).method("doSomething");
 
         // execute
-        simple.doSomething();
+        foo.doSomething();
 
         // verify
         simpleMock.verify();
@@ -76,7 +76,7 @@ public class EchoingTest extends ProxyTestCase {
         Mock outerMock = new Mock(Outer.class);
         StringWriter out = new StringWriter();
 
-        Outer outer = (Outer)Echoing.object(Outer.class, outerMock.proxy(), new PrintWriter(out), getFactory());
+        Outer outer = (Outer) echo(Outer.class).withDelegateObject(outerMock.proxy()).withPrintWriter(new PrintWriter(out)).build(getFactory());
 
         // expect
         outerMock.expects(once()).method(getInner).withNoArguments().will(returnValue(innerMock.proxy()));
@@ -95,7 +95,7 @@ public class EchoingTest extends ProxyTestCase {
     public void testShouldRecursivelyReturnEchoProxiesEvenForMissingImplementations() throws Exception {
         // setup
         StringWriter out = new StringWriter();
-        Outer outer = (Outer)Echoing.object(Outer.class, null, new PrintWriter(out), getFactory());
+        Outer outer = (Outer) echo(Outer.class).withPrintWriter(new PrintWriter(out)).build(getFactory());
 
         // execute
         outer.getInner().getName();

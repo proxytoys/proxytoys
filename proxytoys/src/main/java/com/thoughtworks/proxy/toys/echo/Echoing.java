@@ -9,7 +9,6 @@ package com.thoughtworks.proxy.toys.echo;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.toys.decorate.Decorating;
 import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
 
 import java.io.PrintWriter;
@@ -26,88 +25,35 @@ import java.io.PrintWriter;
  * @see com.thoughtworks.proxy.toys.echo
  * @since 0.1
  */
-public class Echoing {
+public class Echoing<T> {
 
-    /**
-     * Create a echoing proxy for a type and use system error channel to report.
-     *
-     * @param type the proxied type
-     * @return the generated proxy
-     * @since 0.1
-     */
-    public static Object object(final Class type) {
-        return object(type, new PrintWriter(System.err));
+    private Class<T> type;
+    private Object delegate;
+    private PrintWriter printWriter = new PrintWriter(System.err);
+
+    public Echoing withPrintWriter(final PrintWriter printWriter) {
+        this.printWriter = printWriter;
+        return this;
     }
 
-    /**
-     * Create a echoing proxy for a type and report to a given {@link PrintWriter}.
-     *
-     * @param type the proxied type
-     * @param out  the PrintWriter receiving the output
-     * @return the generated proxy
-     * @since 0.1
-     */
-    public static Object object(final Class type, final PrintWriter out) {
-        return object(type, null, out);
+    public Echoing withDelegateObject(final Object delegate) {
+        this.delegate = delegate;
+        return this;
     }
 
-    /**
-     * Create a echoing proxy for a type that delegates to an object and use system error channel to report.
-     *
-     * @param type the proxied type
-     * @param impl the delegated object
-     * @return the generated proxy
-     * @since 0.1
-     */
-    public static Object object(final Class type, final Object impl) {
-        return object(type, impl, new PrintWriter(System.err));
+    public Object build() {
+        return build(new StandardProxyFactory());
     }
 
-    /**
-     * Create a echoing proxy for a type that delegates to an object and use a special {@link ProxyFactory}
-     * implementation as well as the system error channel to report.
-     *
-     * @param type    the proxied type
-     * @param impl    the delegated object
-     * @param factory the ProxyFactory to use
-     * @return the generated proxy
-     * @since 0.2
-     */
-    public static Object object(final Class type, final Object impl, final ProxyFactory factory) {
-        return object(type, impl, new PrintWriter(System.err), factory);
+    public Object build(final ProxyFactory proxyFactory) {
+        return decoratable(new Class[]{type}).with(delegate, new EchoDecorator(printWriter, proxyFactory)).build(proxyFactory);
     }
 
-    /**
-     * Create a echoing proxy for a type that delegates to an object and report to a given {@link PrintWriter}.
-     *
-     * @param type the proxied type
-     * @param impl the delegated object
-     * @param out  the PrintWriter receiving the output
-     * @return the generated proxy
-     * @since 0.1
-     */
-    public static Object object(final Class type, final Object impl, final PrintWriter out) {
-        return object(type, impl, out, new StandardProxyFactory());
+    public static <T> Echoing<T> echo(final Class<T> type) {
+        return new Echoing<T>(type);
     }
 
-    /**
-     * Create a echoing proxy for a type that delegates to an object and use a special {@link ProxyFactory}
-     * implementation as well as reports to a given {@link PrintWriter}.
-     *
-     * @param type    the proxied type
-     * @param impl    the delegated object
-     * @param out     the PrintWriter receiving the output
-     * @param factory the ProxyFactory to use
-     * @return the generated proxy
-     * @since 0.1
-     */
-    public static Object object(final Class type, final Object impl, final PrintWriter out, final ProxyFactory factory) {
-        return decoratable(new Class[]{type}).with(impl, new EchoDecorator(out, factory)).build(factory);
-    }
-
-    /**
-     * It's a factory, stupid
-     */
-    private Echoing() {
+    private Echoing(final Class<T> type) {
+        this.type = type;
     }
 }
