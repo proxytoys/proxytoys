@@ -10,6 +10,7 @@ package com.thoughtworks.proxy.toys.nullobject;
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.ReflectionUtils;
+import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -20,7 +21,7 @@ import java.lang.reflect.Method;
 
 /**
  * A {@link Invoker} implementation that returns always new Null objects.
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @since 0.1
  */
@@ -41,8 +42,8 @@ public class NullInvoker implements Invoker {
 
     /**
      * Construct a NullInvoker.
-     * 
-     * @param type the type of the proxy
+     *
+     * @param type         the type of the proxy
      * @param proxyFactory the {@link ProxyFactory} to use
      */
     public NullInvoker(final Class type, final ProxyFactory proxyFactory) {
@@ -59,15 +60,15 @@ public class NullInvoker implements Invoker {
         } else if (ReflectionUtils.equals.equals(method)) {
             Object other = args[0];
             result = (Null.isNullObject(other, proxyFactory) && type.equals(getType(other)))
-                                                                                            ? Boolean.TRUE
-                                                                                            : Boolean.FALSE;
+                    ? Boolean.TRUE
+                    : Boolean.FALSE;
         } else if (ReflectionUtils.hashCode.equals(method)) {
             result = new Integer(type.hashCode());
         }
 
         // Just another null object
         else {
-            result = Null.object(method.getReturnType(), proxyFactory);
+            result = nullable(method.getReturnType()).build(proxyFactory);
         }
         return result;
     }
@@ -75,7 +76,7 @@ public class NullInvoker implements Invoker {
     private Class getType(Object object) {
         final Class result;
         if (proxyFactory.isProxyClass(object.getClass())) {
-            NullInvoker nullInvoker = (NullInvoker)proxyFactory.getInvoker(object);
+            NullInvoker nullInvoker = (NullInvoker) proxyFactory.getInvoker(object);
             result = nullInvoker.type;
         } else {
             result = object.getClass();

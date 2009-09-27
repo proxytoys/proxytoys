@@ -31,20 +31,46 @@ public class Multicasting<T> {
         this.delegates = delegates;
 
     }
+    /**
+     * Creates a factory for proxy instances that allow delegation.
+     *
+     * @param targets      targets the target objects
+     * @return a factory that will proxy instances of the supplied type.
+     * @since 0.2
+     */
 
-    public static <T> Multicasting<T> multicastable(Object... delegates) {
-        return new Multicasting<T>(delegates);
+    public static <T> Multicasting<T> multicastable(Object... targets) {
+        return new Multicasting<T>(targets);
     }
 
+    /**
+     *
+     * @param types the types that are implemented by the proxy
+     * @return  the factory
+     */
     public Multicasting<T> withTypes(Class... types) {
         this.types = types;
         return this;
     }
 
+    /**
+     *
+     * @return the proxy using StandardProxyFactory
+     */
     public T build() {
         return build(new StandardProxyFactory());
     }
 
+     /**
+     * Generate a proxy for the specified types calling the methods on the given targets.
+     * <p>
+     * Note, that the method will only return a proxy if necessary. If there is only one target instance and this
+     * instance implements all of the specified types, then there is no point in creating a proxy.
+     * </p>
+     *
+     * @return the new proxy implementing {@link Multicast} or the only target
+     * @since 0.1
+     */
     public T build(ProxyFactory factory) {
         if (types == null) {
             return buildWithNoTypesInput(factory);

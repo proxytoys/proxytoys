@@ -30,7 +30,7 @@ import java.util.TreeSet;
  * @since 0.1
  * @see com.thoughtworks.proxy.toys.nullobject
  */
-public class Null {
+public class Null<T> {
 
     /** The Null {@link Object}. */
     public static final Object NULL_OBJECT = new Object();
@@ -88,6 +88,27 @@ public class Null {
             return false;
         }
     };
+    private Class<T> type;
+
+    public Null(Class<T> type) {
+        this.type=type;
+    }
+
+
+    /**
+     *  Creates a factory for proxy instances that is nullable.
+     * @param type the type implemented by the proxy
+     * @param <T>
+     * @return
+     */
+    public static <T> Null<T> nullable(Class<T> type){
+        return new Null<T>(type);
+    }
+
+
+    public T build(){
+        return build(new StandardProxyFactory());
+    }
 
     /**
      * Generate a Null Object proxy for a specific type.
@@ -95,14 +116,15 @@ public class Null {
      * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
      * type cannot be proxied.
      * </p>
-     * 
-     * @param type the type implemented by the proxy
+     *
      * @param proxyFactory the {@link ProxyFactory} in use
      * @return object, proxy or <code>null</code>
      * @see com.thoughtworks.proxy.toys.nullobject
      * @since 0.1
      */
-    public static Object object(final Class type, final ProxyFactory proxyFactory) {
+
+
+    public T build(ProxyFactory proxyFactory) {
         final Object result;
 
         // Primitives
@@ -153,24 +175,10 @@ public class Null {
         } else {
             result = null;
         }
-        return result;
+        return (T)result;
+
     }
 
-    /**
-     * Generate a Null Object proxy for a specific type using the {@link StandardProxyFactory}.
-     * <p>
-     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
-     * type cannot be proxied.
-     * </p>
-     * 
-     * @param type the type implemented by the proxy
-     * @return object, proxy or <code>null</code>
-     * @see com.thoughtworks.proxy.toys.nullobject
-     * @since 0.1
-     */
-    public static Object object(final Class type) {
-        return object(type, new StandardProxyFactory());
-    }
 
     /**
      * Determine whether an object was created by {@link Null#object(Class)}.
@@ -208,7 +216,4 @@ public class Null {
         return proxyFactory.isProxyClass(object.getClass()) && proxyFactory.getInvoker(object) instanceof NullInvoker;
     }
 
-    /** It's a factory, stupid */
-    private Null() {
-    }
 }

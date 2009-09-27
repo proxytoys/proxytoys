@@ -2,6 +2,7 @@ package com.thoughtworks.proxy;
 
 import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.toys.nullobject.Null;
+import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 
 import java.io.IOException;
 
@@ -17,7 +18,7 @@ public class ProxyFactoryTest extends ProxyTestCase {
     }
 
     private void useSerializedFactory(ProxyFactory factory) {
-        Resetter resetter = (Resetter)Null.object(Resetter.class);
+        Resetter resetter = (Resetter)nullable(Resetter.class).build();
         assertFalse(resetter.reset(this));
     }
 

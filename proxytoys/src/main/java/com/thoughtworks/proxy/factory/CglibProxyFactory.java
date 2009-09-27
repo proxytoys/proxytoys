@@ -10,6 +10,7 @@ package com.thoughtworks.proxy.factory;
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.toys.nullobject.Null;
+import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 
 import net.sf.cglib.core.CodeGenerationException;
 import net.sf.cglib.proxy.Enhancer;
@@ -134,7 +135,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
             if (!creating.contains(params[i])) {
                 creating.add(params[i]);
                 try {
-                    args[i] = Null.object(params[i], this);
+                    args[i] = nullable(params[i]).build(this);
                 } finally {
                     creating.remove(params[i]);
                 }

@@ -8,6 +8,7 @@ package proxytoys.examples.overview;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.nullobject.Null;
+import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -21,7 +22,7 @@ public class NullToyExample {
     public static void packageOverviewExample1() {
         try {
             ProxyFactory factory = new CglibProxyFactory();
-            File file = (File)Null.object(File.class, factory);
+            File file = (File) nullable(File.class).build(factory);
             System.out.println("Length is: " + file.length());
             System.out.println("Exists: " + file.exists());
             System.out.println("Array is empty: " + file.list().length);
