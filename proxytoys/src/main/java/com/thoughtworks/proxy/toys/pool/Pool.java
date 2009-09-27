@@ -55,7 +55,7 @@ import java.util.Map;
  * @since 0.2
  * @see com.thoughtworks.proxy.toys.pool
  */
-public class Pool implements Serializable {
+public class Pool<T> implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Method returnInstanceToPool;
 
@@ -97,9 +97,31 @@ public class Pool implements Serializable {
      * @param resetter the resetter of the pooled elements
      * @since 0.2
      */
-    public Pool(final Class type, final Resetter resetter) {
-        this(type, resetter, new StandardProxyFactory());
+//    private Pool(final Class type, final Resetter resetter, ProxyFactory factory) {
+//        this.types = new Class[]{type, Poolable.class};
+//
+//        this.resetter=resetter;
+//        this.busyInstances = new HashMap();
+//        this.availableInstances = new ArrayList();
+//        this.factory=factory;
+//    }
+
+    //replace above
+    public static <T> Pool<T> poolable(Class type,Resetter resetter,ProxyFactory factory){
+        return new Pool<T>(type,resetter,factory);
     }
+
+    public static <T> Pool<T> poolable(Class type,Resetter resetter){
+        return new Pool<T>(type,resetter,new StandardProxyFactory());
+    }
+
+    public Pool<T> withSerializationMode(int serializationMode)
+    {
+        this.serializationMode=serializationMode;
+        return this;
+    }
+
+
 
     /**
      * Construct a populated Pool with a specific proxy factory.
@@ -109,7 +131,7 @@ public class Pool implements Serializable {
      * @param proxyFactory the proxy factory to use
      * @since 0.2
      */
-    public Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory) {
+    private Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory) {
         this();
         this.types = new Class[]{type, Poolable.class};
         this.factory = proxyFactory;
@@ -136,7 +158,7 @@ public class Pool implements Serializable {
      * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
      * @since 0.2
      */
-    public Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory, final int serializationMode) {
+    private Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory, final int serializationMode) {
         this();
         this.types = new Class[]{type, Poolable.class};
         this.factory = proxyFactory;
@@ -146,6 +168,7 @@ public class Pool implements Serializable {
             throw new IllegalArgumentException("Invalid serialization mode");
         }
     }
+
 
     private Pool() {
         busyInstances = new HashMap();
@@ -190,6 +213,7 @@ public class Pool implements Serializable {
      * Get an instance from the pool. If no instance is immediately available, the method will check internally for
      * returned objects from the garbage collector. This can be foreced by calling {@link System#gc()} first.
      * 
+     * @param factory
      * @return an available instance from the pool or <em>null</em>.
      * @since 0.2
      */

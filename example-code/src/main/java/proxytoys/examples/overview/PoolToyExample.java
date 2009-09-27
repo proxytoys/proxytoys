@@ -8,6 +8,7 @@ package proxytoys.examples.overview;
 import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.toys.pool.Pool;
 import com.thoughtworks.proxy.toys.pool.Poolable;
+import static com.thoughtworks.proxy.toys.pool.Pool.poolable;
 
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
@@ -19,7 +20,7 @@ import java.util.zip.Checksum;
 public class PoolToyExample {
 
     public static void packageOverviewExample1() {
-        Pool pool = new Pool(Checksum.class, new Resetter() {
+        Pool pool = poolable(Checksum.class, new Resetter() {
             public boolean reset(final Object object) {
                 ((Checksum)object).reset();
                 return true;
