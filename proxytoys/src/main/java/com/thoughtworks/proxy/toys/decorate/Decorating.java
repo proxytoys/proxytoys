@@ -37,11 +37,7 @@ public class Decorating<T> {
         this.types = types;
     }
 
-    public static <T> Decorating<T> decoratable(final Class<T> type) {
-        return new Decorating<T>(type);
-    }
-
-    public static <T> Decorating<T> decoratable(final Class<T>[] types) {
+    public static <T> Decorating<T> decoratable(final Class<T>... types) {
         return new Decorating<T>(types);
     }
 
