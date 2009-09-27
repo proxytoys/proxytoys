@@ -7,7 +7,7 @@ package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.toys.failover.Failover;
+import static com.thoughtworks.proxy.toys.failover.Failover.failoverable;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInput;
@@ -28,7 +28,7 @@ public class FailoverToyExample {
     public static void packageOverviewExample1() {
         Format[] formats = new Format[]{
                 NumberFormat.getInstance(), DateFormat.getDateInstance(), new MessageFormat("{1}, {0}"),};
-        Format format = (Format)Failover.object(Format.class, new CglibProxyFactory(), formats, RuntimeException.class);
+        Format format = failoverable(Format.class, null, null).build( new CglibProxyFactory());
         System.out.println("Format a date: " + format.format(new Date()));
         System.out.println("Format a message: " + format.format(new String[]{"John", "Doe"}));
         System.out.println("Format a number: " + format.format(new Integer(42)));
@@ -39,8 +39,8 @@ public class FailoverToyExample {
                 new DataInputStream(new ByteArrayInputStream(new byte[]{0, 'A', 0, 'n', 0, ' '})),
                 new DataInputStream(new ByteArrayInputStream(new byte[]{
                         0, 'e', 0, 'x', 0, 'a', 0, 'm', 0, 'p', 0, 'l', 0, 'e'})),};
-        DataInput dataInput = (DataInput)Failover.object(
-                DataInput.class, new StandardProxyFactory(), dataInputs, IOException.class);
+        DataInput dataInput = failoverable(
+                DataInput.class, null, null).build(new StandardProxyFactory());
         StringBuffer buffer = new StringBuffer();
         try {
             while (buffer.append(dataInput.readChar()) != null)

@@ -139,7 +139,7 @@ public class MulticastingInvoker implements Invoker {
         } else if (method.getReturnType().equals(boolean.class)) {
             return andBooleans(invocationResults.toArray());
         } else {
-            return Multicasting.object(proxyFactory, invocationResults.toArray());
+            return Multicasting.multicastable(invocationResults.toArray()).build(proxyFactory);
         }
     }
 

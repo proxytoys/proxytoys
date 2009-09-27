@@ -27,7 +27,7 @@ public class DelegateToyExample {
                 return Boolean.TRUE;
             }
         };
-        ObjectReference ref = (ObjectReference) delegatable(ObjectReference.class, threadLocal).build();
+        ObjectReference ref = delegatable(ObjectReference.class, threadLocal).build();
         System.out.println("This ObjectReference has an initial value of <" + ref.get() + ">");
     }
 
@@ -35,7 +35,7 @@ public class DelegateToyExample {
         RandomAccessFile raf = new RandomAccessFile(f, "rw");
         raf.writeBytes("Content");
         raf.seek(0);
-        return (DataInput) delegatable(DataInput.class, raf).withDelegationMode(DIRECT).build();
+        return  delegatable(DataInput.class, raf).withDelegationMode(DIRECT).build();
     }
 
     public static void packageOverviewExample2() {

@@ -41,7 +41,7 @@ public class DecorateToyExample {
 
     public static void packageOverviewExample2() {
         File file = new File(".");
-        File decoratedFile = (File)decoratable(new Class[]{File.class}).with( file, new InvocationDecoratorSupport() {
+        File decoratedFile = decoratable(File.class).with( file, new InvocationDecoratorSupport() {
             public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
                 System.out.print("Called: " + method.getName());
                 return super.beforeMethodStarts(proxy, method, args);

@@ -8,6 +8,7 @@ package proxytoys.examples.overview;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.multicast.Multicast;
 import com.thoughtworks.proxy.toys.multicast.Multicasting;
+import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -29,7 +30,7 @@ public class MulticastToyExample {
     public static void packageOverviewExample1() {
         ArrayList arrayList = new ArrayList();
         LinkedList linkedList = new LinkedList();
-        List listCombined = (List)Multicasting.object(new Object[]{arrayList, linkedList});
+        List listCombined = (List)multicastable(arrayList, linkedList).build();
         if (listCombined.add("Hello")) {
             System.out.println("List 1: " + arrayList.toString());
             System.out.println("List 2: " + linkedList.toString());
@@ -43,7 +44,7 @@ public class MulticastToyExample {
             list1.add(new Integer(100));
             List list2 = new LinkedList();
             list2.add(new Integer(3));
-            List listCombined = (List)Multicasting.object(new List[]{list1, list2});
+            List listCombined = (List)multicastable(list1, list2).build();
             Multicast values = (Multicast)listCombined.get(0);
             System.out.println("Sum of the first integers: "
                     + values.multicastTargets(Integer.class, "intValue", null).toString());
@@ -55,8 +56,8 @@ public class MulticastToyExample {
     public static void packageOverviewExample3() {
         File workingDir = new File(".");
         List files = Arrays.asList(workingDir.list());
-        Object multicast = Multicasting.object(
-                new Class[]{File.class, List.class}, new CglibProxyFactory(), new Object[]{workingDir, files});
+        Object multicast = multicastable(
+                 workingDir, files).withTypes(File.class, List.class).build(new CglibProxyFactory());
         System.out.println("Current working directory: " + ((File)multicast).getAbsolutePath());
         System.out.println("Files in working directory: " + ((List)multicast).size());
     }
@@ -64,7 +65,7 @@ public class MulticastToyExample {
     public static void packageOverviewExample4() {
         try {
             Method method = String.class.getMethod("length");
-            Multicast multicast = (Multicast)Multicasting.object(new Object[]{"ProxyToys", "is", "great"});
+            Multicast multicast = (Multicast)multicastable("ProxyToys", "is", "great").build();
             System.out.println("Total number of characters: " + multicast.multicastTargets(method, null));
             String[] strings = (String[])multicast.getTargetsInArray(String.class);
             for (int i = 0; i < strings.length; i++) {
@@ -80,7 +81,7 @@ public class MulticastToyExample {
         Set set = new HashSet();
         list.add("ProxyToys");
         set.add(null);
-        Collection collection = (Collection)Multicasting.object(new Object[]{list, set});
+        Collection collection = (Collection)multicastable(list, set).build();
         Iterator iter = collection.iterator();
         String value = (String)iter.next();
         System.out.println("Element gained from the iterator: " + value);

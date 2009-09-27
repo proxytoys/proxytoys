@@ -30,15 +30,15 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 public class Decorating<T> {
 
     private Object delegate;
-    private Class<T>[] types;
+    private Class<T> type;
     private InvocationDecorator decorator;
 
-    private Decorating(final Class<T>... types) {
-        this.types = types;
+    private Decorating(final Class<T> type) {
+        this.type = type;
     }
 
-    public static <T> Decorating<T> decoratable(final Class<T>... types) {
-        return new Decorating<T>(types);
+    public static <T> Decorating<T> decoratable(final Class<T> type) {
+        return new Decorating<T>(type);
     }
 
     public Decorating<T> with(Object delegate, InvocationDecorator decorator) {
@@ -52,6 +52,6 @@ public class Decorating<T> {
     }
 
     public T build(final ProxyFactory proxyFactory) {
-        return (T) proxyFactory.createProxy(types, new DecoratingInvoker(delegate, decorator));
+        return (T) proxyFactory.createProxy(new Class[]{type}, new DecoratingInvoker(delegate, decorator));
     }
 }

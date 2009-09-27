@@ -53,9 +53,9 @@ public class EchoDecorator extends InvocationDecoratorSupport {
         final Class returnType = method.getReturnType();
         printMethodResult(result);
         if (returnType != Object.class && factory.canProxy(returnType)) {
-            result = decoratable(new Class[]{returnType}).with(result, this).build(factory);
+            result = decoratable(returnType).with(result, this).build(factory);
         } else if (result != null && returnType == Object.class && factory.canProxy(result.getClass())) {
-            result = decoratable(new Class[]{result.getClass()}).with(result, this).build(factory);
+            result = decoratable(result.getClass()).with(result, this).build(factory);
         }
         return result;
     }

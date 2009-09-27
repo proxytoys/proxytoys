@@ -50,6 +50,7 @@ public class DelegatingTest extends ProxyTestCase {
     }
 
     private Foo createProxy(Object impl) {
+        
         return delegatable(Foo.class, impl).build(getFactory());
     }
 

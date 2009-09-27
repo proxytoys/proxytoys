@@ -13,46 +13,51 @@ import com.thoughtworks.proxy.ProxyFactory;
 /**
  * Factory for proxy instances handling failover.. Delegates to one object as long as there is no exception, fails over
  * to the next when an exception occurs.
- * 
+ *
  * @author Aslak Helles&oslash;y
- * @since 0.1
  * @see com.thoughtworks.proxy.toys.failover
+ * @since 0.1
  */
-public class Failover {
+public class Failover<T> {
+    private Class<T> type;
+    private Object[] delegates;
+    private Class exceptionClass;
 
-    /**
-     * Create a proxy of a specific type with failover capability using the given objects. The provided exception type
-     * determins the type of exceptions that trigger the failover.
-     * 
-     * @param type the type of the proxy
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @param delegates the delegates used for failover
-     * @param exceptionClass the type of the exceptions triggering failover
-     * @return the generated proxy
-     * @since 0.1
-     */
-    public static Object object(
-            final Class type, final ProxyFactory proxyFactory, final Object[] delegates, final Class exceptionClass) {
-        return object(new Class[]{type}, proxyFactory, delegates, exceptionClass);
+    public Failover(Class<T> type) {
+        this.type = type;
+    }
+
+    public Failover(Class<T> type, Object[] delegates, Class exceptionClass) {
+        this.type = type;
+        this.delegates = delegates;
+        this.exceptionClass = exceptionClass;
     }
 
     /**
-     * Create a proxy of a specific types with failover capability using the given objects. The provided exception type
-     * determins the type of exceptions that trigger the failover.
-     * 
-     * @param types the implemented types of the proxy
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @param delegates the delegates used for failover
+     * Creates a factory for proxy instances that allow delegation.
+     *
+     * @param type           the types of the proxy
+     * @param delegates      the delegates used for failover
      * @param exceptionClass the type of the exceptions triggering failover
-     * @return the generated proxy
-     * @since 0.1
+     * @return a factory that will proxy instances of the supplied type.
+     * @since 0.2
      */
-    public static Object object(
-            final Class[] types, final ProxyFactory proxyFactory, final Object[] delegates, final Class exceptionClass) {
-        return new FailoverInvoker(types, proxyFactory, delegates, exceptionClass).proxy();
+    public static <T> Failover<T> failoverable(Class<T> type, final Object[] delegates, final Class exceptionClass) {
+
+        return new Failover<T>(type, delegates, exceptionClass);
     }
 
-    /** It's a factory, stupid */
-    private Failover() {
+
+    /**
+     * * Create a proxy of a specific types with failover capability using the given objects.  The provided exception type
+     * determins the type of exceptions that trigger the failover.
+     *
+     * @param proxyFactory the {@link ProxyFactory} to use
+     * @return the created proxy
+     * @since 0.2
+     */
+    public T build(final ProxyFactory proxyFactory) {
+        return (T) new FailoverInvoker(new Class[]{type}, proxyFactory, delegates, exceptionClass).proxy();
     }
+
 }

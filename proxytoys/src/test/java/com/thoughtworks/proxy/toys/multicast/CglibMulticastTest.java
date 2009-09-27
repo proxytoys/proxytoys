@@ -3,6 +3,7 @@ package com.thoughtworks.proxy.toys.multicast;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
 
 
 /**
@@ -59,8 +60,7 @@ public class CglibMulticastTest extends ProxyTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        primitives = (Primitives)Multicasting.object(getFactory(), new Object[]{
-                new Primitives(true), new Primitives(true), new Primitives(true)});
+        primitives = (Primitives) multicastable(new Primitives(true), new Primitives(true), new Primitives(true)).build(getFactory());
     }
 
     public void testShouldAddBytes() {
@@ -93,8 +93,8 @@ public class CglibMulticastTest extends ProxyTestCase {
 
     public void testShouldAndBooleans() {
         assertTrue(primitives.getBoolean());
-        primitives = (Primitives)Multicasting.object(getFactory(), new Object[]{
-                new Primitives(true), new Primitives(true), new Primitives(false)});
+        primitives = (Primitives) multicastable(
+                new Primitives(true), new Primitives(true), new Primitives(false)).build(getFactory());
         assertFalse(primitives.getBoolean());
     }
 

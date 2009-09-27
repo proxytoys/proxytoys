@@ -15,44 +15,58 @@ import com.thoughtworks.proxy.kit.SimpleReference;
 
 /**
  * Proxy factory for dispatching proxy instances.
- * 
+ *
  * @author J&ouml;rg Schaible
- * @since 0.2
  * @see com.thoughtworks.proxy.toys.dispatch
+ * @since 0.2
  */
 public class Dispatching {
+    private Class[] types;
+    private Object[] delegates;
 
-    /**
-     * Create a dispatching proxy of given types for the given objects.
-     * 
-     * @param types the types of the proxy
-     * @param delegates the objects, that will receive the calls
-     * @return the created proxy
-     * @since 0.2
-     */
-    public static Object object(final Class[] types, final Object[] delegates) {
-        return object(types, delegates, new StandardProxyFactory());
+
+    private Dispatching(Class[] types, Object[] delegates) {
+        this.types = types;
+        this.delegates = delegates;
     }
 
     /**
-     * Create a dispatching proxy of given types for the given objects using a special ProxyFactory implementation.
-     * 
-     * @param types the types of the proxy
+     * Creates a factory for proxy instances that allow delegation.
+     *
+     * @param types     the types of the proxy
      * @param delegates the objects, that will receive the calls
+     * @return a factory that will proxy instances of the supplied type.
+     * @since 0.2
+     */
+
+    public static  Dispatching dispatchable(Class[] types, Object[] delegates) {
+        return new Dispatching(types, delegates);
+
+    }
+
+    /**
+     * * Create a dispatching proxy of given types for the given objects with {@link StandardProxyFactory}
+     *
+     * @return the created proxy
+     * @since 0.2
+     */
+    public Object build() {
+        return build(new StandardProxyFactory());
+    }
+
+    /**
+     * * Create a dispatching proxy of given types for the given objects.
+     *
      * @param factory the {@link ProxyFactory} to use
      * @return the created proxy
      * @since 0.2
      */
-    public static Object object(final Class[] types, final Object[] delegates, final ProxyFactory factory) {
+    public Object build(ProxyFactory factory) {
+
         final ObjectReference[] references = new ObjectReference[delegates.length];
         for (int i = 0; i < references.length; i++) {
             references[i] = new SimpleReference(delegates[i]);
         }
         return factory.createProxy(types, new DispatchingInvoker(factory, types, references));
     }
-
-    /** It's a factory, stupid */
-    private Dispatching() {
-    }
-
 }
