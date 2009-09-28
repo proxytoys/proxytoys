@@ -95,18 +95,11 @@ public class Pool<T> implements Serializable {
      * 
      * @param type the type of the instances
      * @param resetter the resetter of the pooled elements
+     * @param factory the factory to be used
+     * @return return the pool with parameters specified
      * @since 0.2
      */
-//    private Pool(final Class type, final Resetter resetter, ProxyFactory factory) {
-//        this.types = new Class[]{type, Poolable.class};
-//
-//        this.resetter=resetter;
-//        this.busyInstances = new HashMap();
-//        this.availableInstances = new ArrayList();
-//        this.factory=factory;
-//    }
 
-    //replace above
     public static <T> Pool<T> poolable(Class type,Resetter resetter,ProxyFactory factory){
         return new Pool<T>(type,resetter,factory);
     }
@@ -182,7 +175,7 @@ public class Pool<T> implements Serializable {
      * @throws NullPointerException if instance is <code>null</code>
      * @since 0.2
      */
-    public synchronized void add(final Object instance) {
+    public synchronized void add(final T instance) {
         if (instance == null) {
             throw new NullPointerException();
         }
@@ -197,7 +190,7 @@ public class Pool<T> implements Serializable {
      * @throws NullPointerException if instance is <code>null</code>
      * @since 0.2
      */
-    public synchronized void add(final Object instances[]) {
+    public synchronized void add(final T instances[]) {
         if (instances != null) {
             for (int i = 0; i < instances.length; ++i) {
                 if (instances[i] == null) {
@@ -217,7 +210,7 @@ public class Pool<T> implements Serializable {
      * @return an available instance from the pool or <em>null</em>.
      * @since 0.2
      */
-    public synchronized Object get() {
+    public synchronized T get() {
         final Object result;
         if (availableInstances.size() > 0 || getAvailable() > 0) {
             final ObjectReference delegate = (ObjectReference)availableInstances.remove(0);
@@ -227,7 +220,7 @@ public class Pool<T> implements Serializable {
         } else {
             result = null;
         }
-        return result;
+        return (T)result;
     }
 
     /**
