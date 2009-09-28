@@ -82,7 +82,7 @@ public class Pool<T> implements Serializable {
     private int serializationMode;
 
     /**
-     * Construct an Pool using the {@link StandardProxyFactory}.
+     * Construct a populated Pool with a specific proxy factory
      *
      * @param type     the type of the instances
      * @param resetter the resetter of the pooled elements
@@ -99,8 +99,27 @@ public class Pool<T> implements Serializable {
         return new Pool<T>(type, resetter, new StandardProxyFactory());
     }
 
+    /**
+     * Specify the serializationMode
+     * <ul>
+     * <l>{@link #SERIALIZATION_STANDARD}: the standard mode, i.e. all elements of the pool are also serialized and a
+     * {@link NotSerializableException} may thrown</li>
+     * <li>{@link #SERIALIZATION_NONE}: no element of the pool is also serialized and it must be populated again after
+     * serialization</li>
+     * <li>{@link #SERIALIZATION_FORCE}: all element of the pool are serialized, if possible. Otherwise the pool is
+     * empty after serialization and must be populated again.</li>
+     * </ul>
+     *
+     * @param serializationMode
+     * @return the pool with a certain serialization mode
+     * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
+     */
+
     public Pool<T> withSerializationMode(int serializationMode) {
         this.serializationMode = serializationMode;
+        if (Math.abs(serializationMode) > 1) {
+            throw new IllegalArgumentException("Invalid serialization mode");
+       }
         return this;
     }
 
@@ -120,36 +139,7 @@ public class Pool<T> implements Serializable {
         this.resetter = resetter;
     }
 
-    /**
-     * Construct a populated Pool with a specific proxy factory and a serialization mode. This mode specify the
-     * behaviour in case of a serialization of the Pool:
-     * <ul>
-     * <li>{@link #SERIALIZATION_STANDARD}: the standard mode, i.e. all elements of the pool are also serialized and a
-     * {@link NotSerializableException} may thrown</li>
-     * <li>{@link #SERIALIZATION_NONE}: no element of the pool is also serialized and it must be populated again after
-     * serialization</li>
-     * <li>{@link #SERIALIZATION_FORCE}: all element of the pool are serialized, if possible. Otherwise the pool is
-     * empty after serialization and must be populated again.</li>
-     * </ul>
-     *
-     * @param type              the type of the instances
-     * @param resetter          the resetter of the pooled elements
-     * @param proxyFactory      the proxy factory to use
-     * @param serializationMode <code>true</code> if serialization is done even if the pooled objects are not
-     *                          serializable. The deserialized Pool will not have any objects in the Pool though.
-     * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
-     * @since 0.2
-     */
-//    private Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory, final int serializationMode) {
-//        this();
-//        this.types = new Class[]{type, Poolable.class};
-//        this.factory = proxyFactory;
-//        this.resetter = resetter;
-//        this.serializationMode = serializationMode;
-//        if (Math.abs(serializationMode) > 1) {
-//            throw new IllegalArgumentException("Invalid serialization mode");
-//        }
-//    }
+   
     private Pool() {
         busyInstances = new HashMap();
         availableInstances = new ArrayList();
