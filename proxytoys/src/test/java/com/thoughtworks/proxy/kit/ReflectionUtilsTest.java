@@ -62,9 +62,9 @@ public class ReflectionUtilsTest extends TestCase {
 
     public void testMostCommonSuperclassForUnmatchingObjects() {
         assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
-                new Integer(1), new OutputStreamWriter(System.out)}));
+                1, new OutputStreamWriter(System.out)}));
         assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
-                new OutputStreamWriter(System.out), new Integer(1)}));
+                new OutputStreamWriter(System.out), 1}));
     }
 
     public void testMostCommonSuperclassForEmptyArray() {
@@ -90,12 +90,10 @@ public class ReflectionUtilsTest extends TestCase {
     }
 
     public void testMatchingMethodIsFound() throws Exception {
-        Method appendChar = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{new Character(
-                'c')});
+        Method appendChar = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{'c'});
         Method appendCharArray = ReflectionUtils.getMatchingMethod(
                 StringBuffer.class, "append", new Object[]{new char[]{'c'}});
-        Method appendShort = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{new Short(
-                (short)0)});
+        Method appendShort = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{(short) 0});
         Method appendObject = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{this});
         Method appendObject2 = ReflectionUtils.getMatchingMethod(
                 StringBuffer.class, "append", new Object[]{new Exception()});

@@ -157,7 +157,7 @@ public class MulticastTest extends ProxyTestCase {
     }
 
     public void testShouldCallDirectMethodForFinalTargets() throws NoSuchMethodException {
-        Method method = StringBuffer.class.getMethod("append", new Class[]{String.class});
+        Method method = StringBuffer.class.getMethod("append", String.class);
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
         Multicast multicast = (Multicast)multicastable(buffer1, buffer2).build(getFactory());
@@ -179,7 +179,7 @@ public class MulticastTest extends ProxyTestCase {
         Multicast multicast = (Multicast)multicastable(
                 new StringBuffer(), new StringBuffer()).build(getFactory());
         try {
-            multicast.multicastTargets(StringBuffer.class, "toString", new Object[]{"JUnit", new Integer(5)});
+            multicast.multicastTargets(StringBuffer.class, "toString", new Object[]{"JUnit", 5});
             fail(NoSuchMethodException.class.getName() + " expected");
         } catch (NoSuchMethodException e) {
             assertEquals(e.getMessage(), StringBuffer.class.getName()
