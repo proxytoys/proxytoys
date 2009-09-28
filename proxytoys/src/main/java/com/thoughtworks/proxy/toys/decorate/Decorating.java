@@ -37,9 +37,24 @@ public class Decorating<T> {
         this.type = type;
     }
 
+    /**
+     * Creates a factory for proxy instances that allow decoration.
+     *
+     * @param type     the type of the proxy when it is finally created.
+     * @param delegate the object the proxy delegates to.
+     * @return a factory that will proxy instances of the supplied type.
+     */
     public static <T> Decorating<T> decoratable(final Class<T> type) {
         return new Decorating<T>(type);
     }
+
+    /**
+     * specify the delegate object and the decorator
+     *
+     * @param delegate  the delegate
+     * @param decorator the decorator
+     * @return the factory that will proxy instances of the supplied type.
+     */
 
     public Decorating<T> with(Object delegate, InvocationDecorator decorator) {
         this.delegate = delegate;
@@ -47,9 +62,21 @@ public class Decorating<T> {
         return this;
     }
 
+    /**
+     * Creating a decorating proxy for an object using a special {@link StandardProxyFactory}
+     *
+     * @return the created proxy implementing the <tt>type</tt>
+     */
     public T build() {
         return build(new StandardProxyFactory());
     }
+
+    /**
+     * Creating a decorating proxy for an object using a special {@link ProxyFactory}
+     *
+     * @param factory the @{link ProxyFactory} to use.
+     * @return the created proxy implementing the <tt>type</tt>
+     */
 
     public T build(final ProxyFactory proxyFactory) {
         return (T) proxyFactory.createProxy(new Class[]{type}, new DecoratingInvoker(delegate, decorator));

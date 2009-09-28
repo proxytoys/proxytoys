@@ -186,7 +186,7 @@ public class ReflectionUtils {
      */
     public static Method getMatchingMethod(final Class type, final String methodName, final Object[] args)
             throws NoSuchMethodException {
-        final Object[] newArgs = args == null ? new Object[0] : (Object[])args;
+        final Object[] newArgs = args == null ? new Object[0] : args;
         final Method[] methods = type.getMethods();
         final Set possibleMethods = new HashSet();
         Method method = null;

@@ -98,8 +98,7 @@ public class Null<T> {
     /**
      *  Creates a factory for proxy instances that is nullable.
      * @param type the type implemented by the proxy
-     * @param <T>
-     * @return
+     * @return  the factory
      */
     public static <T> Null<T> nullable(Class<T> type){
         return new Null<T>(type);
@@ -131,17 +130,17 @@ public class Null<T> {
         if (boolean.class.equals(type) || Boolean.class.equals(type)) {
             result = Boolean.FALSE;
         } else if (byte.class.equals(type) || Byte.class.equals(type)) {
-            result = new Byte((byte)0);
+            result = (byte) 0;
         } else if (char.class.equals(type) || Character.class.equals(type)) {
-            result = new Character((char)0);
+            result = (char) 0;
         } else if (int.class.equals(type) || Integer.class.equals(type)) {
-            result = new Integer(0);
+            result = 0;
         } else if (long.class.equals(type) || Long.class.equals(type)) {
-            result = new Long(0);
+            result = (long) 0;
         } else if (float.class.equals(type) || Float.class.equals(type)) {
             result = new Float(0.0);
         } else if (double.class.equals(type) || Double.class.equals(type)) {
-            result = new Double(0.0);
+            result = 0.0;
         }
 
         // String

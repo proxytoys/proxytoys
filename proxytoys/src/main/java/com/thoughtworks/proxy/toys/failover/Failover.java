@@ -34,7 +34,7 @@ public class Failover<T> {
     }
 
     /**
-     * Creates a factory for proxy instances that allow delegation.
+     * Creates a factory for proxy instances handling failover.
      *
      * @param type           the types of the proxy
      * @param delegates      the delegates used for failover

@@ -31,10 +31,11 @@ public class Multicasting<T> {
         this.delegates = delegates;
 
     }
+
     /**
-     * Creates a factory for proxy instances that allow delegation.
+     * Creates a factory for proxy instances delegating a call to multiple objects and managing the individual results.
      *
-     * @param targets      targets the target objects
+     * @param targets targets the target objects
      * @return a factory that will proxy instances of the supplied type.
      * @since 0.2
      */
@@ -44,9 +45,8 @@ public class Multicasting<T> {
     }
 
     /**
-     *
      * @param types the types that are implemented by the proxy
-     * @return  the factory
+     * @return the factory
      */
     public Multicasting<T> withTypes(Class... types) {
         this.types = types;
@@ -54,19 +54,19 @@ public class Multicasting<T> {
     }
 
     /**
-     *
      * @return the proxy using StandardProxyFactory
      */
     public T build() {
         return build(new StandardProxyFactory());
     }
 
-     /**
+    /**
      * Generate a proxy for the specified types calling the methods on the given targets.
      * <p>
      * Note, that the method will only return a proxy if necessary. If there is only one target instance and this
      * instance implements all of the specified types, then there is no point in creating a proxy.
      * </p>
+     * @param factory the factory used to generate the proxy
      *
      * @return the new proxy implementing {@link Multicast} or the only target
      * @since 0.1
@@ -75,7 +75,7 @@ public class Multicasting<T> {
         if (types == null) {
             return buildWithNoTypesInput(factory);
         }
-       
+
         if (delegates.length == 1) {
             int i;
             for (i = 0; i < types.length; i++) {
@@ -100,103 +100,8 @@ public class Multicasting<T> {
             ReflectionUtils.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, factory);
             this.types = ReflectionUtils.toClassArray(interfaces);
             return (T) new MulticastingInvoker(types, factory, delegates).proxy();
-        } else {
-            return (T) delegates[0];
         }
+        return (T) delegates[0];
     }
 
-    /**
-     * Generate a proxy for the specified types calling the methods on the given targets.
-     * <p>
-     * Note, that the method will only return a proxy if necessary. If there is only one target instance and this
-     * instance implements all of the specified types, then there is no point in creating a proxy.
-     * </p>
-     *
-     * @param types the types that are implemented by the proxy
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @param targets the target objects
-     * @return the new proxy implementing {@link Multicast} or the only target
-     * @since 0.1
-     */
-//    public static Object object(final Class[] types, final ProxyFactory proxyFactory, final Object[] targets) {
-//        if (targets.length == 1) {
-//            int i;
-//            for (i = 0; i < types.length; i++) {
-//                if (types[i] == Multicast.class) {
-//                    continue;
-//                }
-//                if (!types[i].isAssignableFrom(targets[0].getClass())) {
-//                    break;
-//                }
-//            }
-//            if (i == types.length) {
-//                return targets[0];
-//            }
-//        }
-//        return new MulticastingInvoker(types, proxyFactory, targets).proxy();
-//    }
-//
-//    public static <T> Multicasting multicastable(Object[] delegates){
-//        return new Multicasting(delegates);
-//    }
-    /**
-     * Generate a proxy for the specified type calling the methods on the given targets.
-     * <p>
-     * Note, that the method will only return a proxy if necessary. If there is only one target instance and this
-     * instance implements the specified type, then there is no point in creating a proxy.
-     * </p>
-     *
-     * @param type the type that is implemented by the proxy
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @param targets the target objects
-     * @return the new proxy implementing {@link Multicast} or the only target
-     * @since 0.1
-     */
-//    public static Object object(final Class type, final ProxyFactory proxyFactory, final Object[] targets) {
-//        return object(new Class[]{type}, proxyFactory, targets);
-//    }
-
-    /**
-     * Generate a proxy that is calling the methods on the given targets.
-     * <p>
-     * The type of the proxy is a combination of all interfaces implemented by all targets and their most common super
-     * class (if supported by the {@link ProxyFactory}). Note, that the method will only return a proxy if necessary.
-     * If there is only one target instance, then there is no point in creating a proxy.
-     * </p>
-     *
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @param targets the target objects
-     * @return the new proxy implementing {@link Multicast} or the only target
-     * @since 0.1
-     */
-//    public static Object object(final ProxyFactory proxyFactory, final Object[] targets) {
-//        if (targets.length > 1) {
-//            final Class superclass = ReflectionUtils.getMostCommonSuperclass(targets);
-//            final Set interfaces = ReflectionUtils.getAllInterfaces(targets);
-//            ReflectionUtils.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, proxyFactory);
-//            return object(ReflectionUtils.toClassArray(interfaces), proxyFactory, targets);
-//        } else {
-//            return targets[0];
-//        }
-//    }
-
-    /**
-     * Generate a proxy that is calling the methods on the given targets using a {@link StandardProxyFactory}.
-     * <p>
-     * The type of the proxy is a combination of all interfaces implemented by all targets. Note, that the method will
-     * only return a proxy if necessary. If there is only one target instance, then there is no point in creating a
-     * proxy.
-     * </p>
-     *
-     * @param targets the target objects
-     * @return the new proxy implementing {@link Multicast} or the only target
-     * @since 0.1
-     */
-//    public static Object object(final Object[] targets) {
-//        return object(new StandardProxyFactory(), targets);
-//    }
-//
-//    /** It's a factory, stupid */
-//    private Multicasting() {
-//    }
 }

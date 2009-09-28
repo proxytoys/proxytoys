@@ -158,16 +158,16 @@ public class Pool<T> implements Serializable {
      * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
      * @since 0.2
      */
-    private Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory, final int serializationMode) {
-        this();
-        this.types = new Class[]{type, Poolable.class};
-        this.factory = proxyFactory;
-        this.resetter = resetter;
-        this.serializationMode = serializationMode;
-        if (Math.abs(serializationMode) > 1) {
-            throw new IllegalArgumentException("Invalid serialization mode");
-        }
-    }
+//    private Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory, final int serializationMode) {
+//        this();
+//        this.types = new Class[]{type, Poolable.class};
+//        this.factory = proxyFactory;
+//        this.resetter = resetter;
+//        this.serializationMode = serializationMode;
+//        if (Math.abs(serializationMode) > 1) {
+//            throw new IllegalArgumentException("Invalid serialization mode");
+//        }
+//    }
 
 
     private Pool() {
