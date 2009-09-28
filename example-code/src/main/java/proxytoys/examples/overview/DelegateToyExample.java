@@ -9,11 +9,7 @@ import com.thoughtworks.proxy.kit.ObjectReference;
 import static com.thoughtworks.proxy.toys.delegate.Delegating.delegatable;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 
 
 /**

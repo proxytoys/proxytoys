@@ -5,18 +5,9 @@
  */
 package proxytoys.examples.overview;
 
-import com.thoughtworks.proxy.toys.dispatch.Dispatching;
 import static com.thoughtworks.proxy.toys.dispatch.Dispatching.dispatchable;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInput;
-import java.io.DataInputStream;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;

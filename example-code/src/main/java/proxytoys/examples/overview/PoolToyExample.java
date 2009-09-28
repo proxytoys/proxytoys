@@ -7,8 +7,8 @@ package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.toys.pool.Pool;
-import com.thoughtworks.proxy.toys.pool.Poolable;
 import static com.thoughtworks.proxy.toys.pool.Pool.poolable;
+import com.thoughtworks.proxy.toys.pool.Poolable;
 
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
@@ -27,20 +27,20 @@ public class PoolToyExample {
             }
         });
         pool.add(new CRC32());
-        if (true) {
-            Checksum checksum = (Checksum)pool.get();
+        {
+            Checksum checksum = (Checksum) pool.get();
             checksum.update("JUnit".getBytes(), 0, 5);
             System.out.println("CRC32 checksum of \"JUnit\": " + checksum.getValue());
         }
-        if (true) {
-            Checksum checksum = (Checksum)pool.get();
+        {
+            Checksum checksum = (Checksum) pool.get();
             if (checksum == null) {
                 System.out.println("No checksum available, force gc ...");
                 System.gc();
             }
-            checksum = (Checksum)pool.get();
+            checksum = (Checksum) pool.get();
             System.out.println("CRC32 of an resetted checksum: " + checksum.getValue());
-            ((Poolable)checksum).returnInstanceToPool();
+            ((Poolable) checksum).returnInstanceToPool();
         }
     }
 

@@ -7,19 +7,11 @@ package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.multicast.Multicast;
-import com.thoughtworks.proxy.toys.multicast.Multicasting;
 import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**

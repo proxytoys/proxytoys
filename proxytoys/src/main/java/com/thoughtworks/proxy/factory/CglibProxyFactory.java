@@ -9,9 +9,7 @@ package com.thoughtworks.proxy.factory;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.toys.nullobject.Null;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
-
 import net.sf.cglib.core.CodeGenerationException;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.Factory;
@@ -20,12 +18,7 @@ import net.sf.cglib.proxy.Proxy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**

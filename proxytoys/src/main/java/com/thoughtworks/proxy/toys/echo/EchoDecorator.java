@@ -8,9 +8,8 @@
 package com.thoughtworks.proxy.toys.echo;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.toys.decorate.Decorating;
-import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
 import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
+import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;

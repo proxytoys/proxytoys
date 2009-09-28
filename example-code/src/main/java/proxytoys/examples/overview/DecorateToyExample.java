@@ -6,9 +6,8 @@
 package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.decorate.Decorating;
-import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
 import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
+import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
 
 import java.io.File;
 import java.lang.reflect.Method;
