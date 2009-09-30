@@ -7,9 +7,13 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.NewProxyTestCase;
 import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
-import org.jmock.Mock;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+import static org.mockito.Mockito.*;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -19,7 +23,7 @@ import java.io.Writer;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class EchoingTest extends ProxyTestCase {
+public class EchoingTest extends NewProxyTestCase {
 
     private static final String getInner = "getInner";
 
@@ -27,15 +31,17 @@ public class EchoingTest extends ProxyTestCase {
         void doSomething();
     }
 
-    private Mock simpleMock;
+    private Simple simpleMock;
     private Simple simpleImpl;
 
+    @Before
     public void setUp() throws Exception {
         simpleMock = mock(Simple.class);
-        simpleImpl = (Simple) simpleMock.proxy();
+        // simpleImpl = (Simple) simpleMock;
     }
 
-    public void testShouldEchoMethodNameAndArgs() throws Exception {
+    @Test
+    public void shouldEchoMethodNameAndArgs() throws Exception {
         // setup
         Writer out = new StringWriter();
         Simple foo = (Simple) echoable(Simple.class).withPrintWriter(new PrintWriter(out)).build(getFactory());
@@ -47,19 +53,18 @@ public class EchoingTest extends ProxyTestCase {
         assertContains("Simple.doSomething()", out);
     }
 
-    public void testShouldDelegateCalls() throws Exception {
+    @Test
+    public void shouldDelegateCalls() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple foo = (Simple) echoable(Simple.class).withPrintWriter(new PrintWriter(out)).withDelegateObject(simpleImpl).build(getFactory());
+        Simple foo = (Simple) echoable(Simple.class).withPrintWriter(new PrintWriter(out)).withDelegateObject(simpleMock).build(getFactory());
 
-        // expect
-        simpleMock.expects(once()).method("doSomething");
 
         // execute
         foo.doSomething();
 
         // verify
-        simpleMock.verify();
+        verify(simpleMock).doSomething();
     }
 
     public interface Inner {
@@ -70,19 +75,18 @@ public class EchoingTest extends ProxyTestCase {
         Inner getInner();
     }
 
-    public void testShouldRecursivelyReturnEchoProxiesForInterfaces() throws Exception {
+    @Test
+    public void shouldRecursivelyReturnEchoProxiesForInterfaces() throws Exception {
         // setup
-        Mock innerMock = new Mock(Inner.class);
-        Mock outerMock = new Mock(Outer.class);
+        Inner innerMock = mock(Inner.class);
+        Outer outerMock = mock(Outer.class);
         StringWriter out = new StringWriter();
 
-        Outer outer = (Outer) echoable(Outer.class).withDelegateObject(outerMock.proxy()).withPrintWriter(new PrintWriter(out)).build(getFactory());
+        Outer outer = (Outer) echoable(Outer.class).withDelegateObject(outerMock).withPrintWriter(new PrintWriter(out)).build(getFactory());
 
         // expect
-        outerMock.expects(once()).method(getInner).withNoArguments().will(returnValue(innerMock.proxy()));
-
-        innerMock.expects(once()).method("getName").withNoArguments().will(returnValue("inner"));
-
+        when(outerMock.getInner()).thenReturn(innerMock);
+        when(innerMock.getName()).thenReturn("inner");
         // execute
         String result = outer.getInner().getName();
 
@@ -90,9 +94,11 @@ public class EchoingTest extends ProxyTestCase {
         assertEquals("inner", result);
         assertContains("Outer.getInner()", out);
         assertContains("Inner.getName()", out);
+        verify(outerMock).getInner();
+        verify(innerMock).getName();
     }
-
-    public void testShouldRecursivelyReturnEchoProxiesEvenForMissingImplementations() throws Exception {
+    @Test
+    public void shouldRecursivelyReturnEchoProxiesEvenForMissingImplementations() throws Exception {
         // setup
         StringWriter out = new StringWriter();
         Outer outer = (Outer) echoable(Outer.class).withPrintWriter(new PrintWriter(out)).build(getFactory());
