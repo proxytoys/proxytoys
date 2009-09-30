@@ -1,7 +1,6 @@
 package com.thoughtworks.proxy;
 
 import com.thoughtworks.proxy.kit.Resetter;
-import com.thoughtworks.proxy.toys.nullobject.Null;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 
 import java.io.IOException;
@@ -18,19 +17,19 @@ public class ProxyFactoryTest extends ProxyTestCase {
     }
 
     private void useSerializedFactory(ProxyFactory factory) {
-        Resetter resetter = (Resetter)nullable(Resetter.class).build();
+        Resetter resetter = (Resetter) nullable(Resetter.class).build();
         assertFalse(resetter.reset(this));
     }
 
     public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedFactory((ProxyFactory)serializeWithJDK(getFactory()));
+        useSerializedFactory((ProxyFactory) serializeWithJDK(getFactory()));
     }
 
     public void testSerializeWithXStream() {
-        useSerializedFactory((ProxyFactory)serializeWithXStream(getFactory()));
+        useSerializedFactory((ProxyFactory) serializeWithXStream(getFactory()));
     }
 
     public void testSerializeWithXStreamInPureReflectionMode() {
-        useSerializedFactory((ProxyFactory)serializeWithXStreamAndPureReflection(getFactory()));
+        useSerializedFactory((ProxyFactory) serializeWithXStreamAndPureReflection(getFactory()));
     }
 }

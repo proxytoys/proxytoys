@@ -97,6 +97,7 @@ public class EchoingTest extends NewProxyTestCase {
         verify(outerMock).getInner();
         verify(innerMock).getName();
     }
+
     @Test
     public void shouldRecursivelyReturnEchoProxiesEvenForMissingImplementations() throws Exception {
         // setup

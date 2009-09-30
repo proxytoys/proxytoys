@@ -1,18 +1,17 @@
 package com.thoughtworks.proxy.toys.hotswap;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 import static com.thoughtworks.proxy.toys.hotswap.HotSwapping.hotSwappable;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import org.junit.Test;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 
 /**
@@ -46,6 +45,7 @@ public class CglibHotSwappingTest extends NewProxyTestCase {
             return yin;
         }
     }
+
     @Test
     public void shouldMakeMutualDependenciesPossible() {
         Yin yin = hotSwappable(Yin.class).with(null).build(getFactory());

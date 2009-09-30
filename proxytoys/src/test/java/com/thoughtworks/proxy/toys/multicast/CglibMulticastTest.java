@@ -1,8 +1,7 @@
 package com.thoughtworks.proxy.toys.multicast;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
 import static org.junit.Assert.*;
@@ -60,39 +59,48 @@ public class CglibMulticastTest extends NewProxyTestCase {
     }
 
     private Primitives primitives;
+
     @Before
     public void setUp() throws Exception {
         primitives = (Primitives) multicastable(new Primitives(true), new Primitives(true), new Primitives(true)).build(getFactory());
     }
-     @Test
+
+    @Test
     public void shouldAddBytes() {
         assertEquals(6, primitives.getByte());
     }
+
     @Test
     public void shouldAddChars() {
         assertEquals(6, primitives.getChar());
     }
+
     @Test
     public void shouldAddShorts() {
         assertEquals(6, primitives.getShort());
     }
+
     @Test
     public void shouldAddIntegers() {
         assertEquals(6, primitives.getInt());
     }
+
     @Test
     public void shouldAddLong() {
         assertEquals(6, primitives.getLong());
     }
+
     @Test
     public void shouldAddFloat() {
         assertEquals(6, primitives.getFloat(), 0.0001);
     }
+
     @Test
     public void shouldAddDouble() {
         assertEquals(6, primitives.getDouble(), 0.0001);
     }
-     @Test
+
+    @Test
     public void shouldAndBooleans() {
         assertTrue(primitives.getBoolean());
         primitives = (Primitives) multicastable(

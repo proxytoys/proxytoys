@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 
 /**
  * A {@link DelegatingInvoker} implementation that allows the exchange of the delegate.
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
@@ -42,13 +42,13 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
     /**
      * Internal interface used to detect cyclic swapping activity.
-     * 
+     *
      * @since 0.2
      */
     protected static interface CycleCheck {
         /**
          * Checks for a cyclic swap action.
-         * 
+         *
          * @throws IllegalStateException if cycle detected
          * @since 0.2
          */
@@ -61,12 +61,12 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
     /**
      * Construct a HotSwappingInvoker.
-     * 
-     * @param types the types of the proxy
-     * @param proxyFactory the {@link ProxyFactory} to use
+     *
+     * @param types             the types of the proxy
+     * @param proxyFactory      the {@link ProxyFactory} to use
      * @param delegateReference the {@link ObjectReference} with the delegate
-     * @param delegationMode {@link DelegationMode#DIRECT MODE_DIRECT} or
-     *        {@link DelegationMode#SIGNATURE MODE_SIGNATURE}
+     * @param delegationMode    {@link DelegationMode#DIRECT MODE_DIRECT} or
+     *                          {@link DelegationMode#SIGNATURE MODE_SIGNATURE}
      * @since 0.2
      */
     public HotSwappingInvoker(
@@ -89,7 +89,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
                 } else {
                     if (delegate() instanceof CycleCheck) {
                         executed = true;
-                        ((CycleCheck)delegate()).checkForCycle();
+                        ((CycleCheck) delegate()).checkForCycle();
                         executed = false;
                     }
                 }
@@ -115,7 +115,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
     /**
      * Exchange the current delegate.
-     * 
+     *
      * @param newDelegate the new delegate
      * @return the old delegate
      * @throws IllegalStateException if cyclic swapping action is detected
@@ -128,7 +128,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
         delegate.set(newDelegate);
         ref.set(newDelegate);
         if (newDelegate instanceof CycleCheck) {
-            ((CycleCheck)newDelegate).checkForCycle();
+            ((CycleCheck) newDelegate).checkForCycle();
         }
         return result;
     }
@@ -136,7 +136,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
     /**
      * Create a proxy for this Invoker. The proxy implements all the types given as parameter to the constructor and
      * implements additionally the {@link Swappable} interface.
-     * 
+     *
      * @return the new proxy
      * @since 0.1
      */

@@ -39,7 +39,7 @@ public class Dispatching {
      * @since 0.2
      */
 
-    public static  Dispatching dispatchable(Class[] types, Object[] delegates) {
+    public static Dispatching dispatchable(Class[] types, Object[] delegates) {
         return new Dispatching(types, delegates);
 
     }

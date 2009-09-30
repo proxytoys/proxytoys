@@ -71,10 +71,11 @@ public class Echoing<T> {
     public T build(final ProxyFactory proxyFactory) {
         return (T) decoratable(type).with(delegate, new EchoDecorator(printWriter, proxyFactory)).build(proxyFactory);
     }
-     /**
+
+    /**
      * Creates a factory for proxy instances that allow delegation.
      *
-     * @param type     the type of the proxy when it is finally created.
+     * @param type the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      */
 

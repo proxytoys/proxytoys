@@ -11,20 +11,7 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactoryTest;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ReflectionUtilsTest;
-import com.thoughtworks.proxy.toys.decorate.DecoratingTest;
-import com.thoughtworks.proxy.toys.delegate.DelegatingTest;
-import com.thoughtworks.proxy.toys.dispatch.DispatchingTest;
-import com.thoughtworks.proxy.toys.echo.CglibEchoingTest;
-import com.thoughtworks.proxy.toys.echo.EchoingTest;
-import com.thoughtworks.proxy.toys.failover.FailoverTest;
-import com.thoughtworks.proxy.toys.hotswap.CglibHotSwappingTest;
-import com.thoughtworks.proxy.toys.hotswap.HotSwappingTest;
-import com.thoughtworks.proxy.toys.multicast.CglibMulticastTest;
-import com.thoughtworks.proxy.toys.multicast.MulticastTest;
-import com.thoughtworks.proxy.toys.nullobject.CglibNullTest;
-import com.thoughtworks.proxy.toys.nullobject.NullTest;
 import com.thoughtworks.proxy.toys.pool.PoolTest;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -66,7 +53,6 @@ public class AllTests {
         TestSuite suite = new TestSuite("Tests using " + type + "ProxyFactory");
         ProxyTestCase.PROXY_FACTORY = factory;
         suite.addTestSuite(ProxyFactoryTest.class);
-        suite.addTestSuite(PoolTest.class);
         return suite;
     }
 }

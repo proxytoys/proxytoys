@@ -23,10 +23,10 @@ import java.util.*;
 
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on <a href="http://cglib.sourceforge.net/">CGLIB</a>.
- * 
+ *
  * @author Aslak Helles&oslash;y
- * @since 0.1
  * @see com.thoughtworks.proxy.factory
+ * @since 0.1
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
     private static final long serialVersionUID = -5615928639194345818L;
@@ -35,7 +35,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
 
     /**
      * The native invocation handler.
-     * 
+     *
      * @since 0.1
      */
     static class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements
@@ -44,7 +44,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
 
         /**
          * Construct a CGLIBInvocationHandlerAdapter.
-         * 
+         *
          * @param invoker the wrapping invoker instance
          */
         public CGLIBInvocationHandlerAdapter(Invoker invoker) {
@@ -71,7 +71,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * Note: If any type the proxy instance must fullfill are all interfaces, the factory will currently create a proxy
      * based on the JDK.
      * </p>
-     * 
+     *
      * @since 0.1
      */
     public Object createProxy(final Class[] types, final Invoker invoker) {
@@ -97,13 +97,13 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     private Class[] getInterfaces(final Class[] types) {
         final List interfaces = new ArrayList(Arrays.asList(types));
         for (final Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
-            final Class clazz = (Class)iterator.next();
+            final Class clazz = (Class) iterator.next();
             if (!clazz.isInterface()) {
                 iterator.remove();
             }
         }
         interfaces.add(InvokerReference.class);
-        return (Class[])interfaces.toArray(new Class[interfaces.size()]);
+        return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
     }
 
     private Class getSingleClass(final Class[] types) {
@@ -123,7 +123,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         if (cycleGuard.get() == null) {
             cycleGuard.set(new ArrayList());
         }
-        final List creating = (List)cycleGuard.get();
+        final List creating = (List) cycleGuard.get();
         for (int i = 0; i < args.length; i++) {
             if (!creating.contains(params[i])) {
                 creating.add(params[i]);

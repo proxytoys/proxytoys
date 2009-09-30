@@ -8,7 +8,6 @@
 package com.thoughtworks.proxy.factory;
 
 import com.thoughtworks.proxy.ProxyFactory;
-
 import junit.framework.TestCase;
 
 

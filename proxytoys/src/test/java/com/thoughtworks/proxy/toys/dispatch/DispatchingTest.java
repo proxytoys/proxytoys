@@ -8,17 +8,17 @@
 package com.thoughtworks.proxy.toys.dispatch;
 
 import com.thoughtworks.proxy.NewProxyTestCase;
-import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.kit.NoOperationResetter;
+import com.thoughtworks.proxy.kit.Resetter;
 import static com.thoughtworks.proxy.toys.dispatch.Dispatching.dispatchable;
 import static junit.framework.Assert.*;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.IOException;
 
 
 /**
@@ -162,12 +162,13 @@ public class DispatchingTest extends NewProxyTestCase {
 
         assertEquals(proxy1, proxy2);
     }
+
     @Test
     public void twoProxiesAreNotEqualIfSameTypesAreDelegatedToAtLeastOneNonEqualDelegate() throws Exception {
         Object proxy1 = dispatchable(new Class[]{Comparable.class, Runnable.class, List.class}, new Object[]{
-                new ArrayList(), "Foo", Thread.currentThread()}).build( getFactory());
+                new ArrayList(), "Foo", Thread.currentThread()}).build(getFactory());
         Object proxy2 = dispatchable(new Class[]{List.class, Runnable.class, Comparable.class}, new Object[]{
-                "Bar", new ArrayList(), Thread.currentThread()}).build( getFactory());
+                "Bar", new ArrayList(), Thread.currentThread()}).build(getFactory());
 
         assertFalse(proxy1.equals(proxy2));
     }
@@ -179,8 +180,9 @@ public class DispatchingTest extends NewProxyTestCase {
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
         useSerializedProxy((Resetter) serializeWithJDK(dispatchable(
-                new Class[]{Resetter.class}, new Object[]{new NoOperationResetter()}).build( getFactory())));
+                new Class[]{Resetter.class}, new Object[]{new NoOperationResetter()}).build(getFactory())));
     }
+
     @Test
     public void serializeWithXStream() {
         useSerializedProxy((Resetter) serializeWithXStream(dispatchable(

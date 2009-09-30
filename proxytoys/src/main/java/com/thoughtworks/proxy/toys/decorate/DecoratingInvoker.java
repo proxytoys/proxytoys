@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 
 /**
  * Invoker implementation for the decorating proxy. The implementation may decorate an object or another {@link Invoker}.
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -31,7 +31,7 @@ public class DecoratingInvoker implements Invoker {
 
     /**
      * Construct a DecoratingInvoker decorating another Invoker.
-     * 
+     *
      * @param decorated the decorated {@link Invoker}.
      * @param decorator the decorating instance.
      * @since 0.1
@@ -43,8 +43,8 @@ public class DecoratingInvoker implements Invoker {
 
     /**
      * Construct a DecoratingInvoker decorating another object.
-     * 
-     * @param delegate the decorated object.
+     *
+     * @param delegate  the decorated object.
      * @param decorator the decorating instance.
      * @since 0.1
      */

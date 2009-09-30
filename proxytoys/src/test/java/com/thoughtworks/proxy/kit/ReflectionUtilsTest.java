@@ -5,25 +5,9 @@ import junit.framework.TestCase;
 import java.beans.beancontext.BeanContext;
 import java.beans.beancontext.BeanContextServices;
 import java.beans.beancontext.BeanContextServicesListener;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.lang.reflect.Method;
-import java.util.AbstractList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EventListener;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 
 /**
@@ -143,7 +127,7 @@ public class ReflectionUtilsTest extends TestCase {
         ObjectInputStream inStream = new ObjectInputStream(inBuffer);
         assertSame(Object.class, inStream.readObject());
         assertEquals("equals", inStream.readObject());
-        assertTrue(Arrays.equals(new Class[]{Object.class}, (Object[])inStream.readObject()));
+        assertTrue(Arrays.equals(new Class[]{Object.class}, (Object[]) inStream.readObject()));
         inStream.close();
     }
 

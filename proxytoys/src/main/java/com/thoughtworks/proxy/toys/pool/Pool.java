@@ -119,7 +119,7 @@ public class Pool<T> implements Serializable {
         this.serializationMode = serializationMode;
         if (Math.abs(serializationMode) > 1) {
             throw new IllegalArgumentException("Invalid serialization mode");
-       }
+        }
         return this;
     }
 
@@ -139,7 +139,7 @@ public class Pool<T> implements Serializable {
         this.resetter = resetter;
     }
 
-   
+
     private Pool() {
         busyInstances = new HashMap();
         availableInstances = new ArrayList();

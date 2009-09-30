@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * Interface that is implemented by all multicasting proxies. Cast the proxy to access the proxied elements again or to
  * call a method on them independent of the type of the proxy.
- * 
+ *
  * @author J&ouml;rg Schaible
  * @since 0.2
  */
@@ -30,13 +30,13 @@ public interface Multicast {
      * Note that the implementation of this function must search the best fitting method. It is much more efficient to
      * call the overloaded version of this function with the appropriate method object.
      * </p>
-     * 
-     * @param type the type that has a method with the given name and matching arguments
+     *
+     * @param type   the type that has a method with the given name and matching arguments
      * @param method the method name
-     * @param args the arguments of the invocation
+     * @param args   the arguments of the invocation
      * @return the result of the multicast
      * @throws NoSuchMethodException if the type has no matching method
-     * @throws SecurityException if the security maneger prevents the method access by reflection
+     * @throws SecurityException     if the security maneger prevents the method access by reflection
      * @since 0.2
      */
     Object multicastTargets(Class type, String method, Object[] args) throws NoSuchMethodException;
@@ -48,9 +48,9 @@ public interface Multicast {
      * target object is final like it is for a lot of basic classes of <tt>java.lang</tt>. The result of the call
      * follow the normal rules for multicast invocations.
      * </p>
-     * 
+     *
      * @param method the method to call
-     * @param args the arguments of the invocation
+     * @param args   the arguments of the invocation
      * @return the result of the multicast
      * @since 0.2
      */
@@ -58,7 +58,7 @@ public interface Multicast {
 
     /**
      * Access the targets of the proxy in a typed array.
-     * 
+     *
      * @param type the type of an array element
      * @return the typed array of proxy targets
      * @since 0.2
@@ -67,7 +67,7 @@ public interface Multicast {
 
     /**
      * Access the targets of the proxy in an array.
-     * 
+     *
      * @return the array of proxy targets
      * @since 0.2
      */

@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  * {@link com.thoughtworks.proxy.Invoker Invoker} that implements a failover strategy by using different delegates in
  * case of an exception. The implemented strategy is a simple round-robin algorithm to change the delegate in case of a
  * relevant exception.
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -34,10 +34,10 @@ public class FailoverInvoker extends HotSwappingInvoker {
 
     /**
      * Construct a FailoverInvoker.
-     * 
-     * @param types the types of the proxy
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @param delegates the delegates to use
+     *
+     * @param types          the types of the proxy
+     * @param proxyFactory   the {@link ProxyFactory} to use
+     * @param delegates      the delegates to use
      * @param exceptionClass the type of the exception
      * @throws IllegalArgumentException if <tt>exceptionClass</tt> is not a {@link Throwable}
      * @since 0.1

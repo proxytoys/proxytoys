@@ -22,7 +22,7 @@ import java.util.Set;
 
 /**
  * Helper class for introspecting interface and class hierarchies.
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @since 0.2
@@ -65,7 +65,7 @@ public class ReflectionUtils {
 
     /**
      * Get all the interfaces implemented by a list of objects.
-     * 
+     *
      * @param objects the list of objects to consider.
      * @return an set of interfaces. The set may be empty
      */
@@ -84,7 +84,7 @@ public class ReflectionUtils {
      * Get all interfaces of the given type. If the type is a class, the returned set contains any interface, that is
      * implemented by the class. If the type is an interface, the all superinterfaces and the interface itself are
      * included.
-     * 
+     *
      * @param clazz type to explore.
      * @return a {@link Set} with all interfaces. The set may be empty.
      */
@@ -115,7 +115,7 @@ public class ReflectionUtils {
 
     /**
      * Get most common superclass for all given objects.
-     * 
+     *
      * @param objects the array of objects to consider.
      * @return the superclass or <code>{@link Void Void.class}</code> for an empty array.
      */
@@ -152,9 +152,9 @@ public class ReflectionUtils {
 
     /**
      * Add the given type to the set of interfaces, if the given ProxyFactory supports proxy generation for this type.
-     * 
-     * @param clazz the class type (<code>Object.class</code> will be ignored)
-     * @param interfaces the set of interfaces
+     *
+     * @param clazz        the class type (<code>Object.class</code> will be ignored)
+     * @param interfaces   the set of interfaces
      * @param proxyFactory the {@link ProxyFactory} in use
      */
     public static void addIfClassProxyingSupportedAndNotObject(
@@ -166,20 +166,20 @@ public class ReflectionUtils {
 
     /**
      * Convert the collection of class types to an array of class types.
-     * 
+     *
      * @param collection with class types
      * @return an array of class types
      */
     public static Class[] toClassArray(final Collection collection) {
-        return (Class[])collection.toArray(new Class[collection.size()]);
+        return (Class[]) collection.toArray(new Class[collection.size()]);
     }
 
     /**
      * Get the method of the given type, that has matching parameter types to the given arguments.
-     * 
-     * @param type the type
+     *
+     * @param type       the type
      * @param methodName the name of the method to search
-     * @param args the arguments to match
+     * @param args       the arguments to match
      * @return the matching {@link Method}
      * @throws NoSuchMethodException if no matching {@link Method} exists
      * @since 0.2
@@ -225,7 +225,7 @@ public class ReflectionUtils {
             }
         }
         if (method == null && possibleMethods.size() > 0) {
-            method = (Method)possibleMethods.iterator().next();
+            method = (Method) possibleMethods.iterator().next();
         }
         if (method == null) {
             final StringBuffer name = new StringBuffer(type.getName());
@@ -246,8 +246,8 @@ public class ReflectionUtils {
 
     /**
      * Write a {@link Method} into an {@link ObjectOutputStream}.
-     * 
-     * @param out the stream
+     *
+     * @param out    the stream
      * @param method the {@link Method} to write
      * @throws IOException if writing causes a problem
      * @since 1.2
@@ -260,18 +260,18 @@ public class ReflectionUtils {
 
     /**
      * Read a {@link Method} from an {@link ObjectInputStream}.
-     * 
+     *
      * @param in the stream
      * @return the read {@link Method}
-     * @throws IOException if reading causes a problem
+     * @throws IOException            if reading causes a problem
      * @throws ClassNotFoundException if class types from objects of the InputStream cannot be found
      * @throws InvalidObjectException if the {@link Method} cannot be found
      * @since 1.2
      */
     public static Method readMethod(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-        final Class type = (Class)in.readObject();
-        final String name = (String)in.readObject();
-        final Class[] parameters = (Class[])in.readObject();
+        final Class type = (Class) in.readObject();
+        final String name = (String) in.readObject();
+        final Class[] parameters = (Class[]) in.readObject();
         try {
             return type.getMethod(name, parameters);
         } catch (final NoSuchMethodException e) {

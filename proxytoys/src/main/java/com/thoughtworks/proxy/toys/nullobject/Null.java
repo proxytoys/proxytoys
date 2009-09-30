@@ -16,18 +16,22 @@ import java.util.*;
 
 /**
  * Toy factory to create proxies acting as Null Objects.
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:nospamx.aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
- * @since 0.1
  * @see com.thoughtworks.proxy.toys.nullobject
+ * @since 0.1
  */
 public class Null<T> {
 
-    /** The Null {@link Object}. */
+    /**
+     * The Null {@link Object}.
+     */
     public static final Object NULL_OBJECT = new Object();
 
-    /** Immutable Null Object implementation of {@link SortedMap} */
+    /**
+     * Immutable Null Object implementation of {@link SortedMap}
+     */
     public static final SortedMap NULL_SORTED_MAP = new TreeMap() {
         private static final long serialVersionUID = -4388170961744587609L;
 
@@ -56,7 +60,9 @@ public class Null<T> {
         }
     };
 
-    /** Immutable Null Object implementation of {@link SortedSet} */
+    /**
+     * Immutable Null Object implementation of {@link SortedSet}
+     */
     public static final SortedSet NULL_SORTED_SET = new TreeSet() {
         private static final long serialVersionUID = 809722154285517876L;
 
@@ -83,21 +89,22 @@ public class Null<T> {
     private Class<T> type;
 
     public Null(Class<T> type) {
-        this.type=type;
+        this.type = type;
     }
 
 
     /**
-     *  Creates a factory for proxy instances that is nullable.
+     * Creates a factory for proxy instances that is nullable.
+     *
      * @param type the type implemented by the proxy
-     * @return  the factory
+     * @return the factory
      */
-    public static <T> Null<T> nullable(Class<T> type){
+    public static <T> Null<T> nullable(Class<T> type) {
         return new Null<T>(type);
     }
 
 
-    public T build(){
+    public T build() {
         return build(new StandardProxyFactory());
     }
 
@@ -166,14 +173,14 @@ public class Null<T> {
         } else {
             result = null;
         }
-        return (T)result;
+        return (T) result;
 
     }
 
 
     /**
      * Determine whether an object was created by {@link Null#object(Class)}.
-     * 
+     *
      * @param object the object to examine
      * @return <code>true</code> if the object is a Null proxy.
      * @since 0.1
@@ -184,8 +191,8 @@ public class Null<T> {
 
     /**
      * Determine whether an object was created by {@link Null#object(Class, ProxyFactory)}.
-     * 
-     * @param object the object to examine
+     *
+     * @param object       the object to examine
      * @param proxyFactory the {@link ProxyFactory} to use
      * @return <code>true</code> if the object is a Null proxy.
      * @since 0.1

@@ -23,13 +23,15 @@ import java.lang.reflect.UndeclaredThrowableException;
  * same methods with the same signature as {@link java.lang.reflect.InvocationHandler}. Additionally it supports the
  * method {@link #getInvoker} of the proxy instance.
  * </p>
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @since 0.1
  */
 abstract class AbstractProxyFactory implements ProxyFactory {
 
-    /** The getInvoker method. */
+    /**
+     * The getInvoker method.
+     */
     public static final Method getInvoker;
 
     static {
@@ -51,7 +53,7 @@ abstract class AbstractProxyFactory implements ProxyFactory {
      * <p>
      * Clever, eh?
      * </p>
-     * 
+     *
      * @since 0.1
      */
     static class CoincidentalInvocationHandlerAdapter implements Serializable {
@@ -60,7 +62,7 @@ abstract class AbstractProxyFactory implements ProxyFactory {
 
         /**
          * Construct a CoincidentalInvocationHandlerAdapter.
-         * 
+         *
          * @param invocationInterceptor the invocation handler.
          * @since 0.1
          */
@@ -70,10 +72,10 @@ abstract class AbstractProxyFactory implements ProxyFactory {
 
         /**
          * Invoke a method on an object.
-         * 
-         * @param proxy the prory on thatthe method was originally called
+         *
+         * @param proxy  the prory on thatthe method was originally called
          * @param method the method
-         * @param args the arguments of the call
+         * @param args   the arguments of the call
          * @return the return value of the call
          * @throws Throwable if calling code throws or the call failed
          * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method,
@@ -98,11 +100,11 @@ abstract class AbstractProxyFactory implements ProxyFactory {
     /**
      * {@inheritDoc} The implementation of this method relies on the implementation of the derived factory to add the
      * interface {@link InvokerReference} to every proxy instance.
-     * 
+     *
      * @since 0.1
      */
     public Invoker getInvoker(final Object proxy) {
-        final InvokerReference ih = (InvokerReference)proxy;
+        final InvokerReference ih = (InvokerReference) proxy;
         return ih.getInvoker();
     }
 }

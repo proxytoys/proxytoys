@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  * An Invoker that is able to call protected and private methods. If the proxies type is an abstract class, it might be
  * necessary to use an PrivateInvoker instead of a SimpleInvoker. Otherwise the method implementations may not call the
  * protected or private methods of the own type.
- * 
+ *
  * @author J&ouml;rg Schaible
  * @since 0.2
  */
@@ -23,7 +23,7 @@ public class PrivateInvoker extends SimpleInvoker {
 
     /**
      * Construct a PrivateInvoker.
-     * 
+     *
      * @param target the invocation target.
      * @since 0.2
      */

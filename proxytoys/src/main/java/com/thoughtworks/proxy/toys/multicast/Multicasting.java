@@ -66,8 +66,8 @@ public class Multicasting<T> {
      * Note, that the method will only return a proxy if necessary. If there is only one target instance and this
      * instance implements all of the specified types, then there is no point in creating a proxy.
      * </p>
-     * @param factory the factory used to generate the proxy
      *
+     * @param factory the factory used to generate the proxy
      * @return the new proxy implementing {@link Multicast} or the only target
      * @since 0.1
      */

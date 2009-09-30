@@ -4,14 +4,9 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.io.xml.XppDriver;
-
 import org.jmock.MockObjectTestCase;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 
 /**
@@ -29,14 +24,16 @@ public abstract class ProxyTestCase extends MockObjectTestCase {
      * <p>
      * Note: by the time the tests run this will have changed, which is why there is an instance variable too.
      * </p>
-     * 
+     *
      * @see com.thoughtworks.proxy.factory.CglibProxyFactory
      * @see com.thoughtworks.proxy.factory.StandardProxyFactory
      * @see AllTests#suite()
      */
     public static ProxyFactory PROXY_FACTORY = new StandardProxyFactory();
 
-    /** the actual factory the tests will run against */
+    /**
+     * the actual factory the tests will run against
+     */
     private final ProxyFactory proxyFactory;
 
     protected ProxyTestCase() {

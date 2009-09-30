@@ -13,8 +13,8 @@ import java.io.*;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public abstract class NewProxyTestCase{
-     
+public abstract class NewProxyTestCase {
+
     /**
      * A publicly settable <tt>ProxyFactory</tt>.
      * <p>
@@ -31,7 +31,9 @@ public abstract class NewProxyTestCase{
      */
     public static ProxyFactory PROXY_FACTORY = new StandardProxyFactory();
 
-    /** the actual factory the tests will run against */
+    /**
+     * the actual factory the tests will run against
+     */
     private final ProxyFactory proxyFactory;
 
     protected NewProxyTestCase() {

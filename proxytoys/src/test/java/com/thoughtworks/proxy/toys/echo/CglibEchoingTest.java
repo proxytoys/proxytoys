@@ -4,11 +4,12 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
+import static junit.framework.Assert.assertTrue;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -16,14 +17,12 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-import static junit.framework.Assert.assertTrue;
-
 
 public class CglibEchoingTest extends NewProxyTestCase {
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
     }
+
     @Test
     public void shouldProxyRealInstance() {
         final StringWriter out = new StringWriter();

@@ -7,22 +7,26 @@
 -->
 <body>
 <p>Different implementations of the ProxyFactory interface.</p>
+
 <p>Currently are two implementations supported. One based on the
-{@linkplain java.lang.reflect JDK's reflection API} and the other one on
-the <a href="http://cglib.sourceforge.net/">CGLIB</a> library.</p>
+    {@linkplain java.lang.reflect JDK's reflection API} and the other one on
+    the <a href="http://cglib.sourceforge.net/">CGLIB</a> library.</p>
+
 <p>The usage of a special {@linkplain
-com.thoughtworks.proxy.ProxyFactory} is simple and easy:</p>
+    com.thoughtworks.proxy.ProxyFactory} is simple and easy:</p>
+
 <div class="Source Java"><pre>ProxyFactory factory = new StandardProxyFactory();
 List proxy = (List)factory.createProxy(new Class[]{List.class}, new SimpleInvoker(new ArrayList()));
 proxy.add("Hello World");
 System.out.println("Size of list: " + proxy.size());
 System.out.println("First element of list: " + proxy.get(0));
-</pre></div>
+</pre>
+</div>
 <p>The example creates a proxy that implements the {@linkplain
-java.util.List} interface. The proxy is backed up by a instance of an
-{@linkplain java.util.ArrayList}. The proxy ensures in this example,
-that the instance cannot just be casted to access the specific methods
-of the ArrayList like {@link java.util.ArrayList#ensureCapacity(int)}.
-Compare with the JDK's reflection API, there is not a real difference.</p>
+    java.util.List} interface. The proxy is backed up by a instance of an
+    {@linkplain java.util.ArrayList}. The proxy ensures in this example,
+    that the instance cannot just be casted to access the specific methods
+    of the ArrayList like {@link java.util.ArrayList#ensureCapacity(int)}.
+    Compare with the JDK's reflection API, there is not a real difference.</p>
 </body>
 </html>

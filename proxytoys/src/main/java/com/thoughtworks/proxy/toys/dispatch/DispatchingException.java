@@ -9,7 +9,7 @@ package com.thoughtworks.proxy.toys.dispatch;
 
 /**
  * An exception if a type cannot be dispatched.
- * 
+ *
  * @author J&ouml;rg Schaible
  * @since 0.2
  */
@@ -19,9 +19,9 @@ public class DispatchingException extends RuntimeException {
 
     /**
      * Construct a DispatchingException with the offending type.
-     * 
+     *
      * @param message the meaningful message
-     * @param type the type, that cannot be dispatched
+     * @param type    the type, that cannot be dispatched
      * @since 0.2
      */
     public DispatchingException(final String message, final Class type) {
@@ -31,7 +31,7 @@ public class DispatchingException extends RuntimeException {
 
     /**
      * Returns the offending type.
-     * 
+     *
      * @return the type
      * @since 0.2
      */

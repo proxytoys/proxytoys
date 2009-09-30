@@ -26,7 +26,7 @@ import java.util.*;
 
 /**
  * Invoker that dispatches all invocations to different objects according the membership of the method.
- * 
+ *
  * @author J&ouml;rg Schaible after idea by Rickard &Ouml;berg
  * @since 0.2
  */
@@ -38,9 +38,9 @@ public class DispatchingInvoker implements Invoker {
 
     /**
      * Construct a DispatchinInvoker.
-     * 
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @param types the types of the generated proxy
+     *
+     * @param proxyFactory       the {@link ProxyFactory} to use
+     * @param types              the types of the generated proxy
      * @param delegateReferences the {@link ObjectReference ObjectReferences} for the delegates
      * @since 0.2
      */
@@ -65,7 +65,7 @@ public class DispatchingInvoker implements Invoker {
 
     /**
      * Constructor used by pure reflection serialization.
-     * 
+     *
      * @since 1.2
      */
     protected DispatchingInvoker() {
@@ -75,12 +75,12 @@ public class DispatchingInvoker implements Invoker {
         if (method.equals(ReflectionUtils.equals)) {
             final Object arg = args[0];
             if (new StandardProxyFactory().isProxyClass(arg.getClass())
-                    && ((InvokerReference)arg).getInvoker() instanceof DispatchingInvoker) {
-                final DispatchingInvoker invoker = (DispatchingInvoker)((InvokerReference)arg).getInvoker();
+                    && ((InvokerReference) arg).getInvoker() instanceof DispatchingInvoker) {
+                final DispatchingInvoker invoker = (DispatchingInvoker) ((InvokerReference) arg).getInvoker();
                 if (new HashSet(types).equals(new HashSet(invoker.types))) {
                     boolean isEqual = true;
                     for (int i = 0; isEqual && i < types.size(); ++i) {
-                        final Class type = (Class)types.get(i);
+                        final Class type = (Class) types.get(i);
                         for (int j = 0; isEqual && j < invoker.types.size(); ++j) {
                             if (invoker.types.get(j).equals(type)) {
                                 if (!invokers[i].equals(invoker.invokers[j])) {
@@ -113,7 +113,7 @@ public class DispatchingInvoker implements Invoker {
         final List[] names = new List[methodSets.length];
         final List[] arguments = new List[methodSets.length];
         for (int i = 0; i < methodSets.length; i++) {
-            final Method[] methods = (Method[])methodSets[i].toArray(new Method[methodSets[i].size()]);
+            final Method[] methods = (Method[]) methodSets[i].toArray(new Method[methodSets[i].size()]);
             types[i] = new ArrayList();
             names[i] = new ArrayList();
             arguments[i] = new ArrayList();
@@ -130,17 +130,17 @@ public class DispatchingInvoker implements Invoker {
 
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        final List[] types = (List[])in.readObject();
-        final List[] names = (List[])in.readObject();
-        final List[] arguments = (List[])in.readObject();
+        final List[] types = (List[]) in.readObject();
+        final List[] names = (List[]) in.readObject();
+        final List[] arguments = (List[]) in.readObject();
         methodSets = new Set[types.length];
         try {
             for (int i = 0; i < methodSets.length; i++) {
                 methodSets[i] = new HashSet();
                 for (int j = 0; j < types[i].size(); j++) {
-                    final Class type = (Class)types[i].get(j);
-                    final String name = (String)names[i].get(j);
-                    final Class[] argumentTypes = (Class[])arguments[i].get(j);
+                    final Class type = (Class) types[i].get(j);
+                    final String name = (String) names[i].get(j);
+                    final Class[] argumentTypes = (Class[]) arguments[i].get(j);
                     methodSets[i].add(type.getMethod(name, argumentTypes));
                 }
             }

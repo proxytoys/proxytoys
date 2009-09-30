@@ -18,13 +18,13 @@ import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 /**
  * Factory for proxy instances that allow to exchange the delegated instance. Every created proxy will implement
  * {@link Swappable}, that is used for the hot swap operation.
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
- * @since 0.1
  * @see com.thoughtworks.proxy.toys.hotswap
+ * @since 0.1
  */
 public class HotSwapping<T> {
-        
+
     private Object instance;
     private Class<T> type;
     private DelegationMode delegationMode;
@@ -35,6 +35,7 @@ public class HotSwapping<T> {
 
     /**
      * Creates a factory for proxy instances that allow the exchange of delegated instances.
+     *
      * @param type the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      */
@@ -45,6 +46,7 @@ public class HotSwapping<T> {
     /**
      * Defines the object that shall be proxied. This delegate must implement the types used to create the hot swap or
      * have signature compatible methods.
+     *
      * @param instance the object that shall be proxied.
      * @return the factory that will proxy instances of the supplied type.
      */
@@ -56,9 +58,10 @@ public class HotSwapping<T> {
 
     /**
      * Forces a particular delegation mode to be used.
+     *
      * @param delegationMode refer to {@link DelegationMode#DIRECT} or
-     *        {@link DelegationMode#SIGNATURE} for allowed
-     * values.
+     *                       {@link DelegationMode#SIGNATURE} for allowed
+     *                       values.
      * @return the factory that will proxy instances of the supplied type.
      */
     public HotSwapping mode(DelegationMode delegationMode) {
@@ -71,6 +74,7 @@ public class HotSwapping<T> {
      * {@link ObjectReference}. The delegate must implement the given types, if the invoker is in static typing mode,
      * otherwise it must only have signature compatible methods. Proxies created by this method will implement
      * {@link Swappable}
+     *
      * @param factory the @{link ProxyFactory} to use.
      * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
      */

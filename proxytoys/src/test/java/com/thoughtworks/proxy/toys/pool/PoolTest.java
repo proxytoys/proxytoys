@@ -5,12 +5,15 @@
  */
 package com.thoughtworks.proxy.toys.pool;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.NewProxyTestCase;
 import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.Resetter;
 import static com.thoughtworks.proxy.toys.pool.Pool.poolable;
 import junit.framework.TestCase;
-import org.jmock.Mock;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -19,7 +22,7 @@ import java.io.Serializable;
 /**
  * @author J&ouml;rg Schaible
  */
-public class PoolTest extends ProxyTestCase {
+public class PoolTest extends NewProxyTestCase {
 
     public static interface Identifiable {
         int getId();
@@ -59,11 +62,13 @@ public class PoolTest extends ProxyTestCase {
         return array;
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         InstanceCounter.counter = 0;
     }
 
-    public void testInstancesCanBeAccessed() {
+    @Test
+    public void instancesCanBeAccessed() {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Identifiable borrowed = (Identifiable) pool.get();
@@ -71,7 +76,8 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(0, borrowed.getId());
     }
 
-    public void testInstancesCanBeRecycled() {
+    @Test
+    public void instancesCanBeRecycled() {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(3));
         Object borrowed0 = pool.get();
@@ -93,7 +99,8 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(borrowed, borrowedReloaded);
     }
 
-    public void testSizeIsConstant() {
+    @Test
+    public void sizeIsConstant() {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(3));
 
@@ -111,7 +118,8 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed2);
     }
 
-    public void testUnmanagedInstanceCannotBeReleased() {
+    @Test
+    public void unmanagedInstanceCannotBeReleased() {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         try {
             pool.release(new InstanceCounter());
@@ -120,7 +128,8 @@ public class PoolTest extends ProxyTestCase {
         }
     }
 
-    public void testElementMustBeReturnedToOwnPool() {
+    @Test
+    public void elementMustBeReturnedToOwnPool() {
         final Pool pool1 = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool1.add(createIdentifiables(1));
         final Pool pool2 = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
@@ -134,7 +143,8 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(0, pool2.getAvailable());
     }
 
-    public void testPoolReturnsNullIfExhausted() {
+    @Test
+    public void poolReturnsNullIfExhausted() {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Object obj1 = pool.get();
@@ -143,7 +153,8 @@ public class PoolTest extends ProxyTestCase {
         assertNull(pool.get());
     }
 
-    public void testPoolSizeIsConstant() {
+    @Test
+    public void poolSizeIsConstant() {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(3));
         assertEquals(3, pool.size());
@@ -158,7 +169,8 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(obj3);
     }
 
-    public void testPoolGrowingManually() {
+    @Test
+    public void poolGrowingManually() {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Object obj1 = pool.get();
@@ -173,7 +185,8 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(5, pool.size());
     }
 
-    public void testReturnedElementWillNotReturnToPoolIfExhausted() throws Exception {
+    @Test
+    public void returnedElementWillNotReturnToPoolIfExhausted() throws Exception {
         final Pool pool = poolable(Identifiable.class, new NotReturningResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Object borrowed = pool.get();
@@ -184,7 +197,8 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(0, pool.size());
     }
 
-    public void testGarbageCollectedElementWillNotReturnToPoolIfExhausted() throws Exception {
+    @Test
+    public void garbageCollectedElementWillNotReturnToPoolIfExhausted() throws Exception {
         final Pool pool = poolable(Identifiable.class, new NotReturningResetter(), getFactory());
         pool.add(createIdentifiables(1));
         Object borrowed = pool.get();
@@ -196,27 +210,33 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(0, pool.size());
     }
 
-    public void testReturnedElementIsResetted() throws Exception {
-        final Mock mockResetter = mock(Resetter.class);
-        mockResetter.expects(once()).method("reset").will(returnValue(true));
-
-        final Pool pool = poolable(Identifiable.class, (Resetter) mockResetter.proxy(), getFactory());
+    @Test
+    public void returnedElementIsResetted() throws Exception {
+        final Resetter mockResetter = mock(Resetter.class);
+        when(mockResetter.reset(anyObject())).thenReturn(true);
+        final Pool pool = poolable(Identifiable.class, mockResetter, getFactory());
         pool.add(createIdentifiables(1));
         Object borrowed = pool.get();
         ((Poolable) borrowed).returnInstanceToPool();
+
+        verify(mockResetter).reset(anyObject());
+
     }
 
+    @Test
     public void testGarbageCollectedElementIsResetted() throws Exception {
-        final Mock mockResetter = mock(Resetter.class);
-        mockResetter.expects(once()).method("reset").will(returnValue(true));
-
-        final Pool pool = poolable(Identifiable.class, (Resetter) mockResetter.proxy(), getFactory());
+        final Resetter mockResetter = mock(Resetter.class);
+        when(mockResetter.reset(anyObject())).thenReturn(true);
+        final Pool pool = poolable(Identifiable.class, mockResetter, getFactory());
         pool.add(createIdentifiables(1));
         Object borrowed = pool.get();
         assertNotNull(borrowed);
         borrowed = null;
         System.gc();
         assertEquals(1, pool.getAvailable());
+
+        //verify
+        verify(mockResetter).reset(anyObject());
     }
 
     private void useSerializedProxy(final Pool pool) {
@@ -227,7 +247,8 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed1);
     }
 
-    public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
+    @Test
+    public void serializeWithJDK() throws IOException, ClassNotFoundException {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(2));
         Object borrowed = pool.get();
@@ -235,7 +256,8 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testSerializeWithXStream() {
+    @Test
+    public void serializeWithXStream() {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(2));
         Object borrowed = pool.get();
@@ -243,7 +265,8 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testSerializeWithXStreamInPureReflectionMode() {
+    @Test
+    public void serializeWithXStreamInPureReflectionMode() {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory());
         pool.add(createIdentifiables(2));
         Object borrowed = pool.get();
@@ -251,7 +274,8 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testForcedSerializationWithJDK() throws IOException, ClassNotFoundException {
+    @Test
+    public void forcedSerializationWithJDK() throws IOException, ClassNotFoundException {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory()).withSerializationMode(Pool.SERIALIZATION_FORCE);
         pool.add(createIdentifiables(2));
         Object borrowed = pool.get();
@@ -259,7 +283,8 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testForcedSerializationWithXStream() {
+    @Test
+    public void forcedSerializationWithXStream() {
         final Pool pool = poolable(
                 Identifiable.class, new NoOperationResetter(), getFactory()).withSerializationMode(Pool.SERIALIZATION_FORCE);
         pool.add(createIdentifiables(2));
@@ -268,7 +293,8 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testForcedSerializationWithXStreamInPureReflectionMode() {
+    @Test
+    public void forcedSerializationWithXStreamInPureReflectionMode() {
         final Pool pool = poolable(
                 Identifiable.class, new NoOperationResetter(), getFactory()).withSerializationMode(Pool.SERIALIZATION_FORCE);
         pool.add(createIdentifiables(2));
@@ -277,7 +303,8 @@ public class PoolTest extends ProxyTestCase {
         assertNotNull(borrowed); // keep instance
     }
 
-    public void testForcedSerializationWithUnserializableObject() throws IOException, ClassNotFoundException {
+    @Test
+    public void forcedSerializationWithUnserializableObject() throws IOException, ClassNotFoundException {
         final Pool pool = poolable(TestCase.class, new NoOperationResetter(), getFactory()).withSerializationMode(Pool.SERIALIZATION_FORCE);
         pool.add(this);
         final Pool serialized = (Pool) serializeWithJDK(pool);
@@ -286,7 +313,8 @@ public class PoolTest extends ProxyTestCase {
         assertEquals(1, serialized.size());
     }
 
-    public void testForcedSerializationWithEmptyPool() throws IOException, ClassNotFoundException {
+    @Test
+    public void forcedSerializationWithEmptyPool() throws IOException, ClassNotFoundException {
         final Pool pool = poolable(Identifiable.class, new NoOperationResetter(), getFactory()).withSerializationMode(Pool.SERIALIZATION_NONE);
         pool.add(createIdentifiables(2));
         final Pool serialized = (Pool) serializeWithJDK(pool);

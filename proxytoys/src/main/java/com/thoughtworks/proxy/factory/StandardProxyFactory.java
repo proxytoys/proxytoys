@@ -15,17 +15,17 @@ import java.lang.reflect.Proxy;
 
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on a JDK greater or equal 1.3.
- * 
+ *
  * @author Aslak Helles&oslash;y
- * @since 0.1
  * @see com.thoughtworks.proxy.factory
+ * @since 0.1
  */
 public class StandardProxyFactory extends AbstractProxyFactory {
     private static final long serialVersionUID = 4430360631813383235L;
 
     /**
      * The native InvocationHandler implementation.
-     * 
+     *
      * @since 0.1
      */
     static class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements
@@ -34,7 +34,7 @@ public class StandardProxyFactory extends AbstractProxyFactory {
 
         /**
          * Construct a StandardInvocationHandlerAdapter.
-         * 
+         *
          * @param invoker the wrapping invoker instance
          * @since 0.1
          */

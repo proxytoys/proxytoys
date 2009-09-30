@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 
 /**
  * Decorates a method invocation
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @since 0.1
  */
@@ -22,10 +22,10 @@ public interface InvocationDecorator extends Serializable {
     /**
      * Called before a method is invoked on an object, to possibly decorate the arguments being passed to the method
      * invocation.
-     * 
-     * @param proxy the proxy the method will be invoked on
+     *
+     * @param proxy  the proxy the method will be invoked on
      * @param method the method to be invoked
-     * @param args the arguments being passed to the method
+     * @param args   the arguments being passed to the method
      * @return the decorated arguments (typically just the ones supplied)
      * @since 0.1
      */
@@ -33,10 +33,10 @@ public interface InvocationDecorator extends Serializable {
 
     /**
      * Called on the way back from a method invocation, to possibly decorate the result.
-     * 
-     * @param proxy the proxy the method was be invoked on
+     *
+     * @param proxy  the proxy the method was be invoked on
      * @param method the invoked method
-     * @param args the arguments passed to the method
+     * @param args   the arguments passed to the method
      * @param result the result of the method invocation
      * @return the decorated result (typically just the supplied result)
      * @since 0.2, different arguments in 0.1
@@ -45,11 +45,11 @@ public interface InvocationDecorator extends Serializable {
 
     /**
      * Called when a called method fails, to possibly decorate the type of error.
-     * 
-     * @param proxy the proxy the method was be invoked on
+     *
+     * @param proxy  the proxy the method was be invoked on
      * @param method the invoked method
-     * @param args the arguments passed to the method
-     * @param cause the original exception thrown
+     * @param args   the arguments passed to the method
+     * @param cause  the original exception thrown
      * @return the decorated exception (typically just the supplied cause)
      * @since 0.2, different arguments in 0.1
      */
@@ -57,11 +57,11 @@ public interface InvocationDecorator extends Serializable {
 
     /**
      * Called when a method cannot be invoked, to possibly decorate the type of error.
-     * 
-     * @param proxy the proxy the method was be invoked on
+     *
+     * @param proxy  the proxy the method was be invoked on
      * @param method the invoked method
-     * @param args the arguments passed to the method
-     * @param cause the original exception thrown
+     * @param args   the arguments passed to the method
+     * @param cause  the original exception thrown
      * @return the decorated exception (typically just the supplied cause)
      * @since 0.2, different arguments in 0.1
      */

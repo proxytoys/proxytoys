@@ -1,9 +1,10 @@
 package com.thoughtworks.proxy.toys.multicast;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyFactory;
 import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -12,9 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.*;
-import org.junit.Test;
 
 
 /**
@@ -68,6 +66,7 @@ public class MulticastTest extends NewProxyTestCase {
             return wagged;
         }
     }
+
     @Test
     public void shouldMulticastRecursivelyForDeclaredReturnType() {
         TailImpl timsTail = new TailImpl();
@@ -76,13 +75,14 @@ public class MulticastTest extends NewProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog)multicastable(tim, tom).withTypes(Dog.class).build(getFactory());
+        Dog timAndTom = (Dog) multicastable(tim, tom).withTypes(Dog.class).build(getFactory());
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
         assertTrue(timsTail.wasWagged());
         assertTrue(tomsTail.wasWagged());
     }
+
     @Test
     public void shouldMulticastRecursivelyForRuntimeReturnType() {
         List tim = new ArrayList();
@@ -93,14 +93,15 @@ public class MulticastTest extends NewProxyTestCase {
         OtherTailImpl tomsTail = new OtherTailImpl();
         tom.add(tomsTail);
 
-        List timAndTom = (List)multicastable(tim, tom).withTypes(List.class).build(getFactory());
-        Tail timAndTomsTails = (Tail)timAndTom.get(0);
+        List timAndTom = (List) multicastable(tim, tom).withTypes(List.class).build(getFactory());
+        Tail timAndTomsTails = (Tail) timAndTom.get(0);
         timAndTomsTails.wag();
 
         assertTrue(timsTail.wasWagged());
         assertTrue(tomsTail.wasWagged());
     }
-     @Test
+
+    @Test
     public void shouldMulticastRecursivelyForUndeclaredType() {
         TailImpl timsTail = new TailImpl();
         Dog tim = new DogImpl(timsTail);
@@ -108,7 +109,7 @@ public class MulticastTest extends NewProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog)multicastable(tim, tom).build(getFactory());
+        Dog timAndTom = (Dog) multicastable(tim, tom).build(getFactory());
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -133,17 +134,19 @@ public class MulticastTest extends NewProxyTestCase {
             return values.get(i);
         }
     }
-     @Test
+
+    @Test
     public void shouldMulticastToIncompatibleTypes() {
         NotMap list = new NotMapImpl();
         Map map = new HashMap();
         Object multicast = multicastable(list, map).build(getFactory());
-        ((NotMap)multicast).add("hello");
-        ((Map)multicast).put("hello", "world");
+        ((NotMap) multicast).add("hello");
+        ((Map) multicast).put("hello", "world");
         assertEquals("hello", list.get(0));
         assertEquals("world", map.get("hello"));
     }
-     @Test
+
+    @Test
     public void shouldNotReturnProxyWhenThereIsOnlyOneForUndeclaredReturnType() {
         Map map = new HashMap();
         ProxyFactory factory = getFactory();
@@ -151,7 +154,8 @@ public class MulticastTest extends NewProxyTestCase {
         assertFalse(factory.isProxyClass(multicast.getClass()));
         assertSame(map, multicast);
     }
-     @Test
+
+    @Test
     public void shouldNotReturnProxyWhenThereIsOnlyOneForCompatibleDeclaredReturnTypes() {
         Map map = new HashMap();
         ProxyFactory factory = getFactory();
@@ -159,28 +163,31 @@ public class MulticastTest extends NewProxyTestCase {
         assertFalse(factory.isProxyClass(multicast.getClass()));
         assertSame(map, multicast);
     }
-   @Test
+
+    @Test
     public void shouldCallDirectMethodForFinalTargets() throws NoSuchMethodException {
         Method method = StringBuffer.class.getMethod("append", String.class);
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
-        Multicast multicast = (Multicast)multicastable(buffer1, buffer2).build(getFactory());
+        Multicast multicast = (Multicast) multicastable(buffer1, buffer2).build(getFactory());
         multicast.multicastTargets(method, new Object[]{"JUnit"});
         assertEquals("JUnit", buffer1.toString());
         assertEquals("JUnit", buffer2.toString());
     }
+
     @Test
     public void shouldCallAMatchingMethodForFinalTargets() throws NoSuchMethodException {
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
-        Multicast multicast = (Multicast)multicastable(buffer1, buffer2).build(getFactory());
+        Multicast multicast = (Multicast) multicastable(buffer1, buffer2).build(getFactory());
         multicast.multicastTargets(StringBuffer.class, "append", new Object[]{"JUnit"});
         assertEquals("JUnit", buffer1.toString());
         assertEquals("JUnit", buffer2.toString());
     }
-   @Test
+
+    @Test
     public void shouldThrowNoSuchMethodExceptionForANonMatchingCall() {
-        Multicast multicast = (Multicast)multicastable(
+        Multicast multicast = (Multicast) multicastable(
                 new StringBuffer(), new StringBuffer()).build(getFactory());
         try {
             multicast.multicastTargets(StringBuffer.class, "toString", new Object[]{"JUnit", 5});
@@ -190,20 +197,22 @@ public class MulticastTest extends NewProxyTestCase {
                     + ".toString(java.lang.String, java.lang.Integer)");
         }
     }
+
     @Test
     public void shouldReturnTargetsInTypedArray() throws Exception {
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
-        Multicast multicast = (Multicast)multicastable(buffer1, buffer2).build(getFactory());
-        StringBuffer[] buffers = (StringBuffer[])multicast.getTargetsInArray(StringBuffer.class);
+        Multicast multicast = (Multicast) multicastable(buffer1, buffer2).build(getFactory());
+        StringBuffer[] buffers = (StringBuffer[]) multicast.getTargetsInArray(StringBuffer.class);
         assertSame(buffer1, buffers[0]);
         assertSame(buffer2, buffers[1]);
     }
+
     @Test
     public void shouldReturnTargetsInArray() throws Exception {
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
-        Multicast multicast = (Multicast)multicastable(buffer1, buffer2).build(getFactory());
+        Multicast multicast = (Multicast) multicastable(buffer1, buffer2).build(getFactory());
         Object[] buffers = multicast.getTargetsInArray();
         assertSame(buffer1, buffers[0]);
         assertSame(buffer2, buffers[1]);
@@ -214,7 +223,7 @@ public class MulticastTest extends NewProxyTestCase {
         TailImpl t1 = new TailImpl();
         TailImpl t2 = new TailImpl();
         TailImpl t3 = new TailImpl();
-        Tail tail = (Tail)multicastable(t1, t2, t3).withTypes(Tail.class).build(getFactory());
+        Tail tail = (Tail) multicastable(t1, t2, t3).withTypes(Tail.class).build(getFactory());
 
         assertFalse(t1.wasWagged());
         assertFalse(t2.wasWagged());
@@ -231,7 +240,7 @@ public class MulticastTest extends NewProxyTestCase {
         assertFalse(tail.wasWagged());
         tail.wag();
         assertTrue(tail.wasWagged());
-        Multicast multicast = (Multicast)tail;
+        Multicast multicast = (Multicast) tail;
         assertEquals(2, multicast.getTargetsInArray().length);
     }
 
@@ -242,20 +251,23 @@ public class MulticastTest extends NewProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog)multicastable(tim, tom).withTypes(Dog.class).build(getFactory());
+        Dog timAndTom = (Dog) multicastable(tim, tom).withTypes(Dog.class).build(getFactory());
         return timAndTom.getTail();
     }
+
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedProxy((Tail)serializeWithJDK(prepareTimAndTimsTail()));
+        useSerializedProxy((Tail) serializeWithJDK(prepareTimAndTimsTail()));
     }
-     @Test
+
+    @Test
     public void serializeWithXStream() {
-        useSerializedProxy((Tail)serializeWithXStream(prepareTimAndTimsTail()));
+        useSerializedProxy((Tail) serializeWithXStream(prepareTimAndTimsTail()));
     }
+
     @Test
     public void serializeWithXStreamInPureReflectionMode() {
-        useSerializedProxy((Tail)serializeWithXStreamAndPureReflection(prepareTimAndTimsTail()));
+        useSerializedProxy((Tail) serializeWithXStreamAndPureReflection(prepareTimAndTimsTail()));
     }
 
 }

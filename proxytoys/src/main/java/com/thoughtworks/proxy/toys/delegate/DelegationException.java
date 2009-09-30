@@ -9,7 +9,7 @@ package com.thoughtworks.proxy.toys.delegate;
 
 /**
  * Exception thrown if a delegation from the proxy to the delegated object fails.
- * 
+ *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @since 0.1
  */
@@ -21,9 +21,9 @@ public class DelegationException extends RuntimeException {
 
     /**
      * Construct a DelegationException.
-     * 
-     * @param message the meaningful message.
-     * @param cause a causing {@link Throwable}
+     *
+     * @param message  the meaningful message.
+     * @param cause    a causing {@link Throwable}
      * @param delegate the delegated object
      * @since 0.1
      */
@@ -35,7 +35,7 @@ public class DelegationException extends RuntimeException {
 
     /**
      * Retruns the causing Throwable.
-     * 
+     *
      * @return the {@link Throwable}
      * @since 0.1
      */
@@ -46,7 +46,7 @@ public class DelegationException extends RuntimeException {
 
     /**
      * Returns the delegated object.
-     * 
+     *
      * @return the delegated object
      * @since 0.1
      */
