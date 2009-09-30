@@ -2,6 +2,7 @@ package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.NewProxyTestCase;
 import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
 
 import java.io.IOException;
@@ -12,12 +13,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.*;
+import org.junit.Test;
+
 
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public class MulticastTest extends ProxyTestCase {
+public class MulticastTest extends NewProxyTestCase {
 
     public static interface Dog {
         Tail getTail();
@@ -64,8 +68,8 @@ public class MulticastTest extends ProxyTestCase {
             return wagged;
         }
     }
-
-    public void testShouldMulticastRecursivelyForDeclaredReturnType() {
+    @Test
+    public void shouldMulticastRecursivelyForDeclaredReturnType() {
         TailImpl timsTail = new TailImpl();
         Dog tim = new DogImpl(timsTail);
 
@@ -79,8 +83,8 @@ public class MulticastTest extends ProxyTestCase {
         assertTrue(timsTail.wasWagged());
         assertTrue(tomsTail.wasWagged());
     }
-
-    public void testShouldMulticastRecursivelyForRuntimeReturnType() {
+    @Test
+    public void shouldMulticastRecursivelyForRuntimeReturnType() {
         List tim = new ArrayList();
         TailImpl timsTail = new TailImpl();
         tim.add(timsTail);
@@ -96,8 +100,8 @@ public class MulticastTest extends ProxyTestCase {
         assertTrue(timsTail.wasWagged());
         assertTrue(tomsTail.wasWagged());
     }
-
-    public void testShouldMulticastRecursivelyForUndeclaredType() {
+     @Test
+    public void shouldMulticastRecursivelyForUndeclaredType() {
         TailImpl timsTail = new TailImpl();
         Dog tim = new DogImpl(timsTail);
 
@@ -129,8 +133,8 @@ public class MulticastTest extends ProxyTestCase {
             return values.get(i);
         }
     }
-
-    public void testShouldMulticastToIncompatibleTypes() {
+     @Test
+    public void shouldMulticastToIncompatibleTypes() {
         NotMap list = new NotMapImpl();
         Map map = new HashMap();
         Object multicast = multicastable(list, map).build(getFactory());
@@ -139,24 +143,24 @@ public class MulticastTest extends ProxyTestCase {
         assertEquals("hello", list.get(0));
         assertEquals("world", map.get("hello"));
     }
-
-    public void testShouldNotReturnProxyWhenThereIsOnlyOneForUndeclaredReturnType() {
+     @Test
+    public void shouldNotReturnProxyWhenThereIsOnlyOneForUndeclaredReturnType() {
         Map map = new HashMap();
         ProxyFactory factory = getFactory();
         Object multicast = multicastable(map).build(factory);
         assertFalse(factory.isProxyClass(multicast.getClass()));
         assertSame(map, multicast);
     }
-
-    public void testShouldNotReturnProxyWhenThereIsOnlyOneForCompatibleDeclaredReturnTypes() {
+     @Test
+    public void shouldNotReturnProxyWhenThereIsOnlyOneForCompatibleDeclaredReturnTypes() {
         Map map = new HashMap();
         ProxyFactory factory = getFactory();
         Object multicast = multicastable(map).withTypes(Map.class, Serializable.class).build(factory);
         assertFalse(factory.isProxyClass(multicast.getClass()));
         assertSame(map, multicast);
     }
-
-    public void testShouldCallDirectMethodForFinalTargets() throws NoSuchMethodException {
+   @Test
+    public void shouldCallDirectMethodForFinalTargets() throws NoSuchMethodException {
         Method method = StringBuffer.class.getMethod("append", String.class);
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
@@ -165,8 +169,8 @@ public class MulticastTest extends ProxyTestCase {
         assertEquals("JUnit", buffer1.toString());
         assertEquals("JUnit", buffer2.toString());
     }
-
-    public void testShouldCallAMatchingMethodForFinalTargets() throws NoSuchMethodException {
+    @Test
+    public void shouldCallAMatchingMethodForFinalTargets() throws NoSuchMethodException {
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
         Multicast multicast = (Multicast)multicastable(buffer1, buffer2).build(getFactory());
@@ -174,8 +178,8 @@ public class MulticastTest extends ProxyTestCase {
         assertEquals("JUnit", buffer1.toString());
         assertEquals("JUnit", buffer2.toString());
     }
-
-    public void testShouldThrowNoSuchMethodExceptionForANonMatchingCall() {
+   @Test
+    public void shouldThrowNoSuchMethodExceptionForANonMatchingCall() {
         Multicast multicast = (Multicast)multicastable(
                 new StringBuffer(), new StringBuffer()).build(getFactory());
         try {
@@ -186,8 +190,8 @@ public class MulticastTest extends ProxyTestCase {
                     + ".toString(java.lang.String, java.lang.Integer)");
         }
     }
-
-    public void testShouldReturnTargetsInTypedArray() throws Exception {
+    @Test
+    public void shouldReturnTargetsInTypedArray() throws Exception {
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
         Multicast multicast = (Multicast)multicastable(buffer1, buffer2).build(getFactory());
@@ -195,8 +199,8 @@ public class MulticastTest extends ProxyTestCase {
         assertSame(buffer1, buffers[0]);
         assertSame(buffer2, buffers[1]);
     }
-
-    public void testShouldReturnTargetsInArray() throws Exception {
+    @Test
+    public void shouldReturnTargetsInArray() throws Exception {
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
         Multicast multicast = (Multicast)multicastable(buffer1, buffer2).build(getFactory());
@@ -241,16 +245,16 @@ public class MulticastTest extends ProxyTestCase {
         Dog timAndTom = (Dog)multicastable(tim, tom).withTypes(Dog.class).build(getFactory());
         return timAndTom.getTail();
     }
-
-    public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
+    @Test
+    public void serializeWithJDK() throws IOException, ClassNotFoundException {
         useSerializedProxy((Tail)serializeWithJDK(prepareTimAndTimsTail()));
     }
-
-    public void testSerializeWithXStream() {
+     @Test
+    public void serializeWithXStream() {
         useSerializedProxy((Tail)serializeWithXStream(prepareTimAndTimsTail()));
     }
-
-    public void testSerializeWithXStreamInPureReflectionMode() {
+    @Test
+    public void serializeWithXStreamInPureReflectionMode() {
         useSerializedProxy((Tail)serializeWithXStreamAndPureReflection(prepareTimAndTimsTail()));
     }
 

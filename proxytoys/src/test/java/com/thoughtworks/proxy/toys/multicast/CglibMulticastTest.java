@@ -2,15 +2,18 @@ package com.thoughtworks.proxy.toys.multicast;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.NewProxyTestCase;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
-
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public class CglibMulticastTest extends ProxyTestCase {
+public class CglibMulticastTest extends NewProxyTestCase {
 
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
@@ -57,41 +60,40 @@ public class CglibMulticastTest extends ProxyTestCase {
     }
 
     private Primitives primitives;
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         primitives = (Primitives) multicastable(new Primitives(true), new Primitives(true), new Primitives(true)).build(getFactory());
     }
-
-    public void testShouldAddBytes() {
+     @Test
+    public void shouldAddBytes() {
         assertEquals(6, primitives.getByte());
     }
-
-    public void testShouldAddChars() {
+    @Test
+    public void shouldAddChars() {
         assertEquals(6, primitives.getChar());
     }
-
-    public void testShouldAddShorts() {
+    @Test
+    public void shouldAddShorts() {
         assertEquals(6, primitives.getShort());
     }
-
-    public void testShouldAddIntegers() {
+    @Test
+    public void shouldAddIntegers() {
         assertEquals(6, primitives.getInt());
     }
-
-    public void testShouldAddLong() {
+    @Test
+    public void shouldAddLong() {
         assertEquals(6, primitives.getLong());
     }
-
-    public void testShouldAddFloat() {
+    @Test
+    public void shouldAddFloat() {
         assertEquals(6, primitives.getFloat(), 0.0001);
     }
-
-    public void testShouldAddDouble() {
+    @Test
+    public void shouldAddDouble() {
         assertEquals(6, primitives.getDouble(), 0.0001);
     }
-
-    public void testShouldAndBooleans() {
+     @Test
+    public void shouldAndBooleans() {
         assertTrue(primitives.getBoolean());
         primitives = (Primitives) multicastable(
                 new Primitives(true), new Primitives(true), new Primitives(false)).build(getFactory());
