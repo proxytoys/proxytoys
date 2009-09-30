@@ -7,9 +7,15 @@
  */
 package com.thoughtworks.proxy.toys.delegate;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.NewProxyTestCase;
 import static com.thoughtworks.proxy.toys.delegate.Delegating.delegatable;
-import org.jmock.Mock;
+import static junit.framework.Assert.assertSame;
+import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import org.junit.Before;
+import org.junit.Test;
+import static org.mockito.Mockito.*;
 
 import java.rmi.RemoteException;
 
@@ -18,7 +24,7 @@ import java.rmi.RemoteException;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author J&ouml;rg Schaible
  */
-public class DelegatingTest extends ProxyTestCase {
+public class DelegatingTest extends NewProxyTestCase {
 
     public interface Foo {
         String getSomething() throws RemoteException;
@@ -40,40 +46,40 @@ public class DelegatingTest extends ProxyTestCase {
         }
     }
 
-    private Mock fooMock;
+    private Foo fooMock;
     private Foo foo;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-        fooMock = new Mock(Foo.class);
-        foo = createProxy(fooMock.proxy());
+        fooMock = mock(Foo.class);
+        foo = createProxy(fooMock);
     }
 
     private Foo createProxy(Object impl) {
-        
+
         return delegatable(Foo.class, impl).build(getFactory());
     }
 
-    public void testShouldDelegateMethodsCalledOnInterface() throws Exception {
+    @Test
+    public void shouldDelegateMethodsCalledOnInterface() throws Exception {
         // expect
-        fooMock.expects(once()).method("getSomething").withNoArguments().will(
-                returnValue("some thing"));
+        when(fooMock.getSomething()).thenReturn("some thing");
 
         // execute
         final String result = foo.getSomething();
 
         // verify
         assertEquals("some thing", result);
+        verify(fooMock).getSomething();
     }
 
-    public void testShouldPropagateExceptionFromDelegate() throws Exception {
+    @Test
+    public void shouldPropagateExceptionFromDelegate() throws Exception {
         // setup
         Exception cause = new UnsupportedOperationException("sorry");
 
         // expect
-        fooMock.expects(once()).method("getSomething").withNoArguments()
-                .will(throwException(cause));
-
+        when(fooMock.getSomething()).thenThrow(cause);
         // execute
         try {
             foo.getSomething();
@@ -82,68 +88,80 @@ public class DelegatingTest extends ProxyTestCase {
             // verify
             assertSame(cause, e);
         }
+        verify(fooMock).getSomething();
+
+
     }
 
-    public void testShouldThrowDelegationExceptionIfDelegateMethodDoesNotExist() throws Exception {
+    @Test(expected = DelegationException.class)
+    public void shouldThrowDelegationExceptionIfDelegateMethodDoesNotExist() throws Exception {
         // setup
         foo = createProxy(new Object());
 
         // execute
-        try {
-            foo.getSomething();
-            fail("Should have thrown exception");
-        } catch (DelegationException expected) {
-        }
+
+        foo.getSomething();
+        fail("Should have thrown exception");
+
     }
 
-    public void testShouldIgnoreCallsToNullDelegate() throws Exception {
+    @Test
+    public void shouldIgnoreCallsToNullDelegate() throws Exception {
         foo = createProxy(null);
         assertNull(foo.getSomething());
     }
 
-    public void testShouldCompareEqualToItself() {
+    @Test
+    public void shouldCompareEqualToItself() {
         String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo, foo);
     }
 
-    public void testShouldCompareEqualToDelegatedInstance() {
+    @Test
+    public void shouldCompareEqualToDelegatedInstance() {
         String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo, string);
     }
 
-    public void testShouldCompareEqualToAnotherDelegatingProxyOnTheSameInstance() {
+    @Test
+    public void shouldCompareEqualToAnotherDelegatingProxyOnTheSameInstance() {
         String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo, createProxy(string));
     }
 
-    public void testShouldCompareEqualToANestedProxyOnTheSameInstance() {
+    @Test
+    public void shouldCompareEqualToANestedProxyOnTheSameInstance() {
         String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo, createProxy(foo));
     }
 
-    public void testShouldHaveSameHashCodeAsItself() {
+    @Test
+    public void shouldHaveSameHashCodeAsItself() {
         String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo.hashCode(), foo.hashCode());
     }
 
-    public void testShouldHaveSameHashCodeAsDelegatedInstance() {
+    @Test
+    public void shouldHaveSameHashCodeAsDelegatedInstance() {
         String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo.hashCode(), string.hashCode());
     }
 
-    public void testShouldHaveSameHashCodeAsAnotherDelegatingProxyOnTheSameInstance() {
+    @Test
+    public void shouldHaveSameHashCodeAsAnotherDelegatingProxyOnTheSameInstance() {
         String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo.hashCode(), createProxy(string).hashCode());
     }
 
-    public void testShouldHaveSameHashCodeAsANestedProxyOnTheSameInstance() {
+    @Test
+    public void shouldHaveSameHashCodeAsANestedProxyOnTheSameInstance() {
         String string = "some thing";
         foo = createProxy(string);
         assertEquals(foo.hashCode(), createProxy(foo).hashCode());
@@ -153,7 +171,8 @@ public class DelegatingTest extends ProxyTestCase {
         int calc(int i, Faculty fac);
     }
 
-    public void testShouldSupportIndirectRecursion() {
+    @Test
+    public void shouldSupportIndirectRecursion() {
         Faculty fac = new Faculty() {
             public int calc(int i, Faculty fac) {
                 return i == 1 ? 1 : i * fac.calc(i - 1, fac);
@@ -164,17 +183,18 @@ public class DelegatingTest extends ProxyTestCase {
         assertEquals(120, proxy.calc(5, proxy));
     }
 
-    public void testShouldNotBeAbleToCallProtectedMethods() throws Exception {
+    @Test(expected = DelegationException.class)
+    public void shouldNotBeAbleToCallProtectedMethods() throws Exception {
         FinalizingImpl finalizing = new FinalizingImpl(new StringBuffer());
         foo = createProxy(finalizing);
-        try {
-            foo.getSomething();
-            fail("Protected method called");
-        } catch (final DelegationException e) {
-        }
+
+        foo.getSomething();
+        fail("Protected method called");
+
     }
 
-    public void testShouldHandleFinalizeOnProxyOnly() throws Exception {
+    @Test
+    public void shouldHandleFinalizeOnProxyOnly() throws Exception {
         final StringBuffer buffer = new StringBuffer();
         FinalizingImpl finalizing = new FinalizingImpl(buffer);
         foo = createProxy(finalizing);
@@ -184,7 +204,8 @@ public class DelegatingTest extends ProxyTestCase {
         assertEquals("", buffer.toString());
     }
 
-    public void testShouldHandleFinalizeOnProxyAndDelegate() throws Exception {
+    @Test
+    public void shouldHandleFinalizeOnProxyAndDelegate() throws Exception {
         final StringBuffer buffer = new StringBuffer();
         {
             foo = createProxy(new FinalizingImpl(buffer));
@@ -202,6 +223,7 @@ public class DelegatingTest extends ProxyTestCase {
         }
     }
 
+    @Test
     public void testDefaultProxyIsSignatureCompatible() throws RemoteException {
         Foo foo = createProxy(new CompatibleFoo());
         assertEquals("Foo", foo.getSomething());

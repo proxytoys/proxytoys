@@ -70,7 +70,6 @@ public class AllTests {
         TestSuite suite = new TestSuite("Tests using " + type + "ProxyFactory");
         ProxyTestCase.PROXY_FACTORY = factory;
         suite.addTestSuite(ProxyFactoryTest.class);
-        suite.addTestSuite(DelegatingTest.class);
         suite.addTestSuite(DispatchingTest.class);
         suite.addTestSuite(EchoingTest.class);
         suite.addTestSuite(FailoverTest.class);
