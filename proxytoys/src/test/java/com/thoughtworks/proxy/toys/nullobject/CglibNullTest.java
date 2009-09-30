@@ -2,14 +2,16 @@ package com.thoughtworks.proxy.toys.nullobject;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.NewProxyTestCase;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
-
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * @author Aslak Helles&oslash;y
  */
-public class CglibNullTest extends ProxyTestCase {
+public class CglibNullTest extends NewProxyTestCase {
 
     public static class ClassWithPrimitiveParametersInConstructor {
         private boolean bo;
@@ -31,8 +33,8 @@ public class CglibNullTest extends ProxyTestCase {
             assertEquals(this.db, db, 0);
         }
     }
-
-    public void testShouldBeAbleToInstantiateClassWithPrimitiveParametersInConstructor() {
+    @Test
+    public void shouldBeAbleToInstantiateClassWithPrimitiveParametersInConstructor() {
         // The loop is to assert that the method can be called several times, and also measure performance.
         for (int i = 0; i < 10; i++) {
             ClassWithPrimitiveParametersInConstructor o = nullable(
