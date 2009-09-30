@@ -5,13 +5,17 @@ import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 
 import java.io.IOException;
 
+import static junit.framework.Assert.assertFalse;
+import org.junit.Test;
+
 
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public class ProxyFactoryTest extends ProxyTestCase {
-    public void testShouldNotBeAbleToProxyVoidClass() {
+public class ProxyFactoryTest extends NewProxyTestCase {
+    @Test
+    public void shouldNotBeAbleToProxyVoidClass() {
         assertFalse(getFactory().canProxy(Void.class));
         assertFalse(getFactory().canProxy(void.class));
     }
@@ -20,16 +24,16 @@ public class ProxyFactoryTest extends ProxyTestCase {
         Resetter resetter = (Resetter) nullable(Resetter.class).build();
         assertFalse(resetter.reset(this));
     }
-
-    public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
+    @Test
+    public void serializeWithJDK() throws IOException, ClassNotFoundException {
         useSerializedFactory((ProxyFactory) serializeWithJDK(getFactory()));
     }
-
-    public void testSerializeWithXStream() {
+    @Test
+    public void serializeWithXStream() {
         useSerializedFactory((ProxyFactory) serializeWithXStream(getFactory()));
     }
-
-    public void testSerializeWithXStreamInPureReflectionMode() {
+    @Test
+    public void serializeWithXStreamInPureReflectionMode() {
         useSerializedFactory((ProxyFactory) serializeWithXStreamAndPureReflection(getFactory()));
     }
 }
