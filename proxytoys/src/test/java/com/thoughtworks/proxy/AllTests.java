@@ -69,7 +69,6 @@ public class AllTests {
         TestSuite suite = new TestSuite("Tests using " + type + "ProxyFactory");
         ProxyTestCase.PROXY_FACTORY = factory;
         suite.addTestSuite(ProxyFactoryTest.class);
-        suite.addTestSuite(FailoverTest.class);
         suite.addTestSuite(HotSwappingTest.class);
         suite.addTestSuite(MulticastTest.class);
         suite.addTestSuite(NullTest.class);

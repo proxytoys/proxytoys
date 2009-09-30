@@ -1,7 +1,10 @@
 package com.thoughtworks.proxy.toys.failover;
 
 import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.NewProxyTestCase;
 import static com.thoughtworks.proxy.toys.failover.Failover.failoverable;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -11,7 +14,7 @@ import java.io.Serializable;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class FailoverTest extends ProxyTestCase {
+public class FailoverTest extends NewProxyTestCase {
 
     public static interface FailsOnNthCall {
         void doIt();
@@ -40,8 +43,8 @@ public class FailoverTest extends ProxyTestCase {
         }
 
     }
-
-    public void testShouldFailoverToNextOnSpecialException() {
+    @Test
+    public void shouldFailoverToNextOnSpecialException() {
         FailsOnNthCall first = new FailsOnNthCallImpl(1);
         FailsOnNthCall second = new FailsOnNthCallImpl(1);
         FailsOnNthCall failover = failoverable(FailsOnNthCall.class, new Object[]{
@@ -66,24 +69,24 @@ public class FailoverTest extends ProxyTestCase {
         } catch (final RuntimeException e) {
         }
     }
-
-    public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
+     @Test
+    public void serializeWithJDK() throws IOException, ClassNotFoundException {
         final FailsOnNthCall failover = failoverable(
                 FailsOnNthCall.class, new Object[]{new FailsOnNthCallImpl(1), new FailsOnNthCallImpl(1)},
                 RuntimeException.class).build( getFactory());
         failover.doIt();
         useSerializedProxy((FailsOnNthCall)serializeWithJDK(failover));
     }
-
-    public void testSerializeWithXStream() {
+    @Test
+    public void serializeWithXStream() {
         final FailsOnNthCall failover = failoverable(
                 FailsOnNthCall.class, new Object[]{new FailsOnNthCallImpl(1), new FailsOnNthCallImpl(1)},
                 RuntimeException.class).build(getFactory());
         failover.doIt();
         useSerializedProxy((FailsOnNthCall)serializeWithXStream(failover));
     }
-
-    public void testSerializeWithXStreamInPureReflectionMode() {
+    @Test
+    public void serializeWithXStreamInPureReflectionMode() {
         final FailsOnNthCall failover = failoverable(
                 FailsOnNthCall.class, new Object[]{new FailsOnNthCallImpl(1), new FailsOnNthCallImpl(1)},
                 RuntimeException.class).build(getFactory());
