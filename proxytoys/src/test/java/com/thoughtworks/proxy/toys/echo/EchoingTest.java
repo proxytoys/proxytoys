@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -23,7 +23,7 @@ import java.io.Writer;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class EchoingTest extends NewProxyTestCase {
+public class EchoingTest extends ProxyTestCase {
 
 
     public interface Simple {

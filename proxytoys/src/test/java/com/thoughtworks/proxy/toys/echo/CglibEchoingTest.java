@@ -4,7 +4,7 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CglibEchoingTest extends NewProxyTestCase {
+public class CglibEchoingTest extends ProxyTestCase {
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
     }

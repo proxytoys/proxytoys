@@ -4,17 +4,17 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.io.xml.XppDriver;
-import org.jmock.MockObjectTestCase;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.*;
-
 
 /**
  * @author Dan North
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public abstract class ProxyTestCase extends MockObjectTestCase {
+public abstract class ProxyTestCase {
+
     /**
      * A publicly settable <tt>ProxyFactory</tt>.
      * <p>

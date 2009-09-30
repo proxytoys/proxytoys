@@ -1,6 +1,6 @@
 package com.thoughtworks.proxy.toys.hotswap;
 
-import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 import static com.thoughtworks.proxy.toys.hotswap.HotSwapping.hotSwappable;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * @author Aslak Helles&oslash;y
  */
-public class HotSwappingTest extends NewProxyTestCase {
+public class HotSwappingTest extends ProxyTestCase {
     @Test
     public void shouldBeAbleToHotSwap() {
         List<String> firstList = new ArrayList<String>();

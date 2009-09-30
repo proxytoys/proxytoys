@@ -64,7 +64,7 @@ public class AllTests {
 })
 class CglibSuite {
     public CglibSuite() {
-        NewProxyTestCase.PROXY_FACTORY = new CglibProxyFactory();
+        ProxyTestCase.PROXY_FACTORY = new CglibProxyFactory();
 
     }
 }
@@ -85,7 +85,7 @@ class CglibSuite {
 })
 class StandardSuite {
     public StandardSuite() {
-        NewProxyTestCase.PROXY_FACTORY = new StandardProxyFactory();
+        ProxyTestCase.PROXY_FACTORY = new StandardProxyFactory();
 
     }
 }

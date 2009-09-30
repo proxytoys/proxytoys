@@ -5,7 +5,7 @@
  */
 package com.thoughtworks.proxy.toys.pool;
 
-import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.Resetter;
 import static com.thoughtworks.proxy.toys.pool.Pool.poolable;
@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * @author J&ouml;rg Schaible
  */
-public class PoolTest extends NewProxyTestCase {
+public class PoolTest extends ProxyTestCase {
 
     public static interface Identifiable {
         int getId();

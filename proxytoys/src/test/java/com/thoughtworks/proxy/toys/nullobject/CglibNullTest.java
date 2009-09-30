@@ -1,6 +1,6 @@
 package com.thoughtworks.proxy.toys.nullobject;
 
-import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
@@ -11,7 +11,7 @@ import org.junit.Test;
 /**
  * @author Aslak Helles&oslash;y
  */
-public class CglibNullTest extends NewProxyTestCase {
+public class CglibNullTest extends ProxyTestCase {
 
     public static class ClassWithPrimitiveParametersInConstructor {
         private boolean bo;

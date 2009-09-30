@@ -1,6 +1,6 @@
 package com.thoughtworks.proxy.toys.multicast;
 
-import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
@@ -12,7 +12,7 @@ import org.junit.Test;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public class CglibMulticastTest extends NewProxyTestCase {
+public class CglibMulticastTest extends ProxyTestCase {
 
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();

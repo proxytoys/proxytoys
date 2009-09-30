@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.proxy.toys.dispatch;
 
-import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.Resetter;
 import static com.thoughtworks.proxy.toys.dispatch.Dispatching.dispatchable;
@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * @author J&ouml;rg Schaible
  */
-public class DispatchingTest extends NewProxyTestCase {
+public class DispatchingTest extends ProxyTestCase {
 
     public interface Foo {
         String getSomething();

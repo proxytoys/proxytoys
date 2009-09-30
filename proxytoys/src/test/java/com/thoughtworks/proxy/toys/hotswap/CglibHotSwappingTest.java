@@ -1,6 +1,6 @@
 package com.thoughtworks.proxy.toys.hotswap;
 
-import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @author Aslak Helles&oslash;y
  */
-public class CglibHotSwappingTest extends NewProxyTestCase {
+public class CglibHotSwappingTest extends ProxyTestCase {
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
     }

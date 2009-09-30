@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.proxy.toys.nullobject;
 
-import com.thoughtworks.proxy.NewProxyTestCase;
+import com.thoughtworks.proxy.ProxyTestCase;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -21,7 +21,7 @@ import java.util.*;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author <a href="mailto:aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
  */
-public class NullTest extends NewProxyTestCase {
+public class NullTest extends ProxyTestCase {
     protected NullInvoker nil;
 
     @Before
