@@ -41,6 +41,7 @@ public class DelegatingTest extends NewProxyTestCase {
             return "another thing";
         }
 
+        @Override
         protected void finalize() throws Throwable {
             buffer.append("finalized");
         }

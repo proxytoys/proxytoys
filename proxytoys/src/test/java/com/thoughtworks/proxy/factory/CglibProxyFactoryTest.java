@@ -8,7 +8,6 @@
 package com.thoughtworks.proxy.factory;
 
 import com.thoughtworks.proxy.ProxyFactory;
-import junit.framework.TestCase;
 import static junit.framework.Assert.assertFalse;
 import org.junit.Test;
 
@@ -17,7 +16,7 @@ import org.junit.Test;
  * @author J&ouml;rg Schaible
  */
 public class CglibProxyFactoryTest {
-     @Test
+    @Test
     public void testShouldDenyProxyGenerationForFinalClasses() throws Exception {
         ProxyFactory factory = new CglibProxyFactory();
         assertFalse(factory.canProxy(String.class));

@@ -25,19 +25,16 @@ import java.io.Writer;
  */
 public class EchoingTest extends NewProxyTestCase {
 
-    private static final String getInner = "getInner";
 
     public interface Simple {
         void doSomething();
     }
 
     private Simple simpleMock;
-    private Simple simpleImpl;
 
     @Before
     public void setUp() throws Exception {
         simpleMock = mock(Simple.class);
-        // simpleImpl = (Simple) simpleMock;
     }
 
     @Test

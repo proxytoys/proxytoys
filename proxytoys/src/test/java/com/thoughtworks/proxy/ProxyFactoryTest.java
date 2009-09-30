@@ -2,11 +2,10 @@ package com.thoughtworks.proxy;
 
 import com.thoughtworks.proxy.kit.Resetter;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
-
-import java.io.IOException;
-
 import static junit.framework.Assert.assertFalse;
 import org.junit.Test;
+
+import java.io.IOException;
 
 
 /**
@@ -24,14 +23,17 @@ public class ProxyFactoryTest extends NewProxyTestCase {
         Resetter resetter = (Resetter) nullable(Resetter.class).build();
         assertFalse(resetter.reset(this));
     }
+
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
         useSerializedFactory((ProxyFactory) serializeWithJDK(getFactory()));
     }
+
     @Test
     public void serializeWithXStream() {
         useSerializedFactory((ProxyFactory) serializeWithXStream(getFactory()));
     }
+
     @Test
     public void serializeWithXStreamInPureReflectionMode() {
         useSerializedFactory((ProxyFactory) serializeWithXStreamAndPureReflection(getFactory()));

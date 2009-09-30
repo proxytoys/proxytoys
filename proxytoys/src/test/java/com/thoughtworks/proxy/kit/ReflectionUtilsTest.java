@@ -1,6 +1,7 @@
 package com.thoughtworks.proxy.kit;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.beans.beancontext.BeanContext;
 import java.beans.beancontext.BeanContextServices;
@@ -8,8 +9,6 @@ import java.beans.beancontext.BeanContextServicesListener;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
-import static org.junit.Assert.*;
-import org.junit.Test;
 
 
 /**
@@ -24,14 +23,16 @@ public class ReflectionUtilsTest {
         assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new OutputStreamWriter(System.out), new StringWriter()}));
     }
-   @Test
+
+    @Test
     public void mostCommonSuperclassForClassesAreInSameHierarchy() {
         assertEquals(OutputStreamWriter.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out)}));
         assertEquals(OutputStreamWriter.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out)}));
     }
-   @Test
+
+    @Test
     public void mostCommonSuperclassForClassesInSameOrDifferentHierarchy() {
         assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new FileWriter(FileDescriptor.out), new StringWriter(), new OutputStreamWriter(System.out)}));
@@ -46,27 +47,32 @@ public class ReflectionUtilsTest {
         assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new OutputStreamWriter(System.out), new StringWriter(), new FileWriter(FileDescriptor.out)}));
     }
-   @Test
+
+    @Test
     public void mostCommonSuperclassForUnmatchingObjects() {
         assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 1, new OutputStreamWriter(System.out)}));
         assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new OutputStreamWriter(System.out), 1}));
     }
+
     @Test
     public void mostCommonSuperclassForEmptyArray() {
         assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{}));
     }
+
     @Test
     public void mostCommonSuperclassForNullElements() {
         assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{null, null}));
     }
+
     @Test
     public void mostCommonSuperclassForCollections() {
         assertEquals(AbstractList.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
                 new LinkedList(), new Vector()}));
     }
-     @Test
+
+    @Test
     public void allInterfacesOfListShouldBeFound() {
         Set interfaces = ReflectionUtils.getAllInterfaces(BeanContextServices.class);
         assertTrue(interfaces.contains(BeanContextServices.class));
@@ -75,6 +81,7 @@ public class ReflectionUtilsTest {
         assertTrue(interfaces.contains(BeanContextServicesListener.class));
         assertTrue(interfaces.contains(EventListener.class));
     }
+
     @Test
     public void matchingMethodIsFound() throws Exception {
         Method appendChar = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{'c'});
@@ -95,16 +102,19 @@ public class ReflectionUtilsTest {
         assertNotSame(appendObject, appendShort);
         assertTrue(appendObject.equals(appendObject2));
     }
+
     @Test
     public void matchingMethodArgumentCanBeNull() throws Exception {
         Method appendObject = ReflectionUtils.getMatchingMethod(StringBuffer.class, "append", new Object[]{null});
         assertNotNull(appendObject);
     }
+
     @Test
     public void matchingMethodArgumentsCanBeNull() throws Exception {
         Method method = ReflectionUtils.getMatchingMethod(StringBuffer.class, "toString", null);
         assertNotNull(method);
     }
+
     @Test
     public void noSuchMethodExceptionIsThrownIfNoMatchingMethodCouldBeFound() throws Exception {
         try {
@@ -120,6 +130,7 @@ public class ReflectionUtilsTest {
                             + ")") >= 0);
         }
     }
+
     @Test
     public void methodCanBeSerialized() throws IOException, ClassNotFoundException {
         ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
@@ -133,7 +144,8 @@ public class ReflectionUtilsTest {
         assertTrue(Arrays.equals(new Class[]{Object.class}, (Object[]) inStream.readObject()));
         inStream.close();
     }
-       @Test
+
+    @Test
     public void methodCanBeDeserialized() throws IOException, ClassNotFoundException {
         ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
         ObjectOutputStream outStream = new ObjectOutputStream(outBuffer);
@@ -145,7 +157,8 @@ public class ReflectionUtilsTest {
         ObjectInputStream inStream = new ObjectInputStream(inBuffer);
         assertEquals(ReflectionUtils.equals, ReflectionUtils.readMethod(inStream));
     }
-     @Test
+
+    @Test
     public void unknownDeserializedMethodThrowsInvalidObjectException() throws IOException, ClassNotFoundException {
         ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
         ObjectOutputStream outStream = new ObjectOutputStream(outBuffer);
