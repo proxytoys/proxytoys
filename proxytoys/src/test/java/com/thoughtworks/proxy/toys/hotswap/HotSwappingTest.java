@@ -94,24 +94,24 @@ public class HotSwappingTest extends ProxyTestCase {
     private void useSerializedProxy(Screwdriver sd) {
         sd.screw();
         Person person = new Person();
-        ((Swappable)sd).hotswap(person);
+        ((Swappable) sd).hotswap(person);
         sd.screw();
         assertTrue(person.wasScrewed);
     }
 
     public void testSerializeWithJDK() throws IOException, ClassNotFoundException {
         Screwdriver sd = hotSwappable(Screwdriver.class).with(new Person()).build(getFactory());
-        useSerializedProxy((Screwdriver)serializeWithJDK(sd));
+        useSerializedProxy((Screwdriver) serializeWithJDK(sd));
     }
 
     public void testSerializeWithXStream() {
         Object sd = hotSwappable(Screwdriver.class).with(new Person()).build(getFactory());
-        useSerializedProxy((Screwdriver)serializeWithXStream(sd));
+        useSerializedProxy((Screwdriver) serializeWithXStream(sd));
     }
 
     public void testSerializeWithXStreamInPureReflectionMode() {
         Screwdriver sd = hotSwappable(Screwdriver.class).with(new Person()).build(getFactory());
-        useSerializedProxy((Screwdriver)serializeWithXStreamAndPureReflection(sd));
+        useSerializedProxy((Screwdriver) serializeWithXStreamAndPureReflection(sd));
     }
 
 }
