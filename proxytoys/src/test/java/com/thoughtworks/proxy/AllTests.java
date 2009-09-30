@@ -46,7 +46,6 @@ public class AllTests {
 
         // CGLIB-specific tests
         suite.addTestSuite(CglibProxyFactoryTest.class);
-        suite.addTestSuite(CglibHotSwappingTest.class);
         suite.addTestSuite(CglibMulticastTest.class);
         suite.addTestSuite(CglibNullTest.class);
 
@@ -69,7 +68,6 @@ public class AllTests {
         TestSuite suite = new TestSuite("Tests using " + type + "ProxyFactory");
         ProxyTestCase.PROXY_FACTORY = factory;
         suite.addTestSuite(ProxyFactoryTest.class);
-        suite.addTestSuite(HotSwappingTest.class);
         suite.addTestSuite(MulticastTest.class);
         suite.addTestSuite(NullTest.class);
         suite.addTestSuite(PoolTest.class);
