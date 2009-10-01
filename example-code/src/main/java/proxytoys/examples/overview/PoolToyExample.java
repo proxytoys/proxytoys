@@ -20,25 +20,26 @@ import java.util.zip.Checksum;
 public class PoolToyExample {
 
     public static void packageOverviewExample1() {
-        Pool pool = poolable(Checksum.class, new Resetter() {
-            public boolean reset(final Object object) {
-                ((Checksum)object).reset();
+        Resetter<Checksum> resetter = new Resetter<Checksum>() {
+            public boolean reset(Checksum object) {
+                object.reset();
                 return true;
             }
-        });
+        };
+        Pool<Checksum> pool = poolable(Checksum.class, resetter);
         pool.add(new CRC32());
         {
-            Checksum checksum = (Checksum) pool.get();
+            Checksum checksum = pool.get();
             checksum.update("JUnit".getBytes(), 0, 5);
             System.out.println("CRC32 checksum of \"JUnit\": " + checksum.getValue());
         }
         {
-            Checksum checksum = (Checksum) pool.get();
+            Checksum checksum = pool.get();
             if (checksum == null) {
                 System.out.println("No checksum available, force gc ...");
                 System.gc();
             }
-            checksum = (Checksum) pool.get();
+            checksum = pool.get();
             System.out.println("CRC32 of an resetted checksum: " + checksum.getValue());
             ((Poolable) checksum).returnInstanceToPool();
         }

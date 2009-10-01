@@ -95,7 +95,7 @@ public class Pool<T> implements Serializable {
         return new Pool<T>(type, resetter, factory);
     }
 
-    public static <T> Pool<T> poolable(Class type, Resetter resetter) {
+    public static <T> Pool<T> poolable(Class<T> type, Resetter<T> resetter) {
         return new Pool<T>(type, resetter, new StandardProxyFactory());
     }
 

@@ -9,12 +9,12 @@ package com.thoughtworks.proxy.kit;
 
 /**
  * Interface for a resetter component. This will automatically reset the state of the pooled element, when it is
- * retunred to the pool.
+ * returned to the pool.
  *
  * @author J&ouml;rg Schaible
  * @since 0.2
  */
-public interface Resetter {
+public interface Resetter<T> {
     /**
      * Reset the pooled object. The implementation may do anything to reset the state of the pooled element. If the
      * element is definately exhausted, a return value of <code>false</code> prevents the element from returning into
@@ -24,5 +24,5 @@ public interface Resetter {
      * @return <code>true</code> if the element can be used for further tasks.
      * @since 0.2
      */
-    boolean reset(Object object);
+    boolean reset(T object);
 }

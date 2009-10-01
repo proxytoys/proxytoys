@@ -18,7 +18,7 @@ import java.util.*;
  * Toy factory to create proxies acting as Null Objects.
  *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
- * @author <a href="mailto:nospamx.aslak@thoughtworks.com">Aslak Helles&oslash;y</a>
+ * @author Aslak Helles&oslash;y
  * @see com.thoughtworks.proxy.toys.nullobject
  * @since 0.1
  */
