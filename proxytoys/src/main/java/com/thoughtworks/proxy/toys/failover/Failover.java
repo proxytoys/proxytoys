@@ -27,26 +27,39 @@ public class Failover<T> {
         this.type = type;
     }
 
-    public Failover(Class<T> type, Object[] delegates, Class exceptionClass) {
-        this.type = type;
-        this.delegates = delegates;
-        this.exceptionClass = exceptionClass;
-    }
-
     /**
      * Creates a factory for proxy instances handling failover.
      *
      * @param type           the types of the proxy
-     * @param delegates      the delegates used for failover
-     * @param exceptionClass the type of the exceptions triggering failover
      * @return a factory that will proxy instances of the supplied type.
      * @since 0.2
      */
-    public static <T> Failover<T> failoverable(Class<T> type, final Object[] delegates, final Class exceptionClass) {
+    public static <T> Failover<T> failoverable(Class<T> type) {
 
-        return new Failover<T>(type, delegates, exceptionClass);
+        return new Failover<T>(type);
     }
 
+    /**
+     * With these delegates
+     * @param delegates      the delegates used for failover
+     * @return
+     */
+    public Failover<T> with(final Object... delegates) {
+        this.delegates = delegates;
+        return this;
+    }
+
+
+    /**
+     * Excepting this exception class
+     * @param exceptionClass the type of the exceptions triggering failover
+     * @return
+     */
+    public Failover<T> excepting(Class<? extends Throwable> exceptionClass) {
+        this.exceptionClass = exceptionClass;
+        return this;
+        
+    }
 
     /**
      * * Create a proxy of a specific types with failover capability using the given objects.  The provided exception type
