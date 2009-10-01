@@ -129,7 +129,7 @@ public class DecoratingTest extends ProxyTestCase {
         final Throwable[] thrown = new Throwable[1]; // hack for inner class
         final MyException decoratedException = new MyException();
 
-        foo = decoratable(Foo.class).with(new MethodMissingImpl(), new InvocationDecoratorSupport() {
+        foo = decoratable(Foo.class).with(new MethodMissingImpl(), new InvocationDecorator() {
             public Exception decorateInvocationException(Object proxy, Method method, Object[] args, Exception cause) {
                 thrown[0] = cause;
                 return decoratedException;
@@ -143,7 +143,7 @@ public class DecoratingTest extends ProxyTestCase {
 
     }
 
-    static class AssertingDecorator extends InvocationDecoratorSupport {
+    static class AssertingDecorator extends InvocationDecorator {
         private static final long serialVersionUID = 1L;
 
         public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {

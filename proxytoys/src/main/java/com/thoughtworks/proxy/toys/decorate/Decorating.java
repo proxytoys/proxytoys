@@ -41,7 +41,6 @@ public class Decorating<T> {
      * Creates a factory for proxy instances that allow decoration.
      *
      * @param type     the type of the proxy when it is finally created.
-     * @param delegate the object the proxy delegates to.
      * @return a factory that will proxy instances of the supplied type.
      */
     public static <T> Decorating<T> decoratable(final Class<T> type) {
@@ -74,7 +73,7 @@ public class Decorating<T> {
     /**
      * Creating a decorating proxy for an object using a special {@link ProxyFactory}
      *
-     * @param factory the @{link ProxyFactory} to use.
+     * @param proxyFactory the @{link ProxyFactory} to use.
      * @return the created proxy implementing the <tt>type</tt>
      */
 

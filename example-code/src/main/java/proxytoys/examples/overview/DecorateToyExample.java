@@ -7,7 +7,7 @@ package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
-import com.thoughtworks.proxy.toys.decorate.InvocationDecoratorSupport;
+import com.thoughtworks.proxy.toys.decorate.InvocationDecorator;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -23,15 +23,15 @@ public class DecorateToyExample {
 
     public static void packageOverviewExample1() {
         List list = Arrays.asList("1", "2", "3");
-        Iterator intIter = decoratable(
-                Iterator.class).with(list.iterator(), new InvocationDecoratorSupport() {
-                    public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
-                        if (method.getName().equals("next"))
-                            return Integer.valueOf((String)result);
-                        else
-                            return result;
-                    }
-                }).build();
+        InvocationDecorator decorator = new InvocationDecorator() {
+            public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
+                if (method.getName().equals("next"))
+                    return Integer.valueOf((String) result);
+                else
+                    return result;
+            }
+        };
+        Iterator intIter = decoratable(Iterator.class).with(list.iterator(), decorator).build();
         while (intIter.hasNext()) {
             Integer i = (Integer)intIter.next();
             System.out.println(i);
@@ -40,7 +40,7 @@ public class DecorateToyExample {
 
     public static void packageOverviewExample2() {
         File file = new File(".");
-        File decoratedFile = decoratable(File.class).with( file, new InvocationDecoratorSupport() {
+        InvocationDecorator decorator = new InvocationDecorator() {
             public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
                 System.out.print("Called: " + method.getName());
                 return super.beforeMethodStarts(proxy, method, args);
@@ -50,7 +50,8 @@ public class DecorateToyExample {
                 System.out.println(" ==> " + result);
                 return result;
             }
-        }).build(new CglibProxyFactory());
+        };
+        File decoratedFile = decoratable(File.class).with( file, decorator).build(new CglibProxyFactory());
         decoratedFile.exists();
         decoratedFile.isFile();
         decoratedFile.isDirectory();

@@ -1,6 +1,6 @@
 /*
- * Created on 04-May-2004
- * 
+ * Created on 10-May-2004
+ *
  * (c) 2003-2005 ThoughtWorks Ltd
  *
  * See license.txt for license details
@@ -12,12 +12,14 @@ import java.lang.reflect.Method;
 
 
 /**
- * Decorates a method invocation
+ * Identity implementation for a InvokerDecorator. The implementation will just pass through any values. Use this as
+ * base class for derived implementations, that do not override all of the methods.
  *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @since 0.1
  */
-public interface InvocationDecorator extends Serializable {
+public abstract class InvocationDecorator implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Called before a method is invoked on an object, to possibly decorate the arguments being passed to the method
@@ -29,7 +31,9 @@ public interface InvocationDecorator extends Serializable {
      * @return the decorated arguments (typically just the ones supplied)
      * @since 0.1
      */
-    Object[] beforeMethodStarts(Object proxy, Method method, Object[] args);
+    public Object[] beforeMethodStarts(final Object proxy, final Method method, final Object[] args) {
+        return args;
+    }
 
     /**
      * Called on the way back from a method invocation, to possibly decorate the result.
@@ -41,7 +45,9 @@ public interface InvocationDecorator extends Serializable {
      * @return the decorated result (typically just the supplied result)
      * @since 0.2, different arguments in 0.1
      */
-    Object decorateResult(Object proxy, Method method, Object[] args, Object result);
+    public Object decorateResult(final Object proxy, final Method method, final Object[] args, final Object result) {
+        return result;
+    }
 
     /**
      * Called when a called method fails, to possibly decorate the type of error.
@@ -53,7 +59,10 @@ public interface InvocationDecorator extends Serializable {
      * @return the decorated exception (typically just the supplied cause)
      * @since 0.2, different arguments in 0.1
      */
-    Throwable decorateTargetException(Object proxy, Method method, Object[] args, Throwable cause);
+    public Throwable decorateTargetException(
+            final Object proxy, final Method method, final Object[] args, final Throwable cause) {
+        return cause;
+    }
 
     /**
      * Called when a method cannot be invoked, to possibly decorate the type of error.
@@ -65,5 +74,8 @@ public interface InvocationDecorator extends Serializable {
      * @return the decorated exception (typically just the supplied cause)
      * @since 0.2, different arguments in 0.1
      */
-    Exception decorateInvocationException(Object proxy, Method method, Object[] args, Exception cause);
+    public Exception decorateInvocationException(
+            final Object proxy, final Method method, final Object[] args, final Exception cause) {
+        return cause;
+    }
 }
