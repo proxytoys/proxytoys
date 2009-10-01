@@ -9,6 +9,7 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -18,7 +19,10 @@ import java.util.*;
 public class EchoToyExample {
 
     public static void packageOverviewExample1() {
-        Map map = (Map) echoable(Map.class).withDelegateObject(new HashMap()).build(new CglibProxyFactory());
+        Map map = (Map) echoable(Map.class)
+                            .with(new HashMap())
+                            .to(new PrintWriter(System.err))
+                            .build(new CglibProxyFactory());
         map.put("Date", new Date());
         map.put("File", new File("."));
         try {

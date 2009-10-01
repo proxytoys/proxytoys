@@ -26,7 +26,7 @@ public class CglibEchoingTest extends ProxyTestCase {
     @Test
     public void shouldProxyRealInstance() {
         final StringWriter out = new StringWriter();
-        final List<File> list = (List<File>) echoable(List.class).withDelegateObject(new ArrayList()).withPrintWriter(new PrintWriter(out)).build(createProxyFactory());
+        final List<File> list = (List<File>) echoable(List.class).with(new ArrayList()).to(new PrintWriter(out)).build(createProxyFactory());
         list.add(new File("."));
         final File file = list.get(0);
         file.exists();

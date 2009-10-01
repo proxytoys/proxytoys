@@ -37,7 +37,7 @@ public class Echoing<T> {
      * @param printWriter which receives the output
      * @return the factory that will proxy instances of the supplied type.
      */
-    public Echoing withPrintWriter(final PrintWriter printWriter) {
+    public Echoing to(final PrintWriter printWriter) {
         this.printWriter = printWriter;
         return this;
     }
@@ -48,7 +48,7 @@ public class Echoing<T> {
      * @param delegate the object the proxy delegates to.
      * @return the factory that will proxy instances of the supplied type.
      */
-    public Echoing withDelegateObject(final Object delegate) {
+    public Echoing with(final Object delegate) {
         this.delegate = delegate;
         return this;
     }
