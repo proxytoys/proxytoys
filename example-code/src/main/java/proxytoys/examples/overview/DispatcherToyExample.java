@@ -26,10 +26,10 @@ public class DispatcherToyExample {
             final ArrayList list = new ArrayList();
             final TreeMap map = new TreeMap();
 
-            final Object proxy = dispatchable(new Class[]{
-                    Checksum.class, DataInput.class, DataOutput.class, List.class}, new Object[]{
+            final Object proxy = dispatchable(
+                    Checksum.class, DataInput.class, DataOutput.class, List.class).with(
                     list, new CRC32(), new DataInputStream(new ByteArrayInputStream("Hello Proxy!".getBytes())),
-                    new DataOutputStream(outputStream), map}).build();
+                    new DataOutputStream(outputStream), map).build();
 
             ((DataOutput)proxy).writeBytes("Chameleon");
             ((List)proxy).add("Frankenstein");
@@ -50,8 +50,7 @@ public class DispatcherToyExample {
             try {
                 final RandomAccessFile file = new RandomAccessFile(tempFile, "rw");
 
-                final Object proxy = dispatchable(
-                        new Class[]{DataInput.class, DataOutput.class}, new Object[]{file}).build();
+                final Object proxy = dispatchable(DataInput.class, DataOutput.class).with(file).build();
 
                 ((DataOutput)proxy).writeBytes("One matches both");
                 file.seek(0);

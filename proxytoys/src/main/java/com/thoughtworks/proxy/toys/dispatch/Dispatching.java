@@ -11,6 +11,8 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.SimpleReference;
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
 
 /**
@@ -25,24 +27,35 @@ public class Dispatching {
     private Object[] delegates;
 
 
-    private Dispatching(Class[] types, Object[] delegates) {
+    private Dispatching(Class[] types) {
         this.types = types;
-        this.delegates = delegates;
     }
 
     /**
      * Creates a factory for proxy instances that allow delegation.
      *
      * @param types     the types of the proxy
-     * @param delegates the objects, that will receive the calls
      * @return a factory that will proxy instances of the supplied type.
      * @since 0.2
      */
 
-    public static Dispatching dispatchable(Class[] types, Object[] delegates) {
-        return new Dispatching(types, delegates);
+    public static Dispatching dispatchable(Class... types) {
+        return new Dispatching(types);
 
     }
+
+    /**
+     * Defines the object that shall be delegated to. This delegate must implement the types used to create the hot swap or
+     * have signature compatible methods.
+     *
+     * @param delegates the objects that will receive the calls.
+     * @return the factory that will proxy instances of the supplied type.
+     */
+    public Dispatching with(final Object... delegates) {
+        this.delegates = delegates;
+        return this;
+    }
+
 
     /**
      * * Create a dispatching proxy of given types for the given objects with {@link StandardProxyFactory}
