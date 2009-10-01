@@ -19,7 +19,7 @@ import java.util.*;
 public class EchoToyExample {
 
     public static void packageOverviewExample1() {
-        Map map = (Map) echoable(Map.class)
+        Map map = echoable(Map.class)
                             .with(new HashMap())
                             .to(new PrintWriter(System.err))
                             .build(new CglibProxyFactory());
