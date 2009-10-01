@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @since 0.1
  */
-public abstract class InvocationDecorator implements Serializable {
+public abstract class Decorator implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**

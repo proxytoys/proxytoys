@@ -7,7 +7,7 @@ package proxytoys.examples.overview;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
-import com.thoughtworks.proxy.toys.decorate.InvocationDecorator;
+import com.thoughtworks.proxy.toys.decorate.Decorator;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -23,7 +23,7 @@ public class DecorateToyExample {
 
     public static void packageOverviewExample1() {
         List list = Arrays.asList("1", "2", "3");
-        InvocationDecorator decorator = new InvocationDecorator() {
+        Decorator decorator = new Decorator() {
             public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
                 if (method.getName().equals("next"))
                     return Integer.valueOf((String) result);
@@ -40,7 +40,7 @@ public class DecorateToyExample {
 
     public static void packageOverviewExample2() {
         File file = new File(".");
-        InvocationDecorator decorator = new InvocationDecorator() {
+        Decorator decorator = new Decorator() {
             public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
                 System.out.print("Called: " + method.getName());
                 return super.beforeMethodStarts(proxy, method, args);

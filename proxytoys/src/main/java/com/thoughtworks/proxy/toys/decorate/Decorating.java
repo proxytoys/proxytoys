@@ -31,7 +31,7 @@ public class Decorating<T> {
 
     private Object delegate;
     private Class<T> type;
-    private InvocationDecorator decorator;
+    private Decorator decorator;
 
     private Decorating(final Class<T> type) {
         this.type = type;
@@ -55,7 +55,7 @@ public class Decorating<T> {
      * @return the factory that will proxy instances of the supplied type.
      */
 
-    public Decorating<T> with(Object delegate, InvocationDecorator decorator) {
+    public Decorating<T> with(Object delegate, Decorator decorator) {
         this.delegate = delegate;
         this.decorator = decorator;
         return this;

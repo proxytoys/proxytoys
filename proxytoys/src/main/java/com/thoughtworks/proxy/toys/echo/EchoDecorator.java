@@ -9,14 +9,14 @@ package com.thoughtworks.proxy.toys.echo;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
-import com.thoughtworks.proxy.toys.decorate.InvocationDecorator;
+import com.thoughtworks.proxy.toys.decorate.Decorator;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
 
 /**
- * A {@link com.thoughtworks.proxy.toys.decorate.InvocationDecorator} implementation that echoes any invocation to a {@link PrintWriter}.
+ * A {@link com.thoughtworks.proxy.toys.decorate.Decorator} implementation that echoes any invocation to a {@link PrintWriter}.
  * <p>
  * The implementation will try to create new proxies for every return value, that can be proxied by the
  * {@link ProxyFactory} in use.
@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
  * @author J&ouml;rg Schaible
  * @since 0.1
  */
-public class EchoDecorator extends InvocationDecorator {
+public class EchoDecorator extends Decorator {
     private static final long serialVersionUID = 1L;
     private final PrintWriter out;
     private final ProxyFactory factory;
