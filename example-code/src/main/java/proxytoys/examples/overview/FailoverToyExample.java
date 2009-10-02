@@ -31,7 +31,7 @@ public class FailoverToyExample {
         Format format = failoverable(Format.class).build( new CglibProxyFactory());
         System.out.println("Format a date: " + format.format(new Date()));
         System.out.println("Format a message: " + format.format(new String[]{"John", "Doe"}));
-        System.out.println("Format a number: " + format.format(new Integer(42)));
+        System.out.println("Format a number: " + format.format(42));
     }
 
     public static void packageOverviewExample2() {

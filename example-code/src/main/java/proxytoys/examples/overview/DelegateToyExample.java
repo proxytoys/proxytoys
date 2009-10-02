@@ -11,7 +11,6 @@ import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 
 import java.io.*;
 
-
 /**
  * @author J&ouml;rg Schaible
  */
@@ -23,7 +22,7 @@ public class DelegateToyExample {
                 return Boolean.TRUE;
             }
         };
-        ObjectReference ref = delegatable(ObjectReference.class, threadLocal).build();
+        ObjectReference ref = delegatable(ObjectReference.class).with(threadLocal).build();
         System.out.println("This ObjectReference has an initial value of <" + ref.get() + ">");
     }
 
@@ -31,7 +30,7 @@ public class DelegateToyExample {
         RandomAccessFile raf = new RandomAccessFile(f, "rw");
         raf.writeBytes("Content");
         raf.seek(0);
-        return  delegatable(DataInput.class, raf).withDelegationMode(DIRECT).build();
+        return delegatable(DataInput.class).with(raf).mode(DIRECT).build();
     }
 
     public static void packageOverviewExample2() {

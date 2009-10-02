@@ -58,7 +58,7 @@ public class DelegatingTest extends ProxyTestCase {
 
     private Foo createProxy(Object impl) {
 
-        return delegatable(Foo.class, impl).build(getFactory());
+        return delegatable(Foo.class).with(impl).build(getFactory());
     }
 
     @Test
@@ -179,7 +179,7 @@ public class DelegatingTest extends ProxyTestCase {
                 return i == 1 ? 1 : i * fac.calc(i - 1, fac);
             }
         };
-        Faculty proxy = delegatable(Faculty.class, fac).build(getFactory());
+        Faculty proxy = delegatable(Faculty.class).with(fac).build(getFactory());
         assertEquals(120, fac.calc(5, fac));
         assertEquals(120, proxy.calc(5, proxy));
     }

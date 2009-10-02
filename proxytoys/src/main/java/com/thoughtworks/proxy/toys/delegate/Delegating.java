@@ -31,22 +31,31 @@ public class Delegating<T> {
     private Object delegate;
     private DelegationMode delegationMode = SIGNATURE;
 
-    private Delegating(Class<T> type, Object delegate) {
+    private Delegating(Class<T> type) {
         this.type = type;
-        this.delegate = delegate;
     }
 
     /**
      * Creates a factory for proxy instances that allow delegation.
      *
      * @param type     the type of the proxy when it is finally created.
-     * @param delegate the object the proxy delegates to.
      * @return a factory that will proxy instances of the supplied type.
      */
 
-    public static <T> Delegating<T> delegatable(Class<T> type, Object delegate) {
-        return new Delegating<T>(type, delegate);
+    public static <T> Delegating<T> delegatable(Class<T> type) {
+        return new Delegating<T>(type);
     }
+
+    /**
+     * With this delegate
+     * @param delegate the object the proxy delegates to.
+     * @return
+     */
+    public Delegating<T> with(Object delegate) {
+        this.delegate = delegate;
+        return this;
+    }
+
 
     /**
      * Forces a particular delegation mode to be used.
@@ -56,7 +65,7 @@ public class Delegating<T> {
      *             values.
      * @return the factory that will proxy instances of the supplied type.
      */
-    public Delegating<T> withDelegationMode(DelegationMode mode) {
+    public Delegating<T> mode(DelegationMode mode) {
         this.delegationMode = mode;
         return this;
     }
