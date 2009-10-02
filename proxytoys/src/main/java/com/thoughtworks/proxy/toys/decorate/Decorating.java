@@ -78,6 +78,6 @@ public class Decorating<T> {
      */
 
     public T build(final ProxyFactory proxyFactory) {
-        return (T) proxyFactory.createProxy(new Class[]{type}, new DecoratingInvoker(delegate, decorator));
+        return (T) proxyFactory.createProxy(new DecoratingInvoker(delegate, decorator), type);
     }
 }

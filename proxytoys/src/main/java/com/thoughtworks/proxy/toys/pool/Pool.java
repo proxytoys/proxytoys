@@ -352,7 +352,7 @@ public class Pool<T> implements Serializable {
          * @since 0.2
          */
         protected Object proxy() {
-            return getProxyFactory().createProxy(pool.types, this);
+            return getProxyFactory().createProxy(this, pool.types);
         }
 
         private Pool getPoolInstance() {

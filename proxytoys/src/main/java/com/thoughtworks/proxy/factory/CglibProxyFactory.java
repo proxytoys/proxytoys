@@ -74,11 +74,11 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      *
      * @since 0.1
      */
-    public Object createProxy(final Class[] types, final Invoker invoker) {
+    public Object createProxy(final Invoker invoker, final Class[] types) {
         final Class clazz = getSingleClass(types);
         if (clazz == null) {
             // slightly faster
-            return standardProxyFactory.createProxy(types, invoker);
+            return standardProxyFactory.createProxy(invoker, types);
         }
         final Class[] interfaces = getInterfaces(types);
         final Enhancer enhancer = new Enhancer();

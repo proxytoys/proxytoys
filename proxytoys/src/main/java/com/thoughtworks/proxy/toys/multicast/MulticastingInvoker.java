@@ -91,7 +91,7 @@ public class MulticastingInvoker implements Invoker {
         } else {
             classes = types;
         }
-        return proxyFactory.createProxy(classes, this);
+        return proxyFactory.createProxy(this, classes);
     }
 
     public Object invoke(final Object proxy, Method method, Object[] args) throws Throwable {

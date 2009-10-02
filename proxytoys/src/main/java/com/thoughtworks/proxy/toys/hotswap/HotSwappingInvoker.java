@@ -146,7 +146,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
         System.arraycopy(types, 0, typesWithSwappable, 0, types.length);
         typesWithSwappable[types.length] = Swappable.class;
         typesWithSwappable[types.length + 1] = CycleCheck.class;
-        return getProxyFactory().createProxy(typesWithSwappable, this);
+        return getProxyFactory().createProxy(this, typesWithSwappable);
     }
 
     private void writeObject(final ObjectOutputStream out) throws IOException {

@@ -77,8 +77,8 @@ public class Delegating<T> {
      * @return the created proxy implementing the <tt>type</tt>
      */
     public T build(ProxyFactory factory) {
-        return (T) factory.createProxy(new Class[]{type}, new DelegatingInvoker(
-                factory, new SimpleReference(delegate), delegationMode));
+        return (T) factory.createProxy(new DelegatingInvoker(
+                factory, new SimpleReference(delegate), delegationMode), type);
     }
 
 }

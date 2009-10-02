@@ -43,7 +43,7 @@ public class StandardProxyFactory extends AbstractProxyFactory {
         }
     }
 
-    public Object createProxy(final Class[] types, final Invoker invoker) {
+    public Object createProxy(final Invoker invoker, final Class[] types) {
         final Class[] interfaces = new Class[types.length + 1];
         System.arraycopy(types, 0, interfaces, 0, types.length);
         interfaces[types.length] = InvokerReference.class;

@@ -169,7 +169,7 @@ public class Null<T> {
         } else if (SortedMap.class == type) {
             result = NULL_SORTED_MAP;
         } else if (proxyFactory.canProxy(type)) {
-            result = proxyFactory.createProxy(new Class[]{type}, new NullInvoker(type, proxyFactory));
+            result = proxyFactory.createProxy(new NullInvoker(type, proxyFactory), type);
         } else {
             result = null;
         }

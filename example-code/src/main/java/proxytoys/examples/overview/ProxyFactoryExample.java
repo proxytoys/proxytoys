@@ -20,7 +20,7 @@ public class ProxyFactoryExample {
 
     public static void packageOverviewExample1() {
         ProxyFactory factory = new StandardProxyFactory();
-        List proxy = (List)factory.createProxy(new Class[]{List.class}, new SimpleInvoker(new ArrayList()));
+        List proxy = (List)factory.createProxy(new SimpleInvoker(new ArrayList()), List.class);
         proxy.add("Hello World");
         System.out.println("Size of list: " + proxy.size());
         System.out.println("First element of list: " + proxy.get(0));

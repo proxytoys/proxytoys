@@ -11,8 +11,6 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.SimpleReference;
-import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
-import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
 
 /**
@@ -48,7 +46,7 @@ public class Dispatching {
         for (int i = 0; i < references.length; i++) {
             references[i] = new SimpleReference(delegates[i]);
         }
-        return factory.createProxy(types, new DispatchingInvoker(factory, types, references));
+        return factory.createProxy(new DispatchingInvoker(factory, types, references), types);
     }
 
     public static class DispatchingWith {
