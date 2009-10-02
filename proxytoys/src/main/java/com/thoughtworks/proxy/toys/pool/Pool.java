@@ -86,17 +86,21 @@ public class Pool<T> implements Serializable {
      *
      * @param type     the type of the instances
      * @param resetter the resetter of the pooled elements
-     * @param factory  the factory to be used
      * @return return the pool with parameters specified
      * @since 0.2
      */
-
-    public static <T> Pool<T> poolable(Class type, Resetter resetter, ProxyFactory factory) {
-        return new Pool<T>(type, resetter, factory);
+    public static <T> Pool<T> poolable(Class<T> type, Resetter<T> resetter) {
+        return new Pool<T>(type, resetter);
     }
 
-    public static <T> Pool<T> poolable(Class<T> type, Resetter<T> resetter) {
-        return new Pool<T>(type, resetter, new StandardProxyFactory());
+    /**
+     * Build the pool.
+     * @param factory the proxy factory to use
+     * @return
+     */
+    public Pool<T> build(ProxyFactory factory) {
+        this.factory = factory;
+        return this;
     }
 
     /**
@@ -115,7 +119,7 @@ public class Pool<T> implements Serializable {
      * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
      */
 
-    public Pool<T> withSerializationMode(int serializationMode) {
+    public Pool<T> mode(int serializationMode) {
         this.serializationMode = serializationMode;
         if (Math.abs(serializationMode) > 1) {
             throw new IllegalArgumentException("Invalid serialization mode");
@@ -129,13 +133,11 @@ public class Pool<T> implements Serializable {
      *
      * @param type         the type of the instances
      * @param resetter     the resetter of the pooled elements
-     * @param proxyFactory the proxy factory to use
      * @since 0.2
      */
-    private Pool(final Class type, final Resetter resetter, final ProxyFactory proxyFactory) {
+    private Pool(final Class type, final Resetter resetter) {
         this();
         this.types = new Class[]{type, Poolable.class};
-        this.factory = proxyFactory;
         this.resetter = resetter;
     }
 

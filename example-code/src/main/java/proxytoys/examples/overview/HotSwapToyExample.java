@@ -22,7 +22,9 @@ public class HotSwapToyExample {
     public static void packageOverviewExample1() {
         ByteArrayOutputStream outStreamOdd = new ByteArrayOutputStream();
         ByteArrayOutputStream outStreamEven = new ByteArrayOutputStream();
-        OutputStream out = hotSwappable(OutputStream.class).with(null).build(new CglibProxyFactory());
+        OutputStream out = hotSwappable(OutputStream.class)
+                              .with(null)
+                              .build(new CglibProxyFactory());
         PrintWriter writer = new PrintWriter(out);
         for (int i = 0; i < 10; ++i) {
             Swappable swappable = (Swappable)out;

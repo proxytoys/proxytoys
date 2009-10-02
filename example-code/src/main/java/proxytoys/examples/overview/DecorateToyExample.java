@@ -31,7 +31,9 @@ public class DecorateToyExample {
                     return result;
             }
         };
-        Iterator intIter = decoratable(Iterator.class).with(list.iterator(), decorator).build();
+        Iterator intIter = decoratable(Iterator.class)
+                             .with(list.iterator(), decorator)
+                             .build();
         while (intIter.hasNext()) {
             Integer i = (Integer)intIter.next();
             System.out.println(i);
@@ -51,7 +53,9 @@ public class DecorateToyExample {
                 return result;
             }
         };
-        File decoratedFile = decoratable(File.class).with( file, decorator).build(new CglibProxyFactory());
+        File decoratedFile = decoratable(File.class)
+                                .with(file, decorator)
+                                .build(new CglibProxyFactory());
         decoratedFile.exists();
         decoratedFile.isFile();
         decoratedFile.isDirectory();
