@@ -21,21 +21,21 @@ public class DispatcherToyExample {
 
     public static void packageOverviewExample1() throws IOException {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        final ArrayList list = new ArrayList();
+        final ArrayList<String> list = new ArrayList<String>();
         final TreeMap map = new TreeMap();
 
-        final Object proxy = dispatchable(Checksum.class, DataInput.class, DataOutput.class, List.class)
+        final Checksum checksum = dispatchable(Checksum.class, DataInput.class, DataOutput.class, List.class)
                 .with(list, new CRC32(), new DataInputStream(new ByteArrayInputStream("Hello Proxy!".getBytes())),
                         new DataOutputStream(outputStream), map)
                 .build();
 
-        ((DataOutput) proxy).writeBytes("Chameleon");
-        ((List) proxy).add("Frankenstein");
+        ((DataOutput) checksum).writeBytes("Chameleon");
+        ((List<String>) checksum).add("Frankenstein");
 
-        System.out.println("Read a line: " + ((DataInput) proxy).readLine());
+        System.out.println("Read a line: " + ((DataInput) checksum).readLine());
         System.out.println("Once written: " + outputStream.toString());
         System.out.println("List contains: " + list.toString());
-        System.out.println("Current CRC32 value: " + ((Checksum) proxy).getValue());
+        System.out.println("Current CRC32 value: " + checksum.getValue());
 
     }
 

@@ -20,7 +20,7 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  * @see com.thoughtworks.proxy.toys.dispatch
  * @since 0.2
  */
-public class Dispatching {
+public class Dispatching<T> {
 
     private Class[] types;
     private Object[] delegates;
@@ -32,28 +32,36 @@ public class Dispatching {
     /**
      * Creates a builder for proxy instances that allow delegation.
      *
+     * @param primaryType
      * @param types     the types of the proxy
      * @return a builder that will proxy instances of the supplied type.
      */
-    public static DispatchingWith dispatchable(Class... types) {
-        return new DispatchingWith(types);
+    public static <T> DispatchingWith<T> dispatchable(Class<T> primaryType, Class... types) {
+        return new DispatchingWith<T>(primaryType,  types);
 
     }
 
-    private Object build(ProxyFactory factory) {
+    private T build(ProxyFactory factory) {
 
         final ObjectReference[] references = new ObjectReference[delegates.length];
         for (int i = 0; i < references.length; i++) {
             references[i] = new SimpleReference(delegates[i]);
         }
-        return factory.createProxy(new DispatchingInvoker(factory, types, references), types);
+        return (T) factory.createProxy(new DispatchingInvoker(factory, types, references), types);
     }
 
-    public static class DispatchingWith {
-        private final Dispatching dispatching;
+    public static class DispatchingWith<T> {
+        private final Dispatching<T> dispatching;
 
-        private DispatchingWith(Class[] types) {
-            this.dispatching = new Dispatching(types);
+        private DispatchingWith(Class<T> primaryType, Class[] types) {
+            this.dispatching = new Dispatching<T>(makeTypesArray(primaryType, types));
+        }
+
+        private Class[] makeTypesArray(Class<T> primaryType, Class[] types) {
+            Class[] retVal = new Class[types.length +1];
+            retVal[0] = primaryType;
+            System.arraycopy(types, 0, retVal, 1, types.length);
+            return retVal;
         }
 
         /**
@@ -63,17 +71,17 @@ public class Dispatching {
          * @param delegates the objects that will receive the calls.
          * @return the factory that will proxy instances of the supplied type.
          */
-        public DispatchingBuild with(final Object... delegates) {
+        public DispatchingBuild<T> with(final Object... delegates) {
             dispatching.delegates = delegates;
             return new DispatchingBuild(dispatching);
         }
     }
 
-    public static class DispatchingBuild {
-        private final Dispatching dispatching;
+    public static class DispatchingBuild<T> {
+        private final Dispatching<T> dispatching;
 
 
-        private DispatchingBuild(Dispatching dispatching) {
+        private DispatchingBuild(Dispatching<T> dispatching) {
 
             this.dispatching = dispatching;
         }
@@ -83,7 +91,7 @@ public class Dispatching {
          *
          * @return the created proxy
          */
-        public Object build() {
+        public T build() {
             return build(new StandardProxyFactory());
         }
 
@@ -93,7 +101,7 @@ public class Dispatching {
          * @param factory the {@link ProxyFactory} to use
          * @return the created proxy
          */
-        public Object build(ProxyFactory factory) {
+        public T build(ProxyFactory factory) {
             return dispatching.build(factory);
         }
 
