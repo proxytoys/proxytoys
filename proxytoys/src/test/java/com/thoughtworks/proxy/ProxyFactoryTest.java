@@ -20,7 +20,7 @@ public class ProxyFactoryTest extends ProxyTestCase {
     }
 
     private void useSerializedFactory(ProxyFactory factory) {
-        Resetter resetter = (Resetter) nullable(Resetter.class).build();
+        Resetter resetter = nullable(Resetter.class).build();
         assertFalse(resetter.reset(this));
     }
 

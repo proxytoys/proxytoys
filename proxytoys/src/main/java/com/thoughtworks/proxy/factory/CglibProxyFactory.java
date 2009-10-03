@@ -52,7 +52,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         }
     }
 
-    private static final Map boxedClasses = new HashMap();
+    private static final Map<Class, Class> boxedClasses = new HashMap<Class, Class>();
 
     static {
         boxedClasses.put(Boolean.TYPE, Boolean.class);

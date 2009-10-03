@@ -69,7 +69,7 @@ public class Echoing<T> {
      * @return the created proxy implementing the <tt>type</tt>
      */
     public T build(final ProxyFactory proxyFactory) {
-        return (T) decoratable(type).with(delegate, new EchoDecorator(printWriter, proxyFactory)).build(proxyFactory);
+        return decoratable(type).with(delegate, new EchoDecorator(printWriter, proxyFactory)).build(proxyFactory);
     }
 
     /**

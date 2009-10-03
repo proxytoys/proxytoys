@@ -21,6 +21,6 @@ public enum SerializationMode {
      * <code>NONE</code> is the value for serialization of the pool without the objects. The pool is
      * empty after serialization and must be populated again.
      */
-    NONE;
+    NONE
 
 }

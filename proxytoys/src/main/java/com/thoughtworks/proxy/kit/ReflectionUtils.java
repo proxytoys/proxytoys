@@ -71,9 +71,9 @@ public class ReflectionUtils {
      */
     public static Set getAllInterfaces(final Object[] objects) {
         final Set interfaces = new HashSet();
-        for (int i = 0; i < objects.length; i++) {
-            if (objects[i] != null) {
-                getInterfaces(objects[i].getClass(), interfaces);
+        for (Object object : objects) {
+            if (object != null) {
+                getInterfaces(object.getClass(), interfaces);
             }
         }
         interfaces.remove(InvokerReference.class);
@@ -104,9 +104,9 @@ public class ReflectionUtils {
         // the hierarchy for the superclasses and the superinterfaces.
         while (clazz != null) {
             final Class[] implemented = clazz.getInterfaces();
-            for (int i = 0; i < implemented.length; i++) {
-                if (!interfaces.contains(implemented[i])) {
-                    getInterfaces(implemented[i], interfaces);
+            for (Class anImplemented : implemented) {
+                if (!interfaces.contains(anImplemented)) {
+                    getInterfaces(anImplemented, interfaces);
                 }
             }
             clazz = clazz.getSuperclass();
@@ -124,10 +124,10 @@ public class ReflectionUtils {
         boolean found = false;
         if (objects != null && objects.length > 0) {
             while (!found) {
-                for (int i = 0; i < objects.length; i++) {
+                for (Object object : objects) {
                     found = true;
-                    if (objects[i] != null) {
-                        final Class currentClazz = objects[i].getClass();
+                    if (object != null) {
+                        final Class currentClazz = object.getClass();
                         if (clazz == null) {
                             clazz = currentClazz;
                         }

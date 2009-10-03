@@ -63,7 +63,7 @@ public class NullInvoker implements Invoker {
                     ? Boolean.TRUE
                     : Boolean.FALSE;
         } else if (ReflectionUtils.hashCode.equals(method)) {
-            result = new Integer(type.hashCode());
+            result = type.hashCode();
         }
 
         // Just another null object

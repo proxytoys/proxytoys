@@ -40,7 +40,7 @@ import java.util.Map;
  */
 public class DelegatingInvoker implements Invoker {
     private static final long serialVersionUID = 1L;
-    private transient Map methodCache;
+    private transient Map<Method, Method> methodCache;
     private ProxyFactory proxyFactory;
     private ObjectReference delegateReference;
     private DelegationMode delegationMode;
@@ -60,7 +60,7 @@ public class DelegatingInvoker implements Invoker {
         this.proxyFactory = proxyFactory;
         this.delegateReference = delegateReference;
         this.delegationMode = delegationMode;
-        this.methodCache = new HashMap();
+        this.methodCache = new HashMap<Method, Method>();
     }
 
     /**
@@ -95,7 +95,7 @@ public class DelegatingInvoker implements Invoker {
             }
         } else if (method.equals(ReflectionUtils.hashCode)) {
             // equals and hashCode must be consistent
-            result = new Integer(delegate == null ? hashCode() : delegate.hashCode());
+            result = delegate == null ? hashCode() : delegate.hashCode();
 
             // null delegatable
         } else if (delegate == null) {
@@ -103,7 +103,7 @@ public class DelegatingInvoker implements Invoker {
 
             // regular method call
         } else {
-            Method methodToCall = (Method) methodCache.get(method);
+            Method methodToCall = methodCache.get(method);
             if (methodToCall == null) {
                 methodToCall = getMethodToInvoke(method, args);
                 methodCache.put(method, methodToCall);

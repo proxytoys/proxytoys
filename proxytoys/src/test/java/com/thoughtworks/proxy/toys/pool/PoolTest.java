@@ -52,8 +52,6 @@ public class PoolTest extends ProxyTestCase {
         }
     }
 
-    ;
-
     private Object[] createIdentifiables(int size) {
         final Object array[] = new Object[size];
         for (int i = 0; i < size; ++i) {

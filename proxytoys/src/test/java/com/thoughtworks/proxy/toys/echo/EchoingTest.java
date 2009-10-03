@@ -41,7 +41,7 @@ public class EchoingTest extends ProxyTestCase {
     public void shouldEchoMethodNameAndArgs() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple foo = (Simple) echoable(Simple.class).to(new PrintWriter(out)).build(getFactory());
+        Simple foo = echoable(Simple.class).to(new PrintWriter(out)).build(getFactory());
 
         // execute
         foo.doSomething();
@@ -54,7 +54,7 @@ public class EchoingTest extends ProxyTestCase {
     public void shouldDelegateCalls() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple foo = (Simple) echoable(Simple.class).to(new PrintWriter(out)).with(simpleMock).build(getFactory());
+        Simple foo = echoable(Simple.class).to(new PrintWriter(out)).with(simpleMock).build(getFactory());
 
 
         // execute
@@ -79,7 +79,7 @@ public class EchoingTest extends ProxyTestCase {
         Outer outerMock = mock(Outer.class);
         StringWriter out = new StringWriter();
 
-        Outer outer = (Outer) echoable(Outer.class).with(outerMock).to(new PrintWriter(out)).build(getFactory());
+        Outer outer = echoable(Outer.class).with(outerMock).to(new PrintWriter(out)).build(getFactory());
 
         // expect
         when(outerMock.getInner()).thenReturn(innerMock);
@@ -99,7 +99,7 @@ public class EchoingTest extends ProxyTestCase {
     public void shouldRecursivelyReturnEchoProxiesEvenForMissingImplementations() throws Exception {
         // setup
         StringWriter out = new StringWriter();
-        Outer outer = (Outer) echoable(Outer.class).to(new PrintWriter(out)).build(getFactory());
+        Outer outer = echoable(Outer.class).to(new PrintWriter(out)).build(getFactory());
 
         // execute
         outer.getInner().getName();

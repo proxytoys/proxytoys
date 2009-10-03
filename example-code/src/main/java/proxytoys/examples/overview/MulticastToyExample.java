@@ -31,11 +31,11 @@ public class MulticastToyExample {
 
     public static void packageOverviewExample2() {
         try {
-            List list1 = new ArrayList();
-            list1.add(new Integer(5));
-            list1.add(new Integer(100));
-            List list2 = new LinkedList();
-            list2.add(new Integer(3));
+            List<Integer> list1 = new ArrayList<Integer>();
+            list1.add(5);
+            list1.add(100);
+            List<Integer> list2 = new LinkedList<Integer>();
+            list2.add(3);
             List listCombined = (List)multicastable(list1, list2).build();
             Multicast values = (Multicast)listCombined.get(0);
             System.out.println("Sum of the first integers: "
@@ -47,7 +47,7 @@ public class MulticastToyExample {
 
     public static void packageOverviewExample3() {
         File workingDir = new File(".");
-        List files = Arrays.asList(workingDir.list());
+        List<String> files = Arrays.asList(workingDir.list());
         Object multicast = multicastable(workingDir, files)
                              .with(File.class, List.class)
                              .build(new CglibProxyFactory());
@@ -70,8 +70,8 @@ public class MulticastToyExample {
     }
 
     public static void packageOverviewExample5() {
-        List list = new ArrayList();
-        Set set = new HashSet();
+        List<String> list = new ArrayList<String>();
+        Set<?> set = new HashSet();
         list.add("ProxyToys");
         set.add(null);
         Collection collection = (Collection)multicastable(list, set).build();
