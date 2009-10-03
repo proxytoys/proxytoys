@@ -109,10 +109,10 @@ public class MulticastingInvoker implements Invoker {
             method = ReflectionUtils.getMatchingMethod((Class) args[0], (String) args[1], newArgs);
             args = newArgs;
         }
-        final List invocationResults = new ArrayList();
-        for (int i = 0; i < targets.length; i++) {
-            if (method.getDeclaringClass().isInstance(targets[i])) {
-                Object result = method.invoke(targets[i], args);
+        final List<Object> invocationResults = new ArrayList<Object>();
+        for (Object target : targets) {
+            if (method.getDeclaringClass().isInstance(target)) {
+                Object result = method.invoke(target, args);
                 if (result != null) {
                     invocationResults.add(result);
                 }
@@ -145,63 +145,63 @@ public class MulticastingInvoker implements Invoker {
 
     private static Byte addBytes(final Object[] args) {
         byte result = 0;
-        for (int i = 0; i < args.length; i++) {
-            result += ((Byte) args[i]).byteValue();
+        for (Object arg : args) {
+            result += (Byte) arg;
         }
-        return new Byte(result);
+        return result;
     }
 
     private static Character addChars(final Object[] args) {
         char result = 0;
-        for (int i = 0; i < args.length; i++) {
-            result += ((Character) args[i]).charValue();
+        for (Object arg : args) {
+            result += (Character) arg;
         }
-        return new Character(result);
+        return result;
     }
 
     private static Short addShorts(final Object[] args) {
         short result = 0;
-        for (int i = 0; i < args.length; i++) {
-            result += ((Short) args[i]).shortValue();
+        for (Object arg : args) {
+            result += (Short) arg;
         }
-        return new Short(result);
+        return result;
     }
 
     private static Integer addIntegers(final Object[] args) {
         int result = 0;
-        for (int i = 0; i < args.length; i++) {
-            result += ((Integer) args[i]).intValue();
+        for (Object arg : args) {
+            result += (Integer) arg;
         }
-        return new Integer(result);
+        return result;
     }
 
     private static Long addLongs(final Object[] args) {
         long result = 0;
-        for (int i = 0; i < args.length; i++) {
-            result += ((Long) args[i]).longValue();
+        for (Object arg : args) {
+            result += (Long) arg;
         }
-        return new Long(result);
+        return result;
     }
 
     private static Float addFloats(final Object[] args) {
         float result = 0;
-        for (int i = 0; i < args.length; i++) {
-            result += ((Float) args[i]).floatValue();
+        for (Object arg : args) {
+            result += (Float) arg;
         }
-        return new Float(result);
+        return result;
     }
 
     private static Double addDoubles(final Object[] args) {
         double result = 0;
-        for (int i = 0; i < args.length; i++) {
-            result += ((Double) args[i]).doubleValue();
+        for (Object arg : args) {
+            result += (Double) arg;
         }
-        return new Double(result);
+        return result;
     }
 
     private static Boolean andBooleans(final Object[] args) {
-        for (int i = 0; i < args.length; i++) {
-            if (!((Boolean) args[i]).booleanValue()) {
+        for (Object arg : args) {
+            if (!(Boolean) arg) {
                 return Boolean.FALSE;
             }
         }
