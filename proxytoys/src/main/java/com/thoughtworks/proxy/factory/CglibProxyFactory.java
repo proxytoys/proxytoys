@@ -95,7 +95,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     }
 
     private Class[] getInterfaces(final Class[] types) {
-        final List interfaces = new ArrayList(Arrays.asList(types));
+        final List<Class> interfaces = new ArrayList<Class>(Arrays.asList(types));
         for (final Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
             final Class clazz = (Class) iterator.next();
             if (!clazz.isInterface()) {
@@ -103,12 +103,11 @@ public class CglibProxyFactory extends AbstractProxyFactory {
             }
         }
         interfaces.add(InvokerReference.class);
-        return (Class[]) interfaces.toArray(new Class[interfaces.size()]);
+        return interfaces.toArray(new Class[interfaces.size()]);
     }
 
     private Class getSingleClass(final Class[] types) {
-        for (int i = 0; i < types.length; i++) {
-            final Class type = types[i];
+        for (final Class type : types) {
             if (!type.isInterface()) {
                 return type;
             }

@@ -34,7 +34,7 @@ public class DispatchingInvoker implements Invoker {
     private static final long serialVersionUID = 1L;
     private List types;
     private Invoker[] invokers;
-    private transient Set[] methodSets;
+    private transient Set<Method>[] methodSets;
 
     /**
      * Construct a DispatchinInvoker.
@@ -48,12 +48,12 @@ public class DispatchingInvoker implements Invoker {
             final ProxyFactory proxyFactory, final Class[] types, final ObjectReference[] delegateReferences) {
         this.types = Arrays.asList(types);
         invokers = new Invoker[types.length];
-        methodSets = new Set[types.length];
+        methodSets = (Set<Method>[]) new Set[types.length];
         for (int i = 0; i < types.length; i++) {
-            for (int j = 0; j < delegateReferences.length; j++) {
-                if (types[i].isAssignableFrom(delegateReferences[j].get().getClass())) {
-                    invokers[i] = new DelegatingInvoker(proxyFactory, delegateReferences[j], DIRECT);
-                    methodSets[i] = new HashSet(Arrays.asList(types[i].getMethods()));
+            for (ObjectReference delegateReference : delegateReferences) {
+                if (types[i].isAssignableFrom(delegateReference.get().getClass())) {
+                    invokers[i] = new DelegatingInvoker(proxyFactory, delegateReference, DIRECT);
+                    methodSets[i] = new HashSet<Method>(Arrays.asList(types[i].getMethods()));
                     break;
                 }
             }
@@ -88,13 +88,13 @@ public class DispatchingInvoker implements Invoker {
                                 }
                             }
                         }
-                        return new Boolean(isEqual);
+                        return isEqual;
                     }
                 }
             }
             return Boolean.FALSE;
         } else if (method.equals(ReflectionUtils.hashCode)) {
-            return new Integer(hashCode());
+            return hashCode();
         } else if (method.equals(ReflectionUtils.toString)) {
             return types.toString();
         } else {
@@ -109,18 +109,18 @@ public class DispatchingInvoker implements Invoker {
 
     private void writeObject(final ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
-        final List[] types = new List[methodSets.length];
-        final List[] names = new List[methodSets.length];
-        final List[] arguments = new List[methodSets.length];
+        final List<Class>[] types = (List<Class>[]) new List[methodSets.length];
+        final List<String>[] names = (List<String>[]) new List[methodSets.length];
+        final List<Class<?>[]>[] arguments = (List<Class<?>[]>[]) new List[methodSets.length];
         for (int i = 0; i < methodSets.length; i++) {
-            final Method[] methods = (Method[]) methodSets[i].toArray(new Method[methodSets[i].size()]);
-            types[i] = new ArrayList();
-            names[i] = new ArrayList();
-            arguments[i] = new ArrayList();
-            for (int j = 0; j < methods.length; j++) {
-                types[i].add(methods[j].getDeclaringClass());
-                names[i].add(methods[j].getName());
-                arguments[i].add(methods[j].getParameterTypes());
+            final Method[] methods = methodSets[i].toArray(new Method[methodSets[i].size()]);
+            types[i] = new ArrayList<Class>();
+            names[i] = new ArrayList<String>();
+            arguments[i] = new ArrayList<Class<?>[]>();
+            for (Method method : methods) {
+                types[i].add(method.getDeclaringClass());
+                names[i].add(method.getName());
+                arguments[i].add(method.getParameterTypes());
             }
         }
         out.writeObject(types);
@@ -133,10 +133,10 @@ public class DispatchingInvoker implements Invoker {
         final List[] types = (List[]) in.readObject();
         final List[] names = (List[]) in.readObject();
         final List[] arguments = (List[]) in.readObject();
-        methodSets = new Set[types.length];
+        methodSets = (Set<Method>[]) new Set[types.length];
         try {
             for (int i = 0; i < methodSets.length; i++) {
-                methodSets[i] = new HashSet();
+                methodSets[i] = new HashSet<Method>();
                 for (int j = 0; j < types[i].size(); j++) {
                     final Class type = (Class) types[i].get(j);
                     final String name = (String) names[i].get(j);
