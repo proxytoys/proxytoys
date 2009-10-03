@@ -16,7 +16,6 @@ import com.thoughtworks.proxy.ProxyFactory;
  *
  * @author Aslak Helles&oslash;y
  * @see com.thoughtworks.proxy.toys.failover
- * @since 0.1
  */
 public class Failover<T> {
     private Class<T> type;
@@ -32,7 +31,7 @@ public class Failover<T> {
      *
      * @param type           the types of the proxy
      * @return a factory that will proxy instances of the supplied type.
-     * @since 0.2
+
      */
     public static <T> Failover<T> failoverable(Class<T> type) {
 
@@ -67,7 +66,7 @@ public class Failover<T> {
      *
      * @param proxyFactory the {@link ProxyFactory} to use
      * @return the created proxy
-     * @since 0.2
+
      */
     public T build(final ProxyFactory proxyFactory) {
         return (T) new FailoverInvoker(new Class[]{type}, proxyFactory, delegates, exceptionClass).proxy();

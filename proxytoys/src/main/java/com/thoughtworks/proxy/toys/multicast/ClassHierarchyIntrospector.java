@@ -21,7 +21,6 @@ import java.util.Set;
  *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @since 0.1
  * @deprecated since 0.2, use com.thoughtworks.proxy.kit.ReflectionUitls.
  */
 public class ClassHierarchyIntrospector {

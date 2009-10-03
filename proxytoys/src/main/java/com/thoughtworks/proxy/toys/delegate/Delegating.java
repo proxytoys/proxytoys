@@ -23,7 +23,6 @@ import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
  *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @see com.thoughtworks.proxy.toys.delegate
- * @since 0.1
  */
 public class Delegating<T> {
 

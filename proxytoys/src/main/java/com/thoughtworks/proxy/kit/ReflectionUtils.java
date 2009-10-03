@@ -25,7 +25,6 @@ import java.util.Set;
  *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @since 0.2
  */
 public class ReflectionUtils {
     /**
@@ -182,7 +181,7 @@ public class ReflectionUtils {
      * @param args       the arguments to match
      * @return the matching {@link Method}
      * @throws NoSuchMethodException if no matching {@link Method} exists
-     * @since 0.2
+
      */
     public static Method getMatchingMethod(final Class type, final String methodName, final Object[] args)
             throws NoSuchMethodException {
@@ -250,7 +249,6 @@ public class ReflectionUtils {
      * @param out    the stream
      * @param method the {@link Method} to write
      * @throws IOException if writing causes a problem
-     * @since 1.2
      */
     public static void writeMethod(final ObjectOutputStream out, final Method method) throws IOException {
         out.writeObject(method.getDeclaringClass());
@@ -266,7 +264,6 @@ public class ReflectionUtils {
      * @throws IOException            if reading causes a problem
      * @throws ClassNotFoundException if class types from objects of the InputStream cannot be found
      * @throws InvalidObjectException if the {@link Method} cannot be found
-     * @since 1.2
      */
     public static Method readMethod(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         final Class type = (Class) in.readObject();

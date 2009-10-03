@@ -23,7 +23,6 @@ import java.io.PrintWriter;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author J&ouml;rg Schaible
  * @see com.thoughtworks.proxy.toys.echo
- * @since 0.1
  */
 public class Echoing<T> {
 

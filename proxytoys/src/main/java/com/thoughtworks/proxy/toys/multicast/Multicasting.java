@@ -21,7 +21,6 @@ import java.util.Set;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @see com.thoughtworks.proxy.toys.multicast
- * @since 0.1
  */
 public class Multicasting<T> {
     private Class[] types;
@@ -37,7 +36,7 @@ public class Multicasting<T> {
      *
      * @param targets targets the target objects
      * @return a factory that will proxy instances of the supplied type.
-     * @since 0.2
+
      */
 
     public static <T> Multicasting<T> multicastable(Object... targets) {
@@ -69,7 +68,7 @@ public class Multicasting<T> {
      *
      * @param factory the factory used to generate the proxy
      * @return the new proxy implementing {@link Multicast} or the only target
-     * @since 0.1
+
      */
     public T build(ProxyFactory factory) {
         if (types == null) {

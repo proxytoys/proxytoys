@@ -36,7 +36,6 @@ import java.util.Map;
  * @author Dan North
  * @author J&ouml;rg Schaible
  * @see com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker
- * @since 0.1
  */
 public class DelegatingInvoker implements Invoker {
     private static final long serialVersionUID = 1L;
@@ -53,7 +52,7 @@ public class DelegatingInvoker implements Invoker {
      * @param delegationMode    one of the delegation modes
      * @throws IllegalArgumentException if the <tt>delegationMode</tt> is not one of the predefined constants of
      *                                  {@link Delegating}
-     * @since 0.2
+
      */
     public DelegatingInvoker(final ProxyFactory proxyFactory, final ObjectReference delegateReference,
                              final DelegationMode delegationMode) {
@@ -67,7 +66,7 @@ public class DelegatingInvoker implements Invoker {
      * Construct a DelegatingInvoker with a {@link StandardProxyFactory} and {@link DelegationMode#SIGNATURE}.
      *
      * @param delegate the delegated object
-     * @since 0.1
+
      */
     public DelegatingInvoker(final Object delegate) {
         this(new StandardProxyFactory(), new SimpleReference(delegate), SIGNATURE);
@@ -117,7 +116,7 @@ public class DelegatingInvoker implements Invoker {
      * Retrieve the delegated object in derived classes.
      *
      * @return the delegated object
-     * @since 0.1
+
      */
     protected Object delegate() {
         return delegateReference.get();
@@ -130,7 +129,7 @@ public class DelegatingInvoker implements Invoker {
      * @param args   the arguments for the invocation
      * @return the matching method
      * @throws DelegationException if no matching method can be found
-     * @since 0.2
+
      */
     protected Method getMethodToInvoke(final Method method, final Object[] args) {
         if (delegationMode == DIRECT) {
@@ -152,7 +151,7 @@ public class DelegatingInvoker implements Invoker {
      * @param args   the arguments for the invocation
      * @return the method's result
      * @throws InvocationTargetException if the invoked method throws any exception
-     * @since 0.1
+
      */
     protected Object invokeOnDelegate(final Method method, final Object[] args) throws InvocationTargetException {
         final Object delegate = delegate();
@@ -169,7 +168,7 @@ public class DelegatingInvoker implements Invoker {
      * Retrieve the {@link ObjectReference} of the delegate.
      *
      * @return the reference of hte delegate
-     * @since 0.2
+
      */
     protected ObjectReference getDelegateReference() {
         return this.delegateReference;
@@ -179,7 +178,7 @@ public class DelegatingInvoker implements Invoker {
      * Retrieve the {@link ProxyFactory} to use.
      *
      * @return the ProxyFactory
-     * @since 0.2
+
      */
     protected ProxyFactory getProxyFactory() {
         return this.proxyFactory;
@@ -190,7 +189,7 @@ public class DelegatingInvoker implements Invoker {
      * the same <tt>delegation mode</tt> and their delegees are equal.
      *
      * @see java.lang.Object#equals(java.lang.Object)
-     * @since 0.2
+
      */
     public boolean equals(final Object obj) {
         if (obj instanceof DelegatingInvoker) {

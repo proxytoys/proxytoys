@@ -16,7 +16,6 @@ import java.lang.reflect.Method;
  * protected or private methods of the own type.
  *
  * @author J&ouml;rg Schaible
- * @since 0.2
  */
 public class PrivateInvoker extends SimpleInvoker {
     private static final long serialVersionUID = 1L;
@@ -25,7 +24,7 @@ public class PrivateInvoker extends SimpleInvoker {
      * Construct a PrivateInvoker.
      *
      * @param target the invocation target.
-     * @since 0.2
+
      */
     public PrivateInvoker(final Object target) {
         super(target);

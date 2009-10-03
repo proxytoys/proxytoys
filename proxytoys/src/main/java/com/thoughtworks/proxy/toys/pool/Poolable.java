@@ -13,13 +13,12 @@ package com.thoughtworks.proxy.toys.pool;
  * explicitly.
  *
  * @author J&ouml;rg Schaible
- * @since 0.2
  */
 public interface Poolable {
     /**
      * Return the managed instance of this proxy directly to its pool.
      *
-     * @since 0.2
+
      */
     void returnInstanceToPool();
 }

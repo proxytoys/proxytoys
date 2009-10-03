@@ -28,7 +28,6 @@ import java.util.*;
  * Invoker that dispatches all invocations to different objects according the membership of the method.
  *
  * @author J&ouml;rg Schaible after idea by Rickard &Ouml;berg
- * @since 0.2
  */
 public class DispatchingInvoker implements Invoker {
     private static final long serialVersionUID = 1L;
@@ -42,7 +41,7 @@ public class DispatchingInvoker implements Invoker {
      * @param proxyFactory       the {@link ProxyFactory} to use
      * @param types              the types of the generated proxy
      * @param delegateReferences the {@link ObjectReference ObjectReferences} for the delegates
-     * @since 0.2
+
      */
     public DispatchingInvoker(
             final ProxyFactory proxyFactory, final Class[] types, final ObjectReference[] delegateReferences) {
@@ -66,7 +65,6 @@ public class DispatchingInvoker implements Invoker {
     /**
      * Constructor used by pure reflection serialization.
      *
-     * @since 1.2
      */
     protected DispatchingInvoker() {
     }

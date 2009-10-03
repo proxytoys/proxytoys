@@ -12,7 +12,6 @@ package com.thoughtworks.proxy.kit;
  * returned to the pool.
  *
  * @author J&ouml;rg Schaible
- * @since 0.2
  */
 public interface Resetter<T> {
     /**
@@ -22,7 +21,7 @@ public interface Resetter<T> {
      *
      * @param object the object to reset
      * @return <code>true</code> if the element can be used for further tasks.
-     * @since 0.2
+
      */
     boolean reset(T object);
 }

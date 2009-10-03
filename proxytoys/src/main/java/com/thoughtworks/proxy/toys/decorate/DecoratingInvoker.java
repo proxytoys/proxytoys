@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @since 0.1
  */
 public class DecoratingInvoker implements Invoker {
     private static final long serialVersionUID = 8293471912861497447L;
@@ -34,7 +33,7 @@ public class DecoratingInvoker implements Invoker {
      *
      * @param decorated the decorated {@link Invoker}.
      * @param decorator the decorating instance.
-     * @since 0.1
+
      */
     public DecoratingInvoker(final Invoker decorated, final Decorator decorator) {
         this.decorated = decorated;
@@ -46,7 +45,7 @@ public class DecoratingInvoker implements Invoker {
      *
      * @param delegate  the decorated object.
      * @param decorator the decorating instance.
-     * @since 0.1
+
      */
     public DecoratingInvoker(final Object delegate, final Decorator decorator) {
         this(new PrivateInvoker(delegate), decorator);

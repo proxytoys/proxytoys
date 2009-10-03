@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
  * call a method on them independent of the type of the proxy.
  *
  * @author J&ouml;rg Schaible
- * @since 0.2
  */
 public interface Multicast {
 
@@ -37,7 +36,7 @@ public interface Multicast {
      * @return the result of the multicast
      * @throws NoSuchMethodException if the type has no matching method
      * @throws SecurityException     if the security maneger prevents the method access by reflection
-     * @since 0.2
+
      */
     Object multicastTargets(Class type, String method, Object[] args) throws NoSuchMethodException;
 
@@ -52,7 +51,7 @@ public interface Multicast {
      * @param method the method to call
      * @param args   the arguments of the invocation
      * @return the result of the multicast
-     * @since 0.2
+
      */
     Object multicastTargets(Method method, Object[] args);
 
@@ -61,7 +60,7 @@ public interface Multicast {
      *
      * @param type the type of an array element
      * @return the typed array of proxy targets
-     * @since 0.2
+
      */
     Object getTargetsInArray(Class type);
 
@@ -69,7 +68,7 @@ public interface Multicast {
      * Access the targets of the proxy in an array.
      *
      * @return the array of proxy targets
-     * @since 0.2
+
      */
     Object[] getTargetsInArray();
 }

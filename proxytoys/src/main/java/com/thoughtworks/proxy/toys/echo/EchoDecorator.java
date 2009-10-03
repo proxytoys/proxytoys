@@ -14,7 +14,6 @@ import com.thoughtworks.proxy.toys.decorate.Decorator;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
-
 /**
  * A {@link com.thoughtworks.proxy.toys.decorate.Decorator} implementation that echoes any invocation to a {@link PrintWriter}.
  * <p>
@@ -24,7 +23,6 @@ import java.lang.reflect.Method;
  *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author J&ouml;rg Schaible
- * @since 0.1
  */
 public class EchoDecorator extends Decorator {
     private static final long serialVersionUID = 1L;
@@ -36,7 +34,6 @@ public class EchoDecorator extends Decorator {
      *
      * @param out     the {@link PrintWriter} receving the logs
      * @param factory the {@link ProxyFactory} to use
-     * @since 0.2, different arguments in 0.1
      */
     public EchoDecorator(final PrintWriter out, final ProxyFactory factory) {
         this.out = out;

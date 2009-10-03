@@ -20,7 +20,6 @@ import java.util.*;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
  * @see com.thoughtworks.proxy.toys.nullobject
- * @since 0.1
  */
 public class Null<T> {
 
@@ -118,7 +117,7 @@ public class Null<T> {
      * @param proxyFactory the {@link ProxyFactory} in use
      * @return object, proxy or <code>null</code>
      * @see com.thoughtworks.proxy.toys.nullobject
-     * @since 0.1
+
      */
 
 
@@ -183,7 +182,7 @@ public class Null<T> {
      *
      * @param object the object to examine
      * @return <code>true</code> if the object is a Null proxy.
-     * @since 0.1
+
      */
     public static boolean isNullObject(final Object object) {
         return isNullObject(object, new StandardProxyFactory());
@@ -195,7 +194,7 @@ public class Null<T> {
      * @param object       the object to examine
      * @param proxyFactory the {@link ProxyFactory} to use
      * @return <code>true</code> if the object is a Null proxy.
-     * @since 0.1
+
      */
     public static boolean isNullObject(final Object object, final ProxyFactory proxyFactory) {
         return isStandardNullObject(object) || isNullProxyObject(object, proxyFactory);

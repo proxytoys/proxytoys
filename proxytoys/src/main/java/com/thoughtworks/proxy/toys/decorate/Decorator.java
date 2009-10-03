@@ -10,13 +10,11 @@ package com.thoughtworks.proxy.toys.decorate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
-
 /**
  * Identity implementation for a InvokerDecorator. The implementation will just pass through any values. Use this as
  * base class for derived implementations, that do not override all of the methods.
  *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
- * @since 0.1
  */
 public abstract class Decorator implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -29,7 +27,6 @@ public abstract class Decorator implements Serializable {
      * @param method the method to be invoked
      * @param args   the arguments being passed to the method
      * @return the decorated arguments (typically just the ones supplied)
-     * @since 0.1
      */
     public Object[] beforeMethodStarts(final Object proxy, final Method method, final Object[] args) {
         return args;
@@ -43,7 +40,6 @@ public abstract class Decorator implements Serializable {
      * @param args   the arguments passed to the method
      * @param result the result of the method invocation
      * @return the decorated result (typically just the supplied result)
-     * @since 0.2, different arguments in 0.1
      */
     public Object decorateResult(final Object proxy, final Method method, final Object[] args, final Object result) {
         return result;
@@ -57,7 +53,6 @@ public abstract class Decorator implements Serializable {
      * @param args   the arguments passed to the method
      * @param cause  the original exception thrown
      * @return the decorated exception (typically just the supplied cause)
-     * @since 0.2, different arguments in 0.1
      */
     public Throwable decorateTargetException(
             final Object proxy, final Method method, final Object[] args, final Throwable cause) {
@@ -72,7 +67,6 @@ public abstract class Decorator implements Serializable {
      * @param args   the arguments passed to the method
      * @param cause  the original exception thrown
      * @return the decorated exception (typically just the supplied cause)
-     * @since 0.2, different arguments in 0.1
      */
     public Exception decorateInvocationException(
             final Object proxy, final Method method, final Object[] args, final Exception cause) {

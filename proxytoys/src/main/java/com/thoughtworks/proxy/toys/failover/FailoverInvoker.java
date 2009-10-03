@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @since 0.1
  */
 public class FailoverInvoker extends HotSwappingInvoker {
     private static final long serialVersionUID = -8289095570093619184L;
@@ -40,7 +39,7 @@ public class FailoverInvoker extends HotSwappingInvoker {
      * @param delegates      the delegates to use
      * @param exceptionClass the type of the exception
      * @throws IllegalArgumentException if <tt>exceptionClass</tt> is not a {@link Throwable}
-     * @since 0.1
+
      */
     public FailoverInvoker(
             final Class[] types, final ProxyFactory proxyFactory, final Object[] delegates, final Class exceptionClass) {

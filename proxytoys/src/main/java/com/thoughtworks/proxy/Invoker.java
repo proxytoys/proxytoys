@@ -16,7 +16,6 @@ import java.lang.reflect.Method;
  * using a {@link ProxyFactory}. An implementation realizes an invocation handler for the proxy. So it has the same
  * purpose as {@link java.lang.reflect.InvocationHandler}.
  *
- * @since 0.1
  */
 public interface Invoker extends Serializable {
     /**
@@ -27,7 +26,7 @@ public interface Invoker extends Serializable {
      * @param args   the arguments of the mothod.
      * @return the result of the onvoked method.
      * @throws Throwable if the invoked method has thrown.
-     * @since 0.1
+
      */
     Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
 }

@@ -18,7 +18,6 @@ import java.lang.reflect.Proxy;
  *
  * @author Aslak Helles&oslash;y
  * @see com.thoughtworks.proxy.factory
- * @since 0.1
  */
 public class StandardProxyFactory extends AbstractProxyFactory {
     private static final long serialVersionUID = 4430360631813383235L;
@@ -26,7 +25,7 @@ public class StandardProxyFactory extends AbstractProxyFactory {
     /**
      * The native InvocationHandler implementation.
      *
-     * @since 0.1
+
      */
     static class StandardInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements
             InvocationHandler {
@@ -36,7 +35,7 @@ public class StandardProxyFactory extends AbstractProxyFactory {
          * Construct a StandardInvocationHandlerAdapter.
          *
          * @param invoker the wrapping invoker instance
-         * @since 0.1
+
          */
         public StandardInvocationHandlerAdapter(Invoker invoker) {
             super(invoker);

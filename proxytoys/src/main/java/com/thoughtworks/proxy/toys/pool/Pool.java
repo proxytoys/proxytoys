@@ -42,7 +42,6 @@ import java.util.*;
  *
  * @author J&ouml;rg Schaible
  * @see com.thoughtworks.proxy.toys.pool
- * @since 0.2
  */
 public class Pool<T> implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -69,7 +68,7 @@ public class Pool<T> implements Serializable {
      * @param type     the type of the instances
      * @param resetter the resetter of the pooled elements
      * @return return the pool with parameters specified
-     * @since 0.2
+
      */
     public static <T> Pool<T> poolable(Class<T> type, Resetter<T> resetter) {
         return new Pool<T>(type, resetter);
@@ -111,7 +110,7 @@ public class Pool<T> implements Serializable {
      *
      * @param type         the type of the instances
      * @param resetter     the resetter of the pooled elements
-     * @since 0.2
+
      */
     private Pool(final Class type, final Resetter resetter) {
         this();
@@ -129,7 +128,7 @@ public class Pool<T> implements Serializable {
      *
      * @param instance the new instance
      * @throws NullPointerException if instance is <code>null</code>
-     * @since 0.2
+
      */
     public synchronized void add(final T instance) {
         if (instance == null) {
@@ -144,7 +143,7 @@ public class Pool<T> implements Serializable {
      *
      * @param instances the instances
      * @throws NullPointerException if instance is <code>null</code>
-     * @since 0.2
+
      */
     public synchronized void add(final T instances[]) {
         if (instances != null) {
@@ -163,7 +162,7 @@ public class Pool<T> implements Serializable {
      * returned objects from the garbage collector. This can be foreced by calling {@link System#gc()} first.
      *
      * @return an available instance from the pool or <em>null</em>.
-     * @since 0.2
+
      */
     public synchronized T get() {
         final Object result;
@@ -184,7 +183,7 @@ public class Pool<T> implements Serializable {
      * @param object the instance to release
      * @throws ClassCastException       if object was not {@link Poolable}.
      * @throws IllegalArgumentException if the object was not from this pool.
-     * @since 0.2
+
      */
     public void release(final Object object) {
         final Poolable poolable = (Poolable) object;
@@ -201,7 +200,7 @@ public class Pool<T> implements Serializable {
      * will be notified, if any object was collected and the {@link Resetter} retunred the object.
      *
      * @return the number of available instances.
-     * @since 0.2
+
      */
     public synchronized int getAvailable() {
         if (busyInstances.size() > 0) {
@@ -231,7 +230,7 @@ public class Pool<T> implements Serializable {
      * Retrieve the number of instances managed by the pool.
      *
      * @return the number of instances.
-     * @since 0.2
+
      */
     public synchronized int size() {
         return availableInstances.size() + busyInstances.size();
@@ -280,7 +279,7 @@ public class Pool<T> implements Serializable {
     /**
      * The {@link com.thoughtworks.proxy.Invoker} of the proxy.
      *
-     * @since 0.2
+
      */
     protected static class PoolingInvoker extends DelegatingInvoker {
         private static final long serialVersionUID = 1L;
@@ -295,7 +294,7 @@ public class Pool<T> implements Serializable {
          * @param proxyFactory      the {@link ProxyFactory} to use
          * @param delegateReference the {@link ObjectReference} with the delegate
          * @param delegationMode    one of the {@linkplain DelegationMode delgation modes}
-         * @since 0.2
+
          */
         protected PoolingInvoker(
                 Pool pool, ProxyFactory proxyFactory, ObjectReference delegateReference, DelegationMode delegationMode) {
@@ -317,7 +316,7 @@ public class Pool<T> implements Serializable {
          * the object.
          *
          * @return {@link Void#TYPE}
-         * @since 0.2
+
          */
         public Object returnInstanceToPool() {
             pool.returnInstanceToPool(getDelegateReference());
@@ -328,7 +327,7 @@ public class Pool<T> implements Serializable {
          * Create a proxy for the types of the pool.
          *
          * @return the new proxy instance
-         * @since 0.2
+
          */
         protected Object proxy() {
             return getProxyFactory().createProxy(this, pool.types);

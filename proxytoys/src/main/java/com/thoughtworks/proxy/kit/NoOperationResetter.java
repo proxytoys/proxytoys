@@ -15,7 +15,6 @@ import java.io.Serializable;
  * further interaction.
  *
  * @author J&ouml;rg Schaible
- * @since 0.2
  */
 public class NoOperationResetter implements Resetter, Serializable {
 

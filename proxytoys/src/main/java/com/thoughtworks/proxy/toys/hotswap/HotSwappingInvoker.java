@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
- * @since 0.1
  */
 public class HotSwappingInvoker extends DelegatingInvoker {
     private static final long serialVersionUID = 1L;
@@ -43,14 +42,14 @@ public class HotSwappingInvoker extends DelegatingInvoker {
     /**
      * Internal interface used to detect cyclic swapping activity.
      *
-     * @since 0.2
+
      */
     protected static interface CycleCheck {
         /**
          * Checks for a cyclic swap action.
          *
          * @throws IllegalStateException if cycle detected
-         * @since 0.2
+
          */
         void checkForCycle();
     }
@@ -67,7 +66,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
      * @param delegateReference the {@link ObjectReference} with the delegate
      * @param delegationMode    {@link DelegationMode#DIRECT MODE_DIRECT} or
      *                          {@link DelegationMode#SIGNATURE MODE_SIGNATURE}
-     * @since 0.2
+
      */
     public HotSwappingInvoker(
             final Class[] types, final ProxyFactory proxyFactory, final ObjectReference delegateReference,
@@ -119,7 +118,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
      * @param newDelegate the new delegate
      * @return the old delegate
      * @throws IllegalStateException if cyclic swapping action is detected
-     * @since 0.1
+
      */
     protected Object hotswap(final Object newDelegate) {
         ObjectReference ref = getDelegateReference();
@@ -138,7 +137,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
      * implements additionally the {@link Swappable} interface.
      *
      * @return the new proxy
-     * @since 0.1
+
      */
     public Object proxy() {
         //TODO: generify

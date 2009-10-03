@@ -23,7 +23,6 @@ import java.lang.reflect.Method;
  * A {@link Invoker} implementation that returns always new Null objects.
  *
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
- * @since 0.1
  */
 public class NullInvoker implements Invoker {
     private static final long serialVersionUID = -4713875509846468548L;

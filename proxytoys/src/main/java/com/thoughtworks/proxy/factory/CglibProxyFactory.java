@@ -26,7 +26,6 @@ import java.util.*;
  *
  * @author Aslak Helles&oslash;y
  * @see com.thoughtworks.proxy.factory
- * @since 0.1
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
     private static final long serialVersionUID = -5615928639194345818L;
@@ -36,7 +35,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     /**
      * The native invocation handler.
      *
-     * @since 0.1
+
      */
     static class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements
             InvocationHandler {
@@ -72,7 +71,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * based on the JDK.
      * </p>
      *
-     * @since 0.1
+
      */
     public Object createProxy(final Invoker invoker, final Class... types) {
         final Class clazz = getSingleClass(types);
