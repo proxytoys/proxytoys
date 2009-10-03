@@ -80,8 +80,9 @@ public class MulticastingInvoker implements Invoker {
     public Object proxy() {
         final Class[] classes;
         int i;
-        for (i = types.length; --i >= 0 && types[i] != Multicast.class;)
-            ;
+        i = types.length;
+        while (--i >= 0 && types[i] != Multicast.class) {
+        }
         if (i < 0) {
             classes = new Class[types.length + 1];
             if (classes.length > 1) {
