@@ -22,7 +22,9 @@ public class DelegateToyExample {
                 return Boolean.TRUE;
             }
         };
-        ObjectReference ref = delegatable(ObjectReference.class).with(threadLocal).build();
+        ObjectReference ref = delegatable(ObjectReference.class)
+                                 .with(threadLocal)
+                                 .build();
         System.out.println("This ObjectReference has an initial value of <" + ref.get() + ">");
     }
 
@@ -30,31 +32,29 @@ public class DelegateToyExample {
         RandomAccessFile raf = new RandomAccessFile(f, "rw");
         raf.writeBytes("Content");
         raf.seek(0);
-        return delegatable(DataInput.class).with(raf).mode(DIRECT).build();
+        return delegatable(DataInput.class)
+                    .with(raf)
+                    .mode(DIRECT)
+                    .build();
     }
 
-    public static void packageOverviewExample2() {
+    public static void packageOverviewExample2() throws IOException {
+        File tempFile = File.createTempFile("Toy", null);
         try {
-            File tempFile = File.createTempFile("Toy", null);
-            try {
-                DataInput dataInput = createDataInputFromFile(tempFile);
-                String line = dataInput.readLine();
-                System.out.println();
-                System.out.println("Data read: " + line);
-                DataOutput dataOutput = (DataOutput)dataInput;
-                dataOutput.writeBytes("This line will not be reached!");
-            } catch (ClassCastException e) {
-                System.out.println("Could not cast to DataOutput: " + e.getMessage());
-            } finally {
-                tempFile.delete();
-            }
-
-        } catch (IOException e) {
-            // ignore
+            DataInput dataInput = createDataInputFromFile(tempFile);
+            String line = dataInput.readLine();
+            System.out.println();
+            System.out.println("Data read: " + line);
+            DataOutput dataOutput = (DataOutput) dataInput;
+            dataOutput.writeBytes("This line will not be reached!");
+        } catch (ClassCastException e) {
+            System.out.println("Could not cast to DataOutput: " + e.getMessage());
+        } finally {
+            tempFile.delete();
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println();
         System.out.println();
         System.out.println("Running Delegate Toy Examples");

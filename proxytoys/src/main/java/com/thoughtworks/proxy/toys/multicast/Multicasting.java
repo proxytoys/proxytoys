@@ -48,7 +48,7 @@ public class Multicasting<T> {
      * @param types the types that are implemented by the proxy
      * @return the factory
      */
-    public Multicasting<T> withTypes(Class... types) {
+    public Multicasting<T> with(Class... types) {
         this.types = types;
         return this;
     }

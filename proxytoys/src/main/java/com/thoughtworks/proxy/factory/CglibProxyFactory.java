@@ -74,7 +74,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      *
      * @since 0.1
      */
-    public Object createProxy(final Invoker invoker, final Class[] types) {
+    public Object createProxy(final Invoker invoker, final Class... types) {
         final Class clazz = getSingleClass(types);
         if (clazz == null) {
             // slightly faster

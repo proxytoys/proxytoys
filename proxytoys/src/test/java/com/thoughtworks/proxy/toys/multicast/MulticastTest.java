@@ -75,7 +75,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) multicastable(tim, tom).withTypes(Dog.class).build(getFactory());
+        Dog timAndTom = (Dog) multicastable(tim, tom).with(Dog.class).build(getFactory());
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -93,7 +93,7 @@ public class MulticastTest extends ProxyTestCase {
         OtherTailImpl tomsTail = new OtherTailImpl();
         tom.add(tomsTail);
 
-        List timAndTom = (List) multicastable(tim, tom).withTypes(List.class).build(getFactory());
+        List timAndTom = (List) multicastable(tim, tom).with(List.class).build(getFactory());
         Tail timAndTomsTails = (Tail) timAndTom.get(0);
         timAndTomsTails.wag();
 
@@ -159,7 +159,7 @@ public class MulticastTest extends ProxyTestCase {
     public void shouldNotReturnProxyWhenThereIsOnlyOneForCompatibleDeclaredReturnTypes() {
         Map map = new HashMap();
         ProxyFactory factory = getFactory();
-        Object multicast = multicastable(map).withTypes(Map.class, Serializable.class).build(factory);
+        Object multicast = multicastable(map).with(Map.class, Serializable.class).build(factory);
         assertFalse(factory.isProxyClass(multicast.getClass()));
         assertSame(map, multicast);
     }
@@ -223,7 +223,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl t1 = new TailImpl();
         TailImpl t2 = new TailImpl();
         TailImpl t3 = new TailImpl();
-        Tail tail = (Tail) multicastable(t1, t2, t3).withTypes(Tail.class).build(getFactory());
+        Tail tail = (Tail) multicastable(t1, t2, t3).with(Tail.class).build(getFactory());
 
         assertFalse(t1.wasWagged());
         assertFalse(t2.wasWagged());
@@ -251,7 +251,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) multicastable(tim, tom).withTypes(Dog.class).build(getFactory());
+        Dog timAndTom = (Dog) multicastable(tim, tom).with(Dog.class).build(getFactory());
         return timAndTom.getTail();
     }
 

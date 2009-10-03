@@ -9,7 +9,6 @@ package com.thoughtworks.proxy.toys.pool;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.InvokerReference;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.kit.SimpleReference;
@@ -21,7 +20,6 @@ import java.io.*;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.*;
-
 
 /**
  * A simple pool implementation that collects its unused components of a specific type automatically.
@@ -58,28 +56,12 @@ public class Pool<T> implements Serializable {
         }
     }
 
-    /**
-     * <code>SERIALIZATION_FORCE</code> is the value for serialization of the pool with or without serializable
-     * objects. If the obejcts cannot be serialized, the pool is emtpy after serialization und must be populated again.
-     */
-    public final static int SERIALIZATION_FORCE = 1;
-    /**
-     * <code>SERIALIZATION_STANDARD</code> is the value for the standard serialization of the pool with its objects.
-     * If the obejcts cannot be serialized, a {@link NotSerializableException} is thrown.
-     */
-    public final static int SERIALIZATION_STANDARD = 0;
-    /**
-     * <code>SERIALIZATION_NONE</code> is the value for serialization of the pool without the objects. The pool is
-     * emtpy after serialization und must be populated again.
-     */
-    public final static int SERIALIZATION_NONE = -1;
-
     private Class types[];
     private ProxyFactory factory;
     private transient Map busyInstances;
     private transient List availableInstances;
     private Resetter resetter;
-    private int serializationMode;
+    private SerializationMode serializationMode = SerializationMode.STANDARD;
 
     /**
      * Construct a populated Pool with a specific proxy factory
@@ -106,11 +88,11 @@ public class Pool<T> implements Serializable {
     /**
      * Specify the serializationMode
      * <ul>
-     * <l>{@link #SERIALIZATION_STANDARD}: the standard mode, i.e. all elements of the pool are also serialized and a
+     * <l>STANDARD: the standard mode, i.e. all elements of the pool are also serialized and a
      * {@link NotSerializableException} may thrown</li>
-     * <li>{@link #SERIALIZATION_NONE}: no element of the pool is also serialized and it must be populated again after
+     * <li>NONE: no element of the pool is also serialized and it must be populated again after
      * serialization</li>
-     * <li>{@link #SERIALIZATION_FORCE}: all element of the pool are serialized, if possible. Otherwise the pool is
+     * <li>FORCE: all element of the pool are serialized, if possible. Otherwise the pool is
      * empty after serialization and must be populated again.</li>
      * </ul>
      *
@@ -119,14 +101,10 @@ public class Pool<T> implements Serializable {
      * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
      */
 
-    public Pool<T> mode(int serializationMode) {
+    public Pool<T> mode(SerializationMode serializationMode) {
         this.serializationMode = serializationMode;
-        if (Math.abs(serializationMode) > 1) {
-            throw new IllegalArgumentException("Invalid serialization mode");
-        }
         return this;
     }
-
 
     /**
      * Construct a populated Pool with a specific proxy factory.
@@ -140,7 +118,6 @@ public class Pool<T> implements Serializable {
         this.types = new Class[]{type, Poolable.class};
         this.resetter = resetter;
     }
-
 
     private Pool() {
         busyInstances = new HashMap();
@@ -275,19 +252,19 @@ public class Pool<T> implements Serializable {
         for (iter = busyInstances.keySet().iterator(); iter.hasNext();) {
             instances.add(new SimpleReference(iter.next()));
         }
-        int mode = serializationMode;
-        if (mode == SERIALIZATION_FORCE) {
+        SerializationMode mode = serializationMode;
+        if (mode == SerializationMode.FORCE) {
             try {
                 final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 final ObjectOutputStream testStream = new ObjectOutputStream(buffer);
                 testStream.writeObject(instances); // force NotSerializableException
                 testStream.close();
-                mode = SERIALIZATION_STANDARD;
+                mode = SerializationMode.STANDARD;
             } catch (final NotSerializableException e) {
-                mode = SERIALIZATION_NONE;
+                mode = SerializationMode.NONE;
             }
         }
-        if (mode == SERIALIZATION_STANDARD) {
+        if (mode == SerializationMode.STANDARD) {
             out.writeObject(instances);
         } else {
             out.writeObject(new ArrayList());

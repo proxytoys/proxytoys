@@ -26,9 +26,9 @@ import java.util.Date;
 public class FailoverToyExample {
 
     public static void packageOverviewExample1() {
-        Format[] formats = new Format[]{
-                NumberFormat.getInstance(), DateFormat.getDateInstance(), new MessageFormat("{1}, {0}"),};
-        Format format = failoverable(Format.class).build( new CglibProxyFactory());
+        Format[] formats = new Format[]{NumberFormat.getInstance(), DateFormat.getDateInstance(), new MessageFormat("{1}, {0}"),};
+        Format format = failoverable(Format.class)
+                          .build(new CglibProxyFactory());
         System.out.println("Format a date: " + format.format(new Date()));
         System.out.println("Format a message: " + format.format(new String[]{"John", "Doe"}));
         System.out.println("Format a number: " + format.format(42));
@@ -39,7 +39,8 @@ public class FailoverToyExample {
                 new DataInputStream(new ByteArrayInputStream(new byte[]{0, 'A', 0, 'n', 0, ' '})),
                 new DataInputStream(new ByteArrayInputStream(new byte[]{
                         0, 'e', 0, 'x', 0, 'a', 0, 'm', 0, 'p', 0, 'l', 0, 'e'})),};
-        DataInput dataInput = failoverable(DataInput.class).build(new StandardProxyFactory());
+        DataInput dataInput = failoverable(DataInput.class)
+                                 .build(new StandardProxyFactory());
         StringBuffer buffer = new StringBuffer();
         try {
             while (buffer.append(dataInput.readChar()) != null)
