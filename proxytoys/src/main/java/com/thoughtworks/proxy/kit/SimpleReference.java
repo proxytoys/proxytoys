@@ -9,7 +9,6 @@ package com.thoughtworks.proxy.kit;
 
 import java.io.Serializable;
 
-
 /**
  * Simple implementation for an {@link ObjectReference}.
  *

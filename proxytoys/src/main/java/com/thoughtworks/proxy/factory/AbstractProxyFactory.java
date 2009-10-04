@@ -53,7 +53,6 @@ abstract class AbstractProxyFactory implements ProxyFactory {
      * Clever, eh?
      * </p>
      *
-
      */
     static class CoincidentalInvocationHandlerAdapter implements Serializable {
         private static final long serialVersionUID = -7406561726778120065L;
@@ -100,7 +99,6 @@ abstract class AbstractProxyFactory implements ProxyFactory {
      * {@inheritDoc} The implementation of this method relies on the implementation of the derived factory to add the
      * interface {@link InvokerReference} to every proxy instance.
      *
-
      */
     public Invoker getInvoker(final Object proxy) {
         final InvokerReference ih = (InvokerReference) proxy;

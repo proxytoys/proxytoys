@@ -38,6 +38,7 @@ import java.util.Map;
  * @see com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker
  */
 public class DelegatingInvoker implements Invoker {
+
     private static final long serialVersionUID = 1L;
     private transient Map<Method, Method> methodCache;
     private ProxyFactory proxyFactory;
@@ -66,7 +67,6 @@ public class DelegatingInvoker implements Invoker {
      * Construct a DelegatingInvoker with a {@link StandardProxyFactory} and {@link DelegationMode#SIGNATURE}.
      *
      * @param delegate the delegated object
-
      */
     public DelegatingInvoker(final Object delegate) {
         this(new StandardProxyFactory(), new SimpleReference(delegate), SIGNATURE);
@@ -116,7 +116,6 @@ public class DelegatingInvoker implements Invoker {
      * Retrieve the delegated object in derived classes.
      *
      * @return the delegated object
-
      */
     protected Object delegate() {
         return delegateReference.get();
@@ -129,7 +128,6 @@ public class DelegatingInvoker implements Invoker {
      * @param args   the arguments for the invocation
      * @return the matching method
      * @throws DelegationException if no matching method can be found
-
      */
     protected Method getMethodToInvoke(final Method method, final Object[] args) {
         if (delegationMode == DIRECT) {
@@ -151,7 +149,6 @@ public class DelegatingInvoker implements Invoker {
      * @param args   the arguments for the invocation
      * @return the method's result
      * @throws InvocationTargetException if the invoked method throws any exception
-
      */
     protected Object invokeOnDelegate(final Method method, final Object[] args) throws InvocationTargetException {
         final Object delegate = delegate();
@@ -168,7 +165,6 @@ public class DelegatingInvoker implements Invoker {
      * Retrieve the {@link ObjectReference} of the delegate.
      *
      * @return the reference of hte delegate
-
      */
     protected ObjectReference getDelegateReference() {
         return this.delegateReference;
@@ -178,7 +174,6 @@ public class DelegatingInvoker implements Invoker {
      * Retrieve the {@link ProxyFactory} to use.
      *
      * @return the ProxyFactory
-
      */
     protected ProxyFactory getProxyFactory() {
         return this.proxyFactory;
@@ -189,7 +184,6 @@ public class DelegatingInvoker implements Invoker {
      * the same <tt>delegation mode</tt> and their delegees are equal.
      *
      * @see java.lang.Object#equals(java.lang.Object)
-
      */
     public boolean equals(final Object obj) {
         if (obj instanceof DelegatingInvoker) {

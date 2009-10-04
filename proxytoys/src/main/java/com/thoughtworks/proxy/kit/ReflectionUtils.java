@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-
 /**
  * Helper class for introspecting interface and class hierarchies.
  *
@@ -27,6 +26,7 @@ import java.util.Set;
  * @author J&ouml;rg Schaible
  */
 public class ReflectionUtils {
+
     /**
      * the {@link Object#equals(Object)} method.
      */
@@ -46,13 +46,9 @@ public class ReflectionUtils {
             hashCode = Object.class.getMethod("hashCode");
             toString = Object.class.getMethod("toString");
         } catch (NoSuchMethodException e) {
-            // /CLOVER:OFF
             throw new InternalError();
-            // /CLOVER:ON
         } catch (SecurityException e) {
-            // /CLOVER:OFF
             throw new InternalError();
-            // /CLOVER:ON
         }
     }
 
@@ -69,7 +65,7 @@ public class ReflectionUtils {
      * @return an set of interfaces. The set may be empty
      */
     public static Set getAllInterfaces(final Object[] objects) {
-        final Set interfaces = new HashSet();
+        final Set<Class> interfaces = new HashSet<Class>();
         for (Object object : objects) {
             if (object != null) {
                 getInterfaces(object.getClass(), interfaces);
@@ -87,14 +83,14 @@ public class ReflectionUtils {
      * @param clazz type to explore.
      * @return a {@link Set} with all interfaces. The set may be empty.
      */
-    public static Set getAllInterfaces(final Class clazz) {
-        final Set interfaces = new HashSet();
+    public static Set<Class> getAllInterfaces(final Class clazz) {
+        final Set<Class> interfaces = new HashSet<Class>();
         getInterfaces(clazz, interfaces);
         interfaces.remove(InvokerReference.class);
         return interfaces;
     }
 
-    private static void getInterfaces(Class clazz, final Set interfaces) {
+    private static void getInterfaces(Class clazz, final Set<Class> interfaces) {
         if (clazz.isInterface()) {
             interfaces.add(clazz);
         }
@@ -157,7 +153,7 @@ public class ReflectionUtils {
      * @param proxyFactory the {@link ProxyFactory} in use
      */
     public static void addIfClassProxyingSupportedAndNotObject(
-            final Class clazz, final Set interfaces, final ProxyFactory proxyFactory) {
+            final Class clazz, final Set<Class> interfaces, final ProxyFactory proxyFactory) {
         if (proxyFactory.canProxy(clazz) && !clazz.equals(Object.class)) {
             interfaces.add(clazz);
         }
@@ -169,8 +165,8 @@ public class ReflectionUtils {
      * @param collection with class types
      * @return an array of class types
      */
-    public static Class[] toClassArray(final Collection collection) {
-        return (Class[]) collection.toArray(new Class[collection.size()]);
+    public static Class[] toClassArray(final Collection<Class> collection) {
+        return collection.toArray(new Class[collection.size()]);
     }
 
     /**
@@ -187,7 +183,7 @@ public class ReflectionUtils {
             throws NoSuchMethodException {
         final Object[] newArgs = args == null ? new Object[0] : args;
         final Method[] methods = type.getMethods();
-        final Set possibleMethods = new HashSet();
+        final Set<Method> possibleMethods = new HashSet<Method>();
         Method method = null;
         for (int i = 0; method == null && i < methods.length; i++) {
             if (methodName.equals(methods[i].getName())) {
@@ -224,7 +220,7 @@ public class ReflectionUtils {
             }
         }
         if (method == null && possibleMethods.size() > 0) {
-            method = (Method) possibleMethods.iterator().next();
+            method = possibleMethods.iterator().next();
         }
         if (method == null) {
             final StringBuffer name = new StringBuffer(type.getName());

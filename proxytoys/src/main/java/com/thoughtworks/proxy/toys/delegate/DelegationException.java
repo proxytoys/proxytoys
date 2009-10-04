@@ -15,7 +15,6 @@ package com.thoughtworks.proxy.toys.delegate;
 public class DelegationException extends RuntimeException {
 
     private static final long serialVersionUID = -8777676199121620549L;
-    private final Throwable cause;
     private final Object delegate;
 
     /**
@@ -24,30 +23,16 @@ public class DelegationException extends RuntimeException {
      * @param message  the meaningful message.
      * @param cause    a causing {@link Throwable}
      * @param delegate the delegated object
-
      */
     public DelegationException(final String message, final Throwable cause, final Object delegate) {
-        super(message);
-        this.cause = cause;
+        super(message, cause);
         this.delegate = delegate;
-    }
-
-    /**
-     * Retruns the causing Throwable.
-     *
-     * @return the {@link Throwable}
-
-     */
-
-    public Throwable getCause() {
-        return cause;
     }
 
     /**
      * Returns the delegated object.
      *
      * @return the delegated object
-
      */
     public Object getDelegate() {
         return delegate;

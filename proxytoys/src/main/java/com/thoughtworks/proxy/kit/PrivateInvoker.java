@@ -18,13 +18,13 @@ import java.lang.reflect.Method;
  * @author J&ouml;rg Schaible
  */
 public class PrivateInvoker extends SimpleInvoker {
+
     private static final long serialVersionUID = 1L;
 
     /**
      * Construct a PrivateInvoker.
      *
      * @param target the invocation target.
-
      */
     public PrivateInvoker(final Object target) {
         super(target);

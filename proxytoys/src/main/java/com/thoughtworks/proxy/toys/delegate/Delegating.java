@@ -12,7 +12,6 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleReference;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
-
 /**
  * Toy factory to create proxies delegating to another object.
  * <p>
@@ -85,8 +84,8 @@ public class Delegating<T> {
      * @return the created proxy implementing the <tt>type</tt>
      */
     public T build(ProxyFactory factory) {
-        return (T) factory.createProxy(new DelegatingInvoker(
-                factory, new SimpleReference(delegate), delegationMode), type);
+        return (T) factory.createProxy(new DelegatingInvoker(factory,
+                new SimpleReference(delegate), delegationMode), type);
     }
 
 }

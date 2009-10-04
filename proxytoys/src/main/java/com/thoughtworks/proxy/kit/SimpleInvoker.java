@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
  * @author Aslak Helles&oslash;y
  */
 public class SimpleInvoker implements Invoker {
+
     private static final long serialVersionUID = 1L;
 
     private Object target;

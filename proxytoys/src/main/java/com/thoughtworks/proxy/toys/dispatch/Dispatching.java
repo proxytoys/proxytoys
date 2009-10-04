@@ -12,7 +12,6 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.SimpleReference;
 
-
 /**
  * Proxy factory for dispatching proxy instances.
  *
@@ -31,8 +30,8 @@ public class Dispatching<T> {
     /**
      * Creates a builder for proxy instances that allow delegation.
      *
-     * @param primaryType
-     * @param types     the types of the proxy
+     * @param primaryType the primary type of the proxy that will not have to be cast to
+     * @param types the other types of the proxy
      * @return a builder that will proxy instances of the supplied type.
      */
     public static <T> DispatchingWith<T> dispatchable(Class<T> primaryType, Class... types) {
@@ -41,7 +40,6 @@ public class Dispatching<T> {
     }
 
     private T build(ProxyFactory factory) {
-
         final ObjectReference[] references = new ObjectReference[delegates.length];
         for (int i = 0; i < references.length; i++) {
             references[i] = new SimpleReference(delegates[i]);
@@ -79,9 +77,7 @@ public class Dispatching<T> {
     public static class DispatchingBuild<T> {
         private final Dispatching<T> dispatching;
 
-
         private DispatchingBuild(Dispatching<T> dispatching) {
-
             this.dispatching = dispatching;
         }
 
@@ -103,7 +99,6 @@ public class Dispatching<T> {
         public T build(ProxyFactory factory) {
             return dispatching.build(factory);
         }
-
 
     }
 
