@@ -76,7 +76,7 @@ public class HotSwappingTest extends ProxyTestCase {
         void screw();
     }
 
-    public static class ScredriverImpl implements Screwdriver, Serializable {
+    public static class ScrewdriverImpl implements Screwdriver, Serializable {
         public void screw() {
             fail("should not be called");
         }
