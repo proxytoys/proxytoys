@@ -71,7 +71,7 @@ abstract class AbstractProxyFactory implements ProxyFactory {
         /**
          * Invoke a method on an object.
          *
-         * @param proxy  the prory on thatthe method was originally called
+         * @param proxy  the proxy on that the method was originally called
          * @param method the method
          * @param args   the arguments of the call
          * @return the return value of the call

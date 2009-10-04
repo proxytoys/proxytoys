@@ -15,7 +15,6 @@ import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-
 /**
  * {@link com.thoughtworks.proxy.Invoker Invoker} that implements a failover strategy by using different delegates in
  * case of an exception. The implemented strategy is a simple round-robin algorithm to change the delegate in case of a
@@ -38,15 +37,9 @@ public class FailoverInvoker extends HotSwappingInvoker {
      * @param proxyFactory   the {@link ProxyFactory} to use
      * @param delegates      the delegates to use
      * @param exceptionClass the type of the exception
-     * @throws IllegalArgumentException if <tt>exceptionClass</tt> is not a {@link Throwable}
-
      */
-    public FailoverInvoker(
-            final Class[] types, final ProxyFactory proxyFactory, final Object[] delegates, final Class exceptionClass) {
+    public FailoverInvoker(final Class[] types, final ProxyFactory proxyFactory, final Object[] delegates, final Class<? extends Throwable> exceptionClass) {
         super(types, proxyFactory, new SimpleReference(delegates[0]), DIRECT);
-        if (!Throwable.class.isAssignableFrom(exceptionClass)) {
-            throw new IllegalArgumentException("exceptionClass is not a Throwable");
-        }
         this.delegates = delegates;
         this.exceptionClass = exceptionClass;
     }
