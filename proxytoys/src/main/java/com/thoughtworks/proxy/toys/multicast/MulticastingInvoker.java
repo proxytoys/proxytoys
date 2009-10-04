@@ -34,20 +34,14 @@ public class MulticastingInvoker<T> implements Invoker {
 
     static {
         try {
-            multicastTargetsDirect = Multicast.class.getMethod("multicastTargets", new Class[]{
-                    Method.class, Object[].class});
-            multicastTargetsIndirect = Multicast.class.getMethod("multicastTargets", new Class[]{
-                    Class.class, String.class, Object[].class});
+            multicastTargetsDirect = Multicast.class.getMethod("multicastTargets", Method.class, Object[].class);
+            multicastTargetsIndirect = Multicast.class.getMethod("multicastTargets", Class.class, String.class, Object[].class);
             getTargetsInArray = Multicast.class.getMethod("getTargetsInArray");
-            getTargetsInTypedArray = Multicast.class.getMethod("getTargetsInArray", new Class[]{Class.class});
+            getTargetsInTypedArray = Multicast.class.getMethod("getTargetsInArray", Class.class);
         } catch (NoSuchMethodException e) {
-            // /CLOVER:OFF
             throw new InternalError();
-            // /CLOVER:ON
         } catch (SecurityException e) {
-            // /CLOVER:OFF
             throw new InternalError();
-            // /CLOVER:ON
         }
     }
 

@@ -24,7 +24,6 @@ public interface ProxyFactory extends Serializable {
      * @param invoker the invocation handler.
      * @param types   the types the proxy must emulate.
      * @return the new proxy instance.
-
      */
     Object createProxy(Invoker invoker, Class... types);
 
@@ -33,7 +32,6 @@ public interface ProxyFactory extends Serializable {
      *
      * @param type the type to create a proxy instance for.
      * @return <code>true</code> if the type is supported.
-
      */
     boolean canProxy(Class type);
 
@@ -42,7 +40,6 @@ public interface ProxyFactory extends Serializable {
      *
      * @param type the type to examin.
      * @return <code>true</code> if the given type is a proxy class.
-
      */
     boolean isProxyClass(Class type);
 
@@ -51,7 +48,6 @@ public interface ProxyFactory extends Serializable {
      *
      * @param proxy the proxy instance.
      * @return the {@link Invoker} instance acting as invocation handler.
-
      */
     Invoker getInvoker(Object proxy);
 }

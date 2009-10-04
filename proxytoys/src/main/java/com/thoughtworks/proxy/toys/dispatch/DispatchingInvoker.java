@@ -36,7 +36,7 @@ public class DispatchingInvoker implements Invoker {
     private transient Set<Method>[] methodSets;
 
     /**
-     * Construct a DispatchinInvoker.
+     * Construct a DispatchingInvoker.
      *
      * @param proxyFactory       the {@link ProxyFactory} to use
      * @param types              the types of the generated proxy
