@@ -13,7 +13,6 @@ import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
 
 import java.io.PrintWriter;
 
-
 /**
  * Factory for echoing proxy instances.
  * <p>
@@ -31,26 +30,67 @@ public class Echoing<T> {
     private PrintWriter printWriter = new PrintWriter(System.err);
 
     /**
-     * specify the printWriter
+     * Creates a factory for proxy instances that allow delegation.
      *
-     * @param printWriter which receives the output
-     * @return the factory that will proxy instances of the supplied type.
+     * @param type the type of the proxy when it is finally created.
+     * @return a factory that will proxy instances of the supplied type.
      */
-    public Echoing<T> to(final PrintWriter printWriter) {
-        this.printWriter = printWriter;
-        return this;
+    public static <T> EchoingWith<T> echoable(final Class<T> type) {
+        return new EchoingWith<T>(new Echoing<T>(type));
     }
 
-    /**
-     * specify the delegate
-     *
-     * @param delegate the object the proxy delegates to.
-     * @return the factory that will proxy instances of the supplied type.
-     */
-    public Echoing<T> with(final Object delegate) {
-        this.delegate = delegate;
-        return this;
+    public static class EchoingWith<T> {
+        private Echoing<T> echoing;
+
+        public EchoingWith(Echoing<T> echoing) {
+            this.echoing = echoing;
+        }
+
+        public EchoingTo<T> withNothing() {
+            return new EchoingTo<T>(echoing);
+        }
+
+
+        /**
+         * specify the delegate
+         *
+         * @param delegate the object the proxy delegates to.
+         * @return the factory that will proxy instances of the supplied type.
+         */
+        public EchoingTo<T> with(final Object delegate) {
+            echoing.delegate = delegate;
+            return new EchoingTo<T>(echoing);
+        }
+
     }
+
+    public static class EchoingTo<T> {
+        private Echoing<T> echoing;
+
+        public EchoingTo(Echoing<T> echoing) {
+            this.echoing = echoing;
+        }
+
+        /**
+         * specify the printWriter
+         *
+         * @param printWriter which receives the output
+         * @return the factory that will proxy instances of the supplied type.
+         */
+        public EchoingBuild<T> to(final PrintWriter printWriter) {
+            echoing.printWriter = printWriter;
+            return new EchoingBuild<T>(echoing);
+        }
+
+    }
+
+    public static class EchoingBuild<T> {
+        private Echoing<T> echoing;
+
+        public EchoingBuild(Echoing<T> echoing) {
+            this.echoing = echoing;
+        }
+
 
     /**
      * Creating a delegating proxy for an object using a special {@link StandardProxyFactory}
@@ -68,18 +108,9 @@ public class Echoing<T> {
      * @return the created proxy implementing the <tt>type</tt>
      */
     public T build(final ProxyFactory proxyFactory) {
-        return decoratable(type).with(delegate, new EchoDecorator(printWriter, proxyFactory)).build(proxyFactory);
+        return decoratable(echoing.type).with(echoing.delegate, new EchoDecorator(echoing.printWriter, proxyFactory)).build(proxyFactory);
     }
 
-    /**
-     * Creates a factory for proxy instances that allow delegation.
-     *
-     * @param type the type of the proxy when it is finally created.
-     * @return a factory that will proxy instances of the supplied type.
-     */
-
-    public static <T> Echoing<T> echoable(final Class<T> type) {
-        return new Echoing<T>(type);
     }
 
     private Echoing(final Class<T> type) {
