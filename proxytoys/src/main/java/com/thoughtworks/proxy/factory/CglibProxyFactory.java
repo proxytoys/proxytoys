@@ -35,8 +35,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * The native invocation handler.
      *
      */
-    static class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements
-            InvocationHandler {
+    static class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
         private static final long serialVersionUID = 418834172207536454L;
 
         /**

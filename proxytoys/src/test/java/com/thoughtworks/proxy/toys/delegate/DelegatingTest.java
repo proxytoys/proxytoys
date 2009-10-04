@@ -94,15 +94,20 @@ public class DelegatingTest extends ProxyTestCase {
 
     }
 
-    @Test(expected = DelegationException.class)
+    @Test
     public void shouldThrowDelegationExceptionIfDelegateMethodDoesNotExist() throws Exception {
         // setup
-        foo = createProxy(new Object());
+        Object impl = new Object();
+        foo = createProxy(impl);
 
         // execute
 
-        foo.getSomething();
-        fail("Should have thrown exception");
+        try {
+            foo.getSomething();
+            fail("Should have thrown exception");
+        } catch (DelegationException e) {
+            assertEquals(impl, e.getDelegate());
+        }
 
     }
 
