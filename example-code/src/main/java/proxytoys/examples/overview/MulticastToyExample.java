@@ -48,8 +48,8 @@ public class MulticastToyExample {
     public static void packageOverviewExample3() {
         File workingDir = new File(".");
         List<String> files = Arrays.asList(workingDir.list());
-        Object multicast = multicastable(workingDir, files)
-                             .with(File.class, List.class)
+        Object multicast = multicastable(File.class, List.class)
+                             .with(workingDir, files)
                              .build(new CglibProxyFactory());
         System.out.println("Current working directory: " + ((File)multicast).getAbsolutePath());
         System.out.println("Files in working directory: " + ((List)multicast).size());
