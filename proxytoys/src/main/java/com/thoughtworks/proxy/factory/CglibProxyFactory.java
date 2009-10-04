@@ -20,7 +20,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on <a href="http://cglib.sourceforge.net/">CGLIB</a>.
  *
@@ -29,13 +28,12 @@ import java.util.*;
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
     private static final long serialVersionUID = -5615928639194345818L;
-    private static final ThreadLocal cycleGuard = new ThreadLocal();
+    private static final ThreadLocal<List<Class>> cycleGuard = new ThreadLocal<List<Class>>();
     private static final ProxyFactory standardProxyFactory = new StandardProxyFactory();
 
     /**
      * The native invocation handler.
      *
-
      */
     static class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements
             InvocationHandler {
@@ -51,27 +49,13 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         }
     }
 
-    private static final Map<Class, Class> boxedClasses = new HashMap<Class, Class>();
-
-    static {
-        boxedClasses.put(Boolean.TYPE, Boolean.class);
-        boxedClasses.put(Integer.TYPE, Integer.class);
-        boxedClasses.put(Byte.TYPE, Byte.class);
-        boxedClasses.put(Short.TYPE, Short.class);
-        boxedClasses.put(Long.TYPE, Long.class);
-        boxedClasses.put(Double.TYPE, Double.class);
-        boxedClasses.put(Character.TYPE, Character.class);
-        boxedClasses.put(Float.TYPE, Float.class);
-    }
-
     /**
      * {@inheritDoc}
      * <p>
-     * Note: If any type the proxy instance must fullfill are all interfaces, the factory will currently create a proxy
+     * Note: If any type the proxy instance must fulfill are all interfaces, the factory will currently create a proxy
      * based on the JDK.
      * </p>
      *
-
      */
     public Object createProxy(final Invoker invoker, final Class... types) {
         final Class clazz = getSingleClass(types);
@@ -119,9 +103,9 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         final Class[] params = constructor.getParameterTypes();
         final Object[] args = new Object[params.length];
         if (cycleGuard.get() == null) {
-            cycleGuard.set(new ArrayList());
+            cycleGuard.set(new ArrayList<Class>());
         }
-        final List creating = (List) cycleGuard.get();
+        final List<Class> creating = cycleGuard.get();
         for (int i = 0; i < args.length; i++) {
             if (!creating.contains(params[i])) {
                 creating.add(params[i]);
@@ -134,24 +118,19 @@ public class CglibProxyFactory extends AbstractProxyFactory {
                 args[i] = null;
             }
         }
-        final Object result = enhancer.create(params, args);
-        return result;
+        return enhancer.create(params, args);
     }
 
     private Constructor getConstructor(final Class type) {
-        Constructor constructor = null;
         try {
-            constructor = type.getConstructor((Class[]) null);
+            return type.getConstructor((Class[]) null);
         } catch (NoSuchMethodException e) {
-            constructor = type.getConstructors()[0];
-
+            return type.getConstructors()[0];
         }
-        return constructor;
     }
 
     public boolean canProxy(final Class type) {
-        int modifiers = type.getModifiers();
-        return !Modifier.isFinal(modifiers);
+        return !Modifier.isFinal(type.getModifiers());
     }
 
     public boolean isProxyClass(final Class type) {
