@@ -13,7 +13,6 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 import java.util.Set;
 
-
 /**
  * Toy factory to create proxies delegating a call to multiple objects and managing the individual results.
  *
@@ -36,9 +35,7 @@ public class Multicasting<T> {
      *
      * @param targets targets the target objects
      * @return a factory that will proxy instances of the supplied type.
-
      */
-
     public static <T> Multicasting<T> multicastable(Object... targets) {
         return new Multicasting<T>(targets);
     }
@@ -68,7 +65,6 @@ public class Multicasting<T> {
      *
      * @param factory the factory used to generate the proxy
      * @return the new proxy implementing {@link Multicast} or the only target
-
      */
     public T build(ProxyFactory factory) {
         if (types == null) {
@@ -89,7 +85,7 @@ public class Multicasting<T> {
                 return (T) delegates[0];
             }
         }
-        return (T) new MulticastingInvoker(types, factory, delegates).proxy();
+        return new MulticastingInvoker<T>(types, factory, delegates).proxy();
     }
 
     private T buildWithNoTypesInput(ProxyFactory factory) {
@@ -98,7 +94,7 @@ public class Multicasting<T> {
             final Set interfaces = ReflectionUtils.getAllInterfaces(delegates);
             ReflectionUtils.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, factory);
             this.types = ReflectionUtils.toClassArray(interfaces);
-            return (T) new MulticastingInvoker(types, factory, delegates).proxy();
+            return new MulticastingInvoker<T>(types, factory, delegates).proxy();
         }
         return (T) delegates[0];
     }
