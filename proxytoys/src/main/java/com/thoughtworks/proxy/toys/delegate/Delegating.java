@@ -40,52 +40,77 @@ public class Delegating<T> {
      * @return a factory that will proxy instances of the supplied type.
      */
 
-    public static <T> Delegating<T> delegatable(Class<T> type) {
-        return new Delegating<T>(type);
+    public static <T> DelegatingWith<T> delegatable(Class<T> type) {
+        return new DelegatingWith<T>(new Delegating<T>(type));
     }
 
-    /**
-     * With this delegate
-     * @param delegate the object the proxy delegates to.
-     * @return
-     */
-    public Delegating<T> with(Object delegate) {
-        this.delegate = delegate;
-        return this;
+    public static class DelegatingWith<T> {
+        private Delegating<T> delegating;
+
+        private DelegatingWith(Delegating<T> delegating) {
+            this.delegating = delegating;
+        }
+
+        /**
+         * With this delegate
+         *
+         * @param delegate the object the proxy delegates to.
+         * @return
+         */
+        public DelegatingModeOrBuild<T> with(Object delegate) {
+            delegating.delegate = delegate;
+            return new DelegatingModeOrBuild<T>(delegating);
+        }
+
     }
 
+    public static class DelegatingModeOrBuild<T> extends DelegatingBuild<T>{
 
-    /**
-     * Forces a particular delegation mode to be used.
-     *
-     * @param mode refer to {@link DelegationMode#DIRECT} or
-     *             {@link DelegationMode#SIGNATURE} for allowed
-     *             values.
-     * @return the factory that will proxy instances of the supplied type.
-     */
-    public Delegating<T> mode(DelegationMode mode) {
-        this.delegationMode = mode;
-        return this;
+        private DelegatingModeOrBuild(Delegating<T> delegating) {
+            super(delegating);
+        }
+
+        /**
+         * Forces a particular delegation mode to be used.
+         *
+         * @param mode refer to {@link DelegationMode#DIRECT} or
+         *             {@link DelegationMode#SIGNATURE} for allowed values.
+         * @return the factory that will proxy instances of the supplied type.
+         */
+        public DelegatingBuild<T> mode(DelegationMode mode) {
+            delegating.delegationMode = mode;
+            return new DelegatingBuild<T>(delegating);
+        }
+
     }
 
-    /**
-     * Creating a delegating proxy for an object using a special {@link StandardProxyFactory}
-     *
-     * @return the created proxy implementing the <tt>type</tt>
-     */
-    public T build() {
-        return build(new StandardProxyFactory());
-    }
+    public static class DelegatingBuild<T> {
+        protected Delegating<T> delegating;
 
-    /**
-     * Creating a delegating proxy for an object using a special {@link ProxyFactory}
-     *
-     * @param factory the @{link ProxyFactory} to use.
-     * @return the created proxy implementing the <tt>type</tt>
-     */
-    public T build(ProxyFactory factory) {
-        return (T) factory.createProxy(new DelegatingInvoker(factory,
-                new SimpleReference(delegate), delegationMode), type);
+        private DelegatingBuild(Delegating<T> delegating) {
+            this.delegating = delegating;
+        }
+
+        /**
+         * Creating a delegating proxy for an object using a special {@link StandardProxyFactory}
+         *
+         * @return the created proxy implementing the <tt>type</tt>
+         */
+        public T build() {
+            return build(new StandardProxyFactory());
+        }
+
+        /**
+         * Creating a delegating proxy for an object using a special {@link ProxyFactory}
+         *
+         * @param factory the @{link ProxyFactory} to use.
+         * @return the created proxy implementing the <tt>type</tt>
+         */
+        public T build(ProxyFactory factory) {
+            return (T) factory.createProxy(new DelegatingInvoker(factory,
+                    new SimpleReference(delegating.delegate), delegating.delegationMode), delegating.type);
+        }
+
     }
 
 }
