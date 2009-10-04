@@ -29,19 +29,28 @@ public class Multicasting<T> {
         this.delegates = delegates;
     }
 
-    public Multicasting(Class... types) {
-        this.types = types;
+    public Multicasting(Class<T> primaryType, Class... types) {
+        this.types = makeTypesArray(primaryType, types);
     }
 
     /**
      * Creates a factory for proxy instances delegating a call to multiple objects and managing the individual results.
      *
-     * @param types the types that are implemented by the proxy
+     * @param primaryType the primary type implemented by the proxy
+     * @param types other types that are implemented by the proxy
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> MulticastingWith<T> multicastable(Class... types) {
-        return new MulticastingWith<T>(types);
+    public static <T> MulticastingWith<T> multicastable(Class<T> primaryType, Class... types) {
+        return new MulticastingWith<T>(primaryType, types);
     }
+
+    private Class[] makeTypesArray(Class<T> primaryType, Class[] types) {
+        Class[] retVal = new Class[types.length +1];
+        retVal[0] = primaryType;
+        System.arraycopy(types, 0, retVal, 1, types.length);
+        return retVal;
+    }
+
 
     /**
      * Creates a factory for proxy instances delegating a call to multiple objects and managing the individual results.
@@ -56,8 +65,8 @@ public class Multicasting<T> {
     public static class MulticastingWith<T> {
         Multicasting<T> multicasting;
 
-        private MulticastingWith(Class[] types) {
-            multicasting = new Multicasting<T>(types);
+        private MulticastingWith(Class<T> primaryType, Class[] types) {
+            multicasting = new Multicasting<T>(primaryType, types);
         }
 
         /**

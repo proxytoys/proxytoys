@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
@@ -75,7 +74,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) multicastable(Dog.class).with(tim, tom).build(getFactory());
+        Dog timAndTom = multicastable(Dog.class).with(tim, tom).build(getFactory());
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -85,15 +84,15 @@ public class MulticastTest extends ProxyTestCase {
 
     @Test
     public void shouldMulticastRecursivelyForRuntimeReturnType() {
-        List tim = new ArrayList();
+        List<Tail> tim = new ArrayList<Tail>();
         TailImpl timsTail = new TailImpl();
         tim.add(timsTail);
 
-        List tom = new ArrayList();
+        List<Tail> tom = new ArrayList<Tail>();
         OtherTailImpl tomsTail = new OtherTailImpl();
         tom.add(tomsTail);
 
-        List timAndTom = (List) multicastable(List.class).with(tim, tom).build(getFactory());
+        List timAndTom = multicastable(List.class).with(tim, tom).build(getFactory());
         Tail timAndTomsTails = (Tail) timAndTom.get(0);
         timAndTomsTails.wag();
 
@@ -124,7 +123,7 @@ public class MulticastTest extends ProxyTestCase {
     }
 
     public static class NotMapImpl implements NotMap {
-        private List values = new ArrayList();
+        private List<Object> values = new ArrayList<Object>();
 
         public void add(Object s) {
             values.add(s);
@@ -223,7 +222,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl t1 = new TailImpl();
         TailImpl t2 = new TailImpl();
         TailImpl t3 = new TailImpl();
-        Tail tail = (Tail) multicastable(Tail.class).with(t1, t2, t3).build(getFactory());
+        Tail tail = multicastable(Tail.class).with(t1, t2, t3).build(getFactory());
 
         assertFalse(t1.wasWagged());
         assertFalse(t2.wasWagged());
@@ -251,7 +250,7 @@ public class MulticastTest extends ProxyTestCase {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = (Dog) multicastable(Dog.class).with(tim, tom).build(getFactory());
+        Dog timAndTom = multicastable(Dog.class).with(tim, tom).build(getFactory());
         return timAndTom.getTail();
     }
 
