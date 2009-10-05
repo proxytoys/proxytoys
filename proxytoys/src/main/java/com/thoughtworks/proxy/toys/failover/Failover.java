@@ -29,47 +29,72 @@ public class Failover<T> {
     /**
      * Creates a factory for proxy instances handling failover.
      *
-     * @param type           the types of the proxy
+     * @param type the types of the proxy
      * @return a factory that will proxy instances of the supplied type.
-
      */
-    public static <T> Failover<T> failoverable(Class<T> type) {
+    public static <T> FailoverWithOrExceptingOrBuild<T> failoverable(Class<T> type) {
 
-        return new Failover<T>(type);
+        return new FailoverWithOrExceptingOrBuild<T>(new Failover<T>(type));
     }
 
-    /**
-     * With these delegates
-     * @param delegates      the delegates used for failover
-     * @return
-     */
-    public Failover<T> with(final Object... delegates) {
-        this.delegates = delegates;
-        return this;
+    public static class FailoverWithOrExceptingOrBuild<T> extends FailoverExceptingOrBuild<T> {
+
+        private FailoverWithOrExceptingOrBuild(Failover<T> failover) {
+            super(failover);
+        }
+
+        /**
+         * With these delegates
+         *
+         * @param delegates the delegates used for failover
+         * @return
+         */
+        public FailoverExceptingOrBuild<T> with(final Object... delegates) {
+            failover.delegates = delegates;
+            return new FailoverExceptingOrBuild<T>(failover);
+        }
+
     }
 
+    public static class FailoverExceptingOrBuild<T> extends FailoverBuild<T> {
 
-    /**
-     * Excepting this exception class
-     * @param exceptionClass the type of the exceptions triggering failover
-     * @return
-     */
-    public Failover<T> excepting(Class<? extends Throwable> exceptionClass) {
-        this.exceptionClass = exceptionClass;
-        return this;
-        
+        private FailoverExceptingOrBuild(Failover<T> failover) {
+            super(failover);
+        }
+
+        /**
+         * Excepting this exception class
+         *
+         * @param exceptionClass the type of the exceptions triggering failover
+         * @return
+         */
+        public FailoverBuild<T> excepting(Class<? extends Throwable> exceptionClass) {
+            failover.exceptionClass = exceptionClass;
+            return new FailoverBuild(failover);
+
+        }
+
     }
 
-    /**
-     * * Create a proxy of a specific types with failover capability using the given objects.  The provided exception type
-     * determins the type of exceptions that trigger the failover.
-     *
-     * @param proxyFactory the {@link ProxyFactory} to use
-     * @return the created proxy
+    public static class FailoverBuild<T> {
+        protected Failover<T> failover;
 
-     */
-    public T build(final ProxyFactory proxyFactory) {
-        return (T) new FailoverInvoker(new Class[]{type}, proxyFactory, delegates, exceptionClass).proxy();
+        private FailoverBuild(Failover<T> failover) {
+            this.failover = failover;
+        }
+
+        /**
+         * * Create a proxy of a specific types with failover capability using the given objects.  The provided exception type
+         * determins the type of exceptions that trigger the failover.
+         *
+         * @param proxyFactory the {@link ProxyFactory} to use
+         * @return the created proxy
+         */
+        public T build(final ProxyFactory proxyFactory) {
+            return (T) new FailoverInvoker(new Class[]{failover.type}, proxyFactory, failover.delegates, failover.exceptionClass).proxy();
+        }
+
     }
+
 
 }
