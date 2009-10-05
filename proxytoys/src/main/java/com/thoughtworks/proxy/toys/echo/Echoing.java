@@ -29,27 +29,26 @@ public class Echoing<T> {
     private Object delegate;
     private PrintWriter printWriter = new PrintWriter(System.err);
 
+    private Echoing(final Class<T> type) {
+        this.type = type;
+    }
+
+
     /**
      * Creates a factory for proxy instances that allow delegation.
      *
      * @param type the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> EchoingWith<T> echoable(final Class<T> type) {
-        return new EchoingWith<T>(new Echoing<T>(type));
+    public static <T> EchoingWithOrTo<T> echoable(final Class<T> type) {
+        return new EchoingWithOrTo<T>(new Echoing<T>(type));
     }
 
-    public static class EchoingWith<T> {
-        private Echoing<T> echoing;
+    public static class EchoingWithOrTo<T> extends EchoingTo<T> {
 
-        public EchoingWith(Echoing<T> echoing) {
-            this.echoing = echoing;
+        private EchoingWithOrTo(Echoing<T> echoing) {
+            super(echoing);
         }
-
-        public EchoingTo<T> withNothing() {
-            return new EchoingTo<T>(echoing);
-        }
-
 
         /**
          * specify the delegate
@@ -65,9 +64,9 @@ public class Echoing<T> {
     }
 
     public static class EchoingTo<T> {
-        private Echoing<T> echoing;
+        protected Echoing<T> echoing;
 
-        public EchoingTo(Echoing<T> echoing) {
+        private EchoingTo(Echoing<T> echoing) {
             this.echoing = echoing;
         }
 
@@ -87,33 +86,30 @@ public class Echoing<T> {
     public static class EchoingBuild<T> {
         private Echoing<T> echoing;
 
-        public EchoingBuild(Echoing<T> echoing) {
+        private EchoingBuild(Echoing<T> echoing) {
             this.echoing = echoing;
         }
 
 
-    /**
-     * Creating a delegating proxy for an object using a special {@link StandardProxyFactory}
-     *
-     * @return the created proxy implementing the <tt>type</tt>
-     */
-    public T build() {
-        return build(new StandardProxyFactory());
+        /**
+         * Creating a delegating proxy for an object using a special {@link StandardProxyFactory}
+         *
+         * @return the created proxy implementing the <tt>type</tt>
+         */
+        public T build() {
+            return build(new StandardProxyFactory());
+        }
+
+        /**
+         * Creating a delegating proxy for an object using a special {@link ProxyFactory}
+         *
+         * @param proxyFactory the @{link ProxyFactory} to use.
+         * @return the created proxy implementing the <tt>type</tt>
+         */
+        public T build(final ProxyFactory proxyFactory) {
+            EchoDecorator decorator = new EchoDecorator(echoing.printWriter, proxyFactory);
+            return decoratable(echoing.type).with(echoing.delegate, decorator).build(proxyFactory);
+        }
     }
 
-    /**
-     * Creating a delegating proxy for an object using a special {@link ProxyFactory}
-     *
-     * @param proxyFactory the @{link ProxyFactory} to use.
-     * @return the created proxy implementing the <tt>type</tt>
-     */
-    public T build(final ProxyFactory proxyFactory) {
-        return decoratable(echoing.type).with(echoing.delegate, new EchoDecorator(echoing.printWriter, proxyFactory)).build(proxyFactory);
-    }
-
-    }
-
-    private Echoing(final Class<T> type) {
-        this.type = type;
-    }
 }

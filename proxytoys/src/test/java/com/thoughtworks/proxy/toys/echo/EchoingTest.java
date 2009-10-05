@@ -40,7 +40,7 @@ public class EchoingTest extends ProxyTestCase {
     public void shouldEchoMethodNameAndArgs() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple foo = echoable(Simple.class).withNothing().to(new PrintWriter(out)).build(getFactory());
+        Simple foo = echoable(Simple.class).to(new PrintWriter(out)).build(getFactory());
 
         // execute
         foo.doSomething();
@@ -98,7 +98,7 @@ public class EchoingTest extends ProxyTestCase {
     public void shouldRecursivelyReturnEchoProxiesEvenForMissingImplementations() throws Exception {
         // setup
         StringWriter out = new StringWriter();
-        Outer outer = echoable(Outer.class).withNothing().to(new PrintWriter(out)).build(getFactory());
+        Outer outer = echoable(Outer.class).to(new PrintWriter(out)).build(getFactory());
 
         // execute
         outer.getInner().getName();
