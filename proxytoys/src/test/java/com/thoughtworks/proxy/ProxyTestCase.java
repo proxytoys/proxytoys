@@ -51,7 +51,7 @@ public abstract class ProxyTestCase {
         return proxyFactory;
     }
 
-    protected Object serializeWithJDK(Object toSerialize) throws IOException, ClassNotFoundException {
+    protected <T> T serializeWithJDK(T toSerialize) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
         ObjectOutputStream outStream = new ObjectOutputStream(outBuffer);
         outStream.writeObject(toSerialize);
@@ -61,7 +61,7 @@ public abstract class ProxyTestCase {
         Object serialized = inStream.readObject();
         inStream.close();
         assertNotNull(serialized);
-        return serialized;
+        return (T) serialized;
     }
 
     protected Object serializeWithXStream(Object toSerialize) {

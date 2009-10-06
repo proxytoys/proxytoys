@@ -257,8 +257,7 @@ public class PoolTest extends ProxyTestCase {
 
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
-        final Pool<Identifiable> pool = poolable(Identifiable.class).withNoInstances().build(getFactory());
-        pool.add(createIdentifiables(2));
+        final Pool<Identifiable> pool = poolable(Identifiable.class).with(createIdentifiables(2)).build(getFactory());
         Identifiable borrowed = pool.get();
         twoItemsCanBeBorrowedFromPool((Pool) serializeWithJDK(pool));
         assertNotNull(borrowed); // keep instance
@@ -266,8 +265,7 @@ public class PoolTest extends ProxyTestCase {
 
     @Test
     public void serializeWithXStream() {
-        final Pool<Identifiable> pool = poolable(Identifiable.class).withNoInstances().build(getFactory());
-        pool.add(createIdentifiables(2));
+        final Pool<Identifiable> pool = poolable(Identifiable.class).with(createIdentifiables(2)).build(getFactory());
         Identifiable borrowed = pool.get();
         twoItemsCanBeBorrowedFromPool((Pool) serializeWithXStream(pool));
         assertNotNull(borrowed); // keep instance
@@ -275,8 +273,7 @@ public class PoolTest extends ProxyTestCase {
 
     @Test
     public void serializeWithXStreamInPureReflectionMode() {
-        final Pool<Identifiable> pool = poolable(Identifiable.class).withNoInstances().build(getFactory());
-        pool.add(createIdentifiables(2));
+        final Pool<Identifiable> pool = poolable(Identifiable.class).with(createIdentifiables(2)).build(getFactory());
         Identifiable borrowed = pool.get();
         twoItemsCanBeBorrowedFromPool((Pool) serializeWithXStreamAndPureReflection(pool));
         assertNotNull(borrowed); // keep instance
@@ -284,8 +281,7 @@ public class PoolTest extends ProxyTestCase {
 
     @Test
     public void forcedSerializationWithJDK() throws IOException, ClassNotFoundException {
-        final Pool<Identifiable> pool = poolable(Identifiable.class).withNoInstances().mode(FORCE).build(getFactory());
-        pool.add(createIdentifiables(2));
+        final Pool<Identifiable> pool = poolable(Identifiable.class).with(createIdentifiables(2)).mode(FORCE).build(getFactory());
         Identifiable borrowed = pool.get();
         twoItemsCanBeBorrowedFromPool((Pool) serializeWithJDK(pool));
         assertNotNull(borrowed); // keep instance
@@ -293,9 +289,7 @@ public class PoolTest extends ProxyTestCase {
 
     @Test
     public void forcedSerializationWithXStream() {
-        final Pool<Identifiable> pool = poolable(
-                Identifiable.class).withNoInstances().mode(FORCE).build(getFactory());
-        pool.add(createIdentifiables(2));
+        final Pool<Identifiable> pool = poolable(Identifiable.class).with(createIdentifiables(2)).mode(FORCE).build(getFactory());
         Identifiable borrowed = pool.get();
         twoItemsCanBeBorrowedFromPool((Pool) serializeWithXStream(pool));
         assertNotNull(borrowed); // keep instance
@@ -303,9 +297,7 @@ public class PoolTest extends ProxyTestCase {
 
     @Test
     public void forcedSerializationWithXStreamInPureReflectionMode() {
-        final Pool<Identifiable> pool = poolable(
-                Identifiable.class).withNoInstances().mode(FORCE).build(getFactory());
-        pool.add(createIdentifiables(2));
+        final Pool<Identifiable> pool = poolable(Identifiable.class).with(createIdentifiables(2)).mode(FORCE).build(getFactory());
         Identifiable borrowed = pool.get();
         twoItemsCanBeBorrowedFromPool((Pool) serializeWithXStreamAndPureReflection(pool));
         assertNotNull(borrowed); // keep instance
@@ -313,11 +305,12 @@ public class PoolTest extends ProxyTestCase {
 
     @Test
     public void forcedSerializationWithUnserializableObject() throws IOException, ClassNotFoundException {
-        final Pool pool = poolable(TestCase.class).withNoInstances().mode(FORCE).build(getFactory());
-        pool.add(this);
-        final Pool serialized = (Pool) serializeWithJDK(pool);
+        final Pool<NotSerializable> pool = poolable(NotSerializable.class).withNoInstances().mode(FORCE).build(getFactory());
+        NotSerializable notSerializable = new NotSerializable();
+        pool.add(notSerializable);
+        final Pool<NotSerializable> serialized = serializeWithJDK(pool);
         assertEquals(0, serialized.size());
-        serialized.add(this);
+        serialized.add(notSerializable);
         assertEquals(1, serialized.size());
     }
 
