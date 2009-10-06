@@ -9,6 +9,7 @@ package com.thoughtworks.proxy.toys.pool;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.InvokerReference;
+import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.kit.SimpleReference;
@@ -74,6 +75,17 @@ public class Pool<T> implements Serializable {
         return new PoolWith<T>(new Pool<T>(type, resetter));
     }
 
+    /**
+     * Construct a populated Pool with a specific proxy factory
+     *
+     * @param type     the type of the instances
+     * @return return the pool with parameters specified
+
+     */
+    public static <T> PoolWith<T> poolable(Class<T> type) {
+        return new PoolWith<T>(new Pool<T>(type, new NoOperationResetter()));
+    }
+    
     public static class PoolBuild<T> {
 
         protected Pool<T> pool;
