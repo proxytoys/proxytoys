@@ -70,41 +70,76 @@ public class Pool<T> implements Serializable {
      * @return return the pool with parameters specified
 
      */
-    public static <T> Pool<T> poolable(Class<T> type, Resetter<T> resetter) {
-        return new Pool<T>(type, resetter);
+    public static <T> PoolWith<T> poolable(Class<T> type, Resetter<T> resetter) {
+        return new PoolWith<T>(new Pool<T>(type, resetter));
     }
 
-    /**
-     * Build the pool.
-     * @param factory the proxy factory to use
-     * @return
-     */
-    public Pool<T> build(ProxyFactory factory) {
-        this.factory = factory;
-        return this;
+    public static class PoolBuild<T> {
+
+        protected Pool<T> pool;
+
+        private PoolBuild(Pool<T> pool) {
+            this.pool = pool;
+        }
+
+        /**
+         * Build the pool.
+         *
+         * @param factory the proxy factory to use
+         * @return
+         */
+        public Pool<T> build(ProxyFactory factory) {
+            pool.factory = factory;
+            return pool;
+        }
+
     }
 
-    /**
-     * Specify the serializationMode
-     * <ul>
-     * <l>STANDARD: the standard mode, i.e. all elements of the pool are also serialized and a
-     * {@link NotSerializableException} may thrown</li>
-     * <li>NONE: no element of the pool is also serialized and it must be populated again after
-     * serialization</li>
-     * <li>FORCE: all element of the pool are serialized, if possible. Otherwise the pool is
-     * empty after serialization and must be populated again.</li>
-     * </ul>
-     *
-     * @param serializationMode
-     * @return the pool with a certain serialization mode
-     * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
-     */
+    public static class PoolWith<T> {
+        private Pool<T> pool;
 
-    public Pool<T> mode(SerializationMode serializationMode) {
-        this.serializationMode = serializationMode;
-        return this;
+        private PoolWith(Pool<T> pool) {
+            this.pool = pool;
+        }
+
+        public PoolModeOrBuild<T> with(T... instances) {
+            pool.add(instances);
+            return new PoolModeOrBuild<T>(pool);
+        }
+
+        public PoolModeOrBuild<T> withNoInstances() {
+            return new PoolModeOrBuild<T>(pool);
+        }
+
     }
 
+    public static class PoolModeOrBuild<T> extends PoolBuild<T> {
+
+        private PoolModeOrBuild(Pool<T> pool) {
+            super(pool);
+        }
+
+        /**
+         * Specify the serializationMode
+         * <ul>
+         * <l>STANDARD: the standard mode, i.e. all elements of the pool are also serialized and a
+         * {@link NotSerializableException} may thrown</li>
+         * <li>NONE: no element of the pool is also serialized and it must be populated again after
+         * serialization</li>
+         * <li>FORCE: all element of the pool are serialized, if possible. Otherwise the pool is
+         * empty after serialization and must be populated again.</li>
+         * </ul>
+         *
+         * @param serializationMode
+         * @return the pool with a certain serialization mode
+         * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
+         */
+
+        public PoolBuild<T> mode(SerializationMode serializationMode) {
+            pool.serializationMode = serializationMode;
+            return new PoolBuild<T>(pool);
+        }
+    }
     /**
      * Construct a populated Pool with a specific proxy factory.
      *
@@ -124,28 +159,13 @@ public class Pool<T> implements Serializable {
     }
 
     /**
-     * Add a new instance as resource to the pool. The pool's monitor will be notified.
-     *
-     * @param instance the new instance
-     * @throws NullPointerException if instance is <code>null</code>
-
-     */
-    public synchronized void add(final T instance) {
-        if (instance == null) {
-            throw new NullPointerException();
-        }
-        availableInstances.add(new SimpleReference(instance));
-        notifyAll();
-    }
-
-    /**
      * Add an array of new instances as resources to the pool. The pool's monitor will be notified.
      *
      * @param instances the instances
      * @throws NullPointerException if instance is <code>null</code>
 
      */
-    public synchronized void add(final T instances[]) {
+    public synchronized void add(final T... instances) {
         if (instances != null) {
             for (T instance : instances) {
                 if (instance == null) {

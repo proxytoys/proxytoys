@@ -9,7 +9,6 @@ package com.thoughtworks.proxy.toys.failover;
 
 import com.thoughtworks.proxy.ProxyFactory;
 
-
 /**
  * Factory for proxy instances handling failover.. Delegates to one object as long as there is no exception, fails over
  * to the next when an exception occurs.

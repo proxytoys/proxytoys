@@ -74,6 +74,17 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.thoughtworks.classpathprinter</groupId>
+                <artifactId>classpath-printer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>print</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <reporting>
