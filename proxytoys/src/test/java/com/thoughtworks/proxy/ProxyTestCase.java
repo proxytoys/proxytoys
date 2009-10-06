@@ -27,7 +27,6 @@ public abstract class ProxyTestCase {
      *
      * @see com.thoughtworks.proxy.factory.CglibProxyFactory
      * @see com.thoughtworks.proxy.factory.StandardProxyFactory
-     * @see AllTests#suite()
      */
     public static ProxyFactory PROXY_FACTORY = new StandardProxyFactory();
 
@@ -64,19 +63,19 @@ public abstract class ProxyTestCase {
         return (T) serialized;
     }
 
-    protected Object serializeWithXStream(Object toSerialize) {
+    protected <T> T serializeWithXStream(T toSerialize) {
         final XStream xstream = new XStream(new XppDriver());
         final String xml = xstream.toXML(toSerialize);
         Object serialized = xstream.fromXML(xml);
         assertNotNull(serialized);
-        return serialized;
+        return (T) serialized;
     }
 
-    protected Object serializeWithXStreamAndPureReflection(Object toSerialize) {
+    protected <T> T serializeWithXStreamAndPureReflection(T toSerialize) {
         final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
         final String xml = xstream.toXML(toSerialize);
         Object serialized = xstream.fromXML(xml);
         assertNotNull(serialized);
-        return serialized;
+        return (T) serialized;
     }
 }
