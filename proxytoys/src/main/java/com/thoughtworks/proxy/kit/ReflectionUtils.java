@@ -80,31 +80,31 @@ public class ReflectionUtils {
      * implemented by the class. If the type is an interface, the all superinterfaces and the interface itself are
      * included.
      *
-     * @param clazz type to explore.
+     * @param type type to explore.
      * @return a {@link Set} with all interfaces. The set may be empty.
      */
-    public static Set<Class> getAllInterfaces(final Class clazz) {
+    public static Set<Class> getAllInterfaces(final Class type) {
         final Set<Class> interfaces = new HashSet<Class>();
-        getInterfaces(clazz, interfaces);
+        getInterfaces(type, interfaces);
         interfaces.remove(InvokerReference.class);
         return interfaces;
     }
 
-    private static void getInterfaces(Class clazz, final Set<Class> interfaces) {
-        if (clazz.isInterface()) {
-            interfaces.add(clazz);
+    private static void getInterfaces(Class type, final Set<Class> interfaces) {
+        if (type.isInterface()) {
+            interfaces.add(type);
         }
         // Class.getInterfaces will return only the interfaces that are
         // implemented by the current class. Therefore we must loop up
         // the hierarchy for the superclasses and the superinterfaces.
-        while (clazz != null) {
-            final Class[] implemented = clazz.getInterfaces();
+        while (type != null) {
+            final Class[] implemented = type.getInterfaces();
             for (Class anImplemented : implemented) {
                 if (!interfaces.contains(anImplemented)) {
                     getInterfaces(anImplemented, interfaces);
                 }
             }
-            clazz = clazz.getSuperclass();
+            type = type.getSuperclass();
         }
     }
 
@@ -115,22 +115,22 @@ public class ReflectionUtils {
      * @return the superclass or <code>{@link Void Void.class}</code> for an empty array.
      */
     public static Class getMostCommonSuperclass(final Object[] objects) {
-        Class clazz = null;
+        Class type = null;
         boolean found = false;
         if (objects != null && objects.length > 0) {
             while (!found) {
                 for (Object object : objects) {
                     found = true;
                     if (object != null) {
-                        final Class currentClazz = object.getClass();
-                        if (clazz == null) {
-                            clazz = currentClazz;
+                        final Class currenttype = object.getClass();
+                        if (type == null) {
+                            type = currenttype;
                         }
-                        if (!clazz.isAssignableFrom(currentClazz)) {
-                            if (currentClazz.isAssignableFrom(clazz)) {
-                                clazz = currentClazz;
+                        if (!type.isAssignableFrom(currenttype)) {
+                            if (currenttype.isAssignableFrom(type)) {
+                                type = currenttype;
                             } else {
-                                clazz = clazz.getSuperclass();
+                                type = type.getSuperclass();
                                 found = false;
                                 break;
                             }
@@ -139,23 +139,23 @@ public class ReflectionUtils {
                 }
             }
         }
-        if (clazz == null) {
-            clazz = Object.class;
+        if (type == null) {
+            type = Object.class;
         }
-        return clazz;
+        return type;
     }
 
     /**
      * Add the given type to the set of interfaces, if the given ProxyFactory supports proxy generation for this type.
      *
-     * @param clazz        the class type (<code>Object.class</code> will be ignored)
+     * @param type        the class type (<code>Object.class</code> will be ignored)
      * @param interfaces   the set of interfaces
      * @param proxyFactory the {@link ProxyFactory} in use
      */
     public static void addIfClassProxyingSupportedAndNotObject(
-            final Class clazz, final Set<Class> interfaces, final ProxyFactory proxyFactory) {
-        if (proxyFactory.canProxy(clazz) && !clazz.equals(Object.class)) {
-            interfaces.add(clazz);
+            final Class type, final Set<Class> interfaces, final ProxyFactory proxyFactory) {
+        if (proxyFactory.canProxy(type) && !type.equals(Object.class)) {
+            interfaces.add(type);
         }
     }
 

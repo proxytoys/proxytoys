@@ -57,14 +57,14 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      *
      */
     public Object createProxy(final Invoker invoker, final Class... types) {
-        final Class clazz = getSingleClass(types);
-        if (clazz == null) {
+        final Class type = getSingleClass(types);
+        if (type == null) {
             // slightly faster
             return standardProxyFactory.createProxy(invoker, types);
         }
         final Class[] interfaces = getInterfaces(types);
         final Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(clazz);
+        enhancer.setSuperclass(type);
         enhancer.setInterfaces(interfaces);
         enhancer.setCallback(new CGLIBInvocationHandlerAdapter(invoker));
         try {
@@ -73,14 +73,14 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         } catch (IllegalArgumentException e) { // cglib 2.0.2
         } catch (NoSuchMethodError e) {
         }
-        return createWithConstructor(clazz, enhancer);
+        return createWithConstructor(type, enhancer);
     }
 
     private Class[] getInterfaces(final Class[] types) {
         final List<Class> interfaces = new ArrayList<Class>(Arrays.asList(types));
         for (final Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
-            final Class clazz = (Class) iterator.next();
-            if (!clazz.isInterface()) {
+            final Class type = (Class) iterator.next();
+            if (!type.isInterface()) {
                 iterator.remove();
             }
         }
