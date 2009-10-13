@@ -64,7 +64,7 @@ public class ReflectionUtils {
      * @param objects the list of objects to consider.
      * @return an set of interfaces. The set may be empty
      */
-    public static Set getAllInterfaces(final Object[] objects) {
+    public static Set<Class> getAllInterfaces(final Object[] objects) {
         final Set<Class> interfaces = new HashSet<Class>();
         for (Object object : objects) {
             if (object != null) {
