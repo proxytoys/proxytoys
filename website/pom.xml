@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.thoughtworks.proxytoys</groupId>
+  <parent>
+    <groupId>com.thoughtworks.proxytoys</groupId>
+    <artifactId>proxytoys-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
   <artifactId>proxytoys-site</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>ProxyToys Website</name>
   <dependencies>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+      <groupId>com.thoughtworks.proxytoys</groupId>
       <artifactId>proxytoys</artifactId>
-      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.thoughtworks.proxytoys</groupId>
+      <artifactId>proxytoys</artifactId>
+      <classifier>javadoc</classifier>
     </dependency>
   </dependencies>
   <build>
@@ -23,20 +30,13 @@
             <id>unpack-javadoc</id>
             <phase>generate-resources</phase>
             <goals>
-              <goal>unpack</goal>
+              <goal>unpack-dependencies</goal>
             </goals>
             <configuration>
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>true</overWriteSnapshots>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>${pom.groupId}</groupId>
-                  <artifactId>proxytoys</artifactId>
-                  <version>${pom.version}</version>
-                  <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/site/javadoc</outputDirectory>
-                </artifactItem>
-              </artifactItems>
+              <classifier>javadoc</classifier>
+              <outputDirectory>${project.build.directory}/site/javadoc</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -68,28 +68,15 @@
             <id>bin</id>
             <phase>install</phase>
             <goals>
-              <goal>assembly</goal>
+              <goal>single</goal>
             </goals>
             <configuration>
               <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
-              </descriptors>
-              <finalName>proxytoys-${pom.version}</finalName>
-              <workDirectory>target/assembly/bin</workDirectory>
-            </configuration>
-          </execution>
-          <execution>
-            <id>src</id>
-            <phase>install</phase>
-            <goals>
-              <goal>assembly</goal>
-            </goals>
-            <configuration>
-              <descriptors>
                 <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
               </descriptors>
               <finalName>proxytoys-${pom.version}</finalName>
-              <workDirectory>target/assembly/src</workDirectory>
+              <workDirectory>target/assembly/bin</workDirectory>
             </configuration>
           </execution>
         </executions>
