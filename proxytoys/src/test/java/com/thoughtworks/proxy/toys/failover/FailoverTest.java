@@ -1,6 +1,6 @@
 package com.thoughtworks.proxy.toys.failover;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.AbstractProxyTest;
 import static com.thoughtworks.proxy.toys.failover.Failover.failoverable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class FailoverTest extends ProxyTestCase {
+public class FailoverTest extends AbstractProxyTest {
 
     public static interface FailsOnNthCall {
         void doIt();

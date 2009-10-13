@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public class ProxyFactoryTest extends ProxyTestCase {
+public class ProxyFactoryTest extends AbstractProxyTest {
     @Test
     public void shouldNotBeAbleToProxyVoidClass() {
         assertFalse(getFactory().canProxy(Void.class));

@@ -6,7 +6,9 @@
  */
 package com.thoughtworks.proxy.toys.future;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.AbstractProxyTest;
+import static com.thoughtworks.proxy.toys.future.Future.typedFuture;
+import static com.thoughtworks.proxy.toys.future.Future.future;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import org.junit.Test;
@@ -19,11 +21,10 @@ import java.util.concurrent.CountDownLatch;
  * @author Aslak Helles&oslash;y
  * @version $Revision: 1.3 $
  */
-public class FutureTest extends ProxyTestCase {
+public class FutureTest extends AbstractProxyTest {
     public static interface Service {
         List getList();
-
-        void storeMessage();
+        void methodReturnsVoid();
     }
 
     public static class SlowService implements Service {
@@ -42,31 +43,53 @@ public class FutureTest extends ProxyTestCase {
             return Collections.singletonList("yo");
         }
 
-        public void storeMessage() {
-
+        public void methodReturnsVoid() {
         }
     }
 
     @Test
-    public void testShouldReturnNullObjectAsIntermediateResultAndSwapWhenMethodCompletes() throws InterruptedException {
+    public void testShouldReturnNullObjectAsIntermediateResultAndSwapWhenMethodCompletesWithCast() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
-        Service fastService = (Service) Future.object(slowService, getFactory());
+        Service fastService = (Service) future(slowService).build(getFactory());
 
         List stuff = fastService.getList();
         assertTrue(stuff.isEmpty());
         // let slowService.getStuff() proceed!
         latch.countDown();
+        assertEquals(0, stuff.size());
         Thread.sleep(100);
         assertEquals("yo", stuff.get(0));
     }
 
     @Test
-    public void testShouldHandleVoidMethods() throws InterruptedException {
+    public void testShouldReturnNullObjectAsIntermediateResultAndSwapWhenMethodCompletesWithGenerics() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
-        Service fastService = (Service) Future.object(slowService, getFactory());
+        Service fastService = typedFuture(Service.class).with(slowService).build(getFactory());
 
-        fastService.storeMessage();
+        List stuff = fastService.getList();
+        assertTrue(stuff.isEmpty());
+        // let slowService.getStuff() proceed!
+        latch.countDown();
+        assertEquals(0, stuff.size());
+        Thread.sleep(100);
+        assertEquals("yo", stuff.get(0));
+    }
+
+    @Test
+    public void testShouldHandleVoidMethodsWithCast() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        Service slowService = new SlowService(latch);
+        Service fastService = (Service) future(slowService).build(getFactory());
+        fastService.methodReturnsVoid();
+    }
+
+    @Test
+    public void testShouldHandleVoidMethodsWithGenerics() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        Service slowService = new SlowService(latch);
+        Service fastService =  typedFuture(Service.class).with(slowService).build(getFactory());
+        fastService.methodReturnsVoid();
     }
 }

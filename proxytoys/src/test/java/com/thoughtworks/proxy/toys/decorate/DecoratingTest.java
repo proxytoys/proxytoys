@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.AbstractProxyTest;
 import com.thoughtworks.proxy.SameArrayMatcher;
 import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.Resetter;
@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  */
-public class DecoratingTest extends ProxyTestCase {
+public class DecoratingTest extends AbstractProxyTest {
     private static final String getSomething = "getSomething";
 
     private static final Method getSomethingMethod;
@@ -147,7 +147,7 @@ public class DecoratingTest extends ProxyTestCase {
         private static final long serialVersionUID = 1L;
 
         public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
-            assertTrue(args[0] instanceof ProxyTestCase);
+            assertTrue(args[0] instanceof AbstractProxyTest);
             return super.beforeMethodStarts(proxy, method, args);
         }
 

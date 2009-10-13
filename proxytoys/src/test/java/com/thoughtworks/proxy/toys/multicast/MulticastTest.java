@@ -1,6 +1,6 @@
 package com.thoughtworks.proxy.toys.multicast;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.AbstractProxyTest;
 import com.thoughtworks.proxy.ProxyFactory;
 import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
 import static org.junit.Assert.*;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public class MulticastTest extends ProxyTestCase {
+public class MulticastTest extends AbstractProxyTest {
 
     public static interface Dog {
         Tail getTail();

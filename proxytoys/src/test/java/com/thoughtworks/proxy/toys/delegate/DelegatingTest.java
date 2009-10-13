@@ -7,7 +7,7 @@
  */
 package com.thoughtworks.proxy.toys.delegate;
 
-import com.thoughtworks.proxy.ProxyTestCase;
+import com.thoughtworks.proxy.AbstractProxyTest;
 import static com.thoughtworks.proxy.toys.delegate.Delegating.delegatable;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.fail;
@@ -24,7 +24,7 @@ import java.rmi.RemoteException;
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
  * @author J&ouml;rg Schaible
  */
-public class DelegatingTest extends ProxyTestCase {
+public class DelegatingTest extends AbstractProxyTest {
 
     public interface Foo {
         String getSomething() throws RemoteException;

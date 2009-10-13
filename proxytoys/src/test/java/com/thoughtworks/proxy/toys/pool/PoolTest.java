@@ -5,13 +5,11 @@
  */
 package com.thoughtworks.proxy.toys.pool;
 
-import com.thoughtworks.proxy.ProxyTestCase;
-import com.thoughtworks.proxy.kit.NoOperationResetter;
+import com.thoughtworks.proxy.AbstractProxyTest;
 import com.thoughtworks.proxy.kit.Resetter;
 import static com.thoughtworks.proxy.toys.pool.Pool.poolable;
 import static com.thoughtworks.proxy.toys.pool.SerializationMode.FORCE;
 import static com.thoughtworks.proxy.toys.pool.SerializationMode.NONE;
-import junit.framework.TestCase;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +22,7 @@ import java.io.Serializable;
 /**
  * @author J&ouml;rg Schaible
  */
-public class PoolTest extends ProxyTestCase {
+public class PoolTest extends AbstractProxyTest {
 
     public static interface Identifiable {
         int getId();
