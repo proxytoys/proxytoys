@@ -130,6 +130,7 @@
                     <configuration>
                         <source>1.5</source>
                         <linksource>true</linksource>
+                        <quiet>true</quiet>
                     </configuration>
                 </plugin>
                 <plugin>
