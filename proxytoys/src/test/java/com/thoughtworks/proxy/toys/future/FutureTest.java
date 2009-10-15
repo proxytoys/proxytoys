@@ -6,16 +6,18 @@
  */
 package com.thoughtworks.proxy.toys.future;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
-import static com.thoughtworks.proxy.toys.future.Future.typedFuture;
 import static com.thoughtworks.proxy.toys.future.Future.future;
+import static com.thoughtworks.proxy.toys.future.Future.typedFuture;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import org.junit.Test;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+
+import com.thoughtworks.proxy.AbstractProxyTest;
+
+import org.junit.Test;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -57,8 +59,8 @@ public class FutureTest extends AbstractProxyTest {
         assertTrue(stuff.isEmpty());
         // let slowService.getStuff() proceed!
         latch.countDown();
-        assertEquals(0, stuff.size());
         Thread.sleep(100);
+        assertEquals(1, stuff.size());
         assertEquals("yo", stuff.get(0));
     }
 
@@ -72,8 +74,8 @@ public class FutureTest extends AbstractProxyTest {
         assertTrue(stuff.isEmpty());
         // let slowService.getStuff() proceed!
         latch.countDown();
-        assertEquals(0, stuff.size());
         Thread.sleep(100);
+        assertEquals(1, stuff.size());
         assertEquals("yo", stuff.get(0));
     }
 
