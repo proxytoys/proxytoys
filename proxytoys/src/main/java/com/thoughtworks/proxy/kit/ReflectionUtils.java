@@ -223,7 +223,7 @@ public class ReflectionUtils {
             method = possibleMethods.iterator().next();
         }
         if (method == null) {
-            final StringBuffer name = new StringBuffer(type.getName());
+            final StringBuilder name = new StringBuilder(type.getName());
             name.append('.');
             name.append(methodName);
             name.append('(');

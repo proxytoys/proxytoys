@@ -69,7 +69,7 @@ public class EchoDecorator extends Decorator {
     }
 
     private void printMethodCall(Method method, Object[] args) {
-        final StringBuffer buf = new StringBuffer("[");
+        final StringBuilder buf = new StringBuilder("[");
         buf.append(Thread.currentThread().getName());
         buf.append("] ");
         buf.append(method.getDeclaringClass().getName());
@@ -88,7 +88,7 @@ public class EchoDecorator extends Decorator {
     }
 
     private void printMethodResult(final Object result) {
-        final StringBuffer buf = new StringBuffer("--> <");
+        final StringBuilder buf = new StringBuilder("--> <");
         buf.append(result == null ? "NULL" : result.toString());
         buf.append(">");
         out.println(buf);
@@ -96,7 +96,7 @@ public class EchoDecorator extends Decorator {
     }
 
     private void printTargetException(final Throwable throwable) {
-        final StringBuffer buf = new StringBuffer("throws ");
+        final StringBuilder buf = new StringBuilder("throws ");
         buf.append(throwable.getClass().getName());
         buf.append(": ");
         buf.append(throwable.getMessage());

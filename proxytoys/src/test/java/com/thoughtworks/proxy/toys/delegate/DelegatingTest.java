@@ -31,9 +31,9 @@ public class DelegatingTest extends AbstractProxyTest {
     }
 
     public static class FinalizingImpl {
-        private StringBuffer buffer;
+        private StringBuilder buffer;
 
-        public FinalizingImpl(StringBuffer buffer) {
+        public FinalizingImpl(StringBuilder buffer) {
             this.buffer = buffer;
         }
 
@@ -191,7 +191,7 @@ public class DelegatingTest extends AbstractProxyTest {
 
     @Test(expected = DelegationException.class)
     public void shouldNotBeAbleToCallProtectedMethods() throws Exception {
-        FinalizingImpl finalizing = new FinalizingImpl(new StringBuffer());
+        FinalizingImpl finalizing = new FinalizingImpl(new StringBuilder());
         foo = createProxy(finalizing);
 
         foo.getSomething();
@@ -201,7 +201,7 @@ public class DelegatingTest extends AbstractProxyTest {
 
     @Test
     public void shouldHandleFinalizeOnProxyOnly() throws Exception {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         FinalizingImpl finalizing = new FinalizingImpl(buffer);
         foo = createProxy(finalizing);
         foo = null;
@@ -212,7 +212,7 @@ public class DelegatingTest extends AbstractProxyTest {
 
     @Test
     public void shouldHandleFinalizeOnProxyAndDelegate() throws Exception {
-        final StringBuffer buffer = new StringBuffer();
+        final StringBuilder buffer = new StringBuilder();
         {
             foo = createProxy(new FinalizingImpl(buffer));
             foo = null;
