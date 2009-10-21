@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2005 Jörg Schaible
- * Created on 29-Jun-2005 by Jörg Schaible
+ * Copyright (C) 2005 Joerg Schaible
+ * Created on 29-Jun-2005 by Joerg Schaible
  * See license.txt for license details
  */
 package proxytoys.examples.overview;
