@@ -1,27 +1,16 @@
 /*
- * Copyright (C) 2005 Joerg Schaible
- * Created on 25-Jul-2005 by Joerg Schaible
+ * Copyright (C) 2009 Thoughtworks Ltd
+ * Created on 13-Oct-2009 by Paul Hammant
  * See license.txt for license details
  */
 package proxytoys.examples.overview;
 
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import static com.thoughtworks.proxy.toys.failover.Failover.failoverable;
-import static com.thoughtworks.proxy.toys.future.Future.future;
 import static com.thoughtworks.proxy.toys.future.Future.typedFuture;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInput;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.Format;
-import java.text.MessageFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
 
 /**
