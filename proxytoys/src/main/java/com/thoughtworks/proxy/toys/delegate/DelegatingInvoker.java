@@ -7,12 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.delegate;
 
-import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
-import com.thoughtworks.proxy.kit.ObjectReference;
-import com.thoughtworks.proxy.kit.ReflectionUtils;
-import com.thoughtworks.proxy.kit.SimpleReference;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
@@ -23,11 +17,18 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
+import com.thoughtworks.proxy.kit.SimpleReference;
+
 
 /**
  * Invoker that delegates method calls to an object.
  * <p>
- * This forms the basis of many other proxy toys. The delegation behaviour was factored out of
+ * This forms the basis of many other proxy toys. The delegation behavior was factored out of
  * <tt>HotSwappingInvoker</tt>.
  * </p>
  *
@@ -37,12 +38,12 @@ import java.util.Map;
  * @author J&ouml;rg Schaible
  * @see com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker
  */
-public class DelegatingInvoker implements Invoker {
+public class DelegatingInvoker<T> implements Invoker {
 
     private static final long serialVersionUID = 1L;
     private transient Map<Method, Method> methodCache;
     private ProxyFactory proxyFactory;
-    private ObjectReference delegateReference;
+    private ObjectReference<T> delegateReference;
     private DelegationMode delegationMode;
 
     /**
@@ -55,7 +56,7 @@ public class DelegatingInvoker implements Invoker {
      *                                  {@link Delegating}
 
      */
-    public DelegatingInvoker(final ProxyFactory proxyFactory, final ObjectReference delegateReference,
+    public DelegatingInvoker(final ProxyFactory proxyFactory, final ObjectReference<T> delegateReference,
                              final DelegationMode delegationMode) {
         this.proxyFactory = proxyFactory;
         this.delegateReference = delegateReference;
@@ -68,8 +69,8 @@ public class DelegatingInvoker implements Invoker {
      *
      * @param delegate the delegated object
      */
-    public DelegatingInvoker(final Object delegate) {
-        this(new StandardProxyFactory(), new SimpleReference(delegate), SIGNATURE);
+    public DelegatingInvoker(final T delegate) {
+        this(new StandardProxyFactory(), new SimpleReference<T>(delegate), SIGNATURE);
     }
 
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
@@ -83,8 +84,8 @@ public class DelegatingInvoker implements Invoker {
             final Object arg = args[0];
             while (delegate != null && proxyFactory.isProxyClass(delegate.getClass())) {
                 Invoker invoker = proxyFactory.getInvoker(delegate);
-                if (invoker instanceof DelegatingInvoker) {
-                    delegate = ((DelegatingInvoker) invoker).delegate();
+                if (invoker instanceof DelegatingInvoker<?>) {
+                    delegate = DelegatingInvoker.class.cast(invoker).delegate();
                 }
             }
             if (arg == null) {
@@ -94,7 +95,7 @@ public class DelegatingInvoker implements Invoker {
             }
         } else if (method.equals(ReflectionUtils.hashCode)) {
             // equals and hashCode must be consistent
-            result = delegate == null ? hashCode() : delegate.hashCode();
+            result = delegate == null ? 47 : delegate.hashCode();
 
             // null delegatable
         } else if (delegate == null) {
@@ -117,7 +118,7 @@ public class DelegatingInvoker implements Invoker {
      *
      * @return the delegated object
      */
-    protected Object delegate() {
+    protected T delegate() {
         return delegateReference.get();
     }
 
@@ -164,9 +165,9 @@ public class DelegatingInvoker implements Invoker {
     /**
      * Retrieve the {@link ObjectReference} of the delegate.
      *
-     * @return the reference of hte delegate
+     * @return the reference of the delegate
      */
-    protected ObjectReference getDelegateReference() {
+    protected ObjectReference<T> getDelegateReference() {
         return this.delegateReference;
     }
 
@@ -185,14 +186,16 @@ public class DelegatingInvoker implements Invoker {
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof DelegatingInvoker) {
-            final DelegatingInvoker invoker = (DelegatingInvoker) obj;
+        if (obj instanceof DelegatingInvoker<?>) {
+            final DelegatingInvoker<?> invoker = DelegatingInvoker.class.cast(obj);
             return invoker.delegationMode == delegationMode && delegate().equals(invoker.delegate());
         }
         return false;
     }
 
+    @Override
     public int hashCode() {
         final Object delegate = delegate();
         return delegationMode.delegationHashcode(delegate == null
@@ -201,6 +204,6 @@ public class DelegatingInvoker implements Invoker {
 
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        methodCache = new HashMap();
+        methodCache = new HashMap<Method, Method>();
     }
 }

@@ -1,12 +1,21 @@
+/*
+ * Created on 21-Mar-2004
+ *
+ * (c) 2003-2004 ThoughtWorks Ltd
+ *
+ * See license.txt for license details
+ */
 package com.thoughtworks.proxy.toys.nullobject;
+
+import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
 
 import com.thoughtworks.proxy.AbstractProxyTest;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -44,6 +53,7 @@ public class CglibNullTest extends AbstractProxyTest {
         }
     }
 
+    @Override
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
     }

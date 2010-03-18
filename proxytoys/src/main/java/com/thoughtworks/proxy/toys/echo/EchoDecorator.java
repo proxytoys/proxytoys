@@ -7,12 +7,13 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import com.thoughtworks.proxy.ProxyFactory;
 import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
-import com.thoughtworks.proxy.toys.decorate.Decorator;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.decorate.Decorator;
 
 /**
  * A {@link com.thoughtworks.proxy.toys.decorate.Decorator} implementation that echoes any invocation to a {@link PrintWriter}.
@@ -32,7 +33,7 @@ public class EchoDecorator extends Decorator {
     /**
      * Construct an EchoingDecorator.
      *
-     * @param out     the {@link PrintWriter} receving the logs
+     * @param out     the {@link PrintWriter} receiving the logs
      * @param factory the {@link ProxyFactory} to use
      */
     public EchoDecorator(final PrintWriter out, final ProxyFactory factory) {
@@ -40,13 +41,15 @@ public class EchoDecorator extends Decorator {
         this.factory = factory;
     }
 
+    @Override
     public Object[] beforeMethodStarts(final Object proxy, final Method method, final Object[] args) {
         printMethodCall(method, args);
         return super.beforeMethodStarts(proxy, method, args);
     }
 
+    @Override
     public Object decorateResult(final Object proxy, final Method method, final Object[] args, Object result) {
-        final Class returnType = method.getReturnType();
+        final Class<?> returnType = method.getReturnType();
         printMethodResult(result);
         if (returnType != Object.class && factory.canProxy(returnType)) {
             result = decoratable(returnType).with(result, this).build(factory);
@@ -56,12 +59,14 @@ public class EchoDecorator extends Decorator {
         return result;
     }
 
+    @Override
     public Throwable decorateTargetException(
             final Object proxy, final Method method, final Object[] args, final Throwable cause) {
         printTargetException(cause);
         return super.decorateTargetException(proxy, method, args, cause);
     }
 
+    @Override
     public Exception decorateInvocationException(
             final Object proxy, final Method method, final Object[] args, final Exception cause) {
         printInvocationException(cause);

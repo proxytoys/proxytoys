@@ -3,21 +3,25 @@
  * 
  * (c) 2003-2004 ThoughtWorks
  * 
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
 import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.thoughtworks.proxy.AbstractProxyTest;
 
 
 /**

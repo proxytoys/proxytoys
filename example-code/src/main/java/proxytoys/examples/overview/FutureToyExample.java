@@ -19,9 +19,8 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 public class FutureToyExample {
 
     public static void packageOverviewExample1() throws InterruptedException {
-        List slowList = new SlowArrayList();
-
-        List fasterList = typedFuture(List.class).with(slowList)
+        List<?> slowList = new SlowArrayList();
+        List<?> fasterList = typedFuture(List.class).with(slowList)
                           .build(new CglibProxyFactory());
         System.out.println("Items in list: " + fasterList.size());
         Thread.sleep(100);
@@ -38,7 +37,8 @@ public class FutureToyExample {
         packageOverviewExample1();
     }
 
-    private static class SlowArrayList extends ArrayList {
+    @SuppressWarnings("serial")
+    private static class SlowArrayList extends ArrayList<Object> {
         @Override
         public boolean add(final Object o) {
             new Thread(new Runnable() {

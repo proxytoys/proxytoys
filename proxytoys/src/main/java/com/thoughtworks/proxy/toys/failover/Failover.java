@@ -10,7 +10,7 @@ package com.thoughtworks.proxy.toys.failover;
 import com.thoughtworks.proxy.ProxyFactory;
 
 /**
- * Factory for proxy instances handling failover.. Delegates to one object as long as there is no exception, fails over
+ * Factory for proxy instances handling failover. Delegates to one object as long as there is no exception, fails over
  * to the next when an exception occurs.
  *
  * @author Aslak Helles&oslash;y
@@ -18,8 +18,8 @@ import com.thoughtworks.proxy.ProxyFactory;
  */
 public class Failover<T> {
     private Class<T> type;
-    private Object[] delegates;
-    private Class exceptionClass;
+    private T[] delegates;
+    private Class<? extends Throwable> exceptionClass;
 
     public Failover(Class<T> type) {
         this.type = type;
@@ -46,9 +46,9 @@ public class Failover<T> {
          * With these delegates
          *
          * @param delegates the delegates used for failover
-         * @return
+         * @return a factory that will use the supplied delegates in case of a failure.
          */
-        public FailoverExceptingOrBuild<T> with(final Object... delegates) {
+        public FailoverExceptingOrBuild<T> with(final T... delegates) {
             failover.delegates = delegates;
             return new FailoverExceptingOrBuild<T>(failover);
         }
@@ -65,11 +65,11 @@ public class Failover<T> {
          * Excepting this exception class
          *
          * @param exceptionClass the type of the exceptions triggering failover
-         * @return
+         * @return a factory that will trigger the usage of the next delegate based on the supplied Throwable type.
          */
         public FailoverBuild<T> excepting(Class<? extends Throwable> exceptionClass) {
             failover.exceptionClass = exceptionClass;
-            return new FailoverBuild(failover);
+            return new FailoverBuild<T>(failover);
 
         }
 
@@ -83,17 +83,14 @@ public class Failover<T> {
         }
 
         /**
-         * * Create a proxy of a specific types with failover capability using the given objects.  The provided exception type
-         * determins the type of exceptions that trigger the failover.
+         * Create a proxy of a specific types with failover capability using the given objects.  The provided exception type
+         * determines the type of exceptions that trigger the failover.
          *
          * @param proxyFactory the {@link ProxyFactory} to use
          * @return the created proxy
          */
         public T build(final ProxyFactory proxyFactory) {
-            return (T) new FailoverInvoker(new Class[]{failover.type}, proxyFactory, failover.delegates, failover.exceptionClass).proxy();
+            return new FailoverInvoker<T>(new Class[]{failover.type}, proxyFactory, failover.delegates, failover.exceptionClass).proxy();
         }
-
     }
-
-
 }

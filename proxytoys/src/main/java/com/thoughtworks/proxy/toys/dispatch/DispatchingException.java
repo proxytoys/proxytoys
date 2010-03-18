@@ -14,7 +14,7 @@ package com.thoughtworks.proxy.toys.dispatch;
  */
 public class DispatchingException extends RuntimeException {
     private static final long serialVersionUID = 1L;
-    private final Class type;
+    private final Class<?> type;
 
     /**
      * Construct a DispatchingException with the offending type.
@@ -23,7 +23,7 @@ public class DispatchingException extends RuntimeException {
      * @param type    the type, that cannot be dispatched
 
      */
-    public DispatchingException(final String message, final Class type) {
+    public DispatchingException(final String message, final Class<?> type) {
         super(message);
         this.type = type;
     }

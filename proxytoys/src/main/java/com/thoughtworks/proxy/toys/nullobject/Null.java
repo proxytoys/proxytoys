@@ -7,11 +7,19 @@
  */
 package com.thoughtworks.proxy.toys.nullobject;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
-
-import java.lang.reflect.Array;
-import java.util.*;
 
 
 /**
@@ -31,57 +39,68 @@ public class Null<T> {
     /**
      * Immutable Null Object implementation of {@link SortedMap}
      */
-    public static final SortedMap NULL_SORTED_MAP = new TreeMap() {
+    public static final SortedMap<Object, Object> NULL_SORTED_MAP = new TreeMap<Object, Object>() {
         private static final long serialVersionUID = -4388170961744587609L;
 
+        @Override
         public Object put(Object key, Object value) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void clear() {
             // nothing to do
         }
 
+        @Override
         public Object remove(Object key) {
             return null;
         }
 
-        public Set keySet() {
-            return Collections.EMPTY_SET;
+        @Override
+        public Set<Object> keySet() {
+            return Collections.emptySet();
         }
 
-        public Collection values() {
-            return Collections.EMPTY_LIST;
+        @Override
+        public Collection<Object> values() {
+            return Collections.emptyList();
         }
 
-        public Set entrySet() {
-            return Collections.EMPTY_SET;
+        @Override
+        public Set<Map.Entry<Object, Object>> entrySet() {
+            return Collections.emptySet();
         }
     };
 
     /**
      * Immutable Null Object implementation of {@link SortedSet}
      */
-    public static final SortedSet NULL_SORTED_SET = new TreeSet() {
+    public static final SortedSet<Object> NULL_SORTED_SET = new TreeSet<Object>() {
         private static final long serialVersionUID = 809722154285517876L;
 
+        @Override
         public boolean add(Object o) {
             throw new UnsupportedOperationException();
         }
 
+        @Override
         public void clear() {
             // nothing to do
         }
 
+        @Override
         public boolean remove(Object o) {
             return false;
         }
 
-        public boolean removeAll(Collection c) {
+        @Override
+        public boolean removeAll(Collection<?> c) {
             return false;
         }
 
-        public boolean retainAll(Collection c) {
+        @Override
+        public boolean retainAll(Collection<?> c) {
             return false;
         }
     };
@@ -117,10 +136,7 @@ public class Null<T> {
      * @param proxyFactory the {@link ProxyFactory} in use
      * @return object, proxy or <code>null</code>
      * @see com.thoughtworks.proxy.toys.nullobject
-
      */
-
-
     public T build(ProxyFactory proxyFactory) {
         final Object result;
 
@@ -172,13 +188,14 @@ public class Null<T> {
         } else {
             result = null;
         }
-        return (T) result;
-
+        @SuppressWarnings("unchecked")
+        T typedResult = (T) result;
+        return typedResult;
     }
 
 
     /**
-     * Determine whether an object was created by {@link Null#object(Class)}.
+     * Determine whether an object was created by {@link Null#nullable(Class)}.
      *
      * @param object the object to examine
      * @return <code>true</code> if the object is a Null proxy.
@@ -189,7 +206,7 @@ public class Null<T> {
     }
 
     /**
-     * Determine whether an object was created by {@link Null#object(Class, ProxyFactory)}.
+     * Determine whether an object was created by {@link Null#nullable(Class)} using a special ProxyFactory with the builder.
      *
      * @param object       the object to examine
      * @param proxyFactory the {@link ProxyFactory} to use
@@ -212,5 +229,4 @@ public class Null<T> {
     private static boolean isNullProxyObject(final Object object, final ProxyFactory proxyFactory) {
         return proxyFactory.isProxyClass(object.getClass()) && proxyFactory.getInvoker(object) instanceof NullInvoker;
     }
-
 }

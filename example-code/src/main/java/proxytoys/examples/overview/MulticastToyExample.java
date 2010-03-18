@@ -5,13 +5,21 @@
  */
 package proxytoys.examples.overview;
 
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.multicast.Multicast;
 import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.multicast.Multicast;
 
 
 /**
@@ -20,9 +28,10 @@ import java.util.*;
 public class MulticastToyExample {
 
     public static void packageOverviewExample1() {
-        ArrayList arrayList = new ArrayList();
-        LinkedList linkedList = new LinkedList();
-        List listCombined = (List)multicastable(arrayList, linkedList).build();
+        ArrayList<String> arrayList = new ArrayList<String>();
+        LinkedList<String> linkedList = new LinkedList<String>();
+        @SuppressWarnings("unchecked")
+        List<String> listCombined = List.class.cast(multicastable(arrayList, linkedList).build());
         if (listCombined.add("Hello")) {
             System.out.println("List 1: " + arrayList.toString());
             System.out.println("List 2: " + linkedList.toString());
@@ -36,8 +45,9 @@ public class MulticastToyExample {
             list1.add(100);
             List<Integer> list2 = new LinkedList<Integer>();
             list2.add(3);
-            List listCombined = (List)multicastable(list1, list2).build();
-            Multicast values = (Multicast)listCombined.get(0);
+            @SuppressWarnings("unchecked")
+            List<Integer> listCombined = List.class.cast(multicastable(list1, list2).build());
+            Multicast values = Multicast.class.cast(listCombined.get(0));
             System.out.println("Sum of the first integers: "
                     + values.multicastTargets(Integer.class, "intValue", null).toString());
         } catch (NoSuchMethodException e) {
@@ -48,19 +58,19 @@ public class MulticastToyExample {
     public static void packageOverviewExample3() {
         File workingDir = new File(".");
         List<String> files = Arrays.asList(workingDir.list());
-        Object multicast = multicastable(File.class, List.class)
+        File multicast = multicastable(File.class, List.class)
                              .with(workingDir, files)
                              .build(new CglibProxyFactory());
-        System.out.println("Current working directory: " + ((File)multicast).getAbsolutePath());
-        System.out.println("Files in working directory: " + ((List)multicast).size());
+        System.out.println("Current working directory: " + multicast.getAbsolutePath());
+        System.out.println("Files in working directory: " + List.class.cast(multicast).size());
     }
 
     public static void packageOverviewExample4() {
         try {
             Method method = String.class.getMethod("length");
-            Multicast multicast = (Multicast)multicastable("ProxyToys", "is", "great").build();
+            Multicast multicast = multicastable("ProxyToys", "is", "great").build();
             System.out.println("Total number of characters: " + multicast.multicastTargets(method, null));
-            String[] strings = (String[])multicast.getTargetsInArray(String.class);
+            String[] strings = multicast.getTargetsInArray(String.class);
             for (int i = 0; i < strings.length; i++) {
                 System.out.println("String[" + i + "]: " + strings[i]);
             }
@@ -71,12 +81,13 @@ public class MulticastToyExample {
 
     public static void packageOverviewExample5() {
         List<String> list = new ArrayList<String>();
-        Set<?> set = new HashSet();
+        Set<String> set = new HashSet<String>();
         list.add("ProxyToys");
         set.add(null);
-        Collection collection = (Collection)multicastable(list, set).build();
-        Iterator iter = collection.iterator();
-        String value = (String)iter.next();
+        @SuppressWarnings("unchecked")
+        Collection<String> collection = Collection.class.cast(multicastable(list, set).build());
+        Iterator<String> iter = collection.iterator();
+        String value = iter.next();
         System.out.println("Element gained from the iterator: " + value);
     }
 

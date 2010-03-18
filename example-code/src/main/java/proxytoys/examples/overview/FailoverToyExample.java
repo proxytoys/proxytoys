@@ -5,8 +5,6 @@
  */
 package proxytoys.examples.overview;
 
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import static com.thoughtworks.proxy.toys.failover.Failover.failoverable;
 
 import java.io.ByteArrayInputStream;
@@ -19,6 +17,9 @@ import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.Date;
 
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
+
 
 /**
  * @author J&ouml;rg Schaible
@@ -26,7 +27,11 @@ import java.util.Date;
 public class FailoverToyExample {
 
     public static void packageOverviewExample1() {
-        Format[] formats = new Format[]{NumberFormat.getInstance(), DateFormat.getDateInstance(), new MessageFormat("{1}, {0}"),};
+        Format[] formats = new Format[]{
+            NumberFormat.getInstance(), 
+            DateFormat.getDateInstance(), 
+            new MessageFormat("{1}, {0}")
+        };
         Format format = failoverable(Format.class).with(formats).excepting(RuntimeException.class)
                           .build(new CglibProxyFactory());
         System.out.println("Format a date: " + format.format(new Date()));

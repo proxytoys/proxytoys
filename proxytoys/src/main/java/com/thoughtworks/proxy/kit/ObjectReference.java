@@ -13,19 +13,19 @@ package com.thoughtworks.proxy.kit;
  *
  * @author <a href="mailto:joe@thoughtworks.net">Joe Walnes</a>
  */
-public interface ObjectReference {
+public interface ObjectReference<T> {
     /**
      * Retrieve an actual reference to the object. Returns null if the reference is not available or has not been
      * populated yet.
      *
      * @return an actual reference to the object.
      */
-    Object get();
+    T get();
 
     /**
      * Assign an object to the reference.
      *
      * @param item the object to assign to the reference. May be <code>null</code>.
      */
-    void set(Object item);
+    void set(T item);
 }

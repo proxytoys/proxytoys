@@ -7,9 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.nullobject;
 
-import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.kit.ReflectionUtils;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 
 import java.io.IOException;
@@ -17,6 +14,10 @@ import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 
 /**
@@ -31,12 +32,12 @@ public class NullInvoker implements Invoker {
     static {
         try {
             toString = Object.class.getMethod("toString", new Class[0]);
-        } catch (Exception e) {
-            throw new InternalError("toString() missing!");
+        } catch (NoSuchMethodException e) {
+            throw new ExceptionInInitializerError(e.toString());
         }
     }
 
-    private Class type;
+    private Class<?> type;
     private ProxyFactory proxyFactory;
 
     /**
@@ -45,7 +46,7 @@ public class NullInvoker implements Invoker {
      * @param type         the type of the proxy
      * @param proxyFactory the {@link ProxyFactory} to use
      */
-    public NullInvoker(final Class type, final ProxyFactory proxyFactory) {
+    public NullInvoker(final Class<?> type, final ProxyFactory proxyFactory) {
         this.type = type;
         this.proxyFactory = proxyFactory;
     }
@@ -58,9 +59,7 @@ public class NullInvoker implements Invoker {
             result = "Null Object for " + type.getName();
         } else if (ReflectionUtils.equals.equals(method)) {
             Object other = args[0];
-            result = (Null.isNullObject(other, proxyFactory) && type.equals(getType(other)))
-                    ? Boolean.TRUE
-                    : Boolean.FALSE;
+            result = (Null.isNullObject(other, proxyFactory) && type.equals(getType(other)));
         } else if (ReflectionUtils.hashCode.equals(method)) {
             result = type.hashCode();
         }
@@ -72,10 +71,10 @@ public class NullInvoker implements Invoker {
         return result;
     }
 
-    private Class getType(Object object) {
-        final Class result;
+    private Class<?> getType(Object object) {
+        final Class<?> result;
         if (proxyFactory.isProxyClass(object.getClass())) {
-            NullInvoker nullInvoker = (NullInvoker) proxyFactory.getInvoker(object);
+            NullInvoker nullInvoker = NullInvoker.class.cast(proxyFactory.getInvoker(object));
             result = nullInvoker.type;
         } else {
             result = object.getClass();

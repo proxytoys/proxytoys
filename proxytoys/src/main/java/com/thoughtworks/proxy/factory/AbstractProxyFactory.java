@@ -7,13 +7,13 @@
  */
 package com.thoughtworks.proxy.factory;
 
-import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.ProxyFactory;
-
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
+
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.ProxyFactory;
 
 
 /**
@@ -27,7 +27,9 @@ import java.lang.reflect.UndeclaredThrowableException;
  * @author Aslak Helles&oslash;y
  */
 abstract class AbstractProxyFactory implements ProxyFactory {
-
+    
+    private static final long serialVersionUID = 9212825902080759794L;
+    
     /**
      * The getInvoker method.
      */
@@ -37,7 +39,7 @@ abstract class AbstractProxyFactory implements ProxyFactory {
         try {
             getInvoker = InvokerReference.class.getMethod("getInvoker");
         } catch (NoSuchMethodException e) {
-            throw new InternalError();
+            throw new ExceptionInInitializerError(e.toString());
         }
     }
 
@@ -101,7 +103,7 @@ abstract class AbstractProxyFactory implements ProxyFactory {
      *
      */
     public Invoker getInvoker(final Object proxy) {
-        final InvokerReference ih = (InvokerReference) proxy;
+        final InvokerReference ih = InvokerReference.class.cast(proxy);
         return ih.getInvoker();
     }
 }

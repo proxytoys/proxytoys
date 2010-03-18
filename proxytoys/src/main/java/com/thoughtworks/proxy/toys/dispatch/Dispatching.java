@@ -1,9 +1,9 @@
 /*
  * Created on 24-Feb-2005
  * 
- * (c) 2005 ThoughtWorks
+ * (c) 2005 ThoughtWorks Ltd
  * 
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.dispatch;
 
@@ -20,10 +20,10 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  */
 public class Dispatching<T> {
 
-    private Class[] types;
+    private Class<?>[] types;
     private Object[] delegates;
 
-    private Dispatching(Class[] types) {
+    private Dispatching(Class<?>[] types) {
         this.types = types;
     }
 
@@ -34,28 +34,28 @@ public class Dispatching<T> {
      * @param types the other types of the proxy
      * @return a builder that will proxy instances of the supplied type.
      */
-    public static <T> DispatchingWith<T> dispatchable(Class<T> primaryType, Class... types) {
+    public static <T> DispatchingWith<T> dispatchable(Class<T> primaryType, Class<?>... types) {
         return new DispatchingWith<T>(primaryType,  types);
-
     }
 
     private T build(ProxyFactory factory) {
-        final ObjectReference[] references = new ObjectReference[delegates.length];
+        @SuppressWarnings("unchecked")
+        final ObjectReference<Object>[] references = new ObjectReference[delegates.length];
         for (int i = 0; i < references.length; i++) {
-            references[i] = new SimpleReference(delegates[i]);
+            references[i] = new SimpleReference<Object>(delegates[i]);
         }
-        return (T) factory.createProxy(new DispatchingInvoker(factory, types, references), types);
+        return factory.<T>createProxy(new DispatchingInvoker(factory, types, references), types);
     }
 
     public static class DispatchingWith<T> {
         private final Dispatching<T> dispatching;
 
-        private DispatchingWith(Class<T> primaryType, Class[] types) {
+        private DispatchingWith(Class<T> primaryType, Class<?>[] types) {
             this.dispatching = new Dispatching<T>(makeTypesArray(primaryType, types));
         }
 
-        private Class[] makeTypesArray(Class<T> primaryType, Class[] types) {
-            Class[] retVal = new Class[types.length +1];
+        private Class<?>[] makeTypesArray(Class<T> primaryType, Class<?>[] types) {
+            Class<?>[] retVal = new Class[types.length +1];
             retVal[0] = primaryType;
             System.arraycopy(types, 0, retVal, 1, types.length);
             return retVal;
@@ -70,7 +70,7 @@ public class Dispatching<T> {
          */
         public DispatchingBuild<T> with(final Object... delegates) {
             dispatching.delegates = delegates;
-            return new DispatchingBuild(dispatching);
+            return new DispatchingBuild<T>(dispatching);
         }
     }
 

@@ -1,14 +1,36 @@
 package com.thoughtworks.proxy.kit;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.beans.beancontext.BeanContext;
 import java.beans.beancontext.BeanContextServices;
 import java.beans.beancontext.BeanContextServicesListener;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileDescriptor;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.AbstractList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EventListener;
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.Vector;
+
+import org.junit.Test;
 
 
 /**
@@ -69,12 +91,12 @@ public class ReflectionUtilsTest {
     @Test
     public void mostCommonSuperclassForCollections() {
         assertEquals(AbstractList.class, ReflectionUtils.getMostCommonSuperclass(new Object[]{
-                new LinkedList(), new Vector()}));
+                new LinkedList<Object>(), new Vector<Object>()}));
     }
 
     @Test
     public void allInterfacesOfListShouldBeFound() {
-        Set interfaces = ReflectionUtils.getAllInterfaces(BeanContextServices.class);
+        Set<Class<?>> interfaces = ReflectionUtils.getAllInterfaces(BeanContextServices.class);
         assertTrue(interfaces.contains(BeanContextServices.class));
         assertTrue(interfaces.contains(BeanContext.class));
         assertTrue(interfaces.contains(Collection.class));

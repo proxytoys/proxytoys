@@ -4,12 +4,8 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
 import static junit.framework.Assert.assertTrue;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -17,8 +13,15 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
+
+import com.thoughtworks.proxy.AbstractProxyTest;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+
 
 public class CglibEchoingTest extends AbstractProxyTest {
+    @Override
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
     }
@@ -26,7 +29,8 @@ public class CglibEchoingTest extends AbstractProxyTest {
     @Test
     public void shouldProxyRealInstance() {
         final StringWriter out = new StringWriter();
-        final List<File> list = (List<File>) echoable(List.class).with(new ArrayList()).to(new PrintWriter(out)).build(createProxyFactory());
+        @SuppressWarnings("unchecked")
+        final List<File> list = echoable(List.class).with(new ArrayList()).to(new PrintWriter(out)).build(createProxyFactory());
         list.add(new File("."));
         final File file = list.get(0);
         file.exists();

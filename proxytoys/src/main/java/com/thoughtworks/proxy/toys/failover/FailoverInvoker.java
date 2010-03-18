@@ -7,13 +7,14 @@
  */
 package com.thoughtworks.proxy.toys.failover;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.kit.SimpleReference;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
-import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.kit.SimpleReference;
+import com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker;
 
 /**
  * {@link com.thoughtworks.proxy.Invoker Invoker} that implements a failover strategy by using different delegates in
@@ -24,10 +25,10 @@ import java.lang.reflect.Method;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public class FailoverInvoker extends HotSwappingInvoker {
+public class FailoverInvoker<T> extends HotSwappingInvoker<T> {
     private static final long serialVersionUID = -8289095570093619184L;
-    private Object[] delegates;
-    private Class exceptionClass;
+    private T[] delegates;
+    private Class<? extends Throwable> exceptionClass;
     private int current;
 
     /**
@@ -38,12 +39,13 @@ public class FailoverInvoker extends HotSwappingInvoker {
      * @param delegates      the delegates to use
      * @param exceptionClass the type of the exception
      */
-    public FailoverInvoker(final Class[] types, final ProxyFactory proxyFactory, final Object[] delegates, final Class<? extends Throwable> exceptionClass) {
-        super(types, proxyFactory, new SimpleReference(delegates[0]), DIRECT);
+    public FailoverInvoker(final Class<?>[] types, final ProxyFactory proxyFactory, final T[] delegates, final Class<? extends Throwable> exceptionClass) {
+        super(types, proxyFactory, new SimpleReference<Object>(delegates[0]), DIRECT);
         this.delegates = delegates;
         this.exceptionClass = exceptionClass;
     }
 
+    @Override
     protected Object invokeOnDelegate(final Method method, final Object[] args) throws InvocationTargetException {
         Object result = null;
         final int original = current;
@@ -68,5 +70,4 @@ public class FailoverInvoker extends HotSwappingInvoker {
         }
         return result;
     }
-
 }

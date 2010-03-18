@@ -5,11 +5,16 @@
  */
 package proxytoys.examples.overview;
 
-import com.thoughtworks.proxy.kit.ObjectReference;
 import static com.thoughtworks.proxy.toys.delegate.Delegating.delegatable;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 
-import java.io.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+import com.thoughtworks.proxy.kit.ObjectReference;
 
 /**
  * @author J&ouml;rg Schaible
@@ -17,12 +22,14 @@ import java.io.*;
 public class DelegateToyExample {
 
     public static void packageOverviewExample1() {
-        ThreadLocal threadLocal = new ThreadLocal() {
-            protected Object initialValue() {
+        ThreadLocal<Boolean> threadLocal = new ThreadLocal<Boolean>() {
+            @Override
+            protected Boolean initialValue() {
                 return Boolean.TRUE;
             }
         };
-        ObjectReference ref = delegatable(ObjectReference.class)
+        @SuppressWarnings("unchecked")
+        ObjectReference<Boolean> ref = delegatable(ObjectReference.class)
                                  .with(threadLocal)
                                  .build();
         System.out.println("This ObjectReference has an initial value of <" + ref.get() + ">");

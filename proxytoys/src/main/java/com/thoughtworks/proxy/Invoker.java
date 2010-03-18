@@ -23,8 +23,8 @@ public interface Invoker extends Serializable {
      *
      * @param proxy  the proxy instance.
      * @param method the method to invoke.
-     * @param args   the arguments of the mothod.
-     * @return the result of the onvoked method.
+     * @param args   the arguments of the method.
+     * @return the result of the invoked method.
      * @throws Throwable if the invoked method has thrown.
      */
     Object invoke(Object proxy, Method method, Object[] args) throws Throwable;

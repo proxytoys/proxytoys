@@ -5,14 +5,15 @@
  */
 package proxytoys.examples.overview;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.nullobject.Null;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
+
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.nullobject.Null;
 
 
 /**
@@ -37,11 +38,12 @@ public class NullToyExample {
 
     public static void listExample() {
         ProxyFactory factory = new CglibProxyFactory();
-        List list = nullable(List.class).build(factory);
+        @SuppressWarnings("unchecked")
+        List<String> list = nullable(List.class).build(factory);
         System.out.println("\n\nLength is: " + list.size());
         System.out.println("contains: " + list.contains("FOO"));
-        List one = nullable(List.class).build(factory);
-        List other = nullable(List.class).build(factory);
+        List<?> one = nullable(List.class).build(factory);
+        List<?> other = nullable(List.class).build(factory);
         System.out.println("two are ==? " + (one == other));
         System.out.println("two are .equals? " + (one.equals(other)));
         try {

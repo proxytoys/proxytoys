@@ -35,10 +35,9 @@ public interface Multicast {
      * @param args   the arguments of the invocation
      * @return the result of the multicast
      * @throws NoSuchMethodException if the type has no matching method
-     * @throws SecurityException     if the security maneger prevents the method access by reflection
-
+     * @throws SecurityException     if the security manager prevents the method access by reflection
      */
-    Object multicastTargets(Class type, String method, Object[] args) throws NoSuchMethodException;
+    <T> T multicastTargets(Class<?> type, String method, Object[] args) throws NoSuchMethodException;
 
     /**
      * Multicast a direct method call, that is not available with the types implemented by the proxy.
@@ -60,15 +59,13 @@ public interface Multicast {
      *
      * @param type the type of an array element
      * @return the typed array of proxy targets
-
      */
-    Object getTargetsInArray(Class type);
+    <T> T[] getTargetsInArray(Class<T> type);
 
     /**
      * Access the targets of the proxy in an array.
      *
      * @return the array of proxy targets
-
      */
     Object[] getTargetsInArray();
 }

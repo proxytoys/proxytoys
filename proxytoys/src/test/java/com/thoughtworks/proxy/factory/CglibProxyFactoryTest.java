@@ -7,9 +7,11 @@
  */
 package com.thoughtworks.proxy.factory;
 
-import com.thoughtworks.proxy.ProxyFactory;
 import static junit.framework.Assert.assertFalse;
+
 import org.junit.Test;
+
+import com.thoughtworks.proxy.ProxyFactory;
 
 
 /**

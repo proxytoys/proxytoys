@@ -1,23 +1,26 @@
 package com.thoughtworks.proxy.toys.hotswap;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 import static com.thoughtworks.proxy.toys.hotswap.HotSwapping.hotSwappable;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import org.junit.Test;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Test;
+
+import com.thoughtworks.proxy.AbstractProxyTest;
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
 
 /**
  * @author Aslak Helles&oslash;y
  */
 public class CglibHotSwappingTest extends AbstractProxyTest {
+    @Override
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
     }
@@ -50,7 +53,7 @@ public class CglibHotSwappingTest extends AbstractProxyTest {
     public void shouldMakeMutualDependenciesPossible() {
         Yin yin = hotSwappable(Yin.class).with(null).build(getFactory());
         Yang yang = new Yang(yin);
-        ((Swappable) yin).hotswap(new Yin(yang));
+        Swappable.class.cast(yin).hotswap(new Yin(yang));
 
         // isn't this wicked?
         assertSame(yin, yang.getYin());
@@ -62,7 +65,7 @@ public class CglibHotSwappingTest extends AbstractProxyTest {
      */
     @Test
     public void shouldProxyConcreteClass() {
-        Class[] proxyTypes = new Class[]{ArrayList.class, List.class, Cloneable.class, Serializable.class};
+        Class<?>[] proxyTypes = new Class[]{ArrayList.class, List.class, Cloneable.class, Serializable.class};
         Object proxy = hotSwappable(List.class).with(proxyTypes).mode(DIRECT).build(getFactory());
         assertNotNull(proxy);
     }

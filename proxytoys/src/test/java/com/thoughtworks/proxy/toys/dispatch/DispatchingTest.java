@@ -3,22 +3,27 @@
  * 
  * (c) 2005 ThoughtWorks
  * 
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.dispatch;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
-import com.thoughtworks.proxy.kit.NoOperationResetter;
-import com.thoughtworks.proxy.kit.Resetter;
 import static com.thoughtworks.proxy.toys.dispatch.Dispatching.dispatchable;
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Test;
+
+import com.thoughtworks.proxy.AbstractProxyTest;
 
 
 /**
@@ -141,7 +146,7 @@ public class DispatchingTest extends AbstractProxyTest {
     }
 
     @Test
-    public void tringRepresentationContainsImplementedTypes() throws Exception {
+    public void stringRepresentationContainsImplementedTypes() throws Exception {
         FooBar fooBarMock = mock(FooBar.class);
 
         Object foobar = dispatchable(Foo.class, Bar.class).with(fooBarMock).build(getFactory());
@@ -153,9 +158,10 @@ public class DispatchingTest extends AbstractProxyTest {
 
     @Test
     public void twoProxiesAreEqualIfSameTypesAreDelegatedToEqualDelegates() throws Exception {
-        Object proxy1 = dispatchable(Comparable.class, Runnable.class, List.class).with(new ArrayList(), "Hello", Thread.currentThread()).build(getFactory());
+        Object proxy1 = dispatchable(Comparable.class, Runnable.class, List.class).with(
+            new ArrayList<String>(), "Hello", Thread.currentThread()).build(getFactory());
         Object proxy2 = dispatchable(List.class, Runnable.class, Comparable.class).with(
-                "Hello", new ArrayList(), Thread.currentThread()).build(getFactory());
+                "Hello", new ArrayList<String>(), Thread.currentThread()).build(getFactory());
 
         assertEquals(proxy1, proxy2);
     }
@@ -163,30 +169,31 @@ public class DispatchingTest extends AbstractProxyTest {
     @Test
     public void twoProxiesAreNotEqualIfSameTypesAreDelegatedToAtLeastOneNonEqualDelegate() throws Exception {
         Object proxy1 = dispatchable(Comparable.class, Runnable.class, List.class).with(
-                new ArrayList(), "Foo", Thread.currentThread()).build(getFactory());
+                new ArrayList<String>(), "Foo", Thread.currentThread()).build(getFactory());
         Object proxy2 = dispatchable(List.class, Runnable.class, Comparable.class).with(
-                "Bar", new ArrayList(), Thread.currentThread()).build(getFactory());
+                "Bar", new ArrayList<String>(), Thread.currentThread()).build(getFactory());
 
         assertFalse(proxy1.equals(proxy2));
     }
 
-    private void useSerializedProxy(Resetter resetter) {
-        assertTrue(resetter.reset(this));
+
+    private void useSerializedProxy(CharSequence sequence) {
+        assertEquals("Test", sequence.toString());
     }
 
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedProxy((Resetter) serializeWithJDK(dispatchable(Resetter.class).with(new NoOperationResetter()).build(getFactory())));
+        useSerializedProxy(serializeWithJDK(dispatchable(CharSequence.class).with("Test").build(getFactory())));
     }
 
     @Test
     public void serializeWithXStream() {
-        useSerializedProxy((Resetter) serializeWithXStream(dispatchable(Resetter.class).with(new NoOperationResetter()).build(getFactory())));
+        useSerializedProxy(serializeWithXStream(dispatchable(CharSequence.class).with("Test").build(getFactory())));
     }
 
     @Test
-    public void testSerializeWithXStreamInPureReflectionMode() {
-        useSerializedProxy((Resetter) serializeWithXStreamAndPureReflection(dispatchable(
-                Resetter.class).with(new NoOperationResetter()).build(getFactory())));
+    public void serializeWithXStreamInPureReflectionMode() {
+        useSerializedProxy(serializeWithXStreamAndPureReflection(
+                dispatchable(CharSequence.class).with("Test").build(getFactory())));
     }
 }

@@ -7,14 +7,14 @@
  */
 package com.thoughtworks.proxy.kit;
 
-import com.thoughtworks.proxy.Invoker;
-
 import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.Invoker;
 
 
 /**
  * A simple {@link Invoker} implementation, that routes any call to a target object. A <code>null</code> value as
- * target can be handled, the invocation result will alway be <code>null</code>.
+ * target can be handled, the invocation result will always be <code>null</code>.
  *
  * @author Aslak Helles&oslash;y
  */

@@ -5,12 +5,12 @@
  */
 package proxytoys.examples.overview;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleInvoker;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -20,7 +20,7 @@ public class ProxyFactoryExample {
 
     public static void packageOverviewExample1() {
         ProxyFactory factory = new StandardProxyFactory();
-        List proxy = (List)factory.createProxy(new SimpleInvoker(new ArrayList()), List.class);
+        List<String> proxy = factory.createProxy(new SimpleInvoker(new ArrayList<String>()), List.class);
         proxy.add("Hello World");
         System.out.println("Size of list: " + proxy.size());
         System.out.println("First element of list: " + proxy.get(0));

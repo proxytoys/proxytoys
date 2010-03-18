@@ -7,9 +7,6 @@
  */
 package com.thoughtworks.proxy.kit;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.InvokerReference;
-
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
@@ -18,6 +15,9 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.InvokerReference;
 
 /**
  * Helper class for introspecting interface and class hierarchies.
@@ -46,9 +46,7 @@ public class ReflectionUtils {
             hashCode = Object.class.getMethod("hashCode");
             toString = Object.class.getMethod("toString");
         } catch (NoSuchMethodException e) {
-            throw new InternalError();
-        } catch (SecurityException e) {
-            throw new InternalError();
+            throw new ExceptionInInitializerError(e.toString());
         }
     }
 
@@ -64,8 +62,8 @@ public class ReflectionUtils {
      * @param objects the list of objects to consider.
      * @return an set of interfaces. The set may be empty
      */
-    public static Set<Class> getAllInterfaces(final Object[] objects) {
-        final Set<Class> interfaces = new HashSet<Class>();
+    public static Set<Class<?>> getAllInterfaces(final Object[] objects) {
+        final Set<Class<?>> interfaces = new HashSet<Class<?>>();
         for (Object object : objects) {
             if (object != null) {
                 getInterfaces(object.getClass(), interfaces);
@@ -83,14 +81,14 @@ public class ReflectionUtils {
      * @param type type to explore.
      * @return a {@link Set} with all interfaces. The set may be empty.
      */
-    public static Set<Class> getAllInterfaces(final Class type) {
-        final Set<Class> interfaces = new HashSet<Class>();
+    public static Set<Class<?>> getAllInterfaces(final Class<?> type) {
+        final Set<Class<?>> interfaces = new HashSet<Class<?>>();
         getInterfaces(type, interfaces);
         interfaces.remove(InvokerReference.class);
         return interfaces;
     }
 
-    private static void getInterfaces(Class type, final Set<Class> interfaces) {
+    private static void getInterfaces(Class<?> type, final Set<Class<?>> interfaces) {
         if (type.isInterface()) {
             interfaces.add(type);
         }
@@ -98,8 +96,7 @@ public class ReflectionUtils {
         // implemented by the current class. Therefore we must loop up
         // the hierarchy for the superclasses and the superinterfaces.
         while (type != null) {
-            final Class[] implemented = type.getInterfaces();
-            for (Class anImplemented : implemented) {
+            for (Class<?> anImplemented : type.getInterfaces()) {
                 if (!interfaces.contains(anImplemented)) {
                     getInterfaces(anImplemented, interfaces);
                 }
@@ -114,15 +111,15 @@ public class ReflectionUtils {
      * @param objects the array of objects to consider.
      * @return the superclass or <code>{@link Void Void.class}</code> for an empty array.
      */
-    public static Class getMostCommonSuperclass(final Object[] objects) {
-        Class type = null;
+    public static Class<?> getMostCommonSuperclass(final Object[] objects) {
+        Class<?> type = null;
         boolean found = false;
         if (objects != null && objects.length > 0) {
             while (!found) {
                 for (Object object : objects) {
                     found = true;
                     if (object != null) {
-                        final Class currenttype = object.getClass();
+                        final Class<?> currenttype = object.getClass();
                         if (type == null) {
                             type = currenttype;
                         }
@@ -153,7 +150,7 @@ public class ReflectionUtils {
      * @param proxyFactory the {@link ProxyFactory} in use
      */
     public static void addIfClassProxyingSupportedAndNotObject(
-            final Class type, final Set<Class> interfaces, final ProxyFactory proxyFactory) {
+            final Class<?> type, final Set<Class<?>> interfaces, final ProxyFactory proxyFactory) {
         if (proxyFactory.canProxy(type) && !type.equals(Object.class)) {
             interfaces.add(type);
         }
@@ -165,7 +162,7 @@ public class ReflectionUtils {
      * @param collection with class types
      * @return an array of class types
      */
-    public static Class[] toClassArray(final Collection<Class> collection) {
+    public static Class<?>[] toClassArray(final Collection<Class<?>> collection) {
         return collection.toArray(new Class[collection.size()]);
     }
 
@@ -179,7 +176,7 @@ public class ReflectionUtils {
      * @throws NoSuchMethodException if no matching {@link Method} exists
 
      */
-    public static Method getMatchingMethod(final Class type, final String methodName, final Object[] args)
+    public static Method getMatchingMethod(final Class<?> type, final String methodName, final Object[] args)
             throws NoSuchMethodException {
         final Object[] newArgs = args == null ? new Object[0] : args;
         final Method[] methods = type.getMethods();
@@ -187,12 +184,12 @@ public class ReflectionUtils {
         Method method = null;
         for (int i = 0; method == null && i < methods.length; i++) {
             if (methodName.equals(methods[i].getName())) {
-                final Class[] argTypes = methods[i].getParameterTypes();
+                final Class<?>[] argTypes = methods[i].getParameterTypes();
                 if (argTypes.length == newArgs.length) {
                     boolean exact = true;
                     Method possibleMethod = methods[i];
                     for (int j = 0; possibleMethod != null && j < argTypes.length; j++) {
-                        final Class newArgType = newArgs[j] != null ? newArgs[j].getClass() : Object.class;
+                        final Class<?> newArgType = newArgs[j] != null ? newArgs[j].getClass() : Object.class;
                         if ((argTypes[j].equals(byte.class) && newArgType.equals(Byte.class))
                                 || (argTypes[j].equals(char.class) && newArgType.equals(Character.class))
                                 || (argTypes[j].equals(short.class) && newArgType.equals(Short.class))
@@ -262,9 +259,9 @@ public class ReflectionUtils {
      * @throws InvalidObjectException if the {@link Method} cannot be found
      */
     public static Method readMethod(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-        final Class type = (Class) in.readObject();
-        final String name = (String) in.readObject();
-        final Class[] parameters = (Class[]) in.readObject();
+        final Class<?> type = Class.class.cast(in.readObject());
+        final String name = String.class.cast(in.readObject());
+        final Class<?>[] parameters = Class[].class.cast(in.readObject());
         try {
             return type.getMethod(name, parameters);
         } catch (final NoSuchMethodException e) {

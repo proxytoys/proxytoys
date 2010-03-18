@@ -7,18 +7,30 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
-import com.thoughtworks.proxy.SameArrayMatcher;
-import com.thoughtworks.proxy.kit.NoOperationResetter;
-import com.thoughtworks.proxy.kit.Resetter;
 import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.thoughtworks.proxy.AbstractProxyTest;
+import com.thoughtworks.proxy.SameArrayMatcher;
 
 /**
  * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
@@ -92,6 +104,7 @@ public class DecoratingTest extends AbstractProxyTest {
 
     }
 
+    @SuppressWarnings("serial")
     public static class MyException extends RuntimeException {
     }
 
@@ -130,6 +143,9 @@ public class DecoratingTest extends AbstractProxyTest {
         final MyException decoratedException = new MyException();
 
         foo = decoratable(Foo.class).with(new MethodMissingImpl(), new Decorator() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
             public Exception decorateInvocationException(Object proxy, Method method, Object[] args, Exception cause) {
                 thrown[0] = cause;
                 return decoratedException;
@@ -146,32 +162,34 @@ public class DecoratingTest extends AbstractProxyTest {
     static class AssertingDecorator extends Decorator {
         private static final long serialVersionUID = 1L;
 
+        @Override
         public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
-            assertTrue(args[0] instanceof AbstractProxyTest);
+            assertNull(args);
+            assertTrue(proxy instanceof CharSequence);
             return super.beforeMethodStarts(proxy, method, args);
         }
 
     }
 
-    private void useSerializedProxy(Resetter resetter) {
-        assertTrue(resetter.reset(this));
+    private void useSerializedProxy(CharSequence sequence) {
+        assertEquals("Test", sequence.toString());
     }
 
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedProxy((Resetter) serializeWithJDK(decoratable(
-                Resetter.class).with(new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
+        useSerializedProxy(serializeWithJDK(decoratable(
+            CharSequence.class).with("Test", new AssertingDecorator()).build(getFactory())));
     }
 
     @Test
     public void serializeWithXStream() {
-        useSerializedProxy((Resetter) serializeWithXStream(decoratable(
-                Resetter.class).with(new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
+        useSerializedProxy(serializeWithXStream(decoratable(
+            CharSequence.class).with("Test", new AssertingDecorator()).build(getFactory())));
     }
 
     @Test
     public void serializeWithXStreamInPureReflectionMode() {
-        useSerializedProxy((Resetter) serializeWithXStreamAndPureReflection(decoratable(
-                Resetter.class).with(new NoOperationResetter(), new AssertingDecorator()).build(getFactory())));
+        useSerializedProxy(serializeWithXStreamAndPureReflection(decoratable(
+            CharSequence.class).with("Test", new AssertingDecorator()).build(getFactory())));
     }
 }

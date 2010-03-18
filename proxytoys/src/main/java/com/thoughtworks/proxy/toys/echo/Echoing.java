@@ -3,15 +3,16 @@
  *
  * (c) 2003-2005 ThoughtWorks
  *
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
 
 import java.io.PrintWriter;
+
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**
  * Factory for echoing proxy instances.

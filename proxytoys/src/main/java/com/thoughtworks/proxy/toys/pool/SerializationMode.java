@@ -1,3 +1,10 @@
+/*
+ * Created on 04-Oct-2009
+ * 
+ * (c) 2009 ThoughtWorks
+ * 
+ * See license.txt for license details
+ */
 package com.thoughtworks.proxy.toys.pool;
 
 /**

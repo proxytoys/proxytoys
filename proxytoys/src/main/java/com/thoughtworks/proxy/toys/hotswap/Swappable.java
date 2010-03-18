@@ -5,7 +5,7 @@ package com.thoughtworks.proxy.toys.hotswap;
  *
  * @author Aslak Helles&oslash;y
  */
-public interface Swappable<T> {
+public interface Swappable {
     /**
      * Swaps the subject behind the proxy with a new instance.
      *
@@ -13,5 +13,5 @@ public interface Swappable<T> {
      * @return the old subject
 
      */
-    T hotswap(Object newSubject);
+    Object hotswap(Object newSubject);
 }

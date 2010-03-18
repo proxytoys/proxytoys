@@ -5,14 +5,15 @@
  */
 package proxytoys.examples.overview;
 
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.kit.Resetter;
-import com.thoughtworks.proxy.toys.pool.Pool;
 import static com.thoughtworks.proxy.toys.pool.Pool.poolable;
-import com.thoughtworks.proxy.toys.pool.Poolable;
 
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
+
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.kit.Resetter;
+import com.thoughtworks.proxy.toys.pool.Pool;
+import com.thoughtworks.proxy.toys.pool.Poolable;
 
 
 /**
@@ -42,7 +43,7 @@ public class PoolToyExample {
             }
             checksum = pool.get();
             System.out.println("CRC32 of an resetted checksum: " + checksum.getValue());
-            ((Poolable) checksum).returnInstanceToPool();
+            Poolable.class.cast(checksum).returnInstanceToPool();
         }
     }
 

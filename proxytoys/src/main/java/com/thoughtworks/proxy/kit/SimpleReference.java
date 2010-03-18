@@ -14,24 +14,24 @@ import java.io.Serializable;
  *
  * @author Aslak Helles&oslash;y
  */
-public class SimpleReference implements ObjectReference, Serializable {
+public class SimpleReference<T> implements ObjectReference<T>, Serializable {
     private static final long serialVersionUID = 1L;
-    private Object instance;
+    private T instance;
 
     /**
      * Construct a SimpleReference.
      *
      * @param reference The referenced object.
      */
-    public SimpleReference(final Object reference) {
+    public SimpleReference(final T reference) {
         set(reference);
     }
 
-    public Object get() {
+    public T get() {
         return instance;
     }
 
-    public void set(final Object item) {
+    public void set(final T item) {
         this.instance = item;
     }
 }

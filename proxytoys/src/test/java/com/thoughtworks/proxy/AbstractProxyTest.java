@@ -1,12 +1,17 @@
 package com.thoughtworks.proxy;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.io.xml.XppDriver;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.*;
 
 /**
  * @author Dan North
@@ -57,25 +62,28 @@ public abstract class AbstractProxyTest {
         outStream.close();
         ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
         ObjectInputStream inStream = new ObjectInputStream(inBuffer);
-        Object serialized = inStream.readObject();
+        @SuppressWarnings("unchecked")
+        T serialized = (T)inStream.readObject();
         inStream.close();
         assertNotNull(serialized);
-        return (T) serialized;
+        return serialized;
     }
 
     protected <T> T serializeWithXStream(T toSerialize) {
         final XStream xstream = new XStream(new XppDriver());
         final String xml = xstream.toXML(toSerialize);
-        Object serialized = xstream.fromXML(xml);
+        @SuppressWarnings("unchecked")
+        T serialized = (T)xstream.fromXML(xml);
         assertNotNull(serialized);
-        return (T) serialized;
+        return serialized;
     }
 
     protected <T> T serializeWithXStreamAndPureReflection(T toSerialize) {
         final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
         final String xml = xstream.toXML(toSerialize);
-        Object serialized = xstream.fromXML(xml);
+        @SuppressWarnings("unchecked")
+        T serialized = (T)xstream.fromXML(xml);
         assertNotNull(serialized);
-        return (T) serialized;
+        return serialized;
     }
 }

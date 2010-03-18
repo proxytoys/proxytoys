@@ -3,7 +3,7 @@
  * 
  * (c) 2004-2005 ThoughtWorks
  * 
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.pool;
 
@@ -17,8 +17,6 @@ package com.thoughtworks.proxy.toys.pool;
 public interface Poolable {
     /**
      * Return the managed instance of this proxy directly to its pool.
-     *
-
      */
     void returnInstanceToPool();
 }

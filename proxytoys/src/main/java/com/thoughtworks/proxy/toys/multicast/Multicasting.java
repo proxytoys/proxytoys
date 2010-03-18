@@ -7,11 +7,11 @@
  */
 package com.thoughtworks.proxy.toys.multicast;
 
+import java.util.Set;
+
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ReflectionUtils;
-
-import java.util.Set;
 
 /**
  * Toy factory to create proxies delegating a call to multiple objects and managing the individual results.
@@ -22,14 +22,14 @@ import java.util.Set;
  * @see com.thoughtworks.proxy.toys.multicast
  */
 public class Multicasting<T> {
-    private Class[] types;
+    private Class<?>[] types;
     private Object[] delegates;
 
     public Multicasting(Object... delegates) {
         this.delegates = delegates;
     }
 
-    public Multicasting(Class<T> primaryType, Class... types) {
+    public Multicasting(Class<?> primaryType, Class<?>... types) {
         this.types = makeTypesArray(primaryType, types);
     }
 
@@ -40,12 +40,12 @@ public class Multicasting<T> {
      * @param types other types that are implemented by the proxy
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> MulticastingWith<T> multicastable(Class<T> primaryType, Class... types) {
+    public static <T> MulticastingWith<T> multicastable(Class<T> primaryType, Class<?>... types) {
         return new MulticastingWith<T>(primaryType, types);
     }
 
-    private Class[] makeTypesArray(Class<T> primaryType, Class[] types) {
-        Class[] retVal = new Class[types.length +1];
+    private Class<?>[] makeTypesArray(Class<?> primaryType, Class<?>[] types) {
+        Class<?>[] retVal = new Class[types.length +1];
         retVal[0] = primaryType;
         System.arraycopy(types, 0, retVal, 1, types.length);
         return retVal;
@@ -58,14 +58,14 @@ public class Multicasting<T> {
      * @param targets targets the target objects
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> MulticastingBuild<T> multicastable(Object... targets) {
-        return new MulticastingBuild<T>(targets);
+    public static MulticastingBuild<Multicast> multicastable(Object... targets) {
+        return new MulticastingBuild<Multicast>(targets);
     }
 
     public static class MulticastingWith<T> {
         Multicasting<T> multicasting;
 
-        private MulticastingWith(Class<T> primaryType, Class[] types) {
+        private MulticastingWith(Class<T> primaryType, Class<?>[] types) {
             multicasting = new Multicasting<T>(primaryType, types);
         }
 
@@ -147,7 +147,9 @@ public class Multicasting<T> {
                 }
             }
             if (i == types.length) {
-                return (T) delegates[0];
+                @SuppressWarnings("unchecked")
+                final T instance = (T) delegates[0];
+                return instance;
             }
         }
         return new MulticastingInvoker<T>(types, factory, delegates).proxy();
@@ -155,13 +157,14 @@ public class Multicasting<T> {
 
     private T buildWithNoTypesInput(ProxyFactory factory) {
         if (delegates.length > 1) {
-            final Class superclass = ReflectionUtils.getMostCommonSuperclass(delegates);
-            final Set interfaces = ReflectionUtils.getAllInterfaces(delegates);
+            final Class<?> superclass = ReflectionUtils.getMostCommonSuperclass(delegates);
+            final Set<Class<?>> interfaces = ReflectionUtils.getAllInterfaces(delegates);
             ReflectionUtils.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, factory);
             this.types = ReflectionUtils.toClassArray(interfaces);
             return new MulticastingInvoker<T>(types, factory, delegates).proxy();
         }
-        return (T) delegates[0];
+        @SuppressWarnings("unchecked")
+        final T instance = (T) delegates[0];
+        return instance;
     }
-
 }

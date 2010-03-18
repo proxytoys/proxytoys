@@ -1,18 +1,20 @@
 package com.thoughtworks.proxy.toys.failover;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
 import static com.thoughtworks.proxy.toys.failover.Failover.failoverable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.io.Serializable;
 
+import org.junit.Test;
+
+import com.thoughtworks.proxy.AbstractProxyTest;
+
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision: 1.3 $
+ * @version $Revision$
  */
 public class FailoverTest extends AbstractProxyTest {
 
@@ -80,7 +82,7 @@ public class FailoverTest extends AbstractProxyTest {
                                           .excepting(RuntimeException.class)
                                           .build(getFactory());
         failover.doIt();
-        useSerializedProxy((FailsOnNthCall) serializeWithJDK(failover));
+        useSerializedProxy(serializeWithJDK(failover));
     }
 
     @Test
@@ -90,7 +92,7 @@ public class FailoverTest extends AbstractProxyTest {
                                           .excepting(RuntimeException.class)
                                           .build(getFactory());
         failover.doIt();
-        useSerializedProxy((FailsOnNthCall) serializeWithXStream(failover));
+        useSerializedProxy(serializeWithXStream(failover));
     }
 
     @Test
@@ -100,7 +102,7 @@ public class FailoverTest extends AbstractProxyTest {
                                           .excepting(RuntimeException.class)
                                           .build(getFactory());
         failover.doIt();
-        useSerializedProxy((FailsOnNthCall) serializeWithXStreamAndPureReflection(failover));
+        useSerializedProxy(serializeWithXStreamAndPureReflection(failover));
     }
 
 }

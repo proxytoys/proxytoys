@@ -7,7 +7,15 @@ package proxytoys.examples.overview;
 
 import static com.thoughtworks.proxy.toys.dispatch.Dispatching.dispatchable;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -20,42 +28,40 @@ import java.util.zip.Checksum;
 public class DispatcherToyExample {
 
     public static void packageOverviewExample1() throws IOException {
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        final ArrayList<String> list = new ArrayList<String>();
-        final TreeMap map = new TreeMap();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ArrayList<String> list = new ArrayList<String>();
+        TreeMap<Object, Object> map = new TreeMap<Object, Object>();
 
-        final Checksum checksum = dispatchable(Checksum.class, DataInput.class, DataOutput.class, List.class)
+        Checksum checksum = dispatchable(Checksum.class, DataInput.class, DataOutput.class, List.class)
                 .with(list, new CRC32(), new DataInputStream(new ByteArrayInputStream("Hello Proxy!".getBytes())),
                         new DataOutputStream(outputStream), map)
                 .build();
 
-        ((DataOutput) checksum).writeBytes("Chameleon");
-        ((List<String>) checksum).add("Frankenstein");
+        DataOutput.class.cast(checksum).writeBytes("Chameleon");
+        @SuppressWarnings("unchecked")
+        List<String> stringLlist = List.class.cast(checksum);
+        stringLlist.add("Frankenstein");
 
-        System.out.println("Read a line: " + ((DataInput) checksum).readLine());
+        System.out.println("Read a line: " + DataInput.class.cast(checksum).readLine());
         System.out.println("Once written: " + outputStream.toString());
         System.out.println("List contains: " + list.toString());
         System.out.println("Current CRC32 value: " + checksum.getValue());
-
     }
 
     public static void packageOverviewExample2() throws IOException {
-        final File tempFile = File.createTempFile("Demo", null);
+        File tempFile = File.createTempFile("Demo", null);
         try {
-            final RandomAccessFile file = new RandomAccessFile(tempFile, "rw");
-
-            final Object proxy = dispatchable(DataInput.class, DataOutput.class)
+            RandomAccessFile file = new RandomAccessFile(tempFile, "rw");
+            Object proxy = dispatchable(DataInput.class, DataOutput.class)
                     .with(file)
                     .build();
 
-            ((DataOutput) proxy).writeBytes("One matches both");
+            DataOutput.class.cast(proxy).writeBytes("One matches both");
             file.seek(0);
-            System.out.println("Just written: " + ((DataInput) proxy).readLine());
-
+            System.out.println("Just written: " + DataInput.class.cast(proxy).readLine());
         } finally {
             tempFile.delete();
         }
-
     }
 
     public static void main(String[] args) throws IOException {

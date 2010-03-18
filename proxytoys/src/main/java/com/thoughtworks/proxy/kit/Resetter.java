@@ -16,7 +16,7 @@ package com.thoughtworks.proxy.kit;
 public interface Resetter<T> {
     /**
      * Reset the pooled object. The implementation may do anything to reset the state of the pooled element. If the
-     * element is definately exhausted, a return value of <code>false</code> prevents the element from returning into
+     * element is definitely exhausted, a return value of <code>false</code> prevents the element from returning into
      * the pool and the instance is garbage collected.
      *
      * @param object the object to reset

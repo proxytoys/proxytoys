@@ -7,14 +7,32 @@
  */
 package com.thoughtworks.proxy.toys.nullobject;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
-import java.util.*;
+import com.thoughtworks.proxy.AbstractProxyTest;
 
 
 /**
@@ -31,31 +49,18 @@ public class NullTest extends AbstractProxyTest {
 
     public interface SomePrimitives {
         boolean getBoolean();
-
         byte getByte();
-
         char getChar();
-
         int getInt();
-
         long getLong();
-
         float getFloat();
-
         double getDouble();
-
         Boolean getBoxedBoolean();
-
         Byte getBoxedByte();
-
         Character getBoxedChar();
-
         Integer getBoxedInt();
-
         Long getBoxedLong();
-
         Float getBoxedFloat();
-
         Double getBoxedDouble();
     }
 
@@ -100,15 +105,11 @@ public class NullTest extends AbstractProxyTest {
     }
 
     public interface SomeCollections {
-        Map getMap();
-
-        List getList();
-
-        Set getSet();
-
-        SortedSet getSortedSet();
-
-        SortedMap getSortedMap();
+        Map<?,?> getMap();
+        List<?> getList();
+        Set<?> getSet();
+        SortedSet<?> getSortedSet();
+        SortedMap<?,?> getSortedMap();
     }
 
     @Test
@@ -163,7 +164,8 @@ public class NullTest extends AbstractProxyTest {
 
     @Test
     public void shouldThrowUnsupportedOperationWhenAddToNullSortedSet() throws Exception {
-        SortedSet sortedSet = nullable(SortedSet.class).build(getFactory());
+        @SuppressWarnings("unchecked")
+        SortedSet<Object> sortedSet = nullable(SortedSet.class).build(getFactory());
         Object object = new Object();
 
         try {
@@ -182,7 +184,8 @@ public class NullTest extends AbstractProxyTest {
 
     @Test
     public void shouldIgnoreRemovingFromNullSortedSet() throws Exception {
-        SortedSet sortedSet = nullable(SortedSet.class).build(getFactory());
+        @SuppressWarnings("unchecked")
+        SortedSet<Object> sortedSet = nullable(SortedSet.class).build(getFactory());
         Object object = new Object();
 
         sortedSet.clear();
@@ -193,7 +196,8 @@ public class NullTest extends AbstractProxyTest {
 
     @Test
     public void shouldThrowUnsupportedOperationWhenAddingToNullSortedMap() throws Exception {
-        SortedMap map = nullable(SortedMap.class).build(getFactory());
+        @SuppressWarnings("unchecked")
+        SortedMap<String, String> map = nullable(SortedMap.class).build(getFactory());
 
         try {
             map.put("should fail", "really");
@@ -211,7 +215,8 @@ public class NullTest extends AbstractProxyTest {
 
     @Test
     public void shouldIgnoreRemvingFromMutatingNullSortedMap() throws Exception {
-        SortedMap map = nullable(SortedMap.class).build(getFactory());
+        @SuppressWarnings("unchecked")
+        SortedMap<String, String> map = nullable(SortedMap.class).build(getFactory());
 
         map.clear();
         map.remove("should fail");
@@ -219,7 +224,7 @@ public class NullTest extends AbstractProxyTest {
 
     @Test
     public void shouldReturnImmutableNullCollectionsForNullSortedMap() throws Exception {
-        SortedMap map = nullable(SortedMap.class).build(getFactory());
+        SortedMap<?,?> map = nullable(SortedMap.class).build(getFactory());
 
         assertSame(Collections.EMPTY_SET, map.keySet());
         assertSame(Collections.EMPTY_LIST, map.values());
@@ -340,17 +345,16 @@ public class NullTest extends AbstractProxyTest {
 
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedProxy((ShouldSerialize) serializeWithJDK(nullable(ShouldSerialize.class).build(getFactory())));
+        useSerializedProxy(serializeWithJDK(nullable(ShouldSerialize.class).build(getFactory())));
     }
 
     @Test
     public void serializeWithXStream() {
-        useSerializedProxy((ShouldSerialize) serializeWithXStream(nullable(ShouldSerialize.class).build(getFactory())));
+        useSerializedProxy(serializeWithXStream(nullable(ShouldSerialize.class).build(getFactory())));
     }
 
     @Test
     public void serializeWithXStreamInPureReflectionMode() {
-        useSerializedProxy((ShouldSerialize) serializeWithXStreamAndPureReflection(nullable(
-                ShouldSerialize.class).build(getFactory())));
+        useSerializedProxy(serializeWithXStreamAndPureReflection(nullable(ShouldSerialize.class).build(getFactory())));
     }
 }

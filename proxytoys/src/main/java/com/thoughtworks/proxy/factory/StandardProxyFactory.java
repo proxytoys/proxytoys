@@ -7,10 +7,10 @@
  */
 package com.thoughtworks.proxy.factory;
 
-import com.thoughtworks.proxy.Invoker;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+
+import com.thoughtworks.proxy.Invoker;
 
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on a JDK greater or equal 1.3.
@@ -39,19 +39,21 @@ public class StandardProxyFactory extends AbstractProxyFactory {
         }
     }
 
-    public Object createProxy(final Invoker invoker, final Class... types) {
-        final Class[] interfaces = new Class[types.length + 1];
+    public <T> T createProxy(final Invoker invoker, final Class<?>... types) {
+        final Class<?>[] interfaces = new Class[types.length + 1];
         System.arraycopy(types, 0, interfaces, 0, types.length);
         interfaces[types.length] = InvokerReference.class;
-        return Proxy.newProxyInstance(getClass().getClassLoader(), interfaces,
+        @SuppressWarnings("unchecked")
+        final T proxyInstance = (T)Proxy.newProxyInstance(getClass().getClassLoader(), interfaces,
                 new StandardInvocationHandlerAdapter(invoker));
+        return proxyInstance;
     }
 
-    public boolean canProxy(final Class type) {
+    public boolean canProxy(final Class<?> type) {
         return type.isInterface();
     }
 
-    public boolean isProxyClass(final Class type) {
+    public boolean isProxyClass(final Class<?> type) {
         return Proxy.isProxyClass(type);
     }
 

@@ -7,11 +7,11 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
-import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.kit.PrivateInvoker;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.kit.PrivateInvoker;
 
 
 // TODO: use the AOP alliance API: Mixin.object(Object, JoinPoint, PointCut[] cuts)
@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public class DecoratingInvoker implements Invoker {
+public class DecoratingInvoker<T> implements Invoker {
     private static final long serialVersionUID = 8293471912861497447L;
     private Invoker decorated;
     private Decorator decorator;
@@ -52,14 +52,16 @@ public class DecoratingInvoker implements Invoker {
     }
 
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-        final Object[] decoratedArgs = decorator.beforeMethodStarts(proxy, method, args);
+        @SuppressWarnings("unchecked")
+        final T typedProxy = (T)proxy;
+        final Object[] decoratedArgs = decorator.beforeMethodStarts(typedProxy, method, args);
         try {
             final Object result = decorated.invoke(proxy, method, decoratedArgs);
-            return decorator.decorateResult(proxy, method, decoratedArgs, result);
+            return decorator.decorateResult(typedProxy, method, decoratedArgs, result);
         } catch (InvocationTargetException e) {
-            throw decorator.decorateTargetException(proxy, method, decoratedArgs, e.getTargetException());
+            throw decorator.decorateTargetException(typedProxy, method, decoratedArgs, e.getTargetException());
         } catch (Exception e) {
-            throw decorator.decorateInvocationException(proxy, method, decoratedArgs, e);
+            throw decorator.decorateInvocationException(typedProxy, method, decoratedArgs, e);
         }
     }
 }

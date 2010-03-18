@@ -7,18 +7,23 @@
  */
 package com.thoughtworks.proxy.factory;
 
-import com.thoughtworks.proxy.Invoker;
-import com.thoughtworks.proxy.ProxyFactory;
 import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import net.sf.cglib.core.CodeGenerationException;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.Factory;
 import net.sf.cglib.proxy.InvocationHandler;
 import net.sf.cglib.proxy.Proxy;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
-import java.util.*;
+import com.thoughtworks.proxy.Invoker;
+import com.thoughtworks.proxy.ProxyFactory;
 
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on <a href="http://cglib.sourceforge.net/">CGLIB</a>.
@@ -28,7 +33,7 @@ import java.util.*;
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
     private static final long serialVersionUID = -5615928639194345818L;
-    private static final ThreadLocal<List<Class>> cycleGuard = new ThreadLocal<List<Class>>();
+    private static final ThreadLocal<List<Class<?>>> cycleGuard = new ThreadLocal<List<Class<?>>>();
     private static final ProxyFactory standardProxyFactory = new StandardProxyFactory();
 
     /**
@@ -56,30 +61,35 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * </p>
      *
      */
-    public Object createProxy(final Invoker invoker, final Class... types) {
-        final Class type = getSingleClass(types);
+    
+    public <T> T createProxy(final Invoker invoker, final Class<?>... types) {
+        final Class<?> type = getSingleClass(types);
         if (type == null) {
             // slightly faster
-            return standardProxyFactory.createProxy(invoker, types);
+            return standardProxyFactory.<T>createProxy(invoker, types);
         }
-        final Class[] interfaces = getInterfaces(types);
+        final Class<?>[] interfaces = getInterfaces(types);
         final Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(type);
         enhancer.setInterfaces(interfaces);
         enhancer.setCallback(new CGLIBInvocationHandlerAdapter(invoker));
         try {
-            return enhancer.create();
+            @SuppressWarnings("unchecked")
+            final T proxy = (T)enhancer.create();
+            return proxy;
         } catch (CodeGenerationException e) { // cglib 2.0
         } catch (IllegalArgumentException e) { // cglib 2.0.2
         } catch (NoSuchMethodError e) {
         }
-        return createWithConstructor(type, enhancer);
+        @SuppressWarnings("unchecked")
+        final T proxy = (T)createWithConstructor(type, enhancer);
+        return proxy;
     }
 
-    private Class[] getInterfaces(final Class[] types) {
-        final List<Class> interfaces = new ArrayList<Class>(Arrays.asList(types));
-        for (final Iterator iterator = interfaces.iterator(); iterator.hasNext();) {
-            final Class type = (Class) iterator.next();
+    private Class<?>[] getInterfaces(final Class<?>[] types) {
+        final List<Class<?>> interfaces = new ArrayList<Class<?>>(Arrays.asList(types));
+        for (final Iterator<Class<?>> iterator = interfaces.iterator(); iterator.hasNext();) {
+            final Class<?> type = iterator.next();
             if (!type.isInterface()) {
                 iterator.remove();
             }
@@ -88,8 +98,8 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         return interfaces.toArray(new Class[interfaces.size()]);
     }
 
-    private Class getSingleClass(final Class[] types) {
-        for (final Class type : types) {
+    private Class<?> getSingleClass(final Class<?>[] types) {
+        for (final Class<?> type : types) {
             if (!type.isInterface()) {
                 return type;
             }
@@ -97,14 +107,14 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         return null;
     }
 
-    private Object createWithConstructor(final Class type, final Enhancer enhancer) {
-        final Constructor constructor = getConstructor(type);
-        final Class[] params = constructor.getParameterTypes();
+    private Object createWithConstructor(final Class<?> type, final Enhancer enhancer) {
+        final Constructor<?> constructor = getConstructor(type);
+        final Class<?>[] params = constructor.getParameterTypes();
         final Object[] args = new Object[params.length];
         if (cycleGuard.get() == null) {
-            cycleGuard.set(new ArrayList<Class>());
+            cycleGuard.set(new ArrayList<Class<?>>());
         }
-        final List<Class> creating = cycleGuard.get();
+        final List<Class<?>> creating = cycleGuard.get();
         for (int i = 0; i < args.length; i++) {
             if (!creating.contains(params[i])) {
                 creating.add(params[i]);
@@ -120,19 +130,19 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         return enhancer.create(params, args);
     }
 
-    private Constructor getConstructor(final Class type) {
+    private Constructor<?> getConstructor(final Class<?> type) {
         try {
-            return type.getConstructor((Class[]) null);
+            return type.getConstructor(Class[].class.cast(null));
         } catch (NoSuchMethodException e) {
             return type.getConstructors()[0];
         }
     }
 
-    public boolean canProxy(final Class type) {
+    public boolean canProxy(final Class<?> type) {
         return !Modifier.isFinal(type.getModifiers());
     }
 
-    public boolean isProxyClass(final Class type) {
+    public boolean isProxyClass(final Class<?> type) {
         return Factory.class.isAssignableFrom(type)
                 || (!type.equals(Object.class) && Proxy.isProxyClass(type))
                 || standardProxyFactory.isProxyClass(type);

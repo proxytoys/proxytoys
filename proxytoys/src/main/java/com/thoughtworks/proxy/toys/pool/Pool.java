@@ -3,9 +3,25 @@
  * 
  * (c) 2004-2005 ThoughtWorks
  *
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.pool;
+
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.InvokerReference;
@@ -15,12 +31,6 @@ import com.thoughtworks.proxy.kit.Resetter;
 import com.thoughtworks.proxy.kit.SimpleReference;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 import com.thoughtworks.proxy.toys.delegate.DelegationMode;
-import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
-
-import java.io.*;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
-import java.util.*;
 
 /**
  * A simple pool implementation that collects its unused components of a specific type automatically.
@@ -31,12 +41,12 @@ import java.util.*;
  * <p>
  * The implementation will provide these instances wrapped by a proxy, that will return the instance automatically to
  * the pool, if it falls out of scope and is collected by the garbage collector. Since the pool only returns instances
- * wrapped by a proxy that implements the {@link Poolable} interface, this can be used to release th instance manually
+ * wrapped by a proxy that implements the {@link Poolable} interface, this can be used to release the instance manually
  * to the pool also. With an implementation of the {@link Resetter} interface each element's status can be reset or the
  * element can be dropped from the pool at all, if it is exhausted.
  * </p>
  * <p>
- * A client can use the pool's monitor for an improved synchronization. Everytime an object is returned to the pool, all
+ * A client can use the pool's monitor for an improved synchronization. Every time an object is returned to the pool, all
  * waiting Threads of the monitor will be notified. This notification will happen independently of the result of the
  * {@link Resetter#reset(Object)} method.
  * </p>
@@ -56,11 +66,11 @@ public class Pool<T> implements Serializable {
         }
     }
 
-    private Class types[];
+    private Class<?> types[];
     private ProxyFactory factory;
-    private transient Map busyInstances;
-    private transient List availableInstances;
-    private Resetter resetter;
+    private transient Map<T, WeakReference<T>> busyInstances;
+    private transient List<ObjectReference<T>> availableInstances;
+    private Resetter<T> resetter;
     private SerializationMode serializationMode = SerializationMode.STANDARD;
 
     /**
@@ -83,7 +93,7 @@ public class Pool<T> implements Serializable {
 
      */
     public static <T> PoolWith<T> poolable(Class<T> type) {
-        return new PoolWith<T>(new Pool<T>(type, new NoOperationResetter()));
+        return new PoolWith<T>(new Pool<T>(type, new NoOperationResetter<T>()));
     }
     
     public static class PoolBuild<T> {
@@ -98,7 +108,7 @@ public class Pool<T> implements Serializable {
          * Build the pool.
          *
          * @param factory the proxy factory to use
-         * @return
+         * @return the pool with predefined instances
          */
         public Pool<T> build(ProxyFactory factory) {
             pool.factory = factory;
@@ -134,7 +144,7 @@ public class Pool<T> implements Serializable {
         /**
          * Specify the serializationMode
          * <ul>
-         * <l>STANDARD: the standard mode, i.e. all elements of the pool are also serialized and a
+         * <li>STANDARD: the standard mode, i.e. all elements of the pool are also serialized and a
          * {@link NotSerializableException} may thrown</li>
          * <li>NONE: no element of the pool is also serialized and it must be populated again after
          * serialization</li>
@@ -159,15 +169,15 @@ public class Pool<T> implements Serializable {
      * @param resetter     the resetter of the pooled elements
 
      */
-    private Pool(final Class type, final Resetter resetter) {
+    private Pool(final Class<T> type, final Resetter<T> resetter) {
         this();
         this.types = new Class[]{type, Poolable.class};
         this.resetter = resetter;
     }
 
     private Pool() {
-        busyInstances = new HashMap();
-        availableInstances = new ArrayList();
+        busyInstances = new HashMap<T, WeakReference<T>>();
+        availableInstances = new ArrayList<ObjectReference<T>>();
     }
 
     /**
@@ -183,7 +193,7 @@ public class Pool<T> implements Serializable {
                 if (instance == null) {
                     throw new NullPointerException();
                 }
-                availableInstances.add(new SimpleReference(instance));
+                availableInstances.add(new SimpleReference<T>(instance));
             }
             notifyAll();
         }
@@ -191,22 +201,22 @@ public class Pool<T> implements Serializable {
 
     /**
      * Get an instance from the pool. If no instance is immediately available, the method will check internally for
-     * returned objects from the garbage collector. This can be foreced by calling {@link System#gc()} first.
+     * returned objects from the garbage collector. This can be forced by calling {@link System#gc()} first.
      *
      * @return an available instance from the pool or <em>null</em>.
 
      */
     public synchronized T get() {
-        final Object result;
+        final T result;
         if (availableInstances.size() > 0 || getAvailable() > 0) {
-            final ObjectReference delegate = (ObjectReference) availableInstances.remove(0);
-            result = new PoolingInvoker(this, factory, delegate, DIRECT).proxy();
-            final Object weakReference = new WeakReference(result);
+            final ObjectReference<T> delegate = availableInstances.remove(0);
+            result = new PoolingInvoker<T>(this, factory, delegate, DIRECT).proxy();
+            final WeakReference<T> weakReference = new WeakReference<T>(result);
             busyInstances.put(delegate.get(), weakReference);
         } else {
             result = null;
         }
-        return (T) result;
+        return result;
     }
 
     /**
@@ -217,9 +227,10 @@ public class Pool<T> implements Serializable {
      * @throws IllegalArgumentException if the object was not from this pool.
 
      */
-    public void release(final Object object) {
-        final Poolable poolable = (Poolable) object;
-        final PoolingInvoker invoker = (PoolingInvoker) ((InvokerReference) object).getInvoker();
+    public void release(final T object) {
+        final Poolable poolable = Poolable.class.cast(object);
+        @SuppressWarnings("unchecked")
+        final PoolingInvoker<T> invoker = PoolingInvoker.class.cast(InvokerReference.class.cast(poolable).getInvoker());
         if (this != invoker.getPoolInstance()) {
             throw new IllegalArgumentException("Release object from different pool");
         }
@@ -228,26 +239,26 @@ public class Pool<T> implements Serializable {
 
     /**
      * Return the number of available instances of the pool. The method will also try to collect any pool instance that
-     * was freed by the garbage collector. This can be foreced by calling {@link System#gc()} first. The pool's monitor
-     * will be notified, if any object was collected and the {@link Resetter} retunred the object.
+     * was freed by the garbage collector. This can be forced by calling {@link System#gc()} first. The pool's monitor
+     * will be notified, if any object was collected and the {@link Resetter} returned the object.
      *
      * @return the number of available instances.
 
      */
     public synchronized int getAvailable() {
         if (busyInstances.size() > 0) {
-            final List freedInstances = new ArrayList();
-            for (final Object target : busyInstances.keySet()) {
-                final WeakReference ref = (WeakReference) busyInstances.get(target);
+            final List<T> freedInstances = new ArrayList<T>();
+            for (final T target : busyInstances.keySet()) {
+                final WeakReference<T> ref = busyInstances.get(target);
                 if (ref.get() == null) {
                     freedInstances.add(target);
                 }
             }
-            final List resettedInstances = new ArrayList();
-            for (final Object element : freedInstances) {
+            final List<ObjectReference<T>> resettedInstances = new ArrayList<ObjectReference<T>>();
+            for (final T element : freedInstances) {
                 busyInstances.remove(element);
                 if (resetter.reset(element)) {
-                    resettedInstances.add(new SimpleReference(element));
+                    resettedInstances.add(new SimpleReference<T>(element));
                 }
             }
             availableInstances.addAll(resettedInstances);
@@ -268,7 +279,7 @@ public class Pool<T> implements Serializable {
         return availableInstances.size() + busyInstances.size();
     }
 
-    private synchronized void returnInstanceToPool(final ObjectReference reference) {
+    private synchronized void returnInstanceToPool(final ObjectReference<T> reference) {
         busyInstances.remove(reference.get());
         if (resetter.reset(reference.get())) {
             availableInstances.add(reference);
@@ -278,10 +289,10 @@ public class Pool<T> implements Serializable {
 
     private synchronized void writeObject(final ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
-        final List instances = new ArrayList(availableInstances);
-        Iterator iter;
+        final List<ObjectReference<T>> instances = new ArrayList<ObjectReference<T>>(availableInstances);
+        Iterator<T> iter;
         for (iter = busyInstances.keySet().iterator(); iter.hasNext();) {
-            instances.add(new SimpleReference(iter.next()));
+            instances.add(new SimpleReference<T>(iter.next()));
         }
         SerializationMode mode = serializationMode;
         if (mode == SerializationMode.FORCE) {
@@ -298,14 +309,16 @@ public class Pool<T> implements Serializable {
         if (mode == SerializationMode.STANDARD) {
             out.writeObject(instances);
         } else {
-            out.writeObject(new ArrayList());
+            out.writeObject(new ArrayList<ObjectReference<T>>());
         }
     }
 
     private synchronized void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        availableInstances = (List) in.readObject();
-        busyInstances = new HashMap();
+        @SuppressWarnings("unchecked")
+        final List<ObjectReference<T>> list = List.class.cast(in.readObject());
+        availableInstances = list;
+        busyInstances = new HashMap<T, WeakReference<T>>();
     }
 
     /**
@@ -313,11 +326,11 @@ public class Pool<T> implements Serializable {
      *
 
      */
-    protected static class PoolingInvoker extends DelegatingInvoker {
+    protected static class PoolingInvoker<T> extends DelegatingInvoker<T> {
         private static final long serialVersionUID = 1L;
 
         // explicit reference for serialization via reflection
-        private Pool pool;
+        private Pool<T> pool;
 
         /**
          * Construct a PoolingInvoker.
@@ -329,11 +342,12 @@ public class Pool<T> implements Serializable {
 
          */
         protected PoolingInvoker(
-                Pool pool, ProxyFactory proxyFactory, ObjectReference delegateReference, DelegationMode delegationMode) {
+                Pool<T> pool, ProxyFactory proxyFactory, ObjectReference<T> delegateReference, DelegationMode delegationMode) {
             super(proxyFactory, delegateReference, delegationMode);
             this.pool = pool;
         }
 
+        @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             Object result;
             if (method.equals(returnInstanceToPool)) {
@@ -361,11 +375,11 @@ public class Pool<T> implements Serializable {
          * @return the new proxy instance
 
          */
-        protected Object proxy() {
-            return getProxyFactory().createProxy(this, pool.types);
+        protected T proxy() {
+            return getProxyFactory().<T>createProxy(this, pool.types);
         }
 
-        private Pool getPoolInstance() {
+        private Pool<T> getPoolInstance() {
             return pool;
         }
     }

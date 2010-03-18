@@ -1,22 +1,31 @@
 /*
  * (c) 2004-2005 ThoughtWorks
  * 
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.pool;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
-import com.thoughtworks.proxy.kit.Resetter;
 import static com.thoughtworks.proxy.toys.pool.Pool.poolable;
 import static com.thoughtworks.proxy.toys.pool.SerializationMode.FORCE;
 import static com.thoughtworks.proxy.toys.pool.SerializationMode.NONE;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Matchers;
+
+import com.thoughtworks.proxy.AbstractProxyTest;
+import com.thoughtworks.proxy.kit.Resetter;
 
 
 /**
@@ -41,8 +50,15 @@ public class PoolTest extends AbstractProxyTest {
             return id;
         }
 
+        @Override
         public boolean equals(Object arg) {
             return arg instanceof Identifiable && id == ((Identifiable) arg).getId();
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return 31 * id;
         }
     }
 
@@ -96,10 +112,10 @@ public class PoolTest extends AbstractProxyTest {
         borrowed1 = null;
         System.gc();
 
-        Identifiable borrowed = (Identifiable) pool.get();
+        Identifiable borrowed = pool.get();
         assertEquals(1, borrowed.getId());
 
-        ((Poolable) borrowed).returnInstanceToPool();
+        Poolable.class.cast(borrowed).returnInstanceToPool();
 
         Object borrowedReloaded = pool.get();
         assertEquals(borrowed, borrowedReloaded);
@@ -138,7 +154,7 @@ public class PoolTest extends AbstractProxyTest {
     public void elementMustBeReturnedToOwnPool() {
         final Pool<Identifiable> pool1 = poolable(Identifiable.class).withNoInstances().build(getFactory());
         pool1.add(createIdentifiables(1));
-        final Pool pool2 = poolable(Identifiable.class).withNoInstances().build(getFactory());
+        final Pool<Identifiable> pool2 = poolable(Identifiable.class).withNoInstances().build(getFactory());
         Identifiable o1 = pool1.get();
         assertEquals(0, pool1.getAvailable());
         try {
@@ -208,6 +224,7 @@ public class PoolTest extends AbstractProxyTest {
         final Pool<Identifiable> pool = poolable(Identifiable.class, new NotReturningResetter()).withNoInstances().build(getFactory());
         pool.add(createIdentifiables(1));
         Identifiable borrowed = pool.get();
+        assertNotNull(borrowed);
         assertEquals(0, pool.getAvailable());
         assertEquals(1, pool.size());
         borrowed = null;
@@ -218,21 +235,22 @@ public class PoolTest extends AbstractProxyTest {
 
     @Test
     public void returnedElementIsResetted() throws Exception {
-        final Resetter mockResetter = mock(Resetter.class);
-        when(mockResetter.reset(anyObject())).thenReturn(true);
+        @SuppressWarnings("unchecked")
+        final Resetter<Identifiable> mockResetter = mock(Resetter.class);
+        when(mockResetter.reset(Matchers.<Identifiable>anyObject())).thenReturn(true);
         final Pool<Identifiable> pool = poolable(Identifiable.class, mockResetter).withNoInstances().build(getFactory());
         pool.add(createIdentifiables(1));
         Identifiable borrowed = pool.get();
         ((Poolable) borrowed).returnInstanceToPool();
 
-        verify(mockResetter).reset(anyObject());
-
+        verify(mockResetter).reset(Matchers.<Identifiable>anyObject());
     }
 
     @Test
     public void testGarbageCollectedElementIsResetted() throws Exception {
-        final Resetter mockResetter = mock(Resetter.class);
-        when(mockResetter.reset(anyObject())).thenReturn(true);
+        @SuppressWarnings("unchecked")
+        final Resetter<Identifiable> mockResetter = mock(Resetter.class);
+        when(mockResetter.reset(Matchers.<Identifiable>anyObject())).thenReturn(true);
         final Pool<Identifiable> pool = poolable(Identifiable.class, mockResetter).withNoInstances().build(getFactory());
         pool.add(createIdentifiables(1));
         Identifiable borrowed = pool.get();
@@ -242,10 +260,10 @@ public class PoolTest extends AbstractProxyTest {
         assertEquals(1, pool.getAvailable());
 
         //verify
-        verify(mockResetter).reset(anyObject());
+        verify(mockResetter).reset(Matchers.<Identifiable>anyObject());
     }
 
-    private void twoItemsCanBeBorrowedFromPool(final Pool pool) {
+    private void twoItemsCanBeBorrowedFromPool(final Pool<?> pool) {
         assertEquals(2, pool.size());
         Object borrowed0 = pool.get();
         Object borrowed1 = pool.get();
@@ -316,7 +334,7 @@ public class PoolTest extends AbstractProxyTest {
     public void forcedSerializationWithEmptyPool() throws IOException, ClassNotFoundException {
         final Pool<Identifiable> pool = poolable(Identifiable.class).withNoInstances().mode(NONE).build(getFactory());
         pool.add(createIdentifiables(2));
-        final Pool serialized = serializeWithJDK(pool);
+        final Pool<Identifiable> serialized = serializeWithJDK(pool);
         assertEquals(0, serialized.size());
     }
 }

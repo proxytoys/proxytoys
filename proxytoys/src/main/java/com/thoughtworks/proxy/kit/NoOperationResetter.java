@@ -16,14 +16,14 @@ import java.io.Serializable;
  *
  * @author J&ouml;rg Schaible
  */
-public class NoOperationResetter implements Resetter, Serializable {
+public class NoOperationResetter<T> implements Resetter<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * {@inheritDoc} Returns just <code>true</code>.
      */
-    public boolean reset(Object object) {
+    public boolean reset(T object) {
         return true;
     }
 

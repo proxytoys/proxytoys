@@ -1,8 +1,8 @@
 package com.thoughtworks.proxy;
 
-import org.mockito.ArgumentMatcher;
-
 import java.util.Arrays;
+
+import org.mockito.ArgumentMatcher;
 
 public class SameArrayMatcher extends ArgumentMatcher<Object[]> {
     private Object[] a;
@@ -11,6 +11,7 @@ public class SameArrayMatcher extends ArgumentMatcher<Object[]> {
         this.a = a;
     }
 
+    @Override
     public boolean matches(Object o) {
         Object[] b = (Object[]) o;
         return Arrays.equals(a, b);

@@ -1,16 +1,17 @@
 /*
  * Created on 04-Feb-2004
  * 
- * (c) 2003-2005 ThoughtWorks
+ * (c) 2003-2005 ThoughtWorks Ltd
  * 
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.delegate;
+
+import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleReference;
-import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
 /**
  * Toy factory to create proxies delegating to another object.
@@ -55,7 +56,7 @@ public class Delegating<T> {
          * With this delegate
          *
          * @param delegate the object the proxy delegates to.
-         * @return
+         * @return the factory that will route calls to the supplied delegate.
          */
         public DelegatingModeOrBuild<T> with(Object delegate) {
             delegating.delegate = delegate;
@@ -107,8 +108,8 @@ public class Delegating<T> {
          * @return the created proxy implementing the <tt>type</tt>
          */
         public T build(ProxyFactory factory) {
-            return (T) factory.createProxy(new DelegatingInvoker(factory,
-                    new SimpleReference(delegating.delegate), delegating.delegationMode), delegating.type);
+            return factory.<T>createProxy(new DelegatingInvoker<Object>(factory,
+                    new SimpleReference<Object>(delegating.delegate), delegating.delegationMode), delegating.type);
         }
 
     }

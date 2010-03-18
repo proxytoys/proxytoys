@@ -1,12 +1,16 @@
 package com.thoughtworks.proxy.toys.multicast;
 
+import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.thoughtworks.proxy.AbstractProxyTest;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -14,6 +18,7 @@ import org.junit.Test;
  */
 public class CglibMulticastTest extends AbstractProxyTest {
 
+    @Override
     protected ProxyFactory createProxyFactory() {
         return new CglibProxyFactory();
     }
@@ -62,7 +67,9 @@ public class CglibMulticastTest extends AbstractProxyTest {
 
     @Before
     public void setUp() throws Exception {
-        primitives = (Primitives) multicastable(new Primitives(true), new Primitives(true), new Primitives(true)).build(getFactory());
+        primitives = multicastable(Primitives.class)
+            .with(new Primitives(true), new Primitives(true), new Primitives(true))
+            .build(getFactory());
     }
 
     @Test
@@ -103,8 +110,8 @@ public class CglibMulticastTest extends AbstractProxyTest {
     @Test
     public void shouldAndBooleans() {
         assertTrue(primitives.getBoolean());
-        primitives = (Primitives) multicastable(
-                new Primitives(true), new Primitives(true), new Primitives(false)).build(getFactory());
+        primitives = Primitives.class.cast(multicastable(
+                new Primitives(true), new Primitives(true), new Primitives(false)).build(getFactory()));
         assertFalse(primitives.getBoolean());
     }
 

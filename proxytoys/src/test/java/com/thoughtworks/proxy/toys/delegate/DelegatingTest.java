@@ -3,21 +3,25 @@
  * 
  * (c) 2003-2004 ThoughtWorks
  * 
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.delegate;
 
-import com.thoughtworks.proxy.AbstractProxyTest;
 import static com.thoughtworks.proxy.toys.delegate.Delegating.delegatable;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import org.junit.Before;
-import org.junit.Test;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.rmi.RemoteException;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.thoughtworks.proxy.AbstractProxyTest;
 
 
 /**
@@ -37,7 +41,7 @@ public class DelegatingTest extends AbstractProxyTest {
             this.buffer = buffer;
         }
 
-        protected String getSomething() throws RemoteException {
+        protected String getSomething() {
             return "another thing";
         }
 
@@ -196,7 +200,6 @@ public class DelegatingTest extends AbstractProxyTest {
 
         foo.getSomething();
         fail("Protected method called");
-
     }
 
     @Test

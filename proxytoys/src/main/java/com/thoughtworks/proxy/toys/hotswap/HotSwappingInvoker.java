@@ -3,19 +3,19 @@
  *
  * (c) 2003-2004 ThoughtWorks
  *
- * See license.txt for licence details
+ * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.hotswap;
-
-import com.thoughtworks.proxy.ProxyFactory;
-import com.thoughtworks.proxy.kit.ObjectReference;
-import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
-import com.thoughtworks.proxy.toys.delegate.DelegationMode;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
+
+import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
+import com.thoughtworks.proxy.toys.delegate.DelegationMode;
 
 
 /**
@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  */
-public class HotSwappingInvoker extends DelegatingInvoker {
+public class HotSwappingInvoker<T> extends DelegatingInvoker<Object> {
     private static final long serialVersionUID = 1L;
     private static final Method hotswap;
     private static final Method checkForCycle;
@@ -35,7 +35,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
             hotswap = Swappable.class.getMethod("hotswap", new Class[]{Object.class});
             checkForCycle = CycleCheck.class.getMethod("checkForCycle");
         } catch (NoSuchMethodException e) {
-            throw new InternalError();
+            throw new ExceptionInInitializerError();
         }
     }
 
@@ -54,9 +54,9 @@ public class HotSwappingInvoker extends DelegatingInvoker {
         void checkForCycle();
     }
 
-    private Class[] types;
+    private Class<?>[] types;
     private transient boolean executed = false;
-    private transient ThreadLocal delegate;
+    private transient ThreadLocal<Object> delegate;
 
     /**
      * Construct a HotSwappingInvoker.
@@ -69,13 +69,14 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
      */
     public HotSwappingInvoker(
-            final Class[] types, final ProxyFactory proxyFactory, final ObjectReference delegateReference,
+            final Class<?>[] types, final ProxyFactory proxyFactory, final ObjectReference<Object> delegateReference,
             final DelegationMode delegationMode) {
         super(proxyFactory, delegateReference, delegationMode);
         this.types = types;
-        this.delegate = new ThreadLocal();
+        this.delegate = new ThreadLocal<Object>();
     }
 
+    @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result;
         try {
@@ -88,7 +89,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
                 } else {
                     if (delegate() instanceof CycleCheck) {
                         executed = true;
-                        ((CycleCheck) delegate()).checkForCycle();
+                        CycleCheck.class.cast(delegate()).checkForCycle();
                         executed = false;
                     }
                 }
@@ -102,6 +103,7 @@ public class HotSwappingInvoker extends DelegatingInvoker {
         return result;
     }
 
+    @Override
     protected Object delegate() {
         final Object currentDelegate;
         currentDelegate = delegate.get();
@@ -121,13 +123,13 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
      */
     protected Object hotswap(final Object newDelegate) {
-        ObjectReference ref = getDelegateReference();
+        ObjectReference<Object> ref = getDelegateReference();
         Object result = ref.get();
         // Note, for the cycle detection the delegatable have to be set first
         delegate.set(newDelegate);
         ref.set(newDelegate);
         if (newDelegate instanceof CycleCheck) {
-            ((CycleCheck) newDelegate).checkForCycle();
+            CycleCheck.class.cast(newDelegate).checkForCycle();
         }
         return result;
     }
@@ -139,13 +141,12 @@ public class HotSwappingInvoker extends DelegatingInvoker {
      * @return the new proxy
 
      */
-    public Object proxy() {
-        //TODO: generify
-        Class[] typesWithSwappable = new Class[types.length + 2];
+    public T proxy() {
+        Class<?>[] typesWithSwappable = new Class[types.length + 2];
         System.arraycopy(types, 0, typesWithSwappable, 0, types.length);
         typesWithSwappable[types.length] = Swappable.class;
         typesWithSwappable[types.length + 1] = CycleCheck.class;
-        return getProxyFactory().createProxy(this, typesWithSwappable);
+        return getProxyFactory().<T>createProxy(this, typesWithSwappable);
     }
 
     private void writeObject(final ObjectOutputStream out) throws IOException {
@@ -154,6 +155,6 @@ public class HotSwappingInvoker extends DelegatingInvoker {
 
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        this.delegate = new ThreadLocal();
+        this.delegate = new ThreadLocal<Object>();
     }
 }
