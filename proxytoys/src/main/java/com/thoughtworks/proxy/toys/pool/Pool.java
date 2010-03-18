@@ -79,7 +79,6 @@ public class Pool<T> implements Serializable {
      * @param type     the type of the instances
      * @param resetter the resetter of the pooled elements
      * @return return the pool with parameters specified
-
      */
     public static <T> PoolWith<T> poolable(Class<T> type, Resetter<T> resetter) {
         return new PoolWith<T>(new Pool<T>(type, resetter));
@@ -90,7 +89,6 @@ public class Pool<T> implements Serializable {
      *
      * @param type     the type of the instances
      * @return return the pool with parameters specified
-
      */
     public static <T> PoolWith<T> poolable(Class<T> type) {
         return new PoolWith<T>(new Pool<T>(type, new NoOperationResetter<T>()));
@@ -204,7 +202,6 @@ public class Pool<T> implements Serializable {
      * returned objects from the garbage collector. This can be forced by calling {@link System#gc()} first.
      *
      * @return an available instance from the pool or <em>null</em>.
-
      */
     public synchronized T get() {
         final T result;
@@ -225,7 +222,6 @@ public class Pool<T> implements Serializable {
      * @param object the instance to release
      * @throws ClassCastException       if object was not {@link Poolable}.
      * @throws IllegalArgumentException if the object was not from this pool.
-
      */
     public void release(final T object) {
         final Poolable poolable = Poolable.class.cast(object);
@@ -243,7 +239,6 @@ public class Pool<T> implements Serializable {
      * will be notified, if any object was collected and the {@link Resetter} returned the object.
      *
      * @return the number of available instances.
-
      */
     public synchronized int getAvailable() {
         if (busyInstances.size() > 0) {
@@ -273,7 +268,6 @@ public class Pool<T> implements Serializable {
      * Retrieve the number of instances managed by the pool.
      *
      * @return the number of instances.
-
      */
     public synchronized int size() {
         return availableInstances.size() + busyInstances.size();
@@ -338,8 +332,7 @@ public class Pool<T> implements Serializable {
          * @param pool              the corresponding {@link Pool}
          * @param proxyFactory      the {@link ProxyFactory} to use
          * @param delegateReference the {@link ObjectReference} with the delegate
-         * @param delegationMode    one of the {@linkplain DelegationMode delgation modes}
-
+         * @param delegationMode    one of the {@linkplain DelegationMode delegation modes}
          */
         protected PoolingInvoker(
                 Pool<T> pool, ProxyFactory proxyFactory, ObjectReference<T> delegateReference, DelegationMode delegationMode) {
@@ -362,7 +355,6 @@ public class Pool<T> implements Serializable {
          * the object.
          *
          * @return {@link Void#TYPE}
-
          */
         public Object returnInstanceToPool() {
             pool.returnInstanceToPool(getDelegateReference());
@@ -373,7 +365,6 @@ public class Pool<T> implements Serializable {
          * Create a proxy for the types of the pool.
          *
          * @return the new proxy instance
-
          */
         protected T proxy() {
             return getProxyFactory().<T>createProxy(this, pool.types);
