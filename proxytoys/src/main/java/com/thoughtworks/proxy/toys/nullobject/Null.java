@@ -121,13 +121,22 @@ public class Null<T> {
         return new Null<T>(type);
     }
 
-
+    /**
+     * Generate a Null Object proxy for a specific type using the{@link StandardProxyFactory}.
+     * <p>
+     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
+     * type cannot be proxied.
+     * </p>
+     *
+     * @return object, proxy or <code>null</code>
+     * @see com.thoughtworks.proxy.toys.nullobject
+     */
     public T build() {
         return build(new StandardProxyFactory());
     }
 
     /**
-     * Generate a Null Object proxy for a specific type.
+     * Generate a Null Object proxy for a specific type using a special {@link ProxyFactory}.
      * <p>
      * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
      * type cannot be proxied.

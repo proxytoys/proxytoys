@@ -77,7 +77,7 @@ public class Decorating<T> {
         }
 
         /**
-         * Creating a decorating proxy for an object using a special {@link StandardProxyFactory}
+         * Creating a decorating proxy for an object using the {@link StandardProxyFactory}.
          *
          * @return the created proxy implementing the <tt>type</tt>
          */
@@ -86,9 +86,9 @@ public class Decorating<T> {
         }
 
         /**
-         * Creating a decorating proxy for an object using a special {@link ProxyFactory}
+         * Creating a decorating proxy for an object using a special {@link ProxyFactory}.
          *
-         * @param proxyFactory the @{link ProxyFactory} to use.
+         * @param proxyFactory the {@link ProxyFactory} to use.
          * @return the created proxy implementing the <tt>type</tt>
          */
 

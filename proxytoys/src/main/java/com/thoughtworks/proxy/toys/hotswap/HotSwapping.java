@@ -49,7 +49,7 @@ public class HotSwapping<T> {
      * otherwise it must only have signature compatible methods. Proxies created by this method will implement
      * {@link Swappable}
      *
-     * @param factory the @{link ProxyFactory} to use.
+     * @param factory the {@link ProxyFactory} to use.
      * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
      */
     private T build(final ProxyFactory factory) {
@@ -110,7 +110,7 @@ public class HotSwapping<T> {
          * otherwise it must only have signature compatible methods. Proxies created by this method will implement
          * {@link Swappable}
          *
-         * @param factory the @{link ProxyFactory} to use.
+         * @param factory the {@link ProxyFactory} to use.
          * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
          */
         public T build(final ProxyFactory factory) {

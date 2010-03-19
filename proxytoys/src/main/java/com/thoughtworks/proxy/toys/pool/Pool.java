@@ -25,6 +25,7 @@ import java.util.Map;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.InvokerReference;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.NoOperationResetter;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.Resetter;
@@ -103,7 +104,16 @@ public class Pool<T> implements Serializable {
         }
 
         /**
-         * Build the pool.
+         * Build the pool using the {@link StandardProxyFactory}.
+         *
+         * @return the pool with predefined instances
+         */
+        public Pool<T> build() {
+            return build(new StandardProxyFactory());
+        }
+
+        /**
+         * Build the pool using a special {@link ProxyFactory}.
          *
          * @param factory the proxy factory to use
          * @return the pool with predefined instances
@@ -112,7 +122,6 @@ public class Pool<T> implements Serializable {
             pool.factory = factory;
             return pool;
         }
-
     }
 
     public static class PoolWith<T> {
@@ -160,6 +169,7 @@ public class Pool<T> implements Serializable {
             return new PoolBuild<T>(pool);
         }
     }
+    
     /**
      * Construct a populated Pool with a specific proxy factory.
      *

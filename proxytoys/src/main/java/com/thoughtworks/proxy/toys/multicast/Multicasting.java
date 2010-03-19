@@ -99,7 +99,7 @@ public class Multicasting<T> {
         }
 
         /**
-         * Generate a proxy for the specified types calling the methods on the given targets.
+         * Generate a proxy for the specified types calling the methods on the given targets using the {@link StandardProxyFactory}.
          * <p>
          * Note, that the method will only return a proxy if necessary. If there is only one target instance and this
          * instance implements all of the specified types, then there is no point in creating a proxy.
@@ -122,7 +122,7 @@ public class Multicasting<T> {
     }
 
     /**
-     * Generate a proxy for the specified types calling the methods on the given targets.
+     * Generate a proxy for the specified types calling the methods on the given targets using a special {@link ProxyFactory}.
      * <p>
      * Note, that the method will only return a proxy if necessary. If there is only one target instance and this
      * instance implements all of the specified types, then there is no point in creating a proxy.
