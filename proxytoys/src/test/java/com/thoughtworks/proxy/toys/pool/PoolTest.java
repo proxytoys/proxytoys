@@ -247,7 +247,7 @@ public class PoolTest extends AbstractProxyTest {
     }
 
     @Test
-    public void testGarbageCollectedElementIsResetted() throws Exception {
+    public void garbageCollectedElementIsResetted() throws Exception {
         @SuppressWarnings("unchecked")
         final Resetter<Identifiable> mockResetter = mock(Resetter.class);
         when(mockResetter.reset(Matchers.<Identifiable>anyObject())).thenReturn(true);

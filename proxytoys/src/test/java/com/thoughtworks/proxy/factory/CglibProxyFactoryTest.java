@@ -19,7 +19,7 @@ import com.thoughtworks.proxy.ProxyFactory;
  */
 public class CglibProxyFactoryTest {
     @Test
-    public void testShouldDenyProxyGenerationForFinalClasses() throws Exception {
+    public void shouldDenyProxyGenerationForFinalClasses() throws Exception {
         ProxyFactory factory = new CglibProxyFactory();
         assertFalse(factory.canProxy(String.class));
     }

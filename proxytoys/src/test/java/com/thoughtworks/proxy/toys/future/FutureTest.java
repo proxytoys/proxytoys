@@ -50,7 +50,7 @@ public class FutureTest extends AbstractProxyTest {
     }
 
     @Test
-    public void testShouldReturnNullObjectAsIntermediateResultAndSwapWhenMethodCompletesWithCast() throws InterruptedException {
+    public void shouldReturnNullObjectAsIntermediateResultAndSwapWhenMethodCompletesWithCast() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
         Service fastService = future(slowService).build(getFactory());
@@ -65,7 +65,7 @@ public class FutureTest extends AbstractProxyTest {
     }
 
     @Test
-    public void testShouldReturnNullObjectAsIntermediateResultAndSwapWhenMethodCompletesWithGenerics() throws InterruptedException {
+    public void shouldReturnNullObjectAsIntermediateResultAndSwapWhenMethodCompletesWithGenerics() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
         Service fastService = typedFuture(Service.class).with(slowService).build(getFactory());
@@ -80,7 +80,7 @@ public class FutureTest extends AbstractProxyTest {
     }
 
     @Test
-    public void testShouldHandleVoidMethodsWithCast() {
+    public void shouldHandleVoidMethodsWithCast() {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
         Service fastService = future(slowService).build(getFactory());
@@ -88,7 +88,7 @@ public class FutureTest extends AbstractProxyTest {
     }
 
     @Test
-    public void testShouldHandleVoidMethodsWithGenerics() {
+    public void shouldHandleVoidMethodsWithGenerics() {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
         Service fastService =  typedFuture(Service.class).with(slowService).build(getFactory());
