@@ -40,7 +40,6 @@ public class Delegating<T> {
      * @param type     the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      */
-
     public static <T> DelegatingWith<T> delegatable(Class<T> type) {
         return new DelegatingWith<T>(new Delegating<T>(type));
     }

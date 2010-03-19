@@ -28,6 +28,7 @@ import com.thoughtworks.proxy.toys.multicast.MulticastTest;
 import com.thoughtworks.proxy.toys.nullobject.CglibNullTest;
 import com.thoughtworks.proxy.toys.nullobject.NullTest;
 import com.thoughtworks.proxy.toys.pool.PoolTest;
+import com.thoughtworks.proxy.toys.privilege.PrivilegingTest;
 
 
 /**
@@ -60,7 +61,8 @@ public class AllTests {
             HotSwappingTest.class,
             MulticastTest.class,
             NullTest.class,
-            PoolTest.class
+            PoolTest.class,
+            PrivilegingTest.class
     })
     static class CglibSuite {
         public CglibSuite() {
@@ -80,7 +82,8 @@ public class AllTests {
             HotSwappingTest.class,
             MulticastTest.class,
             NullTest.class,
-            PoolTest.class
+            PoolTest.class,
+            PrivilegingTest.class
     })
     static class StandardSuite {
         public StandardSuite() {
