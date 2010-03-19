@@ -89,9 +89,9 @@ public class DelegatingInvoker<T> implements Invoker {
                 }
             }
             if (arg == null) {
-                result = delegate == null ? Boolean.TRUE : Boolean.FALSE;
+                result = delegate == null;
             } else {
-                result = arg.equals(delegate) ? Boolean.TRUE : Boolean.FALSE;
+                result = arg.equals(delegate);
             }
         } else if (method.equals(ReflectionUtils.hashCode)) {
             // equals and hashCode must be consistent
