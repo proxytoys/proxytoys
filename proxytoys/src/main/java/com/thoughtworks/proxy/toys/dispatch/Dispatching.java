@@ -82,7 +82,7 @@ public class Dispatching<T> {
         }
 
         /**
-         * * Create a dispatching proxy of given types for the given objects using the {@link StandardProxyFactory}
+         * Create a dispatching proxy of given types for the given objects using the {@link StandardProxyFactory}
          *
          * @return the created proxy
          */
@@ -91,7 +91,7 @@ public class Dispatching<T> {
         }
 
         /**
-         * * Create a dispatching proxy of given types for the given objects using a special {@link ProxyFactory}.
+         * Create a dispatching proxy of given types for the given objects using a special {@link ProxyFactory}.
          *
          * @param factory the {@link ProxyFactory} to use
          * @return the created proxy
@@ -99,8 +99,5 @@ public class Dispatching<T> {
         public T build(ProxyFactory factory) {
             return dispatching.build(factory);
         }
-
     }
-
-
 }
