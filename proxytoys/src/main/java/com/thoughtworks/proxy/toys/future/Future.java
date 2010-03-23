@@ -18,6 +18,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
+// TODO: Javadoc
 public class Future<T> {
 
     private Class<?>[] types;
@@ -27,13 +28,23 @@ public class Future<T> {
         this.types = types;
     }
 
-    public static <T> FutureWith<T> typedFuture(Class<T> primaryType, Class<?>... types) {
+    public static <T> FutureWith<T> proxy(Class<T> primaryType) {
+        Future<T> future = new Future<T>(new Class<?>[]{primaryType});
+        return new FutureWith<T>(future);
+    }
+
+    public static <T> FutureWith<T> proxy(Class<T> primaryType, Class<?>... types) {
         Class<?>[] allTypes = new Class[types.length+1];
         allTypes[0] = primaryType;
         System.arraycopy(types,0,allTypes,1,types.length);
         Future<T> future = new Future<T>(allTypes);
-
         return new FutureWith<T>(future);
+    }
+
+    public static <T> FutureBuild<T> proxy(T target) {
+        Future<T> future = new Future<T>(null);
+        future.target = target;
+        return new FutureBuild<T>(future);
     }
 
     public static class FutureWith<T> {
@@ -45,12 +56,6 @@ public class Future<T> {
             future.target = target;
             return new FutureBuild<T>(future);
         }
-    }
-
-    public static <T> FutureBuild<T> future(T target) {
-        Future<T> future = new Future<T>(null);
-        future.target = target;
-        return new FutureBuild<T>(future);
     }
 
     public static class FutureBuild<T> {

@@ -4,7 +4,6 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
 import static junit.framework.Assert.assertTrue;
 
 import java.io.File;
@@ -30,7 +29,10 @@ public class CglibEchoingTest extends AbstractProxyTest {
     public void shouldProxyRealInstance() {
         final StringWriter out = new StringWriter();
         @SuppressWarnings("unchecked")
-        final List<File> list = echoable(List.class).with(new ArrayList()).to(new PrintWriter(out)).build(createProxyFactory());
+        final List<File> list = Echoing.proxy(List.class)
+            .with(new ArrayList<File>())
+            .to(new PrintWriter(out))
+            .build(createProxyFactory());
         list.add(new File("."));
         final File file = list.get(0);
         file.exists();

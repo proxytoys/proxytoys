@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.dispatch;
 
-import static com.thoughtworks.proxy.toys.dispatch.Dispatching.dispatchable;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
@@ -55,7 +54,7 @@ public class DispatchingTest extends AbstractProxyTest {
         Foo fooMock = mock(Foo.class);
         Bar barMock = mock(Bar.class);
 
-        Object foobar = dispatchable(Foo.class, Bar.class).with(
+        Object foobar = Dispatching.proxy(Foo.class, Bar.class).with(
                 fooMock, barMock).build(getFactory());
 
         when(fooMock.getSomething()).thenReturn("some thing");
@@ -76,7 +75,7 @@ public class DispatchingTest extends AbstractProxyTest {
         Foo fooMock = mock(Foo.class);
         FooMimic fooMimicMock = mock(FooMimic.class);
 
-        Object foo = dispatchable(Foo.class, FooMimic.class).with(
+        Object foo = Dispatching.proxy(Foo.class, FooMimic.class).with(
                 fooMock, fooMimicMock).build(getFactory());
         //expects
         when(fooMock.getSomething()).thenReturn("some thing");
@@ -94,7 +93,7 @@ public class DispatchingTest extends AbstractProxyTest {
         Bar barMock = mock(Bar.class);
         BarSimilar barSimilarMock = mock(BarSimilar.class);
 
-        Object bar = dispatchable(Bar.class, BarSimilar.class).with(
+        Object bar = Dispatching.proxy(Bar.class, BarSimilar.class).with(
                 barMock, barSimilarMock).build(getFactory());
         //expects
 
@@ -111,7 +110,7 @@ public class DispatchingTest extends AbstractProxyTest {
         //setup
         FooBar fooBarMock = mock(FooBar.class);
 
-        Object foobar = dispatchable(Foo.class, Bar.class).with(fooBarMock).build(getFactory());
+        Object foobar = Dispatching.proxy(Foo.class, Bar.class).with(fooBarMock).build(getFactory());
         //expects
 
         when(fooBarMock.getSomething()).thenReturn("some thing");
@@ -128,7 +127,7 @@ public class DispatchingTest extends AbstractProxyTest {
         Foo fooMock = mock(Foo.class);
 
         try {
-            dispatchable(Foo.class, Bar.class).with(fooMock).build(getFactory());
+            Dispatching.proxy(Foo.class, Bar.class).with(fooMock).build(getFactory());
             fail("DispatchingException expected");
         } catch (final DispatchingException e) {
             assertEquals(Bar.class, e.getType());
@@ -139,8 +138,8 @@ public class DispatchingTest extends AbstractProxyTest {
     public void hashCodeIsDifferentForEachProxy() throws Exception {
         Foo fooMock = mock(Foo.class);
 
-        Object proxy1 = dispatchable(Foo.class).with(fooMock).build(getFactory());
-        Object proxy2 = dispatchable(Foo.class).with(fooMock).build(getFactory());
+        Object proxy1 = Dispatching.proxy(Foo.class).with(fooMock).build(getFactory());
+        Object proxy2 = Dispatching.proxy(Foo.class).with(fooMock).build(getFactory());
 
         assertFalse(proxy1.hashCode() == proxy2.hashCode());
     }
@@ -149,7 +148,7 @@ public class DispatchingTest extends AbstractProxyTest {
     public void stringRepresentationContainsImplementedTypes() throws Exception {
         FooBar fooBarMock = mock(FooBar.class);
 
-        Object foobar = dispatchable(Foo.class, Bar.class).with(fooBarMock).build(getFactory());
+        Object foobar = Dispatching.proxy(Foo.class, Bar.class).with(fooBarMock).build(getFactory());
 
         String string = foobar.toString();
         assertTrue(string.indexOf(Foo.class.getName()) >= 0);
@@ -158,9 +157,9 @@ public class DispatchingTest extends AbstractProxyTest {
 
     @Test
     public void twoProxiesAreEqualIfSameTypesAreDelegatedToEqualDelegates() throws Exception {
-        Object proxy1 = dispatchable(Comparable.class, Runnable.class, List.class).with(
+        Object proxy1 = Dispatching.proxy(Comparable.class, Runnable.class, List.class).with(
             new ArrayList<String>(), "Hello", Thread.currentThread()).build(getFactory());
-        Object proxy2 = dispatchable(List.class, Runnable.class, Comparable.class).with(
+        Object proxy2 = Dispatching.proxy(List.class, Runnable.class, Comparable.class).with(
                 "Hello", new ArrayList<String>(), Thread.currentThread()).build(getFactory());
 
         assertEquals(proxy1, proxy2);
@@ -168,9 +167,9 @@ public class DispatchingTest extends AbstractProxyTest {
 
     @Test
     public void twoProxiesAreNotEqualIfSameTypesAreDelegatedToAtLeastOneNonEqualDelegate() throws Exception {
-        Object proxy1 = dispatchable(Comparable.class, Runnable.class, List.class).with(
+        Object proxy1 = Dispatching.proxy(Comparable.class, Runnable.class, List.class).with(
                 new ArrayList<String>(), "Foo", Thread.currentThread()).build(getFactory());
-        Object proxy2 = dispatchable(List.class, Runnable.class, Comparable.class).with(
+        Object proxy2 = Dispatching.proxy(List.class, Runnable.class, Comparable.class).with(
                 "Bar", new ArrayList<String>(), Thread.currentThread()).build(getFactory());
 
         assertFalse(proxy1.equals(proxy2));
@@ -183,17 +182,17 @@ public class DispatchingTest extends AbstractProxyTest {
 
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedProxy(serializeWithJDK(dispatchable(CharSequence.class).with("Test").build(getFactory())));
+        useSerializedProxy(serializeWithJDK(Dispatching.proxy(CharSequence.class).with("Test").build(getFactory())));
     }
 
     @Test
     public void serializeWithXStream() {
-        useSerializedProxy(serializeWithXStream(dispatchable(CharSequence.class).with("Test").build(getFactory())));
+        useSerializedProxy(serializeWithXStream(Dispatching.proxy(CharSequence.class).with("Test").build(getFactory())));
     }
 
     @Test
     public void serializeWithXStreamInPureReflectionMode() {
         useSerializedProxy(serializeWithXStreamAndPureReflection(
-                dispatchable(CharSequence.class).with("Test").build(getFactory())));
+                Dispatching.proxy(CharSequence.class).with("Test").build(getFactory())));
     }
 }

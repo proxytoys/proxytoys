@@ -1,6 +1,5 @@
 package com.thoughtworks.proxy.toys.failover;
 
-import static com.thoughtworks.proxy.toys.failover.Failover.failoverable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -20,7 +19,6 @@ public class FailoverTest extends AbstractProxyTest {
 
     public static interface FailsOnNthCall {
         void doIt();
-
         int dunIt();
     }
 
@@ -50,7 +48,7 @@ public class FailoverTest extends AbstractProxyTest {
     public void shouldFailoverToNextOnSpecialException() {
         FailsOnNthCall first = new FailsOnNthCallImpl(1);
         FailsOnNthCall second = new FailsOnNthCallImpl(1);
-        FailsOnNthCall failover = failoverable(FailsOnNthCall.class)
+        FailsOnNthCall failover = Failover.proxy(FailsOnNthCall.class)
                                      .with(first, second)
                                      .excepting(RuntimeException.class)
                                      .build(getFactory());
@@ -77,7 +75,7 @@ public class FailoverTest extends AbstractProxyTest {
 
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
-        final FailsOnNthCall failover = failoverable(FailsOnNthCall.class)
+        final FailsOnNthCall failover = Failover.proxy(FailsOnNthCall.class)
                                           .with(new FailsOnNthCallImpl(1), new FailsOnNthCallImpl(1))
                                           .excepting(RuntimeException.class)
                                           .build(getFactory());
@@ -87,7 +85,7 @@ public class FailoverTest extends AbstractProxyTest {
 
     @Test
     public void serializeWithXStream() {
-        final FailsOnNthCall failover = failoverable(FailsOnNthCall.class)
+        final FailsOnNthCall failover = Failover.proxy(FailsOnNthCall.class)
                                           .with(new FailsOnNthCallImpl(1), new FailsOnNthCallImpl(1))
                                           .excepting(RuntimeException.class)
                                           .build(getFactory());
@@ -97,7 +95,7 @@ public class FailoverTest extends AbstractProxyTest {
 
     @Test
     public void serializeWithXStreamInPureReflectionMode() {
-        final FailsOnNthCall failover = failoverable(FailsOnNthCall.class)
+        final FailsOnNthCall failover = Failover.proxy(FailsOnNthCall.class)
                                           .with(new FailsOnNthCallImpl(1), new FailsOnNthCallImpl(1))
                                           .excepting(RuntimeException.class)
                                           .build(getFactory());

@@ -5,8 +5,6 @@
  */
 package proxytoys.examples.overview;
 
-import static com.thoughtworks.proxy.toys.dispatch.Dispatching.dispatchable;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -22,6 +20,8 @@ import java.util.TreeMap;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
+import com.thoughtworks.proxy.toys.dispatch.Dispatching;
+
 /**
  * @author J&ouml;rg Schaible
  */
@@ -32,7 +32,7 @@ public class DispatcherToyExample {
         ArrayList<String> list = new ArrayList<String>();
         TreeMap<Object, Object> map = new TreeMap<Object, Object>();
 
-        Checksum checksum = dispatchable(Checksum.class, DataInput.class, DataOutput.class, List.class)
+        Checksum checksum = Dispatching.proxy(Checksum.class, DataInput.class, DataOutput.class, List.class)
                 .with(list, new CRC32(), new DataInputStream(new ByteArrayInputStream("Hello Proxy!".getBytes())),
                         new DataOutputStream(outputStream), map)
                 .build();
@@ -52,7 +52,7 @@ public class DispatcherToyExample {
         File tempFile = File.createTempFile("Demo", null);
         try {
             RandomAccessFile file = new RandomAccessFile(tempFile, "rw");
-            Object proxy = dispatchable(DataInput.class, DataOutput.class)
+            Object proxy = Dispatching.proxy(DataInput.class, DataOutput.class)
                     .with(file)
                     .build();
 

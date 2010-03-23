@@ -7,12 +7,11 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
-
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.decorate.Decorating;
 import com.thoughtworks.proxy.toys.decorate.Decorator;
 
 /**
@@ -52,9 +51,9 @@ public class EchoDecorator extends Decorator {
         final Class<?> returnType = method.getReturnType();
         printMethodResult(result);
         if (returnType != Object.class && factory.canProxy(returnType)) {
-            result = decoratable(returnType).with(result, this).build(factory);
+            result = Decorating.proxy(returnType).with(result, this).build(factory);
         } else if (result != null && returnType == Object.class && factory.canProxy(result.getClass())) {
-            result = decoratable(result.getClass()).with(result, this).build(factory);
+            result = Decorating.proxy(result.getClass()).with(result, this).build(factory);
         }
         return result;
     }

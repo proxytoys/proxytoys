@@ -34,7 +34,7 @@ public class Dispatching<T> {
      * @param types the other types of the proxy
      * @return a builder that will proxy instances of the supplied type.
      */
-    public static <T> DispatchingWith<T> dispatchable(Class<T> primaryType, Class<?>... types) {
+    public static <T> DispatchingWith<T> proxy(Class<T> primaryType, Class<?>... types) {
         return new DispatchingWith<T>(primaryType,  types);
     }
 
@@ -62,8 +62,8 @@ public class Dispatching<T> {
         }
 
         /**
-         * Defines the object that shall be delegated to. This delegate must implement the types used to create the hot swap or
-         * have signature compatible methods.
+         * Defines the object that shall be delegated to. This delegate must implement the types used to create the
+         * dispatching proxy or have signature compatible methods.
          *
          * @param delegates the objects that will receive the calls.
          * @return the factory that will proxy instances of the supplied type.

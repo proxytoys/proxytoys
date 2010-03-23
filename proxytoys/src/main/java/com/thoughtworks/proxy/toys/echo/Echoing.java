@@ -7,12 +7,11 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
-
 import java.io.PrintWriter;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.toys.decorate.Decorating;
 
 /**
  * Factory for echoing proxy instances.
@@ -41,7 +40,7 @@ public class Echoing<T> {
      * @param type the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> EchoingWithOrTo<T> echoable(final Class<T> type) {
+    public static <T> EchoingWithOrTo<T> proxy(final Class<T> type) {
         return new EchoingWithOrTo<T>(new Echoing<T>(type));
     }
 
@@ -109,7 +108,7 @@ public class Echoing<T> {
          */
         public T build(final ProxyFactory proxyFactory) {
             EchoDecorator decorator = new EchoDecorator(echoing.printWriter, proxyFactory);
-            return decoratable(echoing.type).with(echoing.delegate, decorator).build(proxyFactory);
+            return Decorating.proxy(echoing.type).with(echoing.delegate, decorator).build(proxyFactory);
         }
     }
 

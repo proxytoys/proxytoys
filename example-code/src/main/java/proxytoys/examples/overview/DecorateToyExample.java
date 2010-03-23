@@ -5,8 +5,6 @@
  */
 package proxytoys.examples.overview;
 
-import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
-
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -14,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.decorate.Decorating;
 import com.thoughtworks.proxy.toys.decorate.Decorator;
 
 
@@ -35,7 +34,7 @@ public class DecorateToyExample {
             }
         };
         @SuppressWarnings("unchecked")
-        Iterator<Integer> intIter = decoratable(Iterator.class)
+        Iterator<Integer> intIter = Decorating.proxy(Iterator.class)
                              .with(list.iterator(), decorator)
                              .build();
         while (intIter.hasNext()) {
@@ -59,7 +58,7 @@ public class DecorateToyExample {
                 return result;
             }
         };
-        File decoratedFile = decoratable(File.class)
+        File decoratedFile = Decorating.proxy(File.class)
                                 .with(file, decorator)
                                 .build(new CglibProxyFactory());
         decoratedFile.exists();

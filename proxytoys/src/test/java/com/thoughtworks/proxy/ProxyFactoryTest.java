@@ -1,6 +1,5 @@
 package com.thoughtworks.proxy;
 
-import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 import static junit.framework.Assert.assertFalse;
 
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.thoughtworks.proxy.kit.Resetter;
+import com.thoughtworks.proxy.toys.nullobject.Null;
 
 
 /**
@@ -23,7 +23,7 @@ public class ProxyFactoryTest extends AbstractProxyTest {
 
     private void useSerializedFactory(ProxyFactory factory) {
         @SuppressWarnings("unchecked")
-        Resetter<ProxyFactoryTest> resetter = nullable(Resetter.class).build();
+        Resetter<ProxyFactoryTest> resetter = Null.proxy(Resetter.class).build();
         assertFalse(resetter.reset(this));
     }
 

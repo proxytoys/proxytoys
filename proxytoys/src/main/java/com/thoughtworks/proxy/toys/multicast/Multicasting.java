@@ -40,17 +40,9 @@ public class Multicasting<T> {
      * @param types other types that are implemented by the proxy
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> MulticastingWith<T> multicastable(Class<T> primaryType, Class<?>... types) {
+    public static <T> MulticastingWith<T> proxy(Class<T> primaryType, Class<?>... types) {
         return new MulticastingWith<T>(primaryType, types);
     }
-
-    private Class<?>[] makeTypesArray(Class<?> primaryType, Class<?>[] types) {
-        Class<?>[] retVal = new Class[types.length +1];
-        retVal[0] = primaryType;
-        System.arraycopy(types, 0, retVal, 1, types.length);
-        return retVal;
-    }
-
 
     /**
      * Creates a factory for proxy instances delegating a call to multiple objects and managing the individual results.
@@ -58,7 +50,7 @@ public class Multicasting<T> {
      * @param targets targets the target objects
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static MulticastingBuild<Multicast> multicastable(Object... targets) {
+    public static MulticastingBuild<Multicast> proxy(Object... targets) {
         return new MulticastingBuild<Multicast>(targets);
     }
 
@@ -166,5 +158,12 @@ public class Multicasting<T> {
         @SuppressWarnings("unchecked")
         final T instance = (T) delegates[0];
         return instance;
+    }
+
+    private Class<?>[] makeTypesArray(Class<?> primaryType, Class<?>[] types) {
+        Class<?>[] retVal = new Class[types.length +1];
+        retVal[0] = primaryType;
+        System.arraycopy(types, 0, retVal, 1, types.length);
+        return retVal;
     }
 }

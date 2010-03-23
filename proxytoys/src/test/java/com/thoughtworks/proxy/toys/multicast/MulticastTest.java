@@ -1,6 +1,5 @@
 package com.thoughtworks.proxy.toys.multicast;
 
-import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
@@ -82,7 +81,7 @@ public class MulticastTest extends AbstractProxyTest {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = multicastable(Dog.class).with(tim, tom).build(getFactory());
+        Dog timAndTom = Multicasting.proxy(Dog.class).with(tim, tom).build(getFactory());
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -101,7 +100,7 @@ public class MulticastTest extends AbstractProxyTest {
         tom.add(tomsTail);
 
         @SuppressWarnings("unchecked")
-        List<Tail> timAndTom = multicastable(List.class).with(tim, tom).build(getFactory());
+        List<Tail> timAndTom = Multicasting.proxy(List.class).with(tim, tom).build(getFactory());
         Tail timAndTomsTails = timAndTom.get(0);
         timAndTomsTails.wag();
 
@@ -117,7 +116,7 @@ public class MulticastTest extends AbstractProxyTest {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = Dog.class.cast(multicastable(tim, tom).build(getFactory()));
+        Dog timAndTom = Dog.class.cast(Multicasting.proxy(tim, tom).build(getFactory()));
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
@@ -148,7 +147,7 @@ public class MulticastTest extends AbstractProxyTest {
     public void shouldMulticastToIncompatibleTypes() {
         NotMap list = new NotMapImpl();
         Map<String, String> map = new HashMap<String, String>();
-        Object multicast = multicastable(list, map).build(getFactory());
+        Object multicast = Multicasting.proxy(list, map).build(getFactory());
         NotMap.class.cast(multicast).add("hello");
         Map.class.cast(multicast).put("hello", "world");
         assertEquals("hello", list.get(0));
@@ -159,7 +158,7 @@ public class MulticastTest extends AbstractProxyTest {
     public void shouldNotReturnProxyWhenThereIsOnlyOneForUndeclaredReturnType() {
         Map<?, ?> map = new HashMap<Object, Object>();
         ProxyFactory factory = getFactory();
-        Object multicast = multicastable(map).build(factory);
+        Object multicast = Multicasting.proxy(map).build(factory);
         assertFalse(factory.isProxyClass(multicast.getClass()));
         assertSame(map, multicast);
     }
@@ -168,7 +167,7 @@ public class MulticastTest extends AbstractProxyTest {
     public void shouldNotReturnProxyWhenThereIsOnlyOneForCompatibleDeclaredReturnTypes() {
         Map<?, ?> map = new HashMap<Object, Object>();
         ProxyFactory factory = getFactory();
-        Map<?,?> multicast = multicastable(Map.class, Serializable.class).with(map).build(factory);
+        Map<?,?> multicast = Multicasting.proxy(Map.class, Serializable.class).with(map).build(factory);
         assertFalse(factory.isProxyClass(multicast.getClass()));
         assertSame(map, multicast);
     }
@@ -178,7 +177,7 @@ public class MulticastTest extends AbstractProxyTest {
         Method method = StringBuffer.class.getMethod("append", String.class);
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
-        Multicast multicast = multicastable(buffer1, buffer2).build(getFactory());
+        Multicast multicast = Multicasting.proxy(buffer1, buffer2).build(getFactory());
         multicast.multicastTargets(method, new Object[]{"JUnit"});
         assertEquals("JUnit", buffer1.toString());
         assertEquals("JUnit", buffer2.toString());
@@ -188,7 +187,7 @@ public class MulticastTest extends AbstractProxyTest {
     public void shouldCallAMatchingMethodForFinalTargets() throws NoSuchMethodException {
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
-        Multicast multicast = multicastable(buffer1, buffer2).build(getFactory());
+        Multicast multicast = Multicasting.proxy(buffer1, buffer2).build(getFactory());
         multicast.multicastTargets(StringBuffer.class, "append", new Object[]{"JUnit"});
         assertEquals("JUnit", buffer1.toString());
         assertEquals("JUnit", buffer2.toString());
@@ -196,7 +195,7 @@ public class MulticastTest extends AbstractProxyTest {
 
     @Test
     public void shouldThrowNoSuchMethodExceptionForANonMatchingCall() {
-        Multicast multicast = multicastable(new StringBuffer(), new StringBuffer()).build(getFactory());
+        Multicast multicast = Multicasting.proxy(new StringBuffer(), new StringBuffer()).build(getFactory());
         try {
             multicast.multicastTargets(StringBuffer.class, "toString", new Object[]{"JUnit", 5});
             fail(NoSuchMethodException.class.getName() + " expected");
@@ -210,7 +209,7 @@ public class MulticastTest extends AbstractProxyTest {
     public void shouldReturnTargetsInTypedArray() throws Exception {
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
-        Multicast multicast = multicastable(buffer1, buffer2).build(getFactory());
+        Multicast multicast = Multicasting.proxy(buffer1, buffer2).build(getFactory());
         StringBuffer[] buffers = multicast.getTargetsInArray(StringBuffer.class);
         assertSame(buffer1, buffers[0]);
         assertSame(buffer2, buffers[1]);
@@ -220,7 +219,7 @@ public class MulticastTest extends AbstractProxyTest {
     public void shouldReturnTargetsInArray() throws Exception {
         StringBuffer buffer1 = new StringBuffer();
         StringBuffer buffer2 = new StringBuffer();
-        Multicast multicast = multicastable(buffer1, buffer2).build(getFactory());
+        Multicast multicast = Multicasting.proxy(buffer1, buffer2).build(getFactory());
         Object[] buffers = multicast.getTargetsInArray();
         assertSame(buffer1, buffers[0]);
         assertSame(buffer2, buffers[1]);
@@ -231,7 +230,7 @@ public class MulticastTest extends AbstractProxyTest {
         TailImpl t1 = new TailImpl();
         TailImpl t2 = new TailImpl();
         TailImpl t3 = new TailImpl();
-        Tail tail = multicastable(Tail.class).with(t1, t2, t3).build(getFactory());
+        Tail tail = Multicasting.proxy(Tail.class).with(t1, t2, t3).build(getFactory());
 
         assertFalse(t1.wasWagged());
         assertFalse(t2.wasWagged());
@@ -259,7 +258,7 @@ public class MulticastTest extends AbstractProxyTest {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = multicastable(Dog.class).with(tim, tom).build(getFactory());
+        Dog timAndTom = Multicasting.proxy(Dog.class).with(tim, tom).build(getFactory());
         return timAndTom.getTail();
     }
 

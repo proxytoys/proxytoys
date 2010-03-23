@@ -39,8 +39,13 @@ public class HotSwapping<T> {
      * @param type the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> HotSwappingWith<T> hotSwappable(final Class<T> type) {
+    public static <T> HotSwappingWith<T> proxy(final Class<T> type) {
         return new HotSwappingWith<T>(type);
+    }
+    
+    public static <T> HotSwappingWith<T> proxy(final Class<T> primaryType, final Class<?> ... types) {
+        // TODO: Provide this functionality again
+        throw new UnsupportedOperationException("TODO");
     }
 
     /**

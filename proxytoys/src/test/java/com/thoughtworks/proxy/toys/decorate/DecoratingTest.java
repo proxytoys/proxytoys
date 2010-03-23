@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.decorate;
 
-import static com.thoughtworks.proxy.toys.decorate.Decorating.decoratable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -62,7 +61,7 @@ public class DecoratingTest extends AbstractProxyTest {
         fooMock = mock(Foo.class);
         decoratorMock = mock(Decorator.class);
         assertNotNull(fooMock);
-        foo = decoratable(Foo.class).with(fooMock, decoratorMock).build();
+        foo = Decorating.proxy(Foo.class).with(fooMock, decoratorMock).build();
         assertNotNull(fooMock);
     }
 
@@ -142,7 +141,7 @@ public class DecoratingTest extends AbstractProxyTest {
         final Throwable[] thrown = new Throwable[1]; // hack for inner class
         final MyException decoratedException = new MyException();
 
-        foo = decoratable(Foo.class).with(new MethodMissingImpl(), new Decorator() {
+        foo = Decorating.proxy(Foo.class).with(new MethodMissingImpl(), new Decorator() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -177,19 +176,19 @@ public class DecoratingTest extends AbstractProxyTest {
 
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedProxy(serializeWithJDK(decoratable(
+        useSerializedProxy(serializeWithJDK(Decorating.proxy(
             CharSequence.class).with("Test", new AssertingDecorator()).build(getFactory())));
     }
 
     @Test
     public void serializeWithXStream() {
-        useSerializedProxy(serializeWithXStream(decoratable(
+        useSerializedProxy(serializeWithXStream(Decorating.proxy(
             CharSequence.class).with("Test", new AssertingDecorator()).build(getFactory())));
     }
 
     @Test
     public void serializeWithXStreamInPureReflectionMode() {
-        useSerializedProxy(serializeWithXStreamAndPureReflection(decoratable(
+        useSerializedProxy(serializeWithXStreamAndPureReflection(Decorating.proxy(
             CharSequence.class).with("Test", new AssertingDecorator()).build(getFactory())));
     }
 }

@@ -5,8 +5,6 @@
  */
 package proxytoys.examples.overview;
 
-import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -24,7 +22,7 @@ public class NullToyExample {
     public static void packageOverviewExample1() {
         try {
             ProxyFactory factory = new CglibProxyFactory();
-            File file = nullable(File.class).build(factory);
+            File file = Null.proxy(File.class).build(factory);
             System.out.println("Length is: " + file.length());
             System.out.println("Exists: " + file.exists());
             System.out.println("Array is empty: " + file.list().length);
@@ -39,17 +37,17 @@ public class NullToyExample {
     public static void listExample() {
         ProxyFactory factory = new CglibProxyFactory();
         @SuppressWarnings("unchecked")
-        List<String> list = nullable(List.class).build(factory);
+        List<String> list = Null.proxy(List.class).build(factory);
         System.out.println("\n\nLength is: " + list.size());
         System.out.println("contains: " + list.contains("FOO"));
-        List<?> one = nullable(List.class).build(factory);
-        List<?> other = nullable(List.class).build(factory);
-        System.out.println("two are ==? " + (one == other));
-        System.out.println("two are .equals? " + (one.equals(other)));
+        List<?> one = Null.proxy(List.class).build(factory);
+        List<?> other = Null.proxy(List.class).build(factory);
+        System.out.println("two are the same? " + (one == other));
+        System.out.println("two are equal? " + (one.equals(other)));
         try {
-        System.out.println("and you can't add to lists: " + list.add("Bar"));
+            System.out.println("and you can't add to lists: " + list.add("Bar"));
         } catch (UnsupportedOperationException expected) {
-            System.out.println("expected and got this one " + expected);
+            System.out.println("got this expected exception: " + expected);
         }
     }
 

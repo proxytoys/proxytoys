@@ -7,8 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.pool;
 
-import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -63,7 +61,7 @@ public class Pool<T> implements Serializable {
         try {
             returnInstanceToPool = Poolable.class.getMethod("returnInstanceToPool");
         } catch (NoSuchMethodException e) {
-            throw new InternalError();
+            throw new ExceptionInInitializerError(e.toString());
         }
     }
 
@@ -81,7 +79,9 @@ public class Pool<T> implements Serializable {
      * @param resetter the resetter of the pooled elements
      * @return return the pool with parameters specified
      */
-    public static <T> PoolWith<T> poolable(Class<T> type, Resetter<T> resetter) {
+    @Deprecated
+    public static <T> PoolWith<T> proxy(Class<T> type, Resetter<T> resetter) {
+        // TODO: Resetter has to be added with a builder
         return new PoolWith<T>(new Pool<T>(type, resetter));
     }
 
@@ -91,7 +91,7 @@ public class Pool<T> implements Serializable {
      * @param type     the type of the instances
      * @return return the pool with parameters specified
      */
-    public static <T> PoolWith<T> poolable(Class<T> type) {
+    public static <T> PoolWith<T> proxy(Class<T> type) {
         return new PoolWith<T>(new Pool<T>(type, new NoOperationResetter<T>()));
     }
     
@@ -136,7 +136,9 @@ public class Pool<T> implements Serializable {
             return new PoolModeOrBuild<T>(pool);
         }
 
+        @Deprecated
         public PoolModeOrBuild<T> withNoInstances() {
+            // TODO: Builder must be able to drop this directly
             return new PoolModeOrBuild<T>(pool);
         }
 
@@ -217,7 +219,7 @@ public class Pool<T> implements Serializable {
         final T result;
         if (availableInstances.size() > 0 || getAvailable() > 0) {
             final ObjectReference<T> delegate = availableInstances.remove(0);
-            result = new PoolingInvoker<T>(this, factory, delegate, DIRECT).proxy();
+            result = new PoolingInvoker<T>(this, factory, delegate, DelegationMode.DIRECT).proxy();
             final WeakReference<T> weakReference = new WeakReference<T>(result);
             busyInstances.put(delegate.get(), weakReference);
         } else {

@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.echo;
 
-import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -44,7 +43,7 @@ public class EchoingTest extends AbstractProxyTest {
     public void shouldEchoMethodNameAndArgs() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple foo = echoable(Simple.class).to(new PrintWriter(out)).build(getFactory());
+        Simple foo = Echoing.proxy(Simple.class).to(new PrintWriter(out)).build(getFactory());
 
         // execute
         foo.doSomething();
@@ -57,7 +56,7 @@ public class EchoingTest extends AbstractProxyTest {
     public void shouldDelegateCalls() throws Exception {
         // setup
         Writer out = new StringWriter();
-        Simple foo = echoable(Simple.class).with(simpleMock).to(new PrintWriter(out)).build(getFactory());
+        Simple foo = Echoing.proxy(Simple.class).with(simpleMock).to(new PrintWriter(out)).build(getFactory());
 
 
         // execute
@@ -82,7 +81,7 @@ public class EchoingTest extends AbstractProxyTest {
         Outer outerMock = mock(Outer.class);
         StringWriter out = new StringWriter();
 
-        Outer outer = echoable(Outer.class).with(outerMock).to(new PrintWriter(out)).build(getFactory());
+        Outer outer = Echoing.proxy(Outer.class).with(outerMock).to(new PrintWriter(out)).build(getFactory());
 
         // expect
         when(outerMock.getInner()).thenReturn(innerMock);
@@ -102,7 +101,7 @@ public class EchoingTest extends AbstractProxyTest {
     public void shouldRecursivelyReturnEchoProxiesEvenForMissingImplementations() throws Exception {
         // setup
         StringWriter out = new StringWriter();
-        Outer outer = echoable(Outer.class).to(new PrintWriter(out)).build(getFactory());
+        Outer outer = Echoing.proxy(Outer.class).to(new PrintWriter(out)).build(getFactory());
 
         // execute
         outer.getInner().getName();

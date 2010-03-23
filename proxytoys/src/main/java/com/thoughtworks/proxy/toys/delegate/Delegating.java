@@ -7,8 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.delegate;
 
-import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
-
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleReference;
@@ -28,7 +26,7 @@ public class Delegating<T> {
 
     private Class<T> type;
     private Object delegate;
-    private DelegationMode delegationMode = SIGNATURE;
+    private DelegationMode delegationMode = DelegationMode.SIGNATURE;
 
     private Delegating(Class<T> type) {
         this.type = type;
@@ -40,7 +38,7 @@ public class Delegating<T> {
      * @param type     the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> DelegatingWith<T> delegatable(Class<T> type) {
+    public static <T> DelegatingWith<T> proxy(Class<T> type) {
         return new DelegatingWith<T>(new Delegating<T>(type));
     }
 

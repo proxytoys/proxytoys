@@ -35,7 +35,7 @@ public class HotSwappingInvoker<T> extends DelegatingInvoker<Object> {
             hotswap = Swappable.class.getMethod("hotswap", new Class[]{Object.class});
             checkForCycle = CycleCheck.class.getMethod("checkForCycle");
         } catch (NoSuchMethodException e) {
-            throw new ExceptionInInitializerError();
+            throw new ExceptionInInitializerError(e.toString());
         }
     }
 

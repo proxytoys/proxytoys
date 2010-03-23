@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.delegate;
 
-import static com.thoughtworks.proxy.toys.delegate.Delegating.delegatable;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
@@ -62,7 +61,7 @@ public class DelegatingTest extends AbstractProxyTest {
 
     private Foo createProxy(Object impl) {
 
-        return delegatable(Foo.class).with(impl).build(getFactory());
+        return Delegating.proxy(Foo.class).with(impl).build(getFactory());
     }
 
     @Test
@@ -188,7 +187,7 @@ public class DelegatingTest extends AbstractProxyTest {
                 return i == 1 ? 1 : i * fac.calc(i - 1, fac);
             }
         };
-        Faculty proxy = delegatable(Faculty.class).with(fac).build(getFactory());
+        Faculty proxy = Delegating.proxy(Faculty.class).with(fac).build(getFactory());
         assertEquals(120, fac.calc(5, fac));
         assertEquals(120, proxy.calc(5, proxy));
     }

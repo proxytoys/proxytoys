@@ -39,7 +39,7 @@ public class MulticastingInvoker<T> implements Invoker {
             getTargetsInArray = Multicast.class.getMethod("getTargetsInArray");
             getTargetsInTypedArray = Multicast.class.getMethod("getTargetsInArray", Class.class);
         } catch (NoSuchMethodException e) {
-            throw new ExceptionInInitializerError(e.getMessage());
+            throw new ExceptionInInitializerError(e.toString());
         }
     }
 
@@ -128,7 +128,7 @@ public class MulticastingInvoker<T> implements Invoker {
         } else if (method.getReturnType().equals(boolean.class)) {
             return andBooleans(invocationResults.toArray());
         } else {
-            return Multicasting.multicastable(invocationResults.toArray()).build(proxyFactory);
+            return Multicasting.proxy(invocationResults.toArray()).build(proxyFactory);
         }
     }
 

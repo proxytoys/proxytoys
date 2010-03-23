@@ -7,8 +7,6 @@
  */
 package com.thoughtworks.proxy.factory;
 
-import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import net.sf.cglib.proxy.Proxy;
 
 import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.toys.nullobject.Null;
 
 /**
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on <a href="http://cglib.sourceforge.net/">CGLIB</a>.
@@ -119,7 +118,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
             if (!creating.contains(params[i])) {
                 creating.add(params[i]);
                 try {
-                    args[i] = nullable(params[i]).build(this);
+                    args[i] = Null.proxy(params[i]).build(this);
                 } finally {
                     creating.remove(params[i]);
                 }

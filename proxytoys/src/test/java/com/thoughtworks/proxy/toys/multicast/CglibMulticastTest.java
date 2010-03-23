@@ -1,6 +1,5 @@
 package com.thoughtworks.proxy.toys.multicast;
 
-import static com.thoughtworks.proxy.toys.multicast.Multicasting.multicastable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -67,7 +66,7 @@ public class CglibMulticastTest extends AbstractProxyTest {
 
     @Before
     public void setUp() throws Exception {
-        primitives = multicastable(Primitives.class)
+        primitives = Multicasting.proxy(Primitives.class)
             .with(new Primitives(true), new Primitives(true), new Primitives(true))
             .build(getFactory());
     }
@@ -110,7 +109,7 @@ public class CglibMulticastTest extends AbstractProxyTest {
     @Test
     public void shouldAndBooleans() {
         assertTrue(primitives.getBoolean());
-        primitives = Primitives.class.cast(multicastable(
+        primitives = Primitives.class.cast(Multicasting.proxy(
                 new Primitives(true), new Primitives(true), new Primitives(false)).build(getFactory()));
         assertFalse(primitives.getBoolean());
     }

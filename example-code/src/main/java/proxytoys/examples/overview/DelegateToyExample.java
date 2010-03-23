@@ -5,9 +5,6 @@
  */
 package proxytoys.examples.overview;
 
-import static com.thoughtworks.proxy.toys.delegate.Delegating.delegatable;
-import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.File;
@@ -15,6 +12,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
+import com.thoughtworks.proxy.toys.delegate.DelegationMode;
 
 /**
  * @author J&ouml;rg Schaible
@@ -29,30 +28,29 @@ public class DelegateToyExample {
             }
         };
         @SuppressWarnings("unchecked")
-        ObjectReference<Boolean> ref = delegatable(ObjectReference.class)
+        ObjectReference<Boolean> ref = Delegating.proxy(ObjectReference.class)
                                  .with(threadLocal)
                                  .build();
         System.out.println("This ObjectReference has an initial value of <" + ref.get() + ">");
     }
 
-    public static DataInput createDataInputFromFile(File f) throws IOException {
+    public static DataInput getDataInput(File f) throws IOException {
         RandomAccessFile raf = new RandomAccessFile(f, "rw");
         raf.writeBytes("Content");
         raf.seek(0);
-        return delegatable(DataInput.class)
+        return Delegating.proxy(DataInput.class)
                     .with(raf)
-                    .mode(DIRECT)
+                    .mode(DelegationMode.DIRECT)
                     .build();
     }
 
     public static void packageOverviewExample2() throws IOException {
         File tempFile = File.createTempFile("Toy", null);
         try {
-            DataInput dataInput = createDataInputFromFile(tempFile);
+            DataInput dataInput = getDataInput(tempFile);
             String line = dataInput.readLine();
-            System.out.println();
             System.out.println("Data read: " + line);
-            DataOutput dataOutput = (DataOutput) dataInput;
+            DataOutput dataOutput = DataOutput.class.cast(dataInput);
             dataOutput.writeBytes("This line will not be reached!");
         } catch (ClassCastException e) {
             System.out.println("Could not cast to DataOutput: " + e.getMessage());

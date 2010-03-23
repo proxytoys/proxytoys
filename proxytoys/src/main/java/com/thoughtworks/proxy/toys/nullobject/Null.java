@@ -117,7 +117,7 @@ public class Null<T> {
      * @param type the type implemented by the proxy
      * @return the factory
      */
-    public static <T> Null<T> nullable(Class<T> type) {
+    public static <T> Null<T> proxy(Class<T> type) {
         return new Null<T>(type);
     }
 
@@ -204,7 +204,7 @@ public class Null<T> {
 
 
     /**
-     * Determine whether an object was created by {@link Null#nullable(Class)}.
+     * Determine whether an object was created by {@link Null#proxy(Class)}.
      *
      * @param object the object to examine
      * @return <code>true</code> if the object is a Null proxy.
@@ -215,7 +215,7 @@ public class Null<T> {
     }
 
     /**
-     * Determine whether an object was created by {@link Null#nullable(Class)} using a special ProxyFactory with the builder.
+     * Determine whether an object was created by {@link Null#proxy(Class)} using a special ProxyFactory with the builder.
      *
      * @param object       the object to examine
      * @param proxyFactory the {@link ProxyFactory} to use

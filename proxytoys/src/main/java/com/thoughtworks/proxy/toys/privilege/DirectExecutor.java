@@ -12,12 +12,12 @@ import java.security.PrivilegedExceptionAction;
 
 public class DirectExecutor implements ActionExecutor
 {
-	public Object execute(PrivilegedExceptionAction<Object> action) throws PrivilegedActionException
-	{
-		try {
-			return action.run();
-		} catch (Exception e) {
-			throw new PrivilegedActionException(e);
-		}
-	}
+    public Object execute(PrivilegedExceptionAction<Object> action) throws PrivilegedActionException
+    {
+        try {
+            return action.run();
+        } catch (Exception e) {
+            throw new PrivilegedActionException(e);
+        }
+    }
 }

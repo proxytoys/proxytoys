@@ -6,8 +6,6 @@
  */
 package com.thoughtworks.proxy.toys.future;
 
-import static com.thoughtworks.proxy.toys.future.Future.future;
-import static com.thoughtworks.proxy.toys.future.Future.typedFuture;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
@@ -53,7 +51,7 @@ public class FutureTest extends AbstractProxyTest {
     public void shouldReturnNullObjectAsIntermediateResultAndSwapWhenMethodCompletesWithCast() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
-        Service fastService = future(slowService).build(getFactory());
+        Service fastService = Future.proxy(slowService).build(getFactory());
 
         List<String> stuff = fastService.getList();
         assertTrue(stuff.isEmpty());
@@ -68,7 +66,7 @@ public class FutureTest extends AbstractProxyTest {
     public void shouldReturnNullObjectAsIntermediateResultAndSwapWhenMethodCompletesWithGenerics() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
-        Service fastService = typedFuture(Service.class).with(slowService).build(getFactory());
+        Service fastService = Future.proxy(Service.class).with(slowService).build(getFactory());
 
         List<String> stuff = fastService.getList();
         assertTrue(stuff.isEmpty());
@@ -83,7 +81,7 @@ public class FutureTest extends AbstractProxyTest {
     public void shouldHandleVoidMethodsWithCast() {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
-        Service fastService = future(slowService).build(getFactory());
+        Service fastService = Future.proxy(slowService).build(getFactory());
         fastService.methodReturnsVoid();
     }
 
@@ -91,7 +89,7 @@ public class FutureTest extends AbstractProxyTest {
     public void shouldHandleVoidMethodsWithGenerics() {
         CountDownLatch latch = new CountDownLatch(1);
         Service slowService = new SlowService(latch);
-        Service fastService =  typedFuture(Service.class).with(slowService).build(getFactory());
+        Service fastService =  Future.proxy(Service.class).with(slowService).build(getFactory());
         fastService.methodReturnsVoid();
     }
 }

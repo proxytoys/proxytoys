@@ -5,12 +5,11 @@
  */
 package proxytoys.examples.overview;
 
-import static com.thoughtworks.proxy.toys.future.Future.typedFuture;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.future.Future;
 
 
 /**
@@ -18,9 +17,10 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
  */
 public class FutureToyExample {
 
+    //TODO: Fails
     public static void packageOverviewExample1() throws InterruptedException {
         List<?> slowList = new SlowArrayList();
-        List<?> fasterList = typedFuture(List.class).with(slowList)
+        List<?> fasterList = Future.proxy(List.class).with(slowList)
                           .build(new CglibProxyFactory());
         System.out.println("Items in list: " + fasterList.size());
         Thread.sleep(100);

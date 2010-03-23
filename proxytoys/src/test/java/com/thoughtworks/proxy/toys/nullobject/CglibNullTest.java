@@ -7,7 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.nullobject;
 
-import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -47,7 +46,7 @@ public class CglibNullTest extends AbstractProxyTest {
     public void shouldBeAbleToInstantiateClassWithPrimitiveParametersInConstructor() {
         // The loop is to assert that the method can be called several times, and also measure performance.
         for (int i = 0; i < 10; i++) {
-            ClassWithPrimitiveParametersInConstructor o = nullable(
+            ClassWithPrimitiveParametersInConstructor o = Null.proxy(
                     ClassWithPrimitiveParametersInConstructor.class).build(getFactory());
             assertNotNull(o);
         }

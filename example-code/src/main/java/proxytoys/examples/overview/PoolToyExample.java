@@ -5,8 +5,6 @@
  */
 package proxytoys.examples.overview;
 
-import static com.thoughtworks.proxy.toys.pool.Pool.poolable;
-
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
@@ -28,7 +26,7 @@ public class PoolToyExample {
                 return true;
             }
         };
-        Pool<Checksum> pool = poolable(Checksum.class, resetter).withNoInstances().build(new CglibProxyFactory());
+        Pool<Checksum> pool = Pool.proxy(Checksum.class, resetter).withNoInstances().build(new CglibProxyFactory());
         pool.add(new CRC32());
         {
             Checksum checksum = pool.get();

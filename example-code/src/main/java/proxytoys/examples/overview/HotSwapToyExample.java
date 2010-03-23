@@ -5,13 +5,12 @@
  */
 package proxytoys.examples.overview;
 
-import static com.thoughtworks.proxy.toys.hotswap.HotSwapping.hotSwappable;
-
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
 import com.thoughtworks.proxy.toys.hotswap.Swappable;
 
 
@@ -23,7 +22,7 @@ public class HotSwapToyExample {
     public static void packageOverviewExample1() {
         ByteArrayOutputStream outStreamOdd = new ByteArrayOutputStream();
         ByteArrayOutputStream outStreamEven = new ByteArrayOutputStream();
-        OutputStream out = hotSwappable(OutputStream.class)
+        OutputStream out = HotSwapping.proxy(OutputStream.class)
                               .with(null)
                               .build(new CglibProxyFactory());
         PrintWriter writer = new PrintWriter(out);

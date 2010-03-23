@@ -11,6 +11,7 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleReference;
 
+// TODO: Javadoc
 public class Privileging<T>
 {
     private Class<T> type;
@@ -23,12 +24,12 @@ public class Privileging<T>
      * @param type     the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> PrivilegingWith<T> privilegable(Class<T> type) {
+    public static <T> PrivilegingWith<T> proxy(Class<T> type) {
         return new PrivilegingWith<T>(new Privileging<T>(type));
     }
 
     private Privileging(Class<T> type) {
-    	this.type = type;
+        this.type = type;
     }
     
     public static class PrivilegingWith<T> {
@@ -62,7 +63,7 @@ public class Privileging<T>
          * @return the factory that will route calls to the supplied delegate.
          */
         public PrivilegingBuild<T> executedBy(ActionExecutor executor) {
-        	privileging.executor = executor;
+            privileging.executor = executor;
             return new PrivilegingBuild<T>(privileging);
         }
     }

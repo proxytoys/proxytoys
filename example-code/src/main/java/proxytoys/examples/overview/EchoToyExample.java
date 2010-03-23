@@ -5,8 +5,6 @@
  */
 package proxytoys.examples.overview;
 
-import static com.thoughtworks.proxy.toys.echo.Echoing.echoable;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -16,6 +14,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.echo.Echoing;
 
 
 /**
@@ -25,7 +24,7 @@ public class EchoToyExample {
 
     public static void packageOverviewExample1() {
         @SuppressWarnings("unchecked")
-        Map<String, Object> map = echoable(Map.class)
+        Map<String, Object> map = Echoing.proxy(Map.class)
                             .with(new HashMap<String, Object>())
                             .to(new PrintWriter(System.err))
                             .build(new CglibProxyFactory());

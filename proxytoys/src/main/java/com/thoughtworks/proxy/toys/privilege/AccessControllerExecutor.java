@@ -14,18 +14,18 @@ import java.security.PrivilegedExceptionAction;
 
 public class AccessControllerExecutor implements ActionExecutor
 {
-	private final AccessControlContext context;
+    private final AccessControlContext context;
 
-	public AccessControllerExecutor() {
-		this(null);
-	}
+    public AccessControllerExecutor() {
+        this(null);
+    }
 
-	public AccessControllerExecutor(AccessControlContext context) {
-		this.context = context;
-	}
+    public AccessControllerExecutor(AccessControlContext context) {
+        this.context = context;
+    }
 
-	public Object execute(PrivilegedExceptionAction<Object> action) throws PrivilegedActionException
-	{
-		return AccessController.doPrivileged(action, context);
-	}
+    public Object execute(PrivilegedExceptionAction<Object> action) throws PrivilegedActionException
+    {
+        return AccessController.doPrivileged(action, context);
+    }
 }

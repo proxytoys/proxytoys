@@ -11,8 +11,6 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 
-// TODO: use the AOP alliance API
-
 /**
  * Toy factory to create proxies decorating an object in an AOP style.
  * <p>
@@ -42,8 +40,13 @@ public class Decorating<T> {
      * @param type     the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> DecoratingWith<T> decoratable(final Class<T> type) {
+    public static <T> DecoratingWith<T> proxy(final Class<T> type) {
         return new DecoratingWith<T>(new Decorating<T>(type));
+    }
+
+    public static <T> DecoratingWith<T> proxy(final Class<T> primaryType, final Class<?> ... types) {
+        // TODO: Provide this functionality again
+        throw new UnsupportedOperationException("TODO");
     }
 
     public static class DecoratingWith<T> {

@@ -7,8 +7,6 @@
  */
 package com.thoughtworks.proxy.toys.nullobject;
 
-import static com.thoughtworks.proxy.toys.nullobject.Null.nullable;
-
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
@@ -66,7 +64,7 @@ public class NullInvoker implements Invoker {
 
         // Just another null object
         else {
-            result = nullable(method.getReturnType()).build(proxyFactory);
+            result = Null.proxy(method.getReturnType()).build(proxyFactory);
         }
         return result;
     }

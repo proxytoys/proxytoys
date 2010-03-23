@@ -14,8 +14,6 @@ import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.kit.PrivateInvoker;
 
 
-// TODO: use the AOP alliance API: Mixin.object(Object, JoinPoint, PointCut[] cuts)
-
 /**
  * Invoker implementation for the decorating proxy. The implementation may decorate an object or another {@link Invoker}.
  *

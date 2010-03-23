@@ -26,14 +26,22 @@ public class Failover<T> {
     }
 
     /**
-     * Creates a factory for proxy instances handling failover.
+     * Creates a factory for proxy instances handling multicast.
      *
      * @param type the types of the proxy
      * @return a factory that will proxy instances of the supplied type.
      */
-    public static <T> FailoverWithOrExceptingOrBuild<T> failoverable(Class<T> type) {
-
+    public static <T> FailoverWithOrExceptingOrBuild<T> proxy(Class<T> type) {
         return new FailoverWithOrExceptingOrBuild<T>(new Failover<T>(type));
+    }
+    
+    public static <T> FailoverWithOrExceptingOrBuild<T> proxy(final Class<T> primaryType, final Class<?> ... types) {
+        // TODO: Provide this functionality again
+        throw new UnsupportedOperationException("TODO");
+    }
+    public static <T> FailoverExceptingOrBuild<T> proxy(final T object, final Object ... more) {
+        // TODO: Provide this functionality again
+        throw new UnsupportedOperationException("TODO");
     }
 
     public static class FailoverWithOrExceptingOrBuild<T> extends FailoverExceptingOrBuild<T> {
