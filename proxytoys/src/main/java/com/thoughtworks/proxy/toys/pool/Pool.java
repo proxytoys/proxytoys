@@ -69,30 +69,17 @@ public class Pool<T> implements Serializable {
     private ProxyFactory factory;
     private transient Map<T, WeakReference<T>> busyInstances;
     private transient List<ObjectReference<T>> availableInstances;
-    private Resetter<T> resetter;
+    private Resetter<? super T> resetter;
     private SerializationMode serializationMode = SerializationMode.STANDARD;
 
     /**
-     * Construct a populated Pool with a specific proxy factory
-     *
-     * @param type     the type of the instances
-     * @param resetter the resetter of the pooled elements
-     * @return return the pool with parameters specified
-     */
-    @Deprecated
-    public static <T> PoolWith<T> proxy(Class<T> type, Resetter<T> resetter) {
-        // TODO: Resetter has to be added with a builder
-        return new PoolWith<T>(new Pool<T>(type, resetter));
-    }
-
-    /**
-     * Construct a populated Pool with a specific proxy factory
+     * Construct a populated Pool.
      *
      * @param type     the type of the instances
      * @return return the pool with parameters specified
      */
-    public static <T> PoolWith<T> proxy(Class<T> type) {
-        return new PoolWith<T>(new Pool<T>(type, new NoOperationResetter<T>()));
+    public static <T> PoolResettedBy<T> proxy(Class<T> type) {
+        return new PoolResettedBy<T>(new Pool<T>(type, new NoOperationResetter<T>()));
     }
     
     public static class PoolBuild<T> {
@@ -124,24 +111,26 @@ public class Pool<T> implements Serializable {
         }
     }
 
-    public static class PoolWith<T> {
-        private Pool<T> pool;
+    public static class PoolResettedBy<T> extends PoolWith {
+        private PoolResettedBy(Pool<T> pool) {
+            super(pool);
+        }
 
+        public PoolWith<T> resettedBy(Resetter<? super T> resetter) {
+            pool.resetter = resetter;
+            return new PoolWith<T>(pool);
+        }
+    }
+
+    public static class PoolWith<T> extends PoolModeOrBuild {
         private PoolWith(Pool<T> pool) {
-            this.pool = pool;
+            super(pool);
         }
 
         public PoolModeOrBuild<T> with(T... instances) {
             pool.add(instances);
             return new PoolModeOrBuild<T>(pool);
         }
-
-        @Deprecated
-        public PoolModeOrBuild<T> withNoInstances() {
-            // TODO: Builder must be able to drop this directly
-            return new PoolModeOrBuild<T>(pool);
-        }
-
     }
 
     public static class PoolModeOrBuild<T> extends PoolBuild<T> {
@@ -173,19 +162,68 @@ public class Pool<T> implements Serializable {
     }
     
     /**
-     * Construct a populated Pool with a specific proxy factory.
+     * Construct an Pool using the {@link StandardProxyFactory} for elements that do not have to be resetted.
+     *
+     * @param type         the type of the instances
+     */
+    public Pool(final Class<T> type) {
+        this(type, new NoOperationResetter<T>(), new StandardProxyFactory());
+    }
+    
+    /**
+     * Construct an Pool using the {@link StandardProxyFactory}.
      *
      * @param type         the type of the instances
      * @param resetter     the resetter of the pooled elements
-
      */
-    private Pool(final Class<T> type, final Resetter<T> resetter) {
-        this();
-        this.types = new Class[]{type, Poolable.class};
-        this.resetter = resetter;
+    public Pool(final Class<T> type, final Resetter<? super T> resetter) {
+        this(type, resetter, new StandardProxyFactory());
     }
 
-    private Pool() {
+    /**
+     * Construct a populated Pool with a specific proxy factory for elements that do not have to be resetted.
+     * 
+     * @param type the type of the instances
+     * @param proxyFactory the proxy factory to use
+     */
+    public Pool(final Class<T> type, final ProxyFactory proxyFactory) {
+        this(type, new NoOperationResetter<T>(), proxyFactory, SerializationMode.STANDARD);
+    }
+
+    /**
+     * Construct a populated Pool with a specific proxy factory.
+     * 
+     * @param type the type of the instances
+     * @param resetter the resetter of the pooled elements
+     * @param proxyFactory the proxy factory to use
+     */
+    public Pool(final Class<T> type, final Resetter<? super T> resetter, final ProxyFactory proxyFactory) {
+        this(type, resetter, proxyFactory, SerializationMode.STANDARD);
+    }
+
+    /**
+     * Construct a populated Pool with a specific proxy factory and a serialization mode. This mode specify the
+     * behavior in case of a serialization of the Pool:
+     * <ul>
+     * <li>{@link SerializationMode#STANDARD}: the standard mode, i.e. all elements of the pool are also serialized and a
+     * {@link NotSerializableException} may thrown</li>
+     * <li>{@link SerializationMode#NONE}: no element of the pool is also serialized and it must be populated again after
+     * serialization</li>
+     * <li>{@link SerializationMode#FORCE}: all element of the pool are serialized, if possible. Otherwise the pool is
+     * empty after serialization and must be populated again.</li>
+     * </ul>
+     * 
+     * @param type the type of the instances
+     * @param resetter the resetter of the pooled elements
+     * @param proxyFactory the proxy factory to use
+     * @param mode the serialization mode.
+     */
+    public Pool(final Class<T> type, final Resetter<? super T> resetter, final ProxyFactory proxyFactory, final SerializationMode mode) {
+        this.types = new Class[]{type, Poolable.class};
+        this.resetter = resetter;
+        this.factory = proxyFactory;
+        this.serializationMode = mode;
+        
         busyInstances = new HashMap<T, WeakReference<T>>();
         availableInstances = new ArrayList<ObjectReference<T>>();
     }
@@ -195,7 +233,6 @@ public class Pool<T> implements Serializable {
      *
      * @param instances the instances
      * @throws NullPointerException if instance is <code>null</code>
-
      */
     public synchronized void add(final T... instances) {
         if (instances != null) {
