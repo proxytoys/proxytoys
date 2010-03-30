@@ -49,6 +49,10 @@ import com.thoughtworks.proxy.toys.delegate.DelegationMode;
  * waiting Threads of the monitor will be notified. This notification will happen independently of the result of the
  * {@link Resetter#reset(Object)} method.
  * </p>
+ * <p>
+ * A Pool instance can be created as usual with a builder, but also using various constructors to support dependency
+ * injection.
+ * </p>
  *
  * @author J&ouml;rg Schaible
  * @see com.thoughtworks.proxy.toys.pool
@@ -73,7 +77,7 @@ public class Pool<T> implements Serializable {
     private SerializationMode serializationMode = SerializationMode.STANDARD;
 
     /**
-     * Construct a populated Pool.
+     * Creates a factory for pool instances which proxy the managed elements in the pool.
      *
      * @param type     the type of the instances
      * @return return the pool with parameters specified
@@ -142,17 +146,19 @@ public class Pool<T> implements Serializable {
         /**
          * Specify the serializationMode
          * <ul>
-         * <li>STANDARD: the standard mode, i.e. all elements of the pool are also serialized and a
-         * {@link NotSerializableException} may thrown</li>
-         * <li>NONE: no element of the pool is also serialized and it must be populated again after
-         * serialization</li>
-         * <li>FORCE: all element of the pool are serialized, if possible. Otherwise the pool is
-         * empty after serialization and must be populated again.</li>
+         * <li>{@link SerializationMode#STANDARD}: the standard mode, i.e. all elements of the
+         * pool are also serialized and a {@link NotSerializableException} may thrown</li>
+         * <li>{@link SerializationMode#NONE}: no element of the pool is also serialized and it
+         * must be populated again after serialization</li>
+         * <li>{@link SerializationMode#FORCE}: all element of the pool are serialized, if
+         * possible. Otherwise the pool is empty after serialization and must be populated
+         * again.</li>
          * </ul>
-         *
+         * 
          * @param serializationMode
          * @return the pool with a certain serialization mode
-         * @throws IllegalArgumentException if the serialization mode is not one of the predefined values
+         * @throws IllegalArgumentException if the serialization mode is not one of the
+         *             predefined values
          */
 
         public PoolBuild<T> mode(SerializationMode serializationMode) {
@@ -160,11 +166,12 @@ public class Pool<T> implements Serializable {
             return new PoolBuild<T>(pool);
         }
     }
-    
+
     /**
-     * Construct an Pool using the {@link StandardProxyFactory} for elements that do not have to be resetted.
-     *
-     * @param type         the type of the instances
+     * Construct an Pool using the {@link StandardProxyFactory} for elements that do not have to
+     * be resetted.
+     * 
+     * @param type the type of the instances
      */
     public Pool(final Class<T> type) {
         this(type, new NoOperationResetter<T>(), new StandardProxyFactory());
@@ -181,7 +188,8 @@ public class Pool<T> implements Serializable {
     }
 
     /**
-     * Construct a populated Pool with a specific proxy factory for elements that do not have to be resetted.
+     * Construct a populated Pool with a specific proxy factory for elements that do not have to
+     * be resetted.
      * 
      * @param type the type of the instances
      * @param proxyFactory the proxy factory to use
@@ -202,15 +210,15 @@ public class Pool<T> implements Serializable {
     }
 
     /**
-     * Construct a populated Pool with a specific proxy factory and a serialization mode. This mode specify the
-     * behavior in case of a serialization of the Pool:
+     * Construct a populated Pool with a specific proxy factory and a serialization mode. This
+     * mode specify the behavior in case of a serialization of the Pool:
      * <ul>
-     * <li>{@link SerializationMode#STANDARD}: the standard mode, i.e. all elements of the pool are also serialized and a
-     * {@link NotSerializableException} may thrown</li>
-     * <li>{@link SerializationMode#NONE}: no element of the pool is also serialized and it must be populated again after
-     * serialization</li>
-     * <li>{@link SerializationMode#FORCE}: all element of the pool are serialized, if possible. Otherwise the pool is
-     * empty after serialization and must be populated again.</li>
+     * <li>{@link SerializationMode#STANDARD}: the standard mode, i.e. all elements of the pool
+     * are also serialized and a {@link NotSerializableException} may thrown</li>
+     * <li>{@link SerializationMode#NONE}: no element of the pool is also serialized and it must
+     * be populated again after serialization</li>
+     * <li>{@link SerializationMode#FORCE}: all element of the pool are serialized, if possible.
+     * Otherwise the pool is empty after serialization and must be populated again.</li>
      * </ul>
      * 
      * @param type the type of the instances
