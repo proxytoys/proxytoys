@@ -20,18 +20,13 @@ import com.thoughtworks.proxy.toys.nullobject.Null;
 public class NullToyExample {
 
     public static void packageOverviewExample1() {
-        try {
-            ProxyFactory factory = new CglibProxyFactory();
-            File file = Null.proxy(File.class).build(factory);
-            System.out.println("Length is: " + file.length());
-            System.out.println("Exists: " + file.exists());
-            System.out.println("Array is empty: " + file.list().length);
-            System.out.println("toURL returns null, since URL is final: " + (file.toURL() == null));
-            System.out.println("Parent file is Null proxy: " + Null.isNullObject(file.getParentFile(), factory));
-
-        } catch (MalformedURLException e) {
-            // ignore
-        }
+        ProxyFactory factory = new CglibProxyFactory();
+        File file = Null.proxy(File.class).build(factory);
+        System.out.println("Length is: " + file.length());
+        System.out.println("Exists: " + file.exists());
+        System.out.println("Array is empty: " + file.list().length);
+        System.out.println("toURI returns null, since URI is final: " + (file.toURI() == null));
+        System.out.println("Parent file is Null proxy: " + Null.isNullObject(file.getParentFile(), factory));
     }
 
     public static void listExample() {
