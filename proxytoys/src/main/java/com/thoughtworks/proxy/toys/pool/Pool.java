@@ -77,12 +77,12 @@ public class Pool<T> implements Serializable {
     private SerializationMode serializationMode = SerializationMode.STANDARD;
 
     /**
-     * Creates a factory for pool instances which proxy the managed elements in the pool.
-     *
-     * @param type     the type of the instances
+     * Creates a factory for a pool instance which proxy the managed elements in the pool.
+     * 
+     * @param type the type of the instances
      * @return return the pool with parameters specified
      */
-    public static <T> PoolResettedBy<T> proxy(Class<T> type) {
+    public static <T> PoolResettedBy<T> create(Class<T> type) {
         return new PoolResettedBy<T>(new Pool<T>(type, new NoOperationResetter<T>()));
     }
     
@@ -227,11 +227,14 @@ public class Pool<T> implements Serializable {
      * @param mode the serialization mode.
      */
     public Pool(final Class<T> type, final Resetter<? super T> resetter, final ProxyFactory proxyFactory, final SerializationMode mode) {
+        this();
         this.types = new Class[]{type, Poolable.class};
         this.resetter = resetter;
         this.factory = proxyFactory;
         this.serializationMode = mode;
-        
+    }
+    
+    private Pool() {
         busyInstances = new HashMap<T, WeakReference<T>>();
         availableInstances = new ArrayList<ObjectReference<T>>();
     }
@@ -375,7 +378,6 @@ public class Pool<T> implements Serializable {
     /**
      * The {@link com.thoughtworks.proxy.Invoker} of the proxy.
      *
-
      */
     protected static class PoolingInvoker<T> extends DelegatingInvoker<T> {
         private static final long serialVersionUID = 1L;
