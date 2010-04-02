@@ -222,6 +222,7 @@ public class DelegatingTest extends AbstractProxyTest {
         System.gc();
         Thread.sleep(10);
         System.gc();
+        System.runFinalization();
         assertEquals("finalized", buffer.toString());
     }
 
