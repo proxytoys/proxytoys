@@ -1,9 +1,12 @@
 /*
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 10-May-2004
- *
- * (c) 2003-2005 ThoughtWorks Ltd
- *
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.decorate;
 
@@ -11,10 +14,11 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 
 /**
- * Identity implementation for a InvokerDecorator. The implementation will just pass through any values. Use this as
- * base class for derived implementations, that do not override all of the methods.
+ * Identity implementation for a Decorator. The implementation will just pass through any values. Override all methods
+ * that should behave differently.
  *
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Dan North
+ * @since 1.0
  */
 public abstract class Decorator implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -27,6 +31,7 @@ public abstract class Decorator implements Serializable {
      * @param method the method to be invoked
      * @param args   the arguments being passed to the method
      * @return the decorated arguments (typically just the ones supplied)
+     * @since 1.0
      */
     public Object[] beforeMethodStarts(final Object proxy, final Method method, final Object[] args) {
         return args;
@@ -40,6 +45,7 @@ public abstract class Decorator implements Serializable {
      * @param args   the arguments passed to the method
      * @param result the result of the method invocation
      * @return the decorated result (typically just the supplied result)
+     * @since 1.0
      */
     public Object decorateResult(final Object proxy, final Method method, final Object[] args, final Object result) {
         return result;
@@ -53,6 +59,7 @@ public abstract class Decorator implements Serializable {
      * @param args   the arguments passed to the method
      * @param cause  the original exception thrown
      * @return the decorated exception (typically just the supplied cause)
+     * @since 1.0
      */
     public Throwable decorateTargetException(
             final Object proxy, final Method method, final Object[] args, final Throwable cause) {
@@ -67,6 +74,7 @@ public abstract class Decorator implements Serializable {
      * @param args   the arguments passed to the method
      * @param cause  the original exception thrown
      * @return the decorated exception (typically just the supplied cause)
+     * @since 1.0
      */
     public Exception decorateInvocationException(
             final Object proxy, final Method method, final Object[] args, final Exception cause) {

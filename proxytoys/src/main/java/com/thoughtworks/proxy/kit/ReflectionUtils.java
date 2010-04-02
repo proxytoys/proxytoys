@@ -1,9 +1,12 @@
 /*
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 11-May-2004
- *
- * (c) 2003-2005 ThoughtWorks
- *
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.kit;
 
@@ -24,6 +27,7 @@ import com.thoughtworks.proxy.factory.InvokerReference;
  *
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
+ * @since 0.2
  */
 public class ReflectionUtils {
 
@@ -61,8 +65,9 @@ public class ReflectionUtils {
      *
      * @param objects the list of objects to consider.
      * @return an set of interfaces. The set may be empty
+     * @since 0.2
      */
-    public static Set<Class<?>> getAllInterfaces(final Object[] objects) {
+    public static Set<Class<?>> getAllInterfaces(final Object... objects) {
         final Set<Class<?>> interfaces = new HashSet<Class<?>>();
         for (Object object : objects) {
             if (object != null) {
@@ -80,6 +85,7 @@ public class ReflectionUtils {
      *
      * @param type type to explore.
      * @return a {@link Set} with all interfaces. The set may be empty.
+     * @since 0.2
      */
     public static Set<Class<?>> getAllInterfaces(final Class<?> type) {
         final Set<Class<?>> interfaces = new HashSet<Class<?>>();
@@ -110,8 +116,9 @@ public class ReflectionUtils {
      *
      * @param objects the array of objects to consider.
      * @return the superclass or <code>{@link Void Void.class}</code> for an empty array.
+     * @since 0.2
      */
-    public static Class<?> getMostCommonSuperclass(final Object[] objects) {
+    public static Class<?> getMostCommonSuperclass(final Object... objects) {
         Class<?> type = null;
         boolean found = false;
         if (objects != null && objects.length > 0) {
@@ -148,22 +155,13 @@ public class ReflectionUtils {
      * @param type        the class type (<code>Object.class</code> will be ignored)
      * @param interfaces   the set of interfaces
      * @param proxyFactory the {@link ProxyFactory} in use
+     * @since 0.2
      */
     public static void addIfClassProxyingSupportedAndNotObject(
             final Class<?> type, final Set<Class<?>> interfaces, final ProxyFactory proxyFactory) {
         if (proxyFactory.canProxy(type) && !type.equals(Object.class)) {
             interfaces.add(type);
         }
-    }
-
-    /**
-     * Convert the collection of class types to an array of class types.
-     *
-     * @param collection with class types
-     * @return an array of class types
-     */
-    public static Class<?>[] toClassArray(final Collection<Class<?>> collection) {
-        return collection.toArray(new Class[collection.size()]);
     }
 
     /**
@@ -174,7 +172,7 @@ public class ReflectionUtils {
      * @param args       the arguments to match
      * @return the matching {@link Method}
      * @throws NoSuchMethodException if no matching {@link Method} exists
-
+     * @since 0.2
      */
     public static Method getMatchingMethod(final Class<?> type, final String methodName, final Object[] args)
             throws NoSuchMethodException {
@@ -242,6 +240,7 @@ public class ReflectionUtils {
      * @param out    the stream
      * @param method the {@link Method} to write
      * @throws IOException if writing causes a problem
+     * @since 0.2
      */
     public static void writeMethod(final ObjectOutputStream out, final Method method) throws IOException {
         out.writeObject(method.getDeclaringClass());
@@ -257,6 +256,7 @@ public class ReflectionUtils {
      * @throws IOException            if reading causes a problem
      * @throws ClassNotFoundException if class types from objects of the InputStream cannot be found
      * @throws InvalidObjectException if the {@link Method} cannot be found
+     * @since 0.2
      */
     public static Method readMethod(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         final Class<?> type = Class.class.cast(in.readObject());

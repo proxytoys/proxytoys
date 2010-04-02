@@ -1,9 +1,12 @@
 /*
- * Created on 03-May-2004
- * 
- * (c) 2003-2005 ThoughtWorks Ltd
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
+ * Created on 03-May-2004
  */
 package com.thoughtworks.proxy.factory;
 
@@ -25,6 +28,7 @@ import com.thoughtworks.proxy.ProxyFactory;
  * </p>
  *
  * @author Aslak Helles&oslash;y
+ * @since 0.1
  */
 abstract class AbstractProxyFactory implements ProxyFactory {
     
@@ -55,6 +59,7 @@ abstract class AbstractProxyFactory implements ProxyFactory {
      * Clever, eh?
      * </p>
      *
+     * @since 0.1
      */
     static class CoincidentalInvocationHandlerAdapter implements Serializable {
         private static final long serialVersionUID = -7406561726778120065L;
@@ -64,7 +69,7 @@ abstract class AbstractProxyFactory implements ProxyFactory {
          * Construct a CoincidentalInvocationHandlerAdapter.
          *
          * @param invocationInterceptor the invocation handler.
-
+         * @since 0.1
          */
         public CoincidentalInvocationHandlerAdapter(final Invoker invocationInterceptor) {
             this.invoker = invocationInterceptor;
@@ -101,6 +106,7 @@ abstract class AbstractProxyFactory implements ProxyFactory {
      * {@inheritDoc} The implementation of this method relies on the implementation of the derived factory to add the
      * interface {@link InvokerReference} to every proxy instance.
      *
+     * @since 0.1
      */
     public Invoker getInvoker(final Object proxy) {
         final InvokerReference ih = InvokerReference.class.cast(proxy);

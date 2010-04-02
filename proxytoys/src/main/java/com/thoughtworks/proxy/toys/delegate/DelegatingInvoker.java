@@ -1,9 +1,12 @@
 /*
- * Created on 24-May-2004
- * 
- * (c) 2003-2005 ThoughtWorks Ltd
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
+ * Created on 24-May-2004
  */
 package com.thoughtworks.proxy.toys.delegate;
 
@@ -37,6 +40,7 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  * @author Dan North
  * @author J&ouml;rg Schaible
  * @see com.thoughtworks.proxy.toys.hotswap.HotSwappingInvoker
+ * @since 0.1
  */
 public class DelegatingInvoker<T> implements Invoker {
 
@@ -54,7 +58,7 @@ public class DelegatingInvoker<T> implements Invoker {
      * @param delegationMode    one of the delegation modes
      * @throws IllegalArgumentException if the <tt>delegationMode</tt> is not one of the predefined constants of
      *                                  {@link Delegating}
-
+     * @since 1.0
      */
     public DelegatingInvoker(final ProxyFactory proxyFactory, final ObjectReference<T> delegateReference,
                              final DelegationMode delegationMode) {
@@ -68,6 +72,7 @@ public class DelegatingInvoker<T> implements Invoker {
      * Construct a DelegatingInvoker with a {@link StandardProxyFactory} and {@link DelegationMode#SIGNATURE}.
      *
      * @param delegate the delegated object
+     * @since 0.1
      */
     public DelegatingInvoker(final T delegate) {
         this(new StandardProxyFactory(), new SimpleReference<T>(delegate), SIGNATURE);
@@ -129,6 +134,7 @@ public class DelegatingInvoker<T> implements Invoker {
      * @param args   the arguments for the invocation
      * @return the matching method
      * @throws DelegationException if no matching method can be found
+     * @since 0.2
      */
     protected Method getMethodToInvoke(final Method method, final Object[] args) {
         if (delegationMode == DIRECT) {
@@ -150,6 +156,7 @@ public class DelegatingInvoker<T> implements Invoker {
      * @param args   the arguments for the invocation
      * @return the method's result
      * @throws InvocationTargetException if the invoked method throws any exception
+     * @since 0.1
      */
     protected Object invokeOnDelegate(final Method method, final Object[] args) throws InvocationTargetException {
         final Object delegate = delegate();
@@ -166,6 +173,7 @@ public class DelegatingInvoker<T> implements Invoker {
      * Retrieve the {@link ObjectReference} of the delegate.
      *
      * @return the reference of the delegate
+     * @since 0.2
      */
     protected ObjectReference<T> getDelegateReference() {
         return this.delegateReference;
@@ -175,6 +183,7 @@ public class DelegatingInvoker<T> implements Invoker {
      * Retrieve the {@link ProxyFactory} to use.
      *
      * @return the ProxyFactory
+     * @since 0.2
      */
     protected ProxyFactory getProxyFactory() {
         return this.proxyFactory;
@@ -185,6 +194,7 @@ public class DelegatingInvoker<T> implements Invoker {
      * the same <tt>delegation mode</tt> and their delegees are equal.
      *
      * @see java.lang.Object#equals(java.lang.Object)
+     * @since 0.2
      */
     @Override
     public boolean equals(final Object obj) {

@@ -1,9 +1,12 @@
 /*
+ * (c) 2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 24-Aug-2005
- *
- * (c) 2005 ThoughtWorks Ltd
- *
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.kit;
 
@@ -15,6 +18,7 @@ import java.io.Serializable;
  * further interaction.
  *
  * @author J&ouml;rg Schaible
+ * @since 0.2
  */
 public class NoOperationResetter<T> implements Resetter<T>, Serializable {
 

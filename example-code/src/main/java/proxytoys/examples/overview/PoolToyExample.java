@@ -26,7 +26,7 @@ public class PoolToyExample {
                 return true;
             }
         };
-        Pool<Checksum> pool = Pool.proxy(Checksum.class).resettedBy(resetter).build(new CglibProxyFactory());
+        Pool<Checksum> pool = Pool.create(Checksum.class).resettedBy(resetter).build(new CglibProxyFactory());
         pool.add(new CRC32());
         {
             Checksum checksum = pool.get();

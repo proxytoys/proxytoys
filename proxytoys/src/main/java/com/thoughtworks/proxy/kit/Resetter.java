@@ -1,9 +1,12 @@
 /*
+ * (c) 2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 02-Aug-2005
- * 
- * (c) 2005 ThoughtWorks
- * 
- * See license.txt for licence details
  */
 package com.thoughtworks.proxy.kit;
 
@@ -12,6 +15,7 @@ package com.thoughtworks.proxy.kit;
  * returned to the pool.
  *
  * @author J&ouml;rg Schaible
+ * @since 0.2
  */
 public interface Resetter<T> {
     /**
@@ -21,7 +25,7 @@ public interface Resetter<T> {
      *
      * @param object the object to reset
      * @return <code>true</code> if the element can be used for further tasks.
-
+     * @since 0.2
      */
     boolean reset(T object);
 }

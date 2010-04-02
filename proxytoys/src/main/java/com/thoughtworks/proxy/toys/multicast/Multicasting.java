@@ -7,6 +7,7 @@
  */
 package com.thoughtworks.proxy.toys.multicast;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import com.thoughtworks.proxy.ProxyFactory;
@@ -152,7 +153,7 @@ public class Multicasting<T> {
             final Class<?> superclass = ReflectionUtils.getMostCommonSuperclass(delegates);
             final Set<Class<?>> interfaces = ReflectionUtils.getAllInterfaces(delegates);
             ReflectionUtils.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, factory);
-            this.types = ReflectionUtils.toClassArray(interfaces);
+            this.types = interfaces.toArray(new Class<?>[interfaces.size()]);
             return new MulticastingInvoker<T>(types, factory, delegates).proxy();
         }
         @SuppressWarnings("unchecked")

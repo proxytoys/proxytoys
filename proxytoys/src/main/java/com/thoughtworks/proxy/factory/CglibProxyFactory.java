@@ -1,9 +1,12 @@
 /*
- * Created on 03-May-2004
- * 
- * (c) 2003-2005 ThoughtWorks Ltd
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
+ * Created on 03-May-2004
  */
 package com.thoughtworks.proxy.factory;
 
@@ -28,6 +31,7 @@ import com.thoughtworks.proxy.toys.nullobject.Null;
  * A {@link com.thoughtworks.proxy.ProxyFactory} based on <a href="http://cglib.sourceforge.net/">CGLIB</a>.
  *
  * @author Aslak Helles&oslash;y
+ * @since 0.1
  * @see com.thoughtworks.proxy.factory
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
@@ -38,6 +42,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     /**
      * The native invocation handler.
      *
+     * @since 0.1
      */
     static class CGLIBInvocationHandlerAdapter extends CoincidentalInvocationHandlerAdapter implements InvocationHandler {
         private static final long serialVersionUID = 418834172207536454L;
@@ -46,6 +51,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
          * Construct a CGLIBInvocationHandlerAdapter.
          *
          * @param invoker the wrapping invoker instance
+         * @since 0.1
          */
         public CGLIBInvocationHandlerAdapter(Invoker invoker) {
             super(invoker);
@@ -58,9 +64,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
      * Note: If any type the proxy instance must fulfill are all interfaces, the factory will currently create a proxy
      * based on the JDK.
      * </p>
-     *
      */
-    
     public <T> T createProxy(final Invoker invoker, final Class<?>... types) {
         final Class<?> type = getSingleClass(types);
         if (type == null) {

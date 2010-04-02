@@ -1,9 +1,12 @@
 /*
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 04-Feb-2004
- * 
- * (c) 2003-2005 ThoughtWorks Ltd
- * 
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.delegate;
 
@@ -19,8 +22,11 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  * interface itself.
  * </p>
  *
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Dan North
+ * @author Jian Li
+ * @author Paul Hammant
  * @see com.thoughtworks.proxy.toys.delegate
+ * @since 0.1
  */
 public class Delegating<T> {
 
@@ -37,6 +43,7 @@ public class Delegating<T> {
      *
      * @param type     the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
      */
     public static <T> DelegatingWith<T> proxy(Class<T> type) {
         return new DelegatingWith<T>(new Delegating<T>(type));
@@ -54,6 +61,7 @@ public class Delegating<T> {
          *
          * @param delegate the object the proxy delegates to.
          * @return the factory that will route calls to the supplied delegate.
+         * @since 1.0
          */
         public DelegatingModeOrBuild<T> with(Object delegate) {
             delegating.delegate = delegate;
@@ -93,6 +101,7 @@ public class Delegating<T> {
          * Creating a delegating proxy for an object using the {@link StandardProxyFactory}.
          *
          * @return the created proxy implementing the <tt>type</tt>
+         * @since 1.0
          */
         public T build() {
             return build(new StandardProxyFactory());
@@ -103,12 +112,11 @@ public class Delegating<T> {
          *
          * @param factory the {@link ProxyFactory} to use.
          * @return the created proxy implementing the <tt>type</tt>
+         * @since 1.0
          */
         public T build(ProxyFactory factory) {
             return factory.<T>createProxy(new DelegatingInvoker<Object>(factory,
                     new SimpleReference<Object>(delegating.delegate), delegating.delegationMode), delegating.type);
         }
-
     }
-
 }
