@@ -1,9 +1,12 @@
 /*
+ * (c) 2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 24-Feb-2005
- * 
- * (c) 2005 ThoughtWorks Ltd
- * 
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.dispatch;
 
@@ -16,7 +19,10 @@ import com.thoughtworks.proxy.kit.SimpleReference;
  * Proxy factory for dispatching proxy instances.
  *
  * @author J&ouml;rg Schaible
+ * @author Juan Li
+ * @author Paul Hammant
  * @see com.thoughtworks.proxy.toys.dispatch
+ * @since 0.2
  */
 public class Dispatching<T> {
 
@@ -33,6 +39,7 @@ public class Dispatching<T> {
      * @param primaryType the primary type of the proxy that will not have to be cast to
      * @param types the other types of the proxy
      * @return a builder that will proxy instances of the supplied type.
+     * @since 1.0
      */
     public static <T> DispatchingWith<T> proxy(Class<T> primaryType, Class<?>... types) {
         return new DispatchingWith<T>(primaryType,  types);
@@ -67,6 +74,7 @@ public class Dispatching<T> {
          *
          * @param delegates the objects that will receive the calls.
          * @return the factory that will proxy instances of the supplied type.
+         * @since 1.0
          */
         public DispatchingBuild<T> with(final Object... delegates) {
             dispatching.delegates = delegates;
@@ -85,6 +93,7 @@ public class Dispatching<T> {
          * Create a dispatching proxy of given types for the given objects using the {@link StandardProxyFactory}
          *
          * @return the created proxy
+         * @since 1.0
          */
         public T build() {
             return build(new StandardProxyFactory());
@@ -95,6 +104,7 @@ public class Dispatching<T> {
          *
          * @param factory the {@link ProxyFactory} to use
          * @return the created proxy
+         * @since 1.0
          */
         public T build(ProxyFactory factory) {
             return dispatching.build(factory);

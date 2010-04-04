@@ -208,8 +208,8 @@ public class DelegatingInvoker<T> implements Invoker {
     @Override
     public int hashCode() {
         final Object delegate = delegate();
-        return delegationMode.delegationHashcode(delegate == null
-                ? System.identityHashCode(this) : delegate.hashCode());
+        return delegationMode.hashCode()
+            * (delegate == null ? System.identityHashCode(this) : delegate.hashCode());
     }
 
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {

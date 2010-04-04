@@ -1,9 +1,12 @@
 /*
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 04-Feb-2004
- *
- * (c) 2003-2005 ThoughtWorks
- *
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.echo;
 
@@ -19,9 +22,12 @@ import com.thoughtworks.proxy.toys.decorate.Decorating;
  * The Echoing toy acts as a decorator where every method invocation is written to a PrintWriter first.
  * </p>
  *
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Dan North
  * @author J&ouml;rg Schaible
+ * @author Juan Li
+ * @author Paul Hammant
  * @see com.thoughtworks.proxy.toys.echo
+ * @since 0.1
  */
 public class Echoing<T> {
 
@@ -33,12 +39,12 @@ public class Echoing<T> {
         this.type = type;
     }
 
-
     /**
      * Creates a factory for proxy instances that allow delegation.
      *
      * @param type the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
      */
     public static <T> EchoingWithOrTo<T> proxy(final Class<T> type) {
         return new EchoingWithOrTo<T>(new Echoing<T>(type));
@@ -51,10 +57,11 @@ public class Echoing<T> {
         }
 
         /**
-         * specify the delegate
+         * Specify the delegate.
          *
          * @param delegate the object the proxy delegates to.
          * @return the factory that will proxy instances of the supplied type.
+         * @since 1.0
          */
         public EchoingTo<T> with(final Object delegate) {
             echoing.delegate = delegate;
@@ -71,10 +78,11 @@ public class Echoing<T> {
         }
 
         /**
-         * specify the printWriter
+         * Specify the printWriter.
          *
          * @param printWriter which receives the output
          * @return the factory that will proxy instances of the supplied type.
+         * @since 1.0
          */
         public EchoingBuild<T> to(final PrintWriter printWriter) {
             echoing.printWriter = printWriter;
@@ -95,6 +103,7 @@ public class Echoing<T> {
          * Creating a delegating proxy for an object using the {@link StandardProxyFactory}.
          *
          * @return the created proxy implementing the <tt>type</tt>
+         * @since 1.0
          */
         public T build() {
             return build(new StandardProxyFactory());
@@ -105,11 +114,11 @@ public class Echoing<T> {
          *
          * @param proxyFactory the {@link ProxyFactory} to use.
          * @return the created proxy implementing the <tt>type</tt>
+         * @since 1.0
          */
         public T build(final ProxyFactory proxyFactory) {
             EchoDecorator decorator = new EchoDecorator(echoing.printWriter, proxyFactory);
             return Decorating.proxy(echoing.type).with(echoing.delegate, decorator).build(proxyFactory);
         }
     }
-
 }

@@ -1,9 +1,12 @@
 /*
+ * (c) 2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 24-Feb-2005
- * 
- * (c) 2005 ThoughtWorks
- * 
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.dispatch;
 
@@ -33,6 +36,7 @@ import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
  * Invoker that dispatches all invocations to different objects according the membership of the method.
  *
  * @author J&ouml;rg Schaible after idea by Rickard &Ouml;berg
+ * @since 0.2
  */
 public class DispatchingInvoker implements Invoker {
     private static final long serialVersionUID = 1L;
@@ -47,6 +51,7 @@ public class DispatchingInvoker implements Invoker {
      * @param proxyFactory       the {@link ProxyFactory} to use
      * @param types              the types of the generated proxy
      * @param delegateReferences the {@link ObjectReference ObjectReferences} for the delegates
+     * @since 0.2
      */
     public DispatchingInvoker(
             final ProxyFactory proxyFactory, final Class<?>[] types, final ObjectReference<Object>[] delegateReferences) {
@@ -78,6 +83,8 @@ public class DispatchingInvoker implements Invoker {
 
     /**
      * Constructor used by pure reflection serialization.
+     * 
+     * @since 0.2
      */
     protected DispatchingInvoker() {
     }

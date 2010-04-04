@@ -1,9 +1,12 @@
 /*
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 11-May-2004
- *
- * (c) 2003-2005 ThoughtWorks Ltd
- *
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.failover;
 
@@ -14,14 +17,16 @@ import com.thoughtworks.proxy.ProxyFactory;
  * to the next when an exception occurs.
  *
  * @author Aslak Helles&oslash;y
+ * @author Paul Hammant
  * @see com.thoughtworks.proxy.toys.failover
+ * @since 0.1
  */
 public class Failover<T> {
     private Class<T> type;
     private T[] delegates;
     private Class<? extends Throwable> exceptionClass;
 
-    public Failover(Class<T> type) {
+    private Failover(Class<T> type) {
         this.type = type;
     }
 
@@ -30,6 +35,7 @@ public class Failover<T> {
      *
      * @param type the types of the proxy
      * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
      */
     public static <T> FailoverWithOrExceptingOrBuild<T> proxy(Class<T> type) {
         return new FailoverWithOrExceptingOrBuild<T>(new Failover<T>(type));
@@ -51,16 +57,16 @@ public class Failover<T> {
         }
 
         /**
-         * With these delegates
+         * With these delegates.
          *
          * @param delegates the delegates used for failover
          * @return a factory that will use the supplied delegates in case of a failure.
+         * @since 1.0
          */
         public FailoverExceptingOrBuild<T> with(final T... delegates) {
             failover.delegates = delegates;
             return new FailoverExceptingOrBuild<T>(failover);
         }
-
     }
 
     public static class FailoverExceptingOrBuild<T> extends FailoverBuild<T> {
@@ -70,17 +76,16 @@ public class Failover<T> {
         }
 
         /**
-         * Excepting this exception class
+         * Excepting this exception class.
          *
          * @param exceptionClass the type of the exceptions triggering failover
          * @return a factory that will trigger the usage of the next delegate based on the supplied Throwable type.
+         * @since 1.0
          */
         public FailoverBuild<T> excepting(Class<? extends Throwable> exceptionClass) {
             failover.exceptionClass = exceptionClass;
             return new FailoverBuild<T>(failover);
-
         }
-
     }
 
     public static class FailoverBuild<T> {
@@ -96,6 +101,7 @@ public class Failover<T> {
          *
          * @param proxyFactory the {@link ProxyFactory} to use
          * @return the created proxy
+         * @since 1.0
          */
         public T build(final ProxyFactory proxyFactory) {
             return new FailoverInvoker<T>(new Class[]{failover.type}, proxyFactory, failover.delegates, failover.exceptionClass).proxy();

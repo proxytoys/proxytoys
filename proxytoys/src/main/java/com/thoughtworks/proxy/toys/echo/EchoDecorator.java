@@ -1,9 +1,12 @@
 /*
- * Created on 27-Jul-2004
- * 
- * (c) 2003-2005 ThoughtWorks
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
+ * Created on 27-Jul-2004
  */
 package com.thoughtworks.proxy.toys.echo;
 
@@ -21,8 +24,9 @@ import com.thoughtworks.proxy.toys.decorate.Decorator;
  * {@link ProxyFactory} in use.
  * </p>
  *
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Dan North
  * @author J&ouml;rg Schaible
+ * @since 0.1
  */
 public class EchoDecorator extends Decorator {
     private static final long serialVersionUID = 1L;
@@ -34,6 +38,7 @@ public class EchoDecorator extends Decorator {
      *
      * @param out     the {@link PrintWriter} receiving the logs
      * @param factory the {@link ProxyFactory} to use
+     * @since 0.2
      */
     public EchoDecorator(final PrintWriter out, final ProxyFactory factory) {
         this.out = out;
