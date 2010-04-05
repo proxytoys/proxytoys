@@ -1,8 +1,12 @@
 /*
+ * (c) 2003-2004, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * (c) 2003-2009 ThoughtWorks Ltd
- *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
+ * Created on 29-May-2004
  */
 package com.thoughtworks.proxy.toys.future;
 
@@ -19,7 +23,6 @@ import com.thoughtworks.proxy.AbstractProxyTest;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class FutureTest extends AbstractProxyTest {
     public static interface Service {

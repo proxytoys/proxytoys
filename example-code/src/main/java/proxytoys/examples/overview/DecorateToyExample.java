@@ -1,7 +1,12 @@
 /*
- * Copyright (C) 2005 Joerg Schaible
- * Created on 29-Jun-2005 by Joerg Schaible
- * See license.txt for license details
+ * (c) 2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
+ * Created on 29-Jun-2005
  */
 package proxytoys.examples.overview;
 

@@ -1,9 +1,12 @@
 /*
- * Created on 14-May-2004
- * 
- * (c) 2003-2005 ThoughtWorks Ltd
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
+ * Created on 14-May-2004
  */
 package com.thoughtworks.proxy.toys.nullobject;
 
@@ -21,7 +24,8 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
 /**
  * A {@link Invoker} implementation that returns always new Null objects.
  *
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Dan North
+ * @since 0.1
  */
 public class NullInvoker implements Invoker {
     private static final long serialVersionUID = -4713875509846468548L;
@@ -43,6 +47,7 @@ public class NullInvoker implements Invoker {
      *
      * @param type         the type of the proxy
      * @param proxyFactory the {@link ProxyFactory} to use
+     * @since 0.1
      */
     public NullInvoker(final Class<?> type, final ProxyFactory proxyFactory) {
         this.type = type;

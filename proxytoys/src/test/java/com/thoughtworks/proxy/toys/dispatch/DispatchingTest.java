@@ -1,9 +1,12 @@
 /*
+ * (c) 2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ *
  * Created on 24-Feb-2005
- * 
- * (c) 2005 ThoughtWorks
- * 
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.dispatch;
 
@@ -27,6 +30,7 @@ import com.thoughtworks.proxy.AbstractProxyTest;
 
 /**
  * @author J&ouml;rg Schaible
+ * @author Tianshuo Deng
  */
 public class DispatchingTest extends AbstractProxyTest {
 

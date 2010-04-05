@@ -1,9 +1,12 @@
 /*
+ * (c) 2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 28-Jul-2005
- *
- * (c) 2005 ThoughtWorks Ltd
- *
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.multicast;
 
@@ -15,6 +18,7 @@ import java.lang.reflect.Method;
  * call a method on them independent of the type of the proxy.
  *
  * @author J&ouml;rg Schaible
+ * @since 0.2
  */
 public interface Multicast {
 
@@ -36,8 +40,9 @@ public interface Multicast {
      * @return the result of the multicast
      * @throws NoSuchMethodException if the type has no matching method
      * @throws SecurityException     if the security manager prevents the method access by reflection
+     * @since 0.2
      */
-    <T> T multicastTargets(Class<?> type, String method, Object[] args) throws NoSuchMethodException;
+    <T> T multicastTargets(Class<T> type, String method, Object[] args) throws NoSuchMethodException;
 
     /**
      * Multicast a direct method call, that is not available with the types implemented by the proxy.
@@ -50,7 +55,7 @@ public interface Multicast {
      * @param method the method to call
      * @param args   the arguments of the invocation
      * @return the result of the multicast
-
+     * @since 0.2
      */
     Object multicastTargets(Method method, Object[] args);
 
@@ -59,6 +64,7 @@ public interface Multicast {
      *
      * @param type the type of an array element
      * @return the typed array of proxy targets
+     * @since 0.2
      */
     <T> T[] getTargetsInArray(Class<T> type);
 
@@ -66,6 +72,7 @@ public interface Multicast {
      * Access the targets of the proxy in an array.
      *
      * @return the array of proxy targets
+     * @since 0.2
      */
     Object[] getTargetsInArray();
 }

@@ -1,9 +1,12 @@
 /*
- * Created on 28-Jul-2005
- * 
- * (c) 2005 ThoughtWorks Ltd
+ * (c) 2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ *
+ * Created on 28-Jul-2005
  */
 package com.thoughtworks.proxy.factory;
 

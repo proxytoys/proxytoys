@@ -1,9 +1,12 @@
 /*
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 24-Mar-2004
- *
- * (c) 2003-2005 ThoughtWorks Ltd
- *
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.nullobject;
 
@@ -27,6 +30,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  *
  * @author Dan North
  * @author Aslak Helles&oslash;y
+ * @author Juan Li
  * @author J&ouml;rg Schaible
  * @see com.thoughtworks.proxy.toys.nullobject
  * @since 0.1
@@ -157,7 +161,7 @@ public class Null<T> {
          * type cannot be proxied.
          * </p>
          *
-         * @param proxyFactory the {@link ProxyFactory} in use
+         * @param factory the {@link ProxyFactory} in use
          * @return object, proxy or <code>null</code>
          * @see com.thoughtworks.proxy.toys.nullobject
          */
@@ -186,7 +190,7 @@ public class Null<T> {
         } else if (long.class.equals(type) || Long.class.equals(type)) {
             result = (long) 0;
         } else if (float.class.equals(type) || Float.class.equals(type)) {
-            result = new Float(0.0);
+            result = 0.0f;
         } else if (double.class.equals(type) || Double.class.equals(type)) {
             result = 0.0;
         }

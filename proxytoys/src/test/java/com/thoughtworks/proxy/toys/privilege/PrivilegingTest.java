@@ -1,9 +1,12 @@
 /*
- * Created 19.03.2010 by Joerg Schaible.
- * 
- * (c) 2010 ThoughtWorks
+ * (c) 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
+ * Created on 19-03-2010
  */
 package com.thoughtworks.proxy.toys.privilege;
 
@@ -18,6 +21,9 @@ import org.junit.Test;
 
 import com.thoughtworks.proxy.AbstractProxyTest;
 
+/**
+ * @author J&ouml;rg Schaible
+ */
 public class PrivilegingTest extends AbstractProxyTest
 {
     public interface Foo {

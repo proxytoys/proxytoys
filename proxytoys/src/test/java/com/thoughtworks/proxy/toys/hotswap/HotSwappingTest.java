@@ -1,3 +1,13 @@
+/*
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ *
+ * Created on 14-May-2004
+ */
 package com.thoughtworks.proxy.toys.hotswap;
 
 import static java.util.Collections.singletonList;
@@ -20,6 +30,7 @@ import com.thoughtworks.proxy.AbstractProxyTest;
 
 /**
  * @author Aslak Helles&oslash;y
+ * @author Dan North
  */
 public class HotSwappingTest extends AbstractProxyTest {
     @Test

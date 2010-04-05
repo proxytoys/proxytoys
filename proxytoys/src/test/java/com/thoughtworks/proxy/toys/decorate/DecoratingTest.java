@@ -1,9 +1,12 @@
 /*
- * Created on 03-May-2004
- * 
- * (c) 2003-2004 ThoughtWorks Ltd
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ *
+ * Created on 03-May-2004
  */
 package com.thoughtworks.proxy.toys.decorate;
 
@@ -29,10 +32,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.thoughtworks.proxy.AbstractProxyTest;
-import com.thoughtworks.proxy.SameArrayMatcher;
+import com.thoughtworks.proxy.mockito.SameArrayMatcher;
 
 /**
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Dan North
+ * @author Tianshuo Deng
  */
 public class DecoratingTest extends AbstractProxyTest {
     private static final String getSomething = "getSomething";

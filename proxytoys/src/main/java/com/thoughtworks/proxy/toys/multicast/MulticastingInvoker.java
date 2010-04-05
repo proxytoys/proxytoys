@@ -1,9 +1,12 @@
 /*
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
+ *
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
  * Created on 11-May-2004
- *
- * (c) 2003-2005 ThoughtWorks Ltd
- *
- * See license.txt for license details
  */
 package com.thoughtworks.proxy.toys.multicast;
 
@@ -24,6 +27,7 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
  * @author Aslak Helles&oslash;y
  * @author Chris Stevenson
  * @author J&ouml;rg Schaible
+ * @since 0.1
  */
 public class MulticastingInvoker<T> implements Invoker {
     private static final long serialVersionUID = 1L;
@@ -53,6 +57,7 @@ public class MulticastingInvoker<T> implements Invoker {
      * @param type         the implemented types
      * @param proxyFactory the {@link ProxyFactory} to use
      * @param targets      the target instances where the proxy delegates a call
+     * @since 0.1
      */
     public MulticastingInvoker(final Class<?>[] type, final ProxyFactory proxyFactory, final Object[] targets) {
         this.types = type;
@@ -64,6 +69,7 @@ public class MulticastingInvoker<T> implements Invoker {
      * Create a proxy for this Invoker.
      *
      * @return the new proxy
+     * @since 0.1
      */
     public T proxy() {
         final Class<?>[] classes;
@@ -94,8 +100,8 @@ public class MulticastingInvoker<T> implements Invoker {
             method = (Method) args[0];
             args = (Object[]) args[1];
         } else if (multicastTargetsIndirect.equals(method)) {
-            final Object[] newArgs = args[2] == null ? new Object[0] : (Object[]) args[2];
-            method = ReflectionUtils.getMatchingMethod(Class.class.cast(args[0]), (String) args[1], newArgs);
+            final Object[] newArgs = args[2] == null ? new Object[0] : Object[].class.cast(args[2]);
+            method = ReflectionUtils.getMatchingMethod(Class.class.cast(args[0]), String.class.cast(args[1]), newArgs);
             args = newArgs;
         }
         final List<Object> invocationResults = new ArrayList<Object>();
@@ -135,7 +141,7 @@ public class MulticastingInvoker<T> implements Invoker {
     private static Byte addBytes(final Object[] args) {
         byte result = 0;
         for (Object arg : args) {
-            result += (Byte) arg;
+            result += Byte.class.cast(arg);
         }
         return result;
     }
@@ -143,7 +149,7 @@ public class MulticastingInvoker<T> implements Invoker {
     private static Character addChars(final Object[] args) {
         char result = 0;
         for (Object arg : args) {
-            result += (Character) arg;
+            result += Character.class.cast(arg);
         }
         return result;
     }
@@ -151,7 +157,7 @@ public class MulticastingInvoker<T> implements Invoker {
     private static Short addShorts(final Object[] args) {
         short result = 0;
         for (Object arg : args) {
-            result += (Short) arg;
+            result += Short.class.cast(arg);
         }
         return result;
     }
@@ -159,7 +165,7 @@ public class MulticastingInvoker<T> implements Invoker {
     private static Integer addIntegers(final Object[] args) {
         int result = 0;
         for (Object arg : args) {
-            result += (Integer) arg;
+            result += Integer.class.cast(arg);
         }
         return result;
     }
@@ -167,7 +173,7 @@ public class MulticastingInvoker<T> implements Invoker {
     private static Long addLongs(final Object[] args) {
         long result = 0;
         for (Object arg : args) {
-            result += (Long) arg;
+            result += Long.class.cast(arg);
         }
         return result;
     }
@@ -175,7 +181,7 @@ public class MulticastingInvoker<T> implements Invoker {
     private static Float addFloats(final Object[] args) {
         float result = 0;
         for (Object arg : args) {
-            result += (Float) arg;
+            result += Float.class.cast(arg);
         }
         return result;
     }
@@ -183,14 +189,14 @@ public class MulticastingInvoker<T> implements Invoker {
     private static Double addDoubles(final Object[] args) {
         double result = 0;
         for (Object arg : args) {
-            result += (Double) arg;
+            result += Double.class.cast(arg);
         }
         return result;
     }
 
     private static Boolean andBooleans(final Object[] args) {
         for (Object arg : args) {
-            if (!(Boolean) arg) {
+            if (!Boolean.class.cast(arg)) {
                 return Boolean.FALSE;
             }
         }

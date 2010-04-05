@@ -1,9 +1,12 @@
 /*
- * Created on 14-May-2004
- * 
- * (c) 2003-2004 ThoughtWorks Ltd
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * All rights reserved.
  *
- * See license.txt for license details
+ * The software in this package is published under the terms of the BSD
+ * style license a copy of which has been included with this distribution in
+ * the LICENSE.txt file.
+ * 
+ * Created on 14-May-2004
  */
 package com.thoughtworks.proxy.toys.hotswap;
 
@@ -20,8 +23,13 @@ import com.thoughtworks.proxy.toys.delegate.DelegationMode;
  * Factory for proxy instances that allow to exchange the delegated instance. Every created proxy will implement
  * {@link Swappable}, that is used for the hot swap operation.
  *
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Dan North
+ * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
+ * @author Conrad Benham
+ * @author Paul Hammant
  * @see com.thoughtworks.proxy.toys.hotswap
+ * @since 0.1
  */
 public class HotSwapping<T> {
 
@@ -38,6 +46,7 @@ public class HotSwapping<T> {
      *
      * @param type the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
      */
     public static <T> HotSwappingWith<T> proxy(final Class<T> type) {
         return new HotSwappingWith<T>(type);
@@ -56,6 +65,7 @@ public class HotSwapping<T> {
      *
      * @param factory the {@link ProxyFactory} to use.
      * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
+     * @since 1.0
      */
     private T build(final ProxyFactory factory) {
         final ObjectReference<Object> delegateReference = new SimpleReference<Object>(instance);
@@ -75,6 +85,7 @@ public class HotSwapping<T> {
          *
          * @param instance the object that shall be proxied.
          * @return the factory that will proxy instances of the supplied type.
+         * @since 1.0
          */
         public HotSwappingBuildOrMode<T> with(final Object instance) {
             hotswapping.instance = instance;
@@ -95,6 +106,7 @@ public class HotSwapping<T> {
          *                       {@link DelegationMode#SIGNATURE} for allowed
          *                       values.
          * @return the factory that will proxy instances of the supplied type.
+         * @since 1.0
          */
         public HotSwappingBuild<T> mode(DelegationMode delegationMode) {
             hotswapping.delegationMode = delegationMode;
@@ -117,6 +129,7 @@ public class HotSwapping<T> {
          *
          * @param factory the {@link ProxyFactory} to use.
          * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
+         * @since 1.0
          */
         public T build(final ProxyFactory factory) {
             return hotswapping.build(factory);
