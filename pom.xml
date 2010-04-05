@@ -1,5 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <!--
+     (c) 2009, 2010 ThoughtWorks Ltd
+     All rights reserved.
+    
+     The software in this package is published under the terms of the BSD
+     style license a copy of which has been included with this distribution in
+     the LICENSE.txt file.
+    
+     Created on 29-Jun-2009
+    -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.thoughtworks.proxytoys</groupId>
     <artifactId>proxytoys-parent</artifactId>
@@ -34,6 +44,66 @@
         <developerConnection>scm:svn:https://svn.codehaus.org/proxytoys/trunk</developerConnection>
         <url>http://svn.codehaus.org/proxytoys/trunk</url>
     </scm>
+    <developers>
+        <developer>
+            <name>Dan North</name>
+            <id>tastapod</id>
+            <email>tastapod@gmail.com</email>
+            <organization>Thoughtworks Inc.</organization>
+            <roles>
+                <role>Project Lead</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Aslak Hellesoy</name>
+            <id>rinkrank</id>
+            <email>aslak.hellesoy@gmail.com</email>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Joerg Schaible</name>
+            <id>joehni</id>
+            <email>joerg.schaible@gmx.de</email>
+            <organization/>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Paul Hammant</name>
+            <id>paul</id>
+            <email>paul@hammant.org</email>
+            <organization>Thoughtworks Inc.</organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Juan Li</name>
+            <id>jackyli</id>
+            <organization>Thoughtworks Inc.</organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Tianshuo Deng</name>
+            <id>tsdeng</id>
+            <organization>Thoughtworks Inc.</organization>
+            <roles>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Conrad Benham</name>
+        </contributor>
+    </contributors>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
