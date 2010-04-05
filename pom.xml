@@ -42,7 +42,7 @@
     <scm>
         <connection>scm:svn:http://svn.codehaus.org/proxytoys/trunk</connection>
         <developerConnection>scm:svn:https://svn.codehaus.org/proxytoys/trunk</developerConnection>
-        <url>http://svn.codehaus.org/proxytoys/trunk</url>
+        <url>http://fisheye.codehaus.org/browse/proxytoys/trunk</url>
     </scm>
     <developers>
         <developer>
@@ -281,12 +281,17 @@
         <repository>
             <id>codehaus.org</id>
             <name>Codehaus ProxyToys Repository</name>
-            <url>dav:https://dav.codehaus.org/repository/proxytoys/</url>
+            <url>dav:https://dav.codehaus.org/repository/proxytoys</url>
         </repository>
         <snapshotRepository>
             <id>codehaus.org</id>
             <name>Codehaus ProxyToys Snapshot Repository</name>
-            <url>dav:https://dav.codehaus.org/snapshots.repository/proxytoys/</url>
+            <url>dav:https://dav.codehaus.org/snapshots.repository/proxytoys</url>
         </snapshotRepository>
+        <site>
+            <id>codehaus.org</id>
+            <name>Codehaus Proxytoys Site</name>
+            <url>dav:https://dav.codehaus.org/proxytoys</url>
+        </site>
     </distributionManagement>
 </project>
