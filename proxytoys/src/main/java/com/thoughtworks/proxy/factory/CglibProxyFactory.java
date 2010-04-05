@@ -71,6 +71,9 @@ public class CglibProxyFactory extends AbstractProxyFactory {
             // slightly faster
             return standardProxyFactory.<T>createProxy(invoker, types);
         }
+        if (type.isPrimitive()) {
+            throw new IllegalArgumentException("Cannot subclass primitive type");
+        }
         final Class<?>[] interfaces = getInterfaces(types);
         final Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(type);
