@@ -6,7 +6,6 @@
 package proxytoys.examples.overview;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import com.thoughtworks.proxy.ProxyFactory;
