@@ -25,19 +25,23 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 /**
  * Toy factory to create proxies acting as Null Objects.
  *
- * @author <a href="mailto:dan.north@thoughtworks.com">Dan North</a>
+ * @author Dan North
  * @author Aslak Helles&oslash;y
+ * @author J&ouml;rg Schaible
  * @see com.thoughtworks.proxy.toys.nullobject
+ * @since 0.1
  */
 public class Null<T> {
 
     /**
      * The Null {@link Object}.
+     * @since 0.1
      */
     public static final Object NULL_OBJECT = new Object();
 
     /**
-     * Immutable Null Object implementation of {@link SortedMap}
+     * Immutable Null Object implementation of {@link SortedMap}.
+     * @since 0.1
      */
     public static final SortedMap<Object, Object> NULL_SORTED_MAP = new TreeMap<Object, Object>() {
         private static final long serialVersionUID = -4388170961744587609L;
@@ -74,7 +78,8 @@ public class Null<T> {
     };
 
     /**
-     * Immutable Null Object implementation of {@link SortedSet}
+     * Immutable Null Object implementation of {@link SortedSet}.
+     * @since 0.1
      */
     public static final SortedSet<Object> NULL_SORTED_SET = new TreeSet<Object>() {
         private static final long serialVersionUID = 809722154285517876L;
@@ -106,7 +111,7 @@ public class Null<T> {
     };
     private Class<T> type;
 
-    public Null(Class<T> type) {
+    private Null(Class<T> type) {
         this.type = type;
     }
 
@@ -116,37 +121,57 @@ public class Null<T> {
      *
      * @param type the type implemented by the proxy
      * @return the factory
+     * @since 1.0
      */
-    public static <T> Null<T> proxy(Class<T> type) {
-        return new Null<T>(type);
+    public static <T> NullBuild<T> proxy(Class<T> type) {
+        return new NullBuild<T>(new Null<T>(type));
     }
 
-    /**
-     * Generate a Null Object proxy for a specific type using the{@link StandardProxyFactory}.
-     * <p>
-     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
-     * type cannot be proxied.
-     * </p>
-     *
-     * @return object, proxy or <code>null</code>
-     * @see com.thoughtworks.proxy.toys.nullobject
-     */
-    public T build() {
+    public static class NullBuild<T> {
+
+        private final Null<T> nullObject;
+
+        private NullBuild(Null<T> nullObject) {
+            this.nullObject = nullObject;
+        }
+
+        /**
+         * Generate a Null Object proxy for a specific type using the{@link StandardProxyFactory}.
+         * <p>
+         * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
+         * type cannot be proxied.
+         * </p>
+         *
+         * @return object, proxy or <code>null</code>
+         * @see com.thoughtworks.proxy.toys.nullobject
+         * @since 1.0
+         */
+        public T build() {
+            return nullObject.build();
+        }
+
+        /**
+         * Generate a Null Object proxy for a specific type using a special {@link ProxyFactory}.
+         * <p>
+         * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
+         * type cannot be proxied.
+         * </p>
+         *
+         * @param proxyFactory the {@link ProxyFactory} in use
+         * @return object, proxy or <code>null</code>
+         * @see com.thoughtworks.proxy.toys.nullobject
+         */
+        public T build(ProxyFactory factory) {
+            return nullObject.build(factory);
+        }
+        
+    }
+    
+    private T build() {
         return build(new StandardProxyFactory());
     }
 
-    /**
-     * Generate a Null Object proxy for a specific type using a special {@link ProxyFactory}.
-     * <p>
-     * Note that the method will only return a proxy if it cannot handle the type itself or <code>null</code> if the
-     * type cannot be proxied.
-     * </p>
-     *
-     * @param proxyFactory the {@link ProxyFactory} in use
-     * @return object, proxy or <code>null</code>
-     * @see com.thoughtworks.proxy.toys.nullobject
-     */
-    public T build(ProxyFactory proxyFactory) {
+    private T build(ProxyFactory proxyFactory) {
         final Object result;
 
         // Primitives
@@ -208,7 +233,7 @@ public class Null<T> {
      *
      * @param object the object to examine
      * @return <code>true</code> if the object is a Null proxy.
-
+     * @since 0.1
      */
     public static boolean isNullObject(final Object object) {
         return isNullObject(object, new StandardProxyFactory());
@@ -220,7 +245,7 @@ public class Null<T> {
      * @param object       the object to examine
      * @param proxyFactory the {@link ProxyFactory} to use
      * @return <code>true</code> if the object is a Null proxy.
-
+     * @since 0.1
      */
     public static boolean isNullObject(final Object object, final ProxyFactory proxyFactory) {
         return isStandardNullObject(object) || isNullProxyObject(object, proxyFactory);
