@@ -10,13 +10,12 @@
  */
 package com.thoughtworks.proxy.toys.future;
 
-import static com.thoughtworks.proxy.kit.ReflectionUtils.getAllInterfaces;
-import static java.util.concurrent.Executors.newCachedThreadPool;
-
 import java.util.Set;
+import java.util.concurrent.Executors;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -78,12 +77,12 @@ public class Future<T> {
                 if (proxyFactory.canProxy(targetClass)) {
                     future.types = new Class[]{targetClass};
                 } else {
-                    Set<Class<?>> classes = getAllInterfaces(targetClass);
+                    Set<Class<?>> classes = ReflectionUtils.getAllInterfaces(targetClass);
                     future.types = new Class[classes.size()];
                     classes.toArray(future.types);
                 }
             }
-            FutureInvoker invoker = new FutureInvoker(future.target, proxyFactory, newCachedThreadPool());
+            FutureInvoker invoker = new FutureInvoker(future.target, proxyFactory, Executors.newCachedThreadPool());
             return proxyFactory.<T>createProxy(invoker, future.types);
         }
     }
