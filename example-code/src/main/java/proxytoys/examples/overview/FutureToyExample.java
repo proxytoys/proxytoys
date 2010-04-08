@@ -10,30 +10,40 @@
  */
 package proxytoys.examples.overview;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.future.Future;
 
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 
 /**
  * @author Paul Hammant
+ * @author Joerg Schaible
  */
 public class FutureToyExample {
 
-    //TODO: Fails
-    public static void packageOverviewExample1() throws InterruptedException {
-        List<?> slowList = new SlowArrayList();
-        List<?> fasterList = Future.proxy(List.class).with(slowList)
-                          .build(new CglibProxyFactory());
-        System.out.println("Items in list: " + fasterList.size());
-        Thread.sleep(100);
-        System.out.println("Items in list: " + fasterList.size());
+    public static void packageOverviewExample1() throws InterruptedException, ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder documentBuilder = Future.proxy(DocumentBuilder.class)
+            .with(DocumentBuilderFactory.newInstance().newDocumentBuilder())
+            .build(new CglibProxyFactory());
+        Document document = documentBuilder.parse(new SlowInputSource(new StringReader("<root/>")));
+        System.out.println("Root document name: " + document.getDocumentElement().getNodeName());
+        Thread.sleep(200);
+        System.out.println("Root document name: " + document.getDocumentElement().getNodeName());
     }
 
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ParserConfigurationException, SAXException, IOException {
         System.out.println();
         System.out.println();
         System.out.println("Running Future Toy Example");
@@ -41,22 +51,21 @@ public class FutureToyExample {
         System.out.println("Example 1 of Package Overview:");
         packageOverviewExample1();
     }
-
-    @SuppressWarnings("serial")
-    private static class SlowArrayList extends ArrayList<Object> {
-        @Override
-        public boolean add(final Object o) {
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                    }
-                    SlowArrayList.super.add(o);
-                }
-            });
-
-            return true;
+    
+    private static class SlowInputSource extends InputSource {
+        public SlowInputSource(Reader characterStream)
+        {
+            super(characterStream);
         }
+
+        @Override
+        public Reader getCharacterStream() {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+            }
+            return super.getCharacterStream();
+        }
+        
     }
 }
