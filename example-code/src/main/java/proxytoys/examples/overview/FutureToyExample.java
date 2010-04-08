@@ -33,12 +33,11 @@ import org.xml.sax.SAXException;
 public class FutureToyExample {
 
     public static void packageOverviewExample1() throws InterruptedException, ParserConfigurationException, SAXException, IOException {
-        DocumentBuilder documentBuilder = Future.proxy(DocumentBuilder.class)
-            .with(DocumentBuilderFactory.newInstance().newDocumentBuilder())
+        DocumentBuilder documentBuilder = Future.proxy(DocumentBuilderFactory.newInstance().newDocumentBuilder())
             .build(new CglibProxyFactory());
         Document document = documentBuilder.parse(new SlowInputSource(new StringReader("<root/>")));
         System.out.println("Root document name: " + document.getDocumentElement().getNodeName());
-        Thread.sleep(200);
+        Thread.sleep(200); // should do something more useful here
         System.out.println("Root document name: " + document.getDocumentElement().getNodeName());
     }
 

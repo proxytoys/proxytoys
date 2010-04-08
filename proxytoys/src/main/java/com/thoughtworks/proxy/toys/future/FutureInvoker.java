@@ -21,17 +21,32 @@ import com.thoughtworks.proxy.toys.hotswap.HotSwapping;
 import com.thoughtworks.proxy.toys.hotswap.Swappable;
 import com.thoughtworks.proxy.toys.nullobject.Null;
 
+
 /**
+ * {@link com.thoughtworks.proxy.Invoker Invoker} that implements transparent asynchronous
+ * method calls. The invoked method will return immediately with a result that can be
+ * {@linkplain HotSwapping hot swapped}. This result proxy contains first a {@linkplain Null
+ * null object} and will automatically replaced later on when the asynchronous method call
+ * returns the correct result.
+ * 
  * @author Aslak Helles&oslash;y
  * @since 1.0
  */
-// TODO: Javadoc
 public class FutureInvoker implements Invoker {
     private static final long serialVersionUID = 1L;
     private final Object target;
     private final ProxyFactory proxyFactory;
     private final ExecutorService executor;
 
+    /**
+     * Construct the invoker.
+     * 
+     * @param target the instance that will have its methods called asynchronously
+     * @param proxyFactory the proxy factory used to create the proxy for the target instance
+     *            and all return types of the called methods
+     * @param executor the executor used to call the method asynchronously
+     * @since 1.0
+     */
     public FutureInvoker(Object target, ProxyFactory proxyFactory, ExecutorService executor) {
         this.target = target;
         this.proxyFactory = proxyFactory;
