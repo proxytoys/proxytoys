@@ -13,7 +13,22 @@ package com.thoughtworks.proxy.toys.privilege;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 
+/**
+ * Interface to execute a {@link PrivilegedExceptionAction}. Implementations of this type are used by the
+ * {@linkplain Privileging privileging toy}.
+ * 
+ * @author J&ouml;rg Schaible
+ * @since 1.0
+ */
 public interface ActionExecutor
 {
+    /**
+     * Execute a {@link PrivilegedExceptionAction}.
+     * 
+     * @param action the action to run
+     * @return the return value of the action
+     * @throws PrivilegedActionException if the execution of the action fails
+     * @since 1.0
+     */
     Object execute(PrivilegedExceptionAction<Object> action) throws PrivilegedActionException;
 }

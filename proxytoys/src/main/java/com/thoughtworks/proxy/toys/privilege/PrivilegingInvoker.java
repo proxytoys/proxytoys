@@ -22,34 +22,60 @@ import com.thoughtworks.proxy.kit.SimpleReference;
 import com.thoughtworks.proxy.toys.delegate.DelegatingInvoker;
 import com.thoughtworks.proxy.toys.delegate.DelegationMode;
 
-public class PrivilegingInvoker<T> extends DelegatingInvoker<T>
-{
+
+/**
+ * {@link com.thoughtworks.proxy.Invoker Invoker} that creates for the invoked method a
+ * {@link PrivilegedExceptionAction} and runs this action with the provided
+ * {@link ActionExecutor}.
+ * 
+ * @author J&ouml;rg Schaible
+ * @since 1.0
+ */
+public class PrivilegingInvoker<T> extends DelegatingInvoker<T> {
     private static final long serialVersionUID = 5352672950789740381L;
     private final ActionExecutor executor;
 
-    public PrivilegingInvoker(ProxyFactory proxyFactory, ObjectReference<T> delegateReference, ActionExecutor executor)
-    {
+    /**
+     * Construct the invoker.
+     * 
+     * @param proxyFactory the proxy factory used to create the proxy
+     * @param delegateReference the reference object managing the delegate for the call
+     * @param executor the executor of the {@link PrivilegedExceptionAction}
+     * @since 1.0
+     */
+    public PrivilegingInvoker(
+        ProxyFactory proxyFactory, ObjectReference<T> delegateReference, ActionExecutor executor) {
         super(proxyFactory, delegateReference, DelegationMode.DIRECT);
         this.executor = executor == null ? new AccessControllerExecutor() : executor;
     }
 
-    public PrivilegingInvoker(T delegate, ActionExecutor executor)
-    {
+    /**
+     * Construct the invoker.
+     * 
+     * @param delegate the delegate for the call
+     * @param executor the executor of the {@link PrivilegedExceptionAction}
+     * @since 1.0
+     */
+    public PrivilegingInvoker(T delegate, ActionExecutor executor) {
         this(new StandardProxyFactory(), new SimpleReference<T>(delegate), executor);
     }
 
-    public PrivilegingInvoker(T delegate)
-    {
+    /**
+     * Construct the invoker using a {@link AccessControllerExecutor}.
+     * 
+     * @param delegate the delegate for the call
+     * @since 1.0
+     */
+    public PrivilegingInvoker(T delegate) {
         this(delegate, null);
     }
 
     @Override
-    protected Object invokeOnDelegate(final Method method, final Object[] args) throws InvocationTargetException
-    {
+    protected Object invokeOnDelegate(final Method method, final Object[] args)
+        throws InvocationTargetException {
         try {
             return executor.execute(new PrivilegedExceptionAction<Object>() {
-                public Object run() throws Exception
-                {
+                public Object run() throws Exception {
                     return PrivilegingInvoker.super.invokeOnDelegate(method, args);
                 }
             });

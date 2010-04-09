@@ -15,20 +15,40 @@ import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 
-public class AccessControllerExecutor implements ActionExecutor
-{
+
+/**
+ * Execution of a {@link PrivilegedExceptionAction} with the {@link AccessController}.
+ * 
+ * @author J&ouml;rg Schaible
+ * @since 1.0
+ */
+public class AccessControllerExecutor implements ActionExecutor {
     private final AccessControlContext context;
 
+    /**
+     * Construct an AccessControllerExecutor that runs a {@link PrivilegedExceptionAction} with
+     * the privileges of the {@link AccessControlContext} of the caller.
+     * 
+     * @since 1.0
+     */
     public AccessControllerExecutor() {
         this(null);
     }
 
+    /**
+     * Construct an AccessControllerExecutor that runs a {@link PrivilegedExceptionAction} with
+     * special privileges.
+     * 
+     * @param context the {@link AccessControlContext} defining the privileges used to run the
+     *            action
+     * @since 1.0
+     */
     public AccessControllerExecutor(AccessControlContext context) {
         this.context = context;
     }
 
-    public Object execute(PrivilegedExceptionAction<Object> action) throws PrivilegedActionException
-    {
+    public Object execute(PrivilegedExceptionAction<Object> action)
+        throws PrivilegedActionException {
         return AccessController.doPrivileged(action, context);
     }
 }

@@ -13,6 +13,12 @@ package com.thoughtworks.proxy.toys.privilege;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 
+/**
+ * Direct execution of a {@link PrivilegedExceptionAction}.
+ * 
+ * @author J&ouml;rg Schaible
+ * @since 1.0
+ */
 public class DirectExecutor implements ActionExecutor
 {
     public Object execute(PrivilegedExceptionAction<Object> action) throws PrivilegedActionException
