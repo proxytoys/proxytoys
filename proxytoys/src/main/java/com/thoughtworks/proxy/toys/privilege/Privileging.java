@@ -26,9 +26,25 @@ public class Privileging<T>
      *
      * @param type     the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
      */
     public static <T> PrivilegingWith<T> proxy(Class<T> type) {
         return new PrivilegingWith<T>(new Privileging<T>(type));
+    }
+
+    /**
+     * Creates a factory for proxy instances that allow a privileged execution of the methods of an object.
+     *
+     * @param target     the target object that is proxied.
+     * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
+     */
+    public static <T> PrivilegingExecutedByOrBuild<T> proxy(T target) {
+        @SuppressWarnings("unchecked")
+        Class<T> type = (Class<T>)target.getClass();
+        Privileging<T> privileging = new Privileging<T>(type);
+        privileging.delegate = target;
+        return new PrivilegingExecutedByOrBuild<T>(privileging);
     }
 
     private Privileging(Class<T> type) {
@@ -47,6 +63,7 @@ public class Privileging<T>
          *
          * @param delegate the object the proxy delegates to.
          * @return the factory that will route calls to the supplied delegate.
+         * @since 1.0
          */
         public PrivilegingExecutedByOrBuild<T> with(Object delegate) {
             delegating.delegate = delegate;
@@ -64,6 +81,7 @@ public class Privileging<T>
          *
          * @param executor the executor that runs the privileged actions.
          * @return the factory that will route calls to the supplied delegate.
+         * @since 1.0
          */
         public PrivilegingBuild<T> executedBy(ActionExecutor executor) {
             privileging.executor = executor;
@@ -82,6 +100,7 @@ public class Privileging<T>
          * Creating a privileging proxy for an object using the {@link StandardProxyFactory}.
          *
          * @return the created proxy implementing the <tt>type</tt>
+         * @since 1.0
          */
         public T build() {
             return build(new StandardProxyFactory());
@@ -92,6 +111,7 @@ public class Privileging<T>
          *
          * @param factory the {@link ProxyFactory} to use.
          * @return the created proxy implementing the <tt>type</tt>
+         * @since 1.0
          */
         public T build(ProxyFactory factory) {
             return factory.<T>createProxy(new PrivilegingInvoker<Object>(factory,
