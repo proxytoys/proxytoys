@@ -14,7 +14,13 @@ import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.SimpleReference;
 
-// TODO: Javadoc
+/**
+ * Toy factory to create proxies executing the method calls as privileged actions.
+ *
+ * @author J&ouml;rg Schaible
+ * @see com.thoughtworks.proxy.toys.privilege
+ * @since 1.0
+ */
 public class Privileging<T>
 {
     private Class<T> type;
