@@ -15,6 +15,7 @@ import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.kit.SimpleReference;
 import com.thoughtworks.proxy.toys.delegate.DelegationMode;
 
@@ -34,11 +35,11 @@ import com.thoughtworks.proxy.toys.delegate.DelegationMode;
 public class HotSwapping<T> {
 
     private Object instance;
-    private Class<T> type;
+    private Class<?>[] types;
     private DelegationMode delegationMode;
 
-    private HotSwapping(final Class<T> types) {
-        this.type = types;
+    private HotSwapping(final Class<T> primaryType, Class<?>... types) {
+        this.types = ReflectionUtils.makeTypesArray(primaryType, types);
     }
 
     /**
@@ -49,12 +50,19 @@ public class HotSwapping<T> {
      * @since 1.0
      */
     public static <T> HotSwappingWith<T> proxy(final Class<T> type) {
-        return new HotSwappingWith<T>(type);
+        return new HotSwappingWith<T>(new HotSwapping<T>(type));
     }
     
+    /**
+     * Creates a factory for proxy instances that allow the exchange of delegated instances.
+     *
+     * @param primaryType the primary type implemented by the proxy
+     * @param types other types that are implemented by the proxy
+     * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
+     */
     public static <T> HotSwappingWith<T> proxy(final Class<T> primaryType, final Class<?> ... types) {
-        // TODO: Provide this functionality again
-        throw new UnsupportedOperationException("TODO");
+        return new HotSwappingWith<T>(new HotSwapping<T>(primaryType, types));
     }
 
     /**
@@ -69,14 +77,14 @@ public class HotSwapping<T> {
      */
     private T build(final ProxyFactory factory) {
         final ObjectReference<Object> delegateReference = new SimpleReference<Object>(instance);
-        return new HotSwappingInvoker<T>(new Class[]{type}, factory, delegateReference, delegationMode).proxy();
+        return new HotSwappingInvoker<T>(types, factory, delegateReference, delegationMode).proxy();
     }
 
     public static class HotSwappingWith<T> {
         private final HotSwapping<T> hotswapping;
 
-        public HotSwappingWith(Class<T> type) {
-            this.hotswapping = new HotSwapping<T>(type);
+        public HotSwappingWith(HotSwapping<T> hotswapping) {
+            this.hotswapping = hotswapping;
         }
 
         /**
@@ -89,7 +97,13 @@ public class HotSwapping<T> {
          */
         public HotSwappingBuildOrMode<T> with(final Object instance) {
             hotswapping.instance = instance;
-            hotswapping.delegationMode = hotswapping.type.isInstance(instance) ? DIRECT : SIGNATURE;
+            hotswapping.delegationMode = DIRECT;
+            for (Class<?> type : hotswapping.types) {
+                if (!type.isInstance(instance)) {
+                    hotswapping.delegationMode = SIGNATURE;
+                    break;
+                }
+            }
             return new HotSwappingBuildOrMode<T>(hotswapping);
         }
     }

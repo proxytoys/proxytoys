@@ -15,7 +15,6 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -267,5 +266,25 @@ public class ReflectionUtils {
         } catch (final NoSuchMethodException e) {
             throw new InvalidObjectException(e.getMessage());
         }
+    }
+
+    /**
+     * Create an array of types.
+     * 
+     * @param primaryType the primary types
+     * @param types the additional types (may be null)
+     * @return an array of all the given types with the primary type as first element
+     * @since 1.0
+     */
+    public static Class<?>[] makeTypesArray(Class<?> primaryType, Class<?>[] types) {
+        if (primaryType == null) {
+            return types;
+        }
+        Class<?>[] retVal = new Class[types == null ? 1 : types.length +1];
+        retVal[0] = primaryType;
+        if (types != null) {
+            System.arraycopy(types, 0, retVal, 1, types.length);
+        }
+        return retVal;
     }
 }

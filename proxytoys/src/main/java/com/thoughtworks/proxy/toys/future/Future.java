@@ -61,10 +61,7 @@ public class Future<T> {
      * @since 1.0
      */
     public static <T> FutureWith<T> proxy(Class<T> primaryType, Class<?>... types) {
-        Class<?>[] allTypes = new Class[types.length+1];
-        allTypes[0] = primaryType;
-        System.arraycopy(types,0,allTypes,1,types.length);
-        Future<T> future = new Future<T>(allTypes);
+        Future<T> future = new Future<T>(ReflectionUtils.makeTypesArray(primaryType, types));
         return new FutureWith<T>(future);
     }
 

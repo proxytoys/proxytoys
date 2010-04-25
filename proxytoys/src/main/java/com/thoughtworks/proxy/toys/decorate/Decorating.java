@@ -12,6 +12,7 @@ package com.thoughtworks.proxy.toys.decorate;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 
 /**
@@ -33,11 +34,11 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 public class Decorating<T> {
 
     private Object delegate;
-    private Class<T> type;
+    private Class<?>[] types;
     private Decorator decorator;
-
-    private Decorating(final Class<T> type) {
-        this.type = type;
+    
+    private Decorating(final Class<T>primaryType, final Class<?>... types) {
+        this.types = ReflectionUtils.makeTypesArray(primaryType, types);
     }
 
     /**
@@ -51,9 +52,16 @@ public class Decorating<T> {
         return new DecoratingWith<T>(new Decorating<T>(type));
     }
 
+    /**
+     * Creates a factory for proxy instances that allow decoration.
+     *
+     * @param primaryType the primary type implemented by the proxy
+     * @param types other types that are implemented by the proxy
+     * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
+     */
     public static <T> DecoratingWith<T> proxy(final Class<T> primaryType, final Class<?> ... types) {
-        // TODO: Provide this functionality again
-        throw new UnsupportedOperationException("TODO");
+        return new DecoratingWith<T>(new Decorating<T>(primaryType, types));
     }
 
     public static class DecoratingWith<T> {
@@ -104,7 +112,7 @@ public class Decorating<T> {
          */
         public T build(final ProxyFactory proxyFactory) {
             DecoratingInvoker<T> invoker = new DecoratingInvoker<T>(decorating.delegate, decorating.decorator);
-            return proxyFactory.<T>createProxy(invoker, decorating.type);
+            return proxyFactory.<T>createProxy(invoker, decorating.types);
         }
     }
 }

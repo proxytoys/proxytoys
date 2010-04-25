@@ -10,7 +10,11 @@
  */
 package com.thoughtworks.proxy.toys.failover;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 
 /**
  * Factory for proxy instances handling failover. Delegates to one object as long as there is no exception, fails over
@@ -22,16 +26,16 @@ import com.thoughtworks.proxy.ProxyFactory;
  * @since 0.1
  */
 public class Failover<T> {
-    private Class<T> type;
+    private Class<?>[] types;
     private T[] delegates;
     private Class<? extends Throwable> exceptionClass;
 
-    private Failover(Class<T> type) {
-        this.type = type;
+    private Failover(Class<T> primaryType, Class<?>... types) {
+        this.types = ReflectionUtils.makeTypesArray(primaryType, types);
     }
 
     /**
-     * Creates a factory for proxy instances handling multicast.
+     * Creates a factory for proxy instances handling failover situations.
      *
      * @param type the types of the proxy
      * @return a factory that will proxy instances of the supplied type.
@@ -41,13 +45,29 @@ public class Failover<T> {
         return new FailoverWithOrExceptingOrBuild<T>(new Failover<T>(type));
     }
     
+    /**
+     * Creates a factory for proxy instances handling failover situations.
+     *
+     * @param primaryType the primary type implemented by the proxy
+     * @param types other types that are implemented by the proxy
+     * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
+     */
     public static <T> FailoverWithOrExceptingOrBuild<T> proxy(final Class<T> primaryType, final Class<?> ... types) {
-        // TODO: Provide this functionality again
-        throw new UnsupportedOperationException("TODO");
+        return new FailoverWithOrExceptingOrBuild<T>(new Failover<T>(primaryType, types));
     }
-    public static <T> FailoverExceptingOrBuild<T> proxy(final T object, final Object ... more) {
-        // TODO: Provide this functionality again
-        throw new UnsupportedOperationException("TODO");
+    
+    /**
+     * Creates a factory for proxy instances handling failover situations.
+     *
+     * @param delegates the array with the delegates in a failover situation
+     * @return a factory that will proxy instances of the supplied type.
+     * @since 1.0
+     */
+    public static <T> FailoverExceptingOrBuild<T> proxy(final T... delegates) {
+        Failover<T> failover = new Failover<T>(null);
+        failover.delegates = delegates;
+        return new FailoverExceptingOrBuild<T>(failover);
     }
 
     public static class FailoverWithOrExceptingOrBuild<T> extends FailoverExceptingOrBuild<T> {
@@ -104,7 +124,7 @@ public class Failover<T> {
          * @since 1.0
          */
         public T build(final ProxyFactory proxyFactory) {
-            return new FailoverInvoker<T>(new Class[]{failover.type}, proxyFactory, failover.delegates, failover.exceptionClass).proxy();
+            return new FailoverInvoker<T>(failover.types, proxyFactory, failover.delegates, failover.exceptionClass).proxy();
         }
     }
 }

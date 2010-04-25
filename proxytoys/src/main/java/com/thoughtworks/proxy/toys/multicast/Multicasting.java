@@ -36,7 +36,7 @@ public class Multicasting<T> {
     }
 
     private Multicasting(Class<?> primaryType, Class<?>... types) {
-        this.types = makeTypesArray(primaryType, types);
+        this.types = ReflectionUtils.makeTypesArray(primaryType, types);
     }
 
     /**
@@ -155,12 +155,5 @@ public class Multicasting<T> {
         @SuppressWarnings("unchecked")
         final T instance = (T) delegates[0];
         return instance;
-    }
-
-    private Class<?>[] makeTypesArray(Class<?> primaryType, Class<?>[] types) {
-        Class<?>[] retVal = new Class[types.length +1];
-        retVal[0] = primaryType;
-        System.arraycopy(types, 0, retVal, 1, types.length);
-        return retVal;
     }
 }

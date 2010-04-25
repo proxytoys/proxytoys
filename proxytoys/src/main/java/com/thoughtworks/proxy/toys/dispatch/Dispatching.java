@@ -13,6 +13,7 @@ package com.thoughtworks.proxy.toys.dispatch;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.kit.SimpleReference;
 
 /**
@@ -58,14 +59,7 @@ public class Dispatching<T> {
         private final Dispatching<T> dispatching;
 
         private DispatchingWith(Class<T> primaryType, Class<?>[] types) {
-            this.dispatching = new Dispatching<T>(makeTypesArray(primaryType, types));
-        }
-
-        private Class<?>[] makeTypesArray(Class<T> primaryType, Class<?>[] types) {
-            Class<?>[] retVal = new Class[types.length +1];
-            retVal[0] = primaryType;
-            System.arraycopy(types, 0, retVal, 1, types.length);
-            return retVal;
+            this.dispatching = new Dispatching<T>(ReflectionUtils.makeTypesArray(primaryType, types));
         }
 
         /**
