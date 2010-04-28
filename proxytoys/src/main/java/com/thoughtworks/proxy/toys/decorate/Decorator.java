@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  * @author Dan North
  * @since 1.0
  */
-public abstract class Decorator implements Serializable {
+public abstract class Decorator<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -33,7 +33,7 @@ public abstract class Decorator implements Serializable {
      * @return the decorated arguments (typically just the ones supplied)
      * @since 1.0
      */
-    public Object[] beforeMethodStarts(final Object proxy, final Method method, final Object[] args) {
+    public Object[] beforeMethodStarts(final T proxy, final Method method, final Object[] args) {
         return args;
     }
 
@@ -47,7 +47,7 @@ public abstract class Decorator implements Serializable {
      * @return the decorated result (typically just the supplied result)
      * @since 1.0
      */
-    public Object decorateResult(final Object proxy, final Method method, final Object[] args, final Object result) {
+    public Object decorateResult(final T proxy, final Method method, final Object[] args, final Object result) {
         return result;
     }
 
@@ -62,7 +62,7 @@ public abstract class Decorator implements Serializable {
      * @since 1.0
      */
     public Throwable decorateTargetException(
-            final Object proxy, final Method method, final Object[] args, final Throwable cause) {
+            final T proxy, final Method method, final Object[] args, final Throwable cause) {
         return cause;
     }
 
@@ -77,7 +77,7 @@ public abstract class Decorator implements Serializable {
      * @since 1.0
      */
     public Exception decorateInvocationException(
-            final Object proxy, final Method method, final Object[] args, final Exception cause) {
+            final T proxy, final Method method, final Object[] args, final Exception cause) {
         return cause;
     }
 }

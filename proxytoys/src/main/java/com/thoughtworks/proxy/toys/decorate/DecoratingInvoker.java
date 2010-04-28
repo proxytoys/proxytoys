@@ -28,7 +28,7 @@ import com.thoughtworks.proxy.kit.PrivateInvoker;
 public class DecoratingInvoker<T> implements Invoker {
     private static final long serialVersionUID = 8293471912861497447L;
     private Invoker decorated;
-    private Decorator decorator;
+    private Decorator<T> decorator;
 
     /**
      * Construct a DecoratingInvoker decorating another Invoker.
@@ -37,7 +37,7 @@ public class DecoratingInvoker<T> implements Invoker {
      * @param decorator the decorating instance.
      * @since 1.0
      */
-    public DecoratingInvoker(final Invoker decorated, final Decorator decorator) {
+    public DecoratingInvoker(final Invoker decorated, final Decorator<T> decorator) {
         this.decorated = decorated;
         this.decorator = decorator;
     }
@@ -49,7 +49,7 @@ public class DecoratingInvoker<T> implements Invoker {
      * @param decorator the decorating instance.
      * @since 1.0
      */
-    public DecoratingInvoker(final Object delegate, final Decorator decorator) {
+    public DecoratingInvoker(final Object delegate, final Decorator<T> decorator) {
         this(new PrivateInvoker(delegate), decorator);
     }
 

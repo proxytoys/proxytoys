@@ -28,7 +28,7 @@ import com.thoughtworks.proxy.toys.decorate.Decorator;
  * @author J&ouml;rg Schaible
  * @since 0.1
  */
-public class EchoDecorator extends Decorator {
+public class EchoDecorator<T> extends Decorator<T> {
     private static final long serialVersionUID = 1L;
     private final PrintWriter out;
     private final ProxyFactory factory;
@@ -46,33 +46,35 @@ public class EchoDecorator extends Decorator {
     }
 
     @Override
-    public Object[] beforeMethodStarts(final Object proxy, final Method method, final Object[] args) {
+    public Object[] beforeMethodStarts(final T proxy, final Method method, final Object[] args) {
         printMethodCall(method, args);
         return super.beforeMethodStarts(proxy, method, args);
     }
 
-    @Override
-    public Object decorateResult(final Object proxy, final Method method, final Object[] args, Object result) {
-        final Class<?> returnType = method.getReturnType();
+	@Override
+    @SuppressWarnings("unchecked")
+    public Object decorateResult(final T proxy, final Method method, final Object[] args, Object result) {
+        Class returnType = method.getReturnType();
         printMethodResult(result);
         if (returnType != Object.class && factory.canProxy(returnType)) {
-            result = Decorating.proxy(returnType).with(result, this).build(factory);
+            result = Decorating.proxy(result, returnType).visiting(this).build(factory);
         } else if (result != null && returnType == Object.class && factory.canProxy(result.getClass())) {
-            result = Decorating.proxy(result.getClass()).with(result, this).build(factory);
+            returnType = result.getClass();
+			result = Decorating.proxy(result, returnType).visiting(this).build(factory);
         }
         return result;
     }
 
     @Override
     public Throwable decorateTargetException(
-            final Object proxy, final Method method, final Object[] args, final Throwable cause) {
+            final T proxy, final Method method, final Object[] args, final Throwable cause) {
         printTargetException(cause);
         return super.decorateTargetException(proxy, method, args, cause);
     }
 
     @Override
     public Exception decorateInvocationException(
-            final Object proxy, final Method method, final Object[] args, final Exception cause) {
+            final T proxy, final Method method, final Object[] args, final Exception cause) {
         printInvocationException(cause);
         return super.decorateInvocationException(proxy, method, args, cause);
     }

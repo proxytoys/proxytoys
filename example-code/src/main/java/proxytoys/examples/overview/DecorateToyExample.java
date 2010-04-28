@@ -26,21 +26,22 @@ import com.thoughtworks.proxy.toys.decorate.Decorator;
  */
 public class DecorateToyExample {
 
-    public static void packageOverviewExample1() {
+	public static void packageOverviewExample1() {
         List<String> list = Arrays.asList("1", "2", "3");
-        @SuppressWarnings("serial")
-        Decorator decorator = new Decorator() {
+        @SuppressWarnings({"serial", "unchecked"})
+        Decorator<Iterator> decorator = new Decorator<Iterator>() {
             @Override
-            public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
+            public Object decorateResult(Iterator proxy, Method method, Object[] args, Object result) {
                 if (method.getName().equals("next"))
                     return Integer.valueOf(String.class.cast(result));
                 else
                     return result;
             }
         };
-        @SuppressWarnings("unchecked")
+    	@SuppressWarnings("unchecked")
         Iterator<Integer> intIter = Decorating.proxy(Iterator.class)
-                             .with(list.iterator(), decorator)
+        					 .with(list.iterator())
+                             .visiting(decorator)
                              .build();
         while (intIter.hasNext()) {
             Integer i = intIter.next();
@@ -51,20 +52,20 @@ public class DecorateToyExample {
     public static void packageOverviewExample2() {
         File file = new File(".");
         @SuppressWarnings("serial")
-        Decorator decorator = new Decorator() {
+        Decorator<File> decorator = new Decorator<File>() {
             @Override
-            public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
+            public Object[] beforeMethodStarts(File proxy, Method method, Object[] args) {
                 System.out.print("Called: " + method.getName());
                 return super.beforeMethodStarts(proxy, method, args);
             }
             @Override
-            public Object decorateResult(Object proxy, Method method, Object[] args, Object result) {
+            public Object decorateResult(File proxy, Method method, Object[] args, Object result) {
                 System.out.println(" ==> " + result);
                 return result;
             }
         };
-        File decoratedFile = Decorating.proxy(File.class)
-                                .with(file, decorator)
+        File decoratedFile = Decorating.proxy(file)
+                                .visiting(decorator)
                                 .build(new CglibProxyFactory());
         decoratedFile.exists();
         decoratedFile.isFile();

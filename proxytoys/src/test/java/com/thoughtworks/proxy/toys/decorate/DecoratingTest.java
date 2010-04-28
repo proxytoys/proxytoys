@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -52,7 +51,7 @@ public class DecoratingTest extends AbstractProxyTest {
     }
 
     private Foo foo;
-    private Decorator decoratorMock;
+    private Decorator<Foo> decoratorMock;
     private Foo fooMock;
 
     public interface Foo {
@@ -60,13 +59,15 @@ public class DecoratingTest extends AbstractProxyTest {
     }
 
 
-    @Before
+	@Before
     public void setUp() throws Exception {
         fooMock = mock(Foo.class);
-        decoratorMock = mock(Decorator.class);
+        @SuppressWarnings("unchecked")
+        Decorator<Foo> mock = mock(Decorator.class);
+		decoratorMock = mock;
         assertNotNull(fooMock);
-        foo = Decorating.proxy(Foo.class).with(fooMock, decoratorMock).build();
-        assertNotNull(fooMock);
+        foo = Decorating.proxy(Foo.class).with(fooMock).visiting(decoratorMock).build();
+        assertNotNull(foo);
     }
 
     private Object[] toArray(Object value) {
@@ -76,15 +77,14 @@ public class DecoratingTest extends AbstractProxyTest {
 
     @Test
     public void shouldInterceptMethodInvocation() throws Exception {
-
+        // expect
         when(decoratorMock.beforeMethodStarts(same(foo), eq(getSomethingMethod), argThat(new SameArrayMatcher(toArray("fooMock"))))).thenReturn(toArray("decorated"));
-
         when(fooMock.getSomething(eq("decorated"))).thenReturn("hello");
 
         // execute
         foo.getSomething("fooMock");
 
-
+        // verify
         verify(decoratorMock).beforeMethodStarts(same(foo), eq(getSomethingMethod), argThat(new SameArrayMatcher(toArray("fooMock"))));
         verify(fooMock).getSomething(eq("decorated"));
     }
@@ -92,7 +92,7 @@ public class DecoratingTest extends AbstractProxyTest {
     @Test
     public void shouldInterceptMethodSuccess() throws Exception {
         // expect
-        when(decoratorMock.beforeMethodStarts(any(Object.class), any(Method.class), any(Object[].class))).thenReturn(toArray("ignored"));
+        when(decoratorMock.beforeMethodStarts(same(foo), any(Method.class), any(Object[].class))).thenReturn(toArray("ignored"));
         when(fooMock.getSomething(any(String.class))).thenReturn("hello");
         when(decoratorMock.decorateResult(same(foo), eq(getSomethingMethod), argThat(new SameArrayMatcher(toArray("ignored"))), eq("hello"))).thenReturn("world");
 
@@ -101,7 +101,7 @@ public class DecoratingTest extends AbstractProxyTest {
 
         // verify
         assertEquals("world", result);
-        verify(decoratorMock).beforeMethodStarts(any(Object.class), any(Method.class), any(Object[].class));
+        verify(decoratorMock).beforeMethodStarts(same(foo), any(Method.class), any(Object[].class));
         verify(fooMock).getSomething(any(String.class));
         verify(decoratorMock).decorateResult(same(foo), eq(getSomethingMethod), argThat(new SameArrayMatcher(toArray("ignored"))), eq("hello"));
 
@@ -113,13 +113,14 @@ public class DecoratingTest extends AbstractProxyTest {
 
     @Test
     public void shouldInterceptTargetException() throws Exception {
-        when(decoratorMock.beforeMethodStarts(any(Object.class), any(Method.class), any(Object[].class))).thenReturn(toArray("ignored"));
         MyException exception = new MyException();
         MyException decoratedException = new MyException();
 
         // expect
+        when(decoratorMock.beforeMethodStarts(same(foo), any(Method.class), any(Object[].class))).thenReturn(toArray("ignored"));
         when(fooMock.getSomething(anyString())).thenThrow(exception);
         when(decoratorMock.decorateTargetException(same(foo), eq(getSomethingMethod), argThat(new SameArrayMatcher(toArray("ignored"))), same(exception))).thenReturn(decoratedException);
+
         // execute
         try {
             foo.getSomething("value");
@@ -128,8 +129,8 @@ public class DecoratingTest extends AbstractProxyTest {
             assertSame(decoratedException, oops);
         }
 
-
-        verify(decoratorMock).beforeMethodStarts(any(Object.class), any(Method.class), any(Object[].class));
+        // verify
+        verify(decoratorMock).beforeMethodStarts(same(foo), any(Method.class), any(Object[].class));
         verify(fooMock).getSomething(anyString());
         verify(decoratorMock).decorateTargetException(same(foo), eq(getSomethingMethod), argThat(new SameArrayMatcher(toArray("ignored"))), same(exception));
 
@@ -145,30 +146,27 @@ public class DecoratingTest extends AbstractProxyTest {
         final Throwable[] thrown = new Throwable[1]; // hack for inner class
         final MyException decoratedException = new MyException();
 
-        foo = Decorating.proxy(Foo.class).with(new MethodMissingImpl(), new Decorator() {
+        foo = Decorating.proxy(new MethodMissingImpl(), Foo.class).visiting(new Decorator<Foo>() {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public Exception decorateInvocationException(Object proxy, Method method, Object[] args, Exception cause) {
+            public Exception decorateInvocationException(Foo proxy, Method method, Object[] args, Exception cause) {
                 thrown[0] = cause;
                 return decoratedException;
             }
         }).build();
 
         // execute
-
-        foo.getSomething("value");
-        fail("Mock should have thrown exception");
-
+		foo.getSomething("value");
+		fail("Mock should have thrown exception");
     }
 
-    static class AssertingDecorator extends Decorator {
+    static class AssertingDecorator extends Decorator<CharSequence> {
         private static final long serialVersionUID = 1L;
 
         @Override
-        public Object[] beforeMethodStarts(Object proxy, Method method, Object[] args) {
+        public Object[] beforeMethodStarts(CharSequence proxy, Method method, Object[] args) {
             assertNull(args);
-            assertTrue(proxy instanceof CharSequence);
             return super.beforeMethodStarts(proxy, method, args);
         }
 
@@ -180,19 +178,19 @@ public class DecoratingTest extends AbstractProxyTest {
 
     @Test
     public void serializeWithJDK() throws IOException, ClassNotFoundException {
-        useSerializedProxy(serializeWithJDK(Decorating.proxy(
-            CharSequence.class).with("Test", new AssertingDecorator()).build(getFactory())));
+        useSerializedProxy(serializeWithJDK(
+        	Decorating.proxy(CharSequence.class).with("Test").visiting(new AssertingDecorator()).build(getFactory())));
     }
 
     @Test
     public void serializeWithXStream() {
-        useSerializedProxy(serializeWithXStream(Decorating.proxy(
-            CharSequence.class).with("Test", new AssertingDecorator()).build(getFactory())));
+        useSerializedProxy(serializeWithXStream(
+        	Decorating.proxy(CharSequence.class).with("Test").visiting(new AssertingDecorator()).build(getFactory())));
     }
 
     @Test
     public void serializeWithXStreamInPureReflectionMode() {
-        useSerializedProxy(serializeWithXStreamAndPureReflection(Decorating.proxy(
-            CharSequence.class).with("Test", new AssertingDecorator()).build(getFactory())));
+        useSerializedProxy(serializeWithXStreamAndPureReflection(
+        	Decorating.proxy(CharSequence.class).with("Test").visiting(new AssertingDecorator()).build(getFactory())));
     }
 }

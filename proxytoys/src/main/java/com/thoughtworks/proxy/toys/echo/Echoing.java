@@ -117,8 +117,8 @@ public class Echoing<T> {
          * @since 1.0
          */
         public T build(final ProxyFactory proxyFactory) {
-            EchoDecorator decorator = new EchoDecorator(echoing.printWriter, proxyFactory);
-            return Decorating.proxy(echoing.type).with(echoing.delegate, decorator).build(proxyFactory);
+            EchoDecorator<T> decorator = new EchoDecorator<T>(echoing.printWriter, proxyFactory);
+            return Decorating.proxy(echoing.delegate, echoing.type).visiting(decorator).build(proxyFactory);
         }
     }
 }
