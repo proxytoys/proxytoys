@@ -113,7 +113,7 @@ public class Future<T> {
          * given types. The return values of the called methods must be non-final object types.
          * 
          * @param factory the {@link ProxyFactory} to use.
-         * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
+         * @return the created proxy implementing the <tt>types</tt> and {@link com.thoughtworks.proxy.toys.hotswap.Swappable}
          * @since 1.0
          */
         public T build(ProxyFactory factory) {
