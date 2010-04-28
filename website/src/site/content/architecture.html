@@ -46,9 +46,10 @@
 
 		<p>The toys exist as solutions for common problems solved with proxy instances. Some are build on
 		top of another and you may derive your own specialized solution based on a available toy implementation.
-		Each toy has a proxy factory (with the exception of the 
-		<a href="apidocs/com/thoughtworks/proxy/toys/pool/Pool.html">Pool</a>) with static methods, that
-		can be invoked to create a proxy for a single or for multiple types with a special assignment.</p>
+		Each toy has a builder as proxy factory (the 
+		<a href="apidocs/com/thoughtworks/proxy/toys/pool/Pool.html">Pool</a> supports additionally normal
+		constructors, because it is a normal object <em>using</em> proxies), that can be invoked to create a
+		proxy for a single or for multiple types with a special assignment.</p>
 		
 		<p>Each toys utilizes a special implementation of an 
 		<a href="apidocs/com/thoughtworks/proxy/Invoker.html">Invoker</a>, that is called for each method 
