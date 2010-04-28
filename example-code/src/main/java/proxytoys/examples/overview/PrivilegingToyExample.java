@@ -14,13 +14,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.io.Reader;
 
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.toys.privilege.AccessControllerExecutor;
 import com.thoughtworks.proxy.toys.privilege.Privileging;
-
-import org.xml.sax.InputSource;
 
 
 /**
@@ -46,22 +43,5 @@ public class PrivilegingToyExample {
         System.out.println();
         System.out.println("Example 1 of Package Overview:");
         packageOverviewExample1();
-    }
-    
-    private static class SlowInputSource extends InputSource {
-        public SlowInputSource(Reader characterStream)
-        {
-            super(characterStream);
-        }
-
-        @Override
-        public Reader getCharacterStream() {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-            }
-            return super.getCharacterStream();
-        }
-        
     }
 }
