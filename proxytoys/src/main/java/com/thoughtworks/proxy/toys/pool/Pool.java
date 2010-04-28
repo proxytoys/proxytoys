@@ -123,7 +123,7 @@ public class Pool<T> implements Serializable {
         }
     }
 
-    public static class PoolResettedBy<T> extends PoolWith {
+    public static class PoolResettedBy<T> extends PoolWith<T> {
         private PoolResettedBy(Pool<T> pool) {
             super(pool);
         }
@@ -134,7 +134,7 @@ public class Pool<T> implements Serializable {
         }
     }
 
-    public static class PoolWith<T> extends PoolModeOrBuild {
+    public static class PoolWith<T> extends PoolModeOrBuild<T> {
         private PoolWith(Pool<T> pool) {
             super(pool);
         }
