@@ -151,7 +151,7 @@ public class Null<T> {
          * @since 1.0
          */
         public T build() {
-            return nullObject.build();
+            return nullObject.build(new StandardProxyFactory());
         }
 
         /**
@@ -171,10 +171,6 @@ public class Null<T> {
         
     }
     
-    private T build() {
-        return build(new StandardProxyFactory());
-    }
-
     private T build(ProxyFactory proxyFactory) {
         final Object result;
 
