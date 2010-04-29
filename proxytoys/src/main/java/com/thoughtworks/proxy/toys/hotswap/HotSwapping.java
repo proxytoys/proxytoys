@@ -14,6 +14,7 @@ import static com.thoughtworks.proxy.toys.delegate.DelegationMode.DIRECT;
 import static com.thoughtworks.proxy.toys.delegate.DelegationMode.SIGNATURE;
 
 import com.thoughtworks.proxy.ProxyFactory;
+import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.ReflectionUtils;
 import com.thoughtworks.proxy.kit.SimpleReference;
@@ -134,6 +135,20 @@ public class HotSwapping<T> {
         public HotSwappingBuild(HotSwapping<T> hotswapping) {
             this.hotswapping = hotswapping;
         }
+
+        /**
+         * Create a proxy with hot swapping capabilities for specific types of the delegate given with an
+         * {@link ObjectReference}. The delegate must implement the given types, if the invoker is in static typing mode,
+         * otherwise it must only have signature compatible methods. Proxies created by this method will implement
+         * {@link Swappable}
+         *
+         * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
+         * @see com.thoughtworks.proxy.toys.hotswap
+         * @since 1.0
+         */
+        public T build() {
+            return build(new StandardProxyFactory());
+        }
         
         /**
          * Create a proxy with hot swapping capabilities for specific types of the delegate given with an
@@ -143,6 +158,7 @@ public class HotSwapping<T> {
          *
          * @param factory the {@link ProxyFactory} to use.
          * @return the created proxy implementing the <tt>types</tt> and {@link Swappable}
+         * @see com.thoughtworks.proxy.toys.hotswap
          * @since 1.0
          */
         public T build(final ProxyFactory factory) {
