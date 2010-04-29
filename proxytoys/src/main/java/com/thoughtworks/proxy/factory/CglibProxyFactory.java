@@ -17,6 +17,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import net.sf.cglib.core.DefaultNamingPolicy;
+import net.sf.cglib.core.Predicate;
+
 import net.sf.cglib.core.CodeGenerationException;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.Factory;
@@ -35,9 +38,10 @@ import com.thoughtworks.proxy.toys.nullobject.Null;
  * @see com.thoughtworks.proxy.factory
  */
 public class CglibProxyFactory extends AbstractProxyFactory {
-    private static final long serialVersionUID = -5615928639194345818L;
+	private static final long serialVersionUID = -5615928639194345818L;
     private static final ThreadLocal<List<Class<?>>> cycleGuard = new ThreadLocal<List<Class<?>>>();
     private static final ProxyFactory standardProxyFactory = new StandardProxyFactory();
+    private transient ForeignPackageNamingPolicy namingPolicy = new ForeignPackageNamingPolicy();
 
     /**
      * The native invocation handler.
@@ -76,16 +80,26 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         }
         final Class<?>[] interfaces = getInterfaces(types);
         final Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(type);
-        enhancer.setInterfaces(interfaces);
-        enhancer.setCallback(new CGLIBInvocationHandlerAdapter(invoker));
-        try {
-            @SuppressWarnings("unchecked")
-            final T proxy = (T)enhancer.create();
-            return proxy;
-        } catch (CodeGenerationException e) { // cglib 2.0
-        } catch (IllegalArgumentException e) { // cglib 2.0.2
-        } catch (NoSuchMethodError e) {
+        for(;;) {
+	        enhancer.setSuperclass(type);
+	        enhancer.setInterfaces(interfaces);
+	        enhancer.setCallback(new CGLIBInvocationHandlerAdapter(invoker));
+	        try {
+	            @SuppressWarnings("unchecked")
+	            final T proxy = (T)enhancer.create();
+	            return proxy;
+	        } catch (CodeGenerationException e) { // cglib 2.0
+				final Throwable wrapper = e.getCause();
+				if (wrapper != null 
+					&& wrapper.getCause() instanceof SecurityException 
+					&& enhancer.getNamingPolicy() != namingPolicy) {
+					enhancer.setNamingPolicy(namingPolicy);
+					continue;
+				}
+	        } catch (IllegalArgumentException e) { // cglib 2.0.2
+	        } catch (NoSuchMethodError e) {
+	        }
+	        break;
         }
         @SuppressWarnings("unchecked")
         final T proxy = (T)createWithConstructor(type, enhancer);
@@ -137,11 +151,18 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     }
 
     private Constructor<?> getConstructor(final Class<?> type) {
-        try {
-            return type.getConstructor(Class[].class.cast(null));
-        } catch (NoSuchMethodException e) {
-            return type.getConstructors()[0];
-        }
+		try {
+			return type.getConstructor(Class[].class.cast(null));
+		} catch (NoSuchMethodException e) {
+			Constructor<?>[] constructors = type.getConstructors();
+			if (constructors.length == 0) {
+				constructors = type.getDeclaredConstructors();
+			}
+			if (constructors.length == 0) {
+				throw new IllegalArgumentException("Cannot create proxy for this type without declared constructor.");
+			}
+			return constructors[0];
+		}
     }
 
     public boolean canProxy(final Class<?> type) {
@@ -153,4 +174,19 @@ public class CglibProxyFactory extends AbstractProxyFactory {
                 || (!type.equals(Object.class) && Proxy.isProxyClass(type))
                 || standardProxyFactory.isProxyClass(type);
     }
+    
+	private static class ForeignPackageNamingPolicy extends DefaultNamingPolicy
+	{
+		@Override
+		public String getClassName(final String prefix, final String source, final Object key, final Predicate names)
+		{
+			return getClass().getPackage().getName() + ".proxy." + super.getClassName(prefix, source, key, names);
+		}
+	}
+
+	private Object readResolve()
+	{
+		namingPolicy = new ForeignPackageNamingPolicy();
+		return this;
+	}
 }
