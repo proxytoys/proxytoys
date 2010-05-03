@@ -1,4 +1,14 @@
 <html>
+    <!--
+     (c) 2005, 2009, 2010 ThoughtWorks Ltd
+     All rights reserved.
+    
+     The software in this package is published under the terms of the BSD
+     style license a copy of which has been included with this distribution in
+     the LICENSE.txt file.
+    
+     Created on 07-May-2005
+    -->
 <head>
 <title>Frequently Asked Questions</title>
 </head>
@@ -6,17 +16,15 @@
 <body>
 
 <!-- ****************************************************** -->
-<h1>Compatability</h1>
+<h1 id="Compatibility">Compatibility</h1>
 
 <!-- ...................................................... -->
-<h2><a name="Compatibility_JDK"><!--  --></a>Which JDK is required to
-use ProxyToys?</h2>
+<h2 id="Compatibility_JDK">Which JDK is required to use ProxyToys?</h2>
 
-<p>JDK 1.3 or later.</p>
+<p>JDK 1.5 or later.</p>
 
 <!-- ...................................................... -->
-<h2><a name="Compatibility_CGLIB"><!--  --></a>What are the advantages
-of using CGLIB based factory over pure Java mode?</h2>
+<h2 id="Compatibility_CGLIB">What are the advantages of using CGLIB based factory over pure Java mode?</h2>
 
 <table>
 	<tr>
@@ -30,7 +38,7 @@ of using CGLIB based factory over pure Java mode?</h2>
 		<td>Yes</td>
 	</tr>
 	<tr>
-		<td>JDK 1.3</td>
+		<td>JDK 1.5</td>
 		<td>Yes</td>
 		<td>Yes</td>
 	</tr>
@@ -52,54 +60,36 @@ of using CGLIB based factory over pure Java mode?</h2>
 </table>
 
 <!-- ...................................................... -->
-<h2><a name="Compatibility_CGLIB_Version"><!--  --></a>Which CGLIB
-versions are compatible with ProxyToys?</h2>
+<h2 id="Compatibility_CGLIB_Version">Which CGLIB versions are compatible with ProxyToys?</h2>
 
-<p>ProxyToys can run with CGLIB versions 2.1, 2.0.2 and 2.0. Note, that
-the CLIB archives cglib-full-2.0.x contain also classes of <a
-	href="http://asm.objectweb.org/">ASM 1.x</a>. The newer version ASM 2.x
-is no longer compatible with any version of the plain CGLIB archives,
-you may use therefore cglib-nodeps-2.1 instead.</p>
+<p>ProxyToys can run with CGLIB versions 2.2, 2.1, 2.0.2 and 2.0. Note, that the CLIB Java archives cglib-full-2.0.x
+contain also classes of <a	href="http://asm.objectweb.org/">ASM 1.x</a>. The newer version ASM 2.x is no longer
+compatible with any version of the plain CGLIB archives, you may use therefore cglib-nodep-2.2 instead.</p>
 
 <!-- ...................................................... -->
-<h2><a name="Compatibility_Others"><!--  --></a>Are there plans to
-provide enhanced mode support to other byte code libraries?</h2>
+<h2 id="Compatibility_Others">Are there plans to provide enhanced mode support to other byte code libraries?</h2>
 
-<p>Yes. <a href="mailing-lists.html">Let us know</a> which library you
-would like supported. Single precondition is an own Proxy
-implementation.</p>
+<p>Yes. <a href="mailing-lists.html">Let us know</a> which library you would like supported. Single precondition is an
+own Proxy implementation.</p>
 
 
 <!-- ****************************************************** -->
-<h1>Scalability</h1>
+<h1 id="Scalability">Scalability</h1>
 
 <!-- ...................................................... -->
-<h2><a name="Scalability_ThreadSafe"><!--  --></a>Is ProxyToys thread
-safe?</h2>
+<h2 id="Scalability_ThreadSafety">Is ProxyToys thread safe?</h2>
 
-<p>Yes. The Proxy factories have a static interface. Starting with
-ProxyToys 0.2 none of the proxy instances itself created by the
-individual toys do not have state.</p>
+<p>Yes. The Proxy factories have a static builder interface. Starting with ProxyToys 0.2 none of the proxy instances
+itself created by the individual toys do have any state.</p>
 
 
 <!-- ****************************************************** -->
-<h1>Development</h1>
+<h1 id="Development">Development</h1>
 
-<h2><a name="Development_Subversion"><!--  --></a>Why is the ProxyToys
-source stored in a Subversion repository? What's wrong with CVS?</h2>
-
-<p>The main reason for the use of <a
-	href="http://subversion.tigris.org/">Subversion</a> instead of CVS is
-that the development for ProxyToys can take place while not connected to
-the Internet. With Subversion, commands like add, remove, rename, diff
-and revert do not require a connection to the server.</p>
-
-<h2><a name="Development_FailingUnitTests"><!--  --></a>I run the unit
-tests or ProxyToys in my IDE, but most of them are failing. Did you ever
-run them?</h2>
-<p>The unit tests are run with every build of ProxyToys. If your IDE has
-collected the unit tests automatically, this might be wrong. You have to
-call explicitly com.thoughtworks.proxy.AllTests.suite()</p>
+<h2 id="Development_FailingUnitTests">I run the unit tests or ProxyToys in my IDE, but most of them are failing. Did
+you ever run them?</h2>
+<p>The unit tests are run with every build of ProxyToys. If your IDE has collected the unit tests automatically, this
+might be wrong. You have to call explicitly com.thoughtworks.proxy.AllTests.suite().</p>
 
 </body>
 </html>

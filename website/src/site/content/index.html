@@ -1,4 +1,14 @@
 <html>
+    <!--
+     (c) 2005, 2009, 2010 ThoughtWorks Ltd
+     All rights reserved.
+    
+     The software in this package is published under the terms of the BSD
+     style license a copy of which has been included with this distribution in
+     the LICENSE.txt file.
+    
+     Created on 07-May-2005
+    -->
   <head>
     <title>Proxy Factories and Common Usage Patterns</title>
     <meta name="short" content="About ProxyToys">
@@ -6,7 +16,7 @@
 
   <body>
 
-    <h1>Motivation</h1>
+    <h1 id="Motivation">Motivation</h1>
 
     <p>Have you ever developed code that uses java.lang.reflect.Proxy and thought:<br>
     <br>
@@ -18,7 +28,7 @@
     one-line code change.
     </p>
 
-    <h1>Features</h1>
+    <h1 id="Features">Features</h1>
 
     <p>API Compatible proxy factory providers:</p>
     <ul>
@@ -33,26 +43,24 @@
         <li>Dispatcher proxy - single proxy instance dispatching method calls to different object with separate types</li>
         <li>Echo proxy - for tracing method calls</li>
         <li>Failover objects - fails over to a next object in case of exception</li>
+        <li>Future objects - execute method asynchronously</li>
         <li>Hot swapping proxy - allows implementation hiding that can be swapped, and mutual dependencies</li>
         <li>Multicasting objects - for multicasting a method invocation to multiple objects</li>
         <li>Null objects - for default implementations of classes that do nothing at all</li>
-        <li>Pool - for a pool implemntation with proxied objects that return automatically to the pool</li>
+        <li>Pool - for a pool implementation with proxied objects that return automatically to the pool</li>
+        <li>Privilege - execute methods as privileged actions in a controlled environment</li>
     </ul>
 
-    <h1>Dependencies</h1>
+    <h1 id="Dependencies">Dependencies</h1>
 
     <p>ProxyToys is a compact library. If you choose not to use the CGLIB features it requires
     no additional libraries.</p>
 
-<!--
-    <h1>Example</h1>
--->
-
-    <h1>Known Limitations</h1>
+    <h1 id="Limitations">Known Limitations</h1>
 
     <p>ProxyToys is bound to the limitations of the underlaying Proxy implementation.</p>
 
-    <h1>Getting Started</h1>
+    <h1 id="Getting_started">Getting Started</h1>
 
     <ul>
       <li><a href="download.html">Download it</a>.</li>

@@ -1,4 +1,14 @@
 <html>
+    <!--
+     (c) 2005, 2009, 2010 ThoughtWorks Ltd
+     All rights reserved.
+    
+     The software in this package is published under the terms of the BSD
+     style license a copy of which has been included with this distribution in
+     the LICENSE.txt file.
+    
+     Created on 07-May-2005
+    -->
   <head>
     <title>Change History</title>
   </head>
@@ -17,11 +27,10 @@
     <h2>Major changes</h2>
 
     <ul>
-      <li>JDK 5 requirement introduced</li>
-      <li>static factory methods added for all toys</li>
-      <li>builder classes for all toys (Refer Martin Fowler's <a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>)</li>
-      <li>varargs for parts of the API where arrays where passed</li>
-      <li>Generics where it makes sense</li>
+      <li>Use JDK 5 language features (generics, varargs). However, this change will make the release binary incompatible with previous ones.</li>
+      <li>Added builder classes for all toys (Refer Martin Fowler's <a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>).</li>
+      <li>New FutureToy to run methods asynchronously.</li>
+      <li>New PrivilegeToy to run methods as privileged actions.</li>
     </ul>
 
     <p>It would be fair to say that this version is incompatible with version 0.2</p>

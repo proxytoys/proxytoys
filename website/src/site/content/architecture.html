@@ -1,4 +1,14 @@
 <html>
+    <!--
+     (c) 2005, 2009, 2010 ThoughtWorks Ltd
+     All rights reserved.
+    
+     The software in this package is published under the terms of the BSD
+     style license a copy of which has been included with this distribution in
+     the LICENSE.txt file.
+    
+     Created on 07-May-2005
+    -->
     <head>
         <title>Architecture Overview</title>
     </head>
@@ -46,10 +56,9 @@
 
 		<p>The toys exist as solutions for common problems solved with proxy instances. Some are build on
 		top of another and you may derive your own specialized solution based on a available toy implementation.
-		Each toy has a builder as proxy factory (the 
-		<a href="apidocs/com/thoughtworks/proxy/toys/pool/Pool.html">Pool</a> supports additionally normal
-		constructors, because it is a normal object <em>using</em> proxies), that can be invoked to create a
-		proxy for a single or for multiple types with a special assignment.</p>
+		Each toy has a builder as proxy factory, that can be invoked to create a proxy for a single or for multiple
+		types with a special assignment. the <a href="apidocs/com/thoughtworks/proxy/toys/pool/Pool.html">Pool</a>
+		supports additionally normal constructors, because it is a normal object <em>using</em> proxies.</p>
 		
 		<p>Each toys utilizes a special implementation of an 
 		<a href="apidocs/com/thoughtworks/proxy/Invoker.html">Invoker</a>, that is called for each method 
