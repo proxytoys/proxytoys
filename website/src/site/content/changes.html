@@ -22,20 +22,21 @@
       <li><b>API changes</b>: Any changes to the API that could impact existing users.</li>
     </ul>
 
-    <h1>Version 1.0</h1>
+    <h1 id="1.0">Version 1.0</h1>
 
     <h2>Major changes</h2>
 
     <ul>
-      <li>Use JDK 5 language features (generics, varargs). However, this change will make the release binary incompatible with previous ones.</li>
+      <li>Use JDK 5 language features.</li>
       <li>Added builder classes for all toys (Refer Martin Fowler's <a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>).</li>
       <li>New FutureToy to run methods asynchronously.</li>
       <li>New PrivilegeToy to run methods as privileged actions.</li>
+      <li>Maven groupId changes from "proxytoys" to "com.thoughtworks.proxytoys".</li>
     </ul>
 
-    <p>It would be fair to say that this version is incompatible with version 0.2</p>
+    <p>This release is source and binary incompatible with any previous version to allow maximum support of Java 5 features in the API.</p>
 
-    <h1>Version 0.2</h1>
+    <h1 id="0.2">Version 0.2</h1>
 
     <h2>Major changes</h2>
 
@@ -79,7 +80,7 @@
       <li>DelegatingInvoker no longer has public constants, use always Delegating.MODE_XXX constants</li>
     </ul>
 
-    <h1>Version 0.1</h1>
+    <h1 id="0.1">Version 0.1</h1>
 
     <p>Initial release.</p>
 

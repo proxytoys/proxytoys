@@ -1,10 +1,20 @@
 <html>
+   <!--
+     (c) 2005, 2009, 2010 ThoughtWorks Ltd
+     All rights reserved.
+    
+     The software in this package is published under the terms of the BSD
+     style license a copy of which has been included with this distribution in
+     the LICENSE.txt file.
+    
+     Created on 07-May-2005
+    -->
   <head>
     <title>About Versioning</title>
   </head>
   <body>
   
-    <h1>Version Number Meaning</h1>
+    <h1 id="meaning">Version Number Meaning</h1>
 
     <p>The ProxyToys project follows strict rules that govern its use of version
     numbers.  The version number of a release indicates how that release
@@ -36,7 +46,7 @@
       <tr><td>etc.</td><td>etc.</td></tr>
     </table>
 
-    <h1>Release Candidates</h1>
+    <h1 id="rc">Release Candidates</h1>
 
     <p>Before a new major or minor release, ProxyToys will make release
     candidate (RC) packages available so that users can test them against
@@ -54,24 +64,7 @@
     version    but guarantees backward compatability with the previous minor
     version.</p>
 
-    <!--
-    <h1>Development Snapshots</h1>
-
-    <p>During development, the continuous integration process automatically
-    builds snapshot packages.  These are not guaranteed to be complete:
-    although the unit tests will all pass the snapshot will probably contain
-    failing acceptance tests that describe planned or requested features that
-    have not yet been implemented.  Snapshots are identified by the UTC time
-    at which the continuous integration process built the package.  The
-    timestamp has the form <var>YYYYMMDD-hhmmss</var>, where YYYY is the
-    (four-digit) year, MM the month, DD the day, hh the hour, mm the minute and
-    ss the second.  The snapshot version is not
-    included in the filename of the snapshot archive itself, but expanding
-    the archive will create a directory named after the snapshot version.
-    </p>
-    -->
-
-    <h1>Internal Classes</h1>
+    <h1 id="internals">Internal Classes</h1>
 
     <p>Many classes are for internal use only and not designed to be used by
     end users. These are exempt from the versioning rules above.</p>
@@ -79,7 +72,7 @@
     <p>Such classes are clearly marked as internal in the source code
     headers and are excluded from the published JavaDoc.</p>
 
-    <h1>Versioning and Deprecation</h1>
+    <h1 id="deprecation">Versioning and Deprecation</h1>
 
     <p>A minor release might deprecate some API features.  Deprecated features
     will not actually be removed until the next major release.
