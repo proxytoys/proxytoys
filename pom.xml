@@ -70,7 +70,7 @@
             <name>Dan North</name>
             <id>tastapod</id>
             <email>tastapod@gmail.com</email>
-            <organization>Thoughtworks Inc.</organization>
+            <organization>Thoughtworks Ltd.</organization>
             <roles>
                 <role>Project Lead</role>
                 <role>Java Developer</role>
@@ -97,7 +97,7 @@
             <name>Paul Hammant</name>
             <id>paul</id>
             <email>paul@hammant.org</email>
-            <organization>Thoughtworks Inc.</organization>
+            <organization>Thoughtworks Ltd.</organization>
             <roles>
                 <role>Java Developer</role>
             </roles>
@@ -120,6 +120,12 @@
         </developer>
     </developers>
     <contributors>
+        <contributor>
+            <name>Aaron Knauf</name>
+        </contributor>
+        <contributor>
+            <name>Philipp Meier</name>
+        </contributor>
         <contributor>
             <name>Conrad Benham</name>
         </contributor>
@@ -311,7 +317,7 @@
         </snapshotRepository>
         <site>
             <id>codehaus.org</id>
-            <name>Codehaus Proxytoys Site</name>
+            <name>Codehaus ProxyToys Site</name>
             <url>dav:https://dav.codehaus.org/proxytoys</url>
         </site>
     </distributionManagement>

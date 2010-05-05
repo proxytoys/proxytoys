@@ -18,7 +18,7 @@
 
     <ul>
       <li><b>Major changes</b>: The major new features that all users should know about.</li>
-      <li><b>Minor changes</b>: Any smaller changes, including bugfixes.</li>
+      <li><b>Minor changes</b>: Any smaller changes, including bug fixes.</li>
       <li><b>API changes</b>: Any changes to the API that could impact existing users.</li>
     </ul>
 
@@ -28,8 +28,8 @@
 
     <ul>
       <li>Use JDK 5 language features.</li>
-      <li>Added builder classes for all toys (Refer Martin Fowler's <a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>).</li>
-      <li>New FutureToy to run methods asynchronously.</li>
+      <li>Added builder classes for all toys (refer Martin Fowler's <a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>).</li>
+      <li>New FutureToy to run methods asynchronously (JIRA:PTOYS-5).</li>
       <li>New PrivilegeToy to run methods as privileged actions.</li>
       <li>Maven groupId changes from "proxytoys" to "com.thoughtworks.proxytoys".</li>
     </ul>
@@ -59,7 +59,7 @@
       <li>Decorates can now call the protected methods of its delegate.</li>
       <li>Echo objects use now the given ProxyFactory.</li>
       <li>Echo objects will now also trace return values and thrown exceptions.</li>
-      <li>Fixed a lot of cuncurrency issues.</li>
+      <li>Fixed a lot of concurrency issues.</li>
       <li>Multicaster will no longer try and fail to proxy final classes.</li>
       <li>Multicaster handles now all primitive types.</li>
       <li>Hot swapping proxy could not handle concrete classes (fix by Aaron Knauf).</li>

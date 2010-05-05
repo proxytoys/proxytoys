@@ -27,7 +27,7 @@
         <page>faq.html</page>
         <page>example-code.html</page>
         <page>mailing-lists.html</page>
-        <link title="JavaDoc">javadoc/index.html</link>
+        <link title="Javadoc">javadoc/index.html</link>
         <page>issues.html</page>
     </section>
     <section>

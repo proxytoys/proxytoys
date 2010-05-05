@@ -22,14 +22,14 @@
 			</includes>
 		</fileSet>
         <fileSet>
-            <directory>target/site</directory>
+            <directory>target/xsite</directory>
             <outputDirectory>/docs</outputDirectory>
         </fileSet>
     </fileSets>
 	<dependencySets>
 		<dependencySet>
 			<outputDirectory>/lib</outputDirectory>
-                        <useProjectArtifact>false</useProjectArtifact>
+            <useProjectArtifact>false</useProjectArtifact>
 			<unpack>false</unpack>
 			<scope>runtime</scope>
 		</dependencySet>

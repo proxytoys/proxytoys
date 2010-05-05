@@ -1,5 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+    <!--
+     (c) 2005, 2009, 2010 ThoughtWorks Ltd
+     All rights reserved.
+    
+     The software in this package is published under the terms of the BSD
+     style license a copy of which has been included with this distribution in
+     the LICENSE.txt file.
+    
+     Created on 07-May-2005
+    -->
     <head>
         <title>ProxyToys - ${title}</title>
         <link rel="stylesheet" type="text/css" href="style.css"/>
@@ -27,11 +37,11 @@
                 <div class="MenuGroup">
                     <h1>${section.name}</h1>
                     <ul>
-                        <#list section.pages as otherPage>
-                            <#if otherPage = page>
-                                <li class="currentLink">${otherPage.title}</li>
+                        <#list section.entries as entry>
+                            <#if entry = page>
+                                <li class="currentLink">${entry.title}</li>
                             <#else>
-                                <li><a href="${otherPage.href}">${otherPage.title}</a></li>
+                                <li><a href="${entry.href}">${entry.title}</a></li>
                             </#if>
                         </#list>
                     </ul>
@@ -44,18 +54,21 @@
         <div class="NewsGroup">
           <h1>Latest Versions</h1>
 	        <div class="NewsItem">
-	          <p>Stable:<span class="NewsVersion"><a href="download.html#stable">0.2.1</a></span></p>
+	          <p>Stable:<span class="NewsVersion"><a href="download.html#stable">1.0</a></span></p>
 	        </div>
 	        <div class="NewsItem">
-	          <p>Preview:<span class="NewsVersion"><a href="download.html#preview"></a></span></p>
-	        </div>
-	        <div class="NewsItem">
-	          <p>Development:<span class="NewsVersion"><a href="download.html#snapshot">1.0-SNAPSHOT</a></span></p>
+	          <p>Development:<span class="NewsVersion"><a href="download.html#snapshot">1.1-SNAPSHOT</a></span></p>
 	        </div>
         </div>
 
         <div class="NewsGroup">
           <h1>News</h1>
+	        <div class="NewsItem">
+	          <p>May 5, 2010<br/><a href="news.html#20100505">ProxyToys 1.0 released</a></p>
+	        </div>
+	        <div class="NewsItem">
+	          <p>Jun 29, 2009<br/><a href="news.html#20090629">Welcome Paul Hammant as new committer</a></p>
+	        </div>
 	        <div class="NewsItem">
 	          <p>Sep 28, 2005<br/><a href="news.html#20050928">ProxyToys uses continuous integration platform</a></p>
 	        </div>
@@ -64,12 +77,6 @@
 	        </div>
 	        <div class="NewsItem">
 	          <p>Sep 4, 2005<br/><a href="news.html#20050904">ProxyToys 0.2 released</a></p>
-	        </div>
-	        <div class="NewsItem">
-	          <p>Aug 8, 2005<br/><a href="news.html#20050808">ProxyToys Website Relaunch</a></p>
-	        </div>
-	        <div class="NewsItem">
-	          <p>Jun 5, 2004<br/><a href="news.html#20040605">ProxyToys 0.1 released</a></p>
 	        </div>
         </div>
       </div>
