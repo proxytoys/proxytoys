@@ -21,39 +21,34 @@
 <!-- ...................................................... -->
 <h2 id="Compatibility_JDK">Which JDK is required to use ProxyToys?</h2>
 
-<p>JDK 1.5 or later.</p>
+<p>JDK 5.0 or later, since the 1.0 release.  For JDK 1.4, please use ProxyToys 0.21</p>
 
 <!-- ...................................................... -->
-<h2 id="Compatibility_CGLIB">What are the advantages of using CGLIB based factory over pure Java mode?</h2>
+<h2 id="Compatibility_CGLIB">What are the advantages of using CGLIB based factory over Java Reflection mode?</h2>
 
 <table>
 	<tr>
 		<th>Feature</th>
-		<th>Pure Java</th>
-		<th>CGLIB</th>
+		<th>Java Reflection factory</th>
+		<th>CGLIB factory</th>
 	</tr>
 	<tr>
-		<td>Public interfaces</td>
-		<td>Yes</td>
-		<td>Yes</td>
-	</tr>
-	<tr>
-		<td>JDK 1.5</td>
+		<td>Can proxy public interfaces</td>
 		<td>Yes</td>
 		<td>Yes</td>
 	</tr>
 	<tr>
-		<td>Public classes</td>
+		<td>Can proxy public classes</td>
 		<td>No</td>
 		<td>Yes</td>
 	</tr>
 	<tr>
-		<td>Non-public classes</td>
+		<td>Can proxy non-public classes</td>
 		<td>No</td>
 		<td>No</td>
 	</tr>
 	<tr>
-		<td>Final classes</td>
+		<td>Can proxy final classes</td>
 		<td>No</td>
 		<td>No</td>
 	</tr>
@@ -65,12 +60,13 @@
 <p>ProxyToys can run with CGLIB versions 2.2, 2.1, 2.0.2 and 2.0. Note, that the CLIB Java archives cglib-full-2.0.x
 contain also classes of <a	href="http://asm.objectweb.org/">ASM 1.x</a>. The newer version ASM 2.x is no longer
 compatible with any version of the plain CGLIB archives, you may use therefore cglib-nodep-2.2 instead.</p>
+<p>Our Maven artifact has a transitive dependency on cglib-nodep-2.2, and we intend to keep up with releases of CGLIB going forward.</p>
 
 <!-- ...................................................... -->
 <h2 id="Compatibility_Others">Are there plans to provide enhanced mode support to other byte code libraries?</h2>
 
-<p>Yes. <a href="mailing-lists.html">Let us know</a> which library you would like supported. Single precondition is an
-own Proxy implementation.</p>
+<p>Yes. <a href="mailing-lists.html">Let us know</a> which library you would like supported. The single precondition is that
+    the library must have a proxy implementation.</p>
 
 
 <!-- ****************************************************** -->
@@ -88,8 +84,8 @@ itself created by the individual toys do have any state.</p>
 
 <h2 id="Development_FailingUnitTests">I run the unit tests or ProxyToys in my IDE, but most of them are failing. Did
 you ever run them?</h2>
-<p>The unit tests are run with every build of ProxyToys. If your IDE has collected the unit tests automatically, this
-might be wrong. You have to call explicitly com.thoughtworks.proxy.AllTests.suite().</p>
+<p>The unit tests are run with every build of ProxyToys as our <a href="http://ci.codehaus.org/browse/PROXYTOYS">CI loop shows</a>. If your IDE collects unit tests automatically, this
+might be wrong. Instead you have to call explicitly com.thoughtworks.proxy.AllTests.suite().</p>
 
 </body>
 </html>
