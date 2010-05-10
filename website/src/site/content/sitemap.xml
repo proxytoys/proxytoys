@@ -21,7 +21,6 @@
     <section>
         <name>Using ProxyToys</name>
         <page>tutorial.html</page>
-        <page>architecture.html</page>
         <page>factories.html</page>
         <page>toys.html</page>
         <page>faq.html</page>
@@ -32,9 +31,11 @@
     </section>
     <section>
         <name>Developing ProxyToys</name>
+        <page>architecture.html</page>
         <page>how-to-contribute.html</page>
         <page>team.html</page>
         <page>repository.html</page>
+        <link title="Codehaus Project">http://xircles.codehaus.org/projects/proxytoys</link>
         <link title="Build Status">http://ci.codehaus.org/browse/PROXYTOYS</link>
         <link title="Code Statistics">http://www.ohloh.net/projects/10075</link>
     </section>
