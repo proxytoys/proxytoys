@@ -10,15 +10,15 @@
  */
 package proxytoys.examples.overview;
 
+import com.thoughtworks.proxy.kit.ObjectReference;
+import com.thoughtworks.proxy.toys.delegate.Delegating;
+import com.thoughtworks.proxy.toys.delegate.DelegationMode;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
-import com.thoughtworks.proxy.kit.ObjectReference;
-import com.thoughtworks.proxy.toys.delegate.Delegating;
-import com.thoughtworks.proxy.toys.delegate.DelegationMode;
 
 /**
  * @author J&ouml;rg Schaible
@@ -32,10 +32,12 @@ public class DelegateToyExample {
                 return Boolean.TRUE;
             }
         };
+
+        // Make a delegate of com.thoughtworks.proxy.kitObjectReference using the Reflection Proxy class
         @SuppressWarnings("unchecked")
         ObjectReference<Boolean> ref = Delegating.proxy(ObjectReference.class)
-                                 .with(threadLocal)
-                                 .build();
+                .with(threadLocal)
+                .build();
         System.out.println("This ObjectReference has an initial value of <" + ref.get() + ">");
     }
 
@@ -43,10 +45,12 @@ public class DelegateToyExample {
         RandomAccessFile raf = new RandomAccessFile(f, "rw");
         raf.writeBytes("Content");
         raf.seek(0);
+
+        // Make a delegate of java.io.DataInput using the Reflection Proxy class
         return Delegating.proxy(DataInput.class)
-                    .with(raf)
-                    .mode(DelegationMode.DIRECT)
-                    .build();
+                .with(raf)
+                .mode(DelegationMode.DIRECT)
+                .build();
     }
 
     public static void packageOverviewExample2() throws IOException {

@@ -10,14 +10,14 @@
  */
 package proxytoys.examples.overview;
 
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.privilege.AccessControllerExecutor;
+import com.thoughtworks.proxy.toys.privilege.Privileging;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.privilege.AccessControllerExecutor;
-import com.thoughtworks.proxy.toys.privilege.Privileging;
 
 
 /**
@@ -27,10 +27,10 @@ public class PrivilegingToyExample {
 
     public static void packageOverviewExample1() throws IOException {
         File file = Privileging.proxy(new File("src/main/java/" + PoolToyExample.class.getName().replace('.', '/') + ".java"))
-            .executedBy(new AccessControllerExecutor())
-            .build(new CglibProxyFactory());
+                .executedBy(new AccessControllerExecutor())
+                .build(new CglibProxyFactory());
         LineNumberReader reader = new LineNumberReader(new FileReader(file), 16 * 1024);
-        while (reader.readLine() != null);
+        while (reader.readLine() != null) ;
         System.out.println("Lines of code: " + reader.getLineNumber());
         reader.close();
     }

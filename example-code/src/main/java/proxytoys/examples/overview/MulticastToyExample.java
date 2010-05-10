@@ -10,6 +10,10 @@
  */
 package proxytoys.examples.overview;
 
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.multicast.Multicast;
+import com.thoughtworks.proxy.toys.multicast.Multicasting;
+
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,10 +24,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.multicast.Multicast;
-import com.thoughtworks.proxy.toys.multicast.Multicasting;
 
 
 /**
@@ -63,8 +63,8 @@ public class MulticastToyExample {
         File workingDir = new File(".");
         List<String> files = Arrays.asList(workingDir.list());
         File multicast = Multicasting.proxy(File.class, List.class)
-                             .with(workingDir, files)
-                             .build(new CglibProxyFactory());
+                .with(workingDir, files)
+                .build(new CglibProxyFactory());
         System.out.println("Current working directory: " + multicast.getAbsolutePath());
         System.out.println("Files in working directory: " + List.class.cast(multicast).size());
     }

@@ -10,15 +10,15 @@
  */
 package proxytoys.examples.overview;
 
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.decorate.Decorating;
+import com.thoughtworks.proxy.toys.decorate.Decorator;
+
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.decorate.Decorating;
-import com.thoughtworks.proxy.toys.decorate.Decorator;
 
 
 /**
@@ -26,23 +26,29 @@ import com.thoughtworks.proxy.toys.decorate.Decorator;
  */
 public class DecorateToyExample {
 
-	public static void packageOverviewExample1() {
+    public static void packageOverviewExample1() {
+
         List<String> list = Arrays.asList("1", "2", "3");
+
         @SuppressWarnings({"serial", "unchecked"})
         Decorator<Iterator> decorator = new Decorator<Iterator>() {
             @Override
             public Object decorateResult(Iterator proxy, Method method, Object[] args, Object result) {
-                if (method.getName().equals("next"))
+                if (method.getName().equals("next")) {
                     return Integer.valueOf(String.class.cast(result));
-                else
+                } else {
                     return result;
+                }
             }
         };
-    	@SuppressWarnings("unchecked")
+
+
+        // Make a decorator of an Iterator using the Reflection Proxy class
+        @SuppressWarnings("unchecked")
         Iterator<Integer> intIter = Decorating.proxy(Iterator.class)
-        					 .with(list.iterator())
-                             .visiting(decorator)
-                             .build();
+                .with(list.iterator())
+                .visiting(decorator)
+                .build();
         while (intIter.hasNext()) {
             Integer i = intIter.next();
             System.out.println(i);
@@ -58,15 +64,18 @@ public class DecorateToyExample {
                 System.out.print("Called: " + method.getName());
                 return super.beforeMethodStarts(proxy, method, args);
             }
+
             @Override
             public Object decorateResult(File proxy, Method method, Object[] args, Object result) {
                 System.out.println(" ==> " + result);
                 return result;
             }
         };
+
+        // Make a decorator of java.io.File using CGLIB
         File decoratedFile = Decorating.proxy(file)
-                                .visiting(decorator)
-                                .build(new CglibProxyFactory());
+                .visiting(decorator)
+                .build(new CglibProxyFactory());
         decoratedFile.exists();
         decoratedFile.isFile();
         decoratedFile.isDirectory();

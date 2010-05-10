@@ -28,8 +28,8 @@ public class HotSwapToyExample {
         ByteArrayOutputStream outStreamOdd = new ByteArrayOutputStream();
         ByteArrayOutputStream outStreamEven = new ByteArrayOutputStream();
         OutputStream out = HotSwapping.proxy(OutputStream.class)
-                              .with(null)
-                              .build(new CglibProxyFactory());
+                .with(null)
+                .build(new CglibProxyFactory());
         PrintWriter writer = new PrintWriter(out);
         for (int i = 0; i < 10; ++i) {
             Swappable swappable = Swappable.class.cast(out);

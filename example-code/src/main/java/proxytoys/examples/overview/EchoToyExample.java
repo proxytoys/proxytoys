@@ -10,6 +10,9 @@
  */
 package proxytoys.examples.overview;
 
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.echo.Echoing;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -17,9 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.echo.Echoing;
 
 
 /**
@@ -30,9 +30,9 @@ public class EchoToyExample {
     public static void packageOverviewExample1() {
         @SuppressWarnings("unchecked")
         Map<String, Object> map = Echoing.proxy(Map.class)
-                            .with(new HashMap<String, Object>())
-                            .to(new PrintWriter(System.err))
-                            .build(new CglibProxyFactory());
+                .with(new HashMap<String, Object>())
+                .to(new PrintWriter(System.err))
+                .build(new CglibProxyFactory());
         map.put("Date", new Date());
         map.put("File", new File("."));
         try {

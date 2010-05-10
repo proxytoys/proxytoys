@@ -10,20 +10,18 @@
  */
 package proxytoys.examples.overview;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import com.thoughtworks.proxy.toys.future.Future;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
-import com.thoughtworks.proxy.toys.future.Future;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 
 
 /**
@@ -34,7 +32,7 @@ public class FutureToyExample {
 
     public static void packageOverviewExample1() throws InterruptedException, ParserConfigurationException, SAXException, IOException {
         DocumentBuilder documentBuilder = Future.proxy(DocumentBuilderFactory.newInstance().newDocumentBuilder())
-            .build(new CglibProxyFactory());
+                .build(new CglibProxyFactory());
         Document document = documentBuilder.parse(new SlowInputSource(new StringReader("<root/>")));
         System.out.println("Root document name: " + document.getDocumentElement().getNodeName());
         Thread.sleep(200); // should do something more useful here
@@ -50,10 +48,9 @@ public class FutureToyExample {
         System.out.println("Example 1 of Package Overview:");
         packageOverviewExample1();
     }
-    
+
     private static class SlowInputSource extends InputSource {
-        public SlowInputSource(Reader characterStream)
-        {
+        public SlowInputSource(Reader characterStream) {
             super(characterStream);
         }
 
@@ -65,6 +62,6 @@ public class FutureToyExample {
             }
             return super.getCharacterStream();
         }
-        
+
     }
 }
