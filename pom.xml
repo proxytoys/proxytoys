@@ -289,15 +289,15 @@
                 <plugin>
                     <groupId>org.codehaus.xsite</groupId>
                     <artifactId>xsite-maven-plugin</artifactId>
-                    <version>1.1.1</version>
+                    <version>1.1.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-webdav</artifactId>
-                <version>1.0-beta-2</version>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>1.0-beta-6</version>
             </extension>
         </extensions>
     </build>

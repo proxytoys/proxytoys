@@ -46,7 +46,7 @@
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>true</overWriteSnapshots>
               <classifier>javadoc</classifier>
-              <outputDirectory>${project.build.directory}/xsite/javadoc</outputDirectory>
+              <outputDirectory>${project.build.directory}/xsite/apidocs</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -56,6 +56,7 @@
         <artifactId>xsite-maven-plugin</artifactId>
         <configuration>
           <sourceDirectoryPath>${basedir}/src/site</sourceDirectoryPath>
+          <compositionFilePath>config/xsite.xml</compositionFilePath>
           <sitemapPath>content/sitemap.xml</sitemapPath>
           <skinPath>templates/skin.html</skinPath>
           <resourcePaths>resources</resourcePaths>

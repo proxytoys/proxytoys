@@ -20,10 +20,10 @@
 		
 		<p>The <a href="apidocs/com/thoughtworks/proxy/toys/decorate/Decorating.html">Decorating Toy</a> is factory for 
 		AOP-style proxies. Any method call is intercepted and can be decorated with an 
-		<a href="apidocs/com/thoughtworks/proxy/toys/decorate/InvocationDecorater.html">InvocationDecorater</a>
-		implementation. In addition to method calls, you may also intercept the return of the call or any thrown exception.
-		See the <a href="apidocs/com/thoughtworks/proxy/toys/decorate/package-summary.html">package description</a>
-		for examples.</p>
+		<a href="apidocs/com/thoughtworks/proxy/toys/decorate/Decorator.html">Decorator</a> implementation. In
+		addition to method calls, you may also intercept the return of the call or any thrown exception. See the 
+		<a href="apidocs/com/thoughtworks/proxy/toys/decorate/package-summary.html">package description</a>	for
+		examples.</p>
 
         <!-- ************ -->
 
@@ -41,7 +41,7 @@
 
         <h1 id="Dispatcher">Dispatching Toy</h1>
 
-		<p>The <a href="apidocs/com/thoughtworks/proxy/toys/dispatch/Delegating.html">Dispatching Toy</a> is a factory for
+		<p>The <a href="apidocs/com/thoughtworks/proxy/toys/dispatch/Dispatching.html">Dispatching Toy</a> is a factory for
 		proxies, dispatch incoming method calls to different object depending their implemented interfaces. Each proxy implements
 		several unrelated interfaces and contains a collection of target objects. Each method call is invoked on one target object 
 		from this collection, that implements the interface of the calling method. Although the 
@@ -57,8 +57,8 @@
 
 		<p>The <a href="apidocs/com/thoughtworks/proxy/toys/echo/Echoing.html">Echo Toy</a> is a factory for
 		proxies, that implement a classical trace functionality. It implements just an own
-		<a href="apidocs/com/thoughtworks/proxy/toys/decorate/InvocationDecorater.html">InvocationDecorater</a> 
-		(<a href="apidocs/com/thoughtworks/proxy/toys/echo/EchoDecorater.html">InvocationDecorater</a>), that
+		<a href="apidocs/com/thoughtworks/proxy/toys/decorate/Decorator.html">Decorator</a> 
+		(<a href="apidocs/com/thoughtworks/proxy/toys/echo/EchoDecorator.html">EchoDecorator</a>), that
 		simply writes every method call, the return value and every thrown exception to a 
 		<a href="http://java.sun.com/j2se/1.5.0/docs/api/java/io/PrintWriter.html">PrintWriter</a>. See the 
 		<a href="apidocs/com/thoughtworks/proxy/toys/echo/package-summary.html">package description</a> for
@@ -106,9 +106,9 @@
 
         <!-- ************ -->
 
-        <h1 id="Multicaster">Multicasting Toy</h1>
+        <h1 id="Multicast">Multicasting Toy</h1>
 
-		<p>The <a href="apidocs/com/thoughtworks/proxy/toys/multicast/Multicasting.html">Multicaster Toy</a> is a factory for
+		<p>The <a href="apidocs/com/thoughtworks/proxy/toys/multicast/Multicasting.html">Multicasting Toy</a> is a factory for
 		proxies, that will invoke a single method call on every object which they manage in a collection. The different return values
 		are collected and a new multicasting proxy is returned for the result collection. If the result of the invoked method is a 
 		primitive type, the proxy will sum up all the results and return this sum as result of the invocation. It does not matter if
@@ -140,7 +140,7 @@
 		<a href="apidocs/com/thoughtworks/proxy/toys/pool/Poolable.html">Multicast</a> interface, that can be used to return
 		the object to the pool. Additionally any of these objects will return automatically to the pool if their proxy instance is garbage
 		collected. Before an object is added again to the pool after usage, a user-defined 
-		<a href="apidocs/com/thoughtworks/proxy/toys/pool/Resetter.html">Resetter</a> instance may do any reinitializations
+		<a href="apidocs/com/thoughtworks/proxy/kit/Resetter.html">Resetter</a> instance may do any reinitializations
 		with such an object or may even decide to discard the object at all. See the 
 		<a href="apidocs/com/thoughtworks/proxy/toys/pool/package-summary.html">package description</a> for
 		examples.</p>
