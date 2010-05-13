@@ -28,7 +28,7 @@
       <groupId>com.thoughtworks.proxytoys</groupId>
       <artifactId>proxytoys</artifactId>
       <classifier>javadoc</classifier>
-      <type>jar<type>
+      <type>jar</type>
     </dependency>
   </dependencies>
   <build>
