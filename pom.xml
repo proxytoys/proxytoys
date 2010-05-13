@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <!--
      (c) 2009, 2010 ThoughtWorks Ltd
      All rights reserved.
@@ -14,7 +13,7 @@
     <groupId>com.thoughtworks.proxytoys</groupId>
     <artifactId>proxytoys-parent</artifactId>
     <name>ProxyToys Parent</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
     <url>http://proxytoys.codehaus.org</url>
     <profiles>
@@ -61,9 +60,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:http://svn.codehaus.org/proxytoys/trunk</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/proxytoys/trunk</developerConnection>
-        <url>http://fisheye.codehaus.org/browse/proxytoys/trunk</url>
+        <connection>scm:svn:http://svn.codehaus.org/proxytoys/tags/1.0</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/proxytoys/tags/1.0</developerConnection>
+        <url>http://fisheye.codehaus.org/browse/proxytoys/tags/1.0</url>
     </scm>
     <developers>
         <developer>
@@ -88,7 +87,7 @@
             <name>Joerg Schaible</name>
             <id>joehni</id>
             <email>joerg.schaible@gmx.de</email>
-            <organization/>
+            <organization />
             <roles>
                 <role>Java Developer</role>
             </roles>
@@ -136,12 +135,12 @@
             <dependency>
                 <groupId>com.thoughtworks.proxytoys</groupId>
                 <artifactId>proxytoys</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.thoughtworks.proxytoys</groupId>
                 <artifactId>proxytoys</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
                 <classifier>javadoc</classifier>
                 <type>jar</type>
                 <scope>provided</scope>
