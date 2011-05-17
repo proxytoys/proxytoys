@@ -59,11 +59,23 @@ public class Multicasting<T> {
      * @param targets targets the target objects
      * @return a factory that will proxy instances of the supplied type.
      * @since 1.0
+     * @see {@link #proxy(java.util.List)}
      */
     public static MulticastingBuild<Multicast> proxy(Object... targets) {
         return proxy(Arrays.asList(targets));
     }
 
+    /**
+     * Creates a factory for proxy instances delegating a call to multiple objects and managing the individual results.
+     * The targets List can be modified after creation of the proxy to add or remove objects the proxy should delegate to.
+     * If you do this in a multithreaded environment you should either make sure modification of the targets List and
+     * invocations on the created proxy happens in the same thread, or use a synchronized List.
+     *
+     * @param targets targets the target objects
+     * @return a factory that will proxy instances of the supplied type.
+     * @since 1.1
+     * @see {@link #proxy(Object...)}
+     */
     public static MulticastingBuild<Multicast> proxy(List<Object> targets) {
         return new MulticastingBuild<Multicast>(targets);
     }
