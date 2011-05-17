@@ -134,7 +134,7 @@ public class MulticastingInvoker<T> implements Invoker {
         } else if (method.getReturnType().equals(boolean.class)) {
             return andBooleans(invocationResults.toArray());
         } else {
-            return Multicasting.proxy(invocationResults).build(proxyFactory);
+            return Multicasting.proxyList(invocationResults).build(proxyFactory);
         }
     }
 

@@ -59,10 +59,10 @@ public class Multicasting<T> {
      * @param targets targets the target objects
      * @return a factory that will proxy instances of the supplied type.
      * @since 1.0
-     * @see {@link #proxy(java.util.List)}
+     * @see {@link #proxyList(java.util.List)}
      */
     public static MulticastingBuild<Multicast> proxy(Object... targets) {
-        return proxy(Arrays.asList(targets));
+        return proxyList(Arrays.asList(targets));
     }
 
     /**
@@ -76,7 +76,7 @@ public class Multicasting<T> {
      * @since 1.1
      * @see {@link #proxy(Object...)}
      */
-    public static MulticastingBuild<Multicast> proxy(List<Object> targets) {
+    public static MulticastingBuild<Multicast> proxyList(List<Object> targets) {
         return new MulticastingBuild<Multicast>(targets);
     }
 
