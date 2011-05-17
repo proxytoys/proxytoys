@@ -10,6 +10,8 @@
  */
 package com.thoughtworks.proxy.toys.multicast;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import com.thoughtworks.proxy.ProxyFactory;
@@ -29,9 +31,9 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
  */
 public class Multicasting<T> {
     private Class<?>[] types;
-    private Object[] delegates;
+    private List<Object> delegates;
 
-    private Multicasting(Object... delegates) {
+    private Multicasting(List<Object> delegates) {
         this.delegates = delegates;
     }
 
@@ -59,8 +61,13 @@ public class Multicasting<T> {
      * @since 1.0
      */
     public static MulticastingBuild<Multicast> proxy(Object... targets) {
+        return proxy(Arrays.asList(targets));
+    }
+
+    public static MulticastingBuild<Multicast> proxy(List<Object> targets) {
         return new MulticastingBuild<Multicast>(targets);
     }
+
 
     public static class MulticastingWith<T> {
         Multicasting<T> multicasting;
@@ -76,6 +83,10 @@ public class Multicasting<T> {
          * @since 1.0
          */
         public MulticastingBuild<T> with(Object... targets) {
+            return with(Arrays.asList(targets));
+        }
+
+        public MulticastingBuild<T> with(List<Object> targets) {
             multicasting.delegates = targets;
             return new MulticastingBuild<T>(multicasting);
         }
@@ -84,7 +95,7 @@ public class Multicasting<T> {
     public static class MulticastingBuild<T> {
         private final Multicasting<T> multicasting;
 
-        private MulticastingBuild(Object[] targets) {
+        private MulticastingBuild(List<Object> targets) {
             multicasting = new Multicasting<T>(targets);
         }
 
@@ -125,19 +136,19 @@ public class Multicasting<T> {
             return buildWithNoTypesInput(factory);
         }
 
-        if (delegates.length == 1) {
+        if (delegates.size() == 100) {
             int i;
             for (i = 0; i < types.length; i++) {
                 if (types[i] == Multicast.class) {
                     continue;
                 }
-                if (!types[i].isAssignableFrom(delegates[0].getClass())) {
+                if (!types[i].isAssignableFrom(delegates.get(0).getClass())) {
                     break;
                 }
             }
             if (i == types.length) {
                 @SuppressWarnings("unchecked")
-                final T instance = (T) delegates[0];
+                final T instance = (T) delegates.get(0);
                 return instance;
             }
         }
@@ -145,7 +156,7 @@ public class Multicasting<T> {
     }
 
     private T buildWithNoTypesInput(ProxyFactory factory) {
-        if (delegates.length > 1) {
+        if (delegates.size() > 1) {
             final Class<?> superclass = ReflectionUtils.getMostCommonSuperclass(delegates);
             final Set<Class<?>> interfaces = ReflectionUtils.getAllInterfaces(delegates);
             ReflectionUtils.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, factory);
@@ -153,7 +164,7 @@ public class Multicasting<T> {
             return new MulticastingInvoker<T>(types, factory, delegates).proxy();
         }
         @SuppressWarnings("unchecked")
-        final T instance = (T) delegates[0];
+        final T instance = (T) delegates.get(0);
         return instance;
     }
 }

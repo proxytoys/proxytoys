@@ -49,7 +49,7 @@ public class MulticastingInvoker<T> implements Invoker {
 
     private Class<?>[] types;
     private ProxyFactory proxyFactory;
-    private Object[] targets;
+    private List<Object> targets;
 
     /**
      * Construct a MulticastingInvoker.
@@ -59,7 +59,7 @@ public class MulticastingInvoker<T> implements Invoker {
      * @param targets      the target instances where the proxy delegates a call
      * @since 0.1
      */
-    public MulticastingInvoker(final Class<?>[] type, final ProxyFactory proxyFactory, final Object[] targets) {
+    public MulticastingInvoker(final Class<?>[] type, final ProxyFactory proxyFactory, final List<Object> targets) {
         this.types = type;
         this.proxyFactory = proxyFactory;
         this.targets = targets;
@@ -91,10 +91,10 @@ public class MulticastingInvoker<T> implements Invoker {
 
     public Object invoke(final Object proxy, Method method, Object[] args) throws Throwable {
         if (getTargetsInArray.equals(method)) {
-            return targets;
+            return targets.toArray();
         } else if (getTargetsInTypedArray.equals(method)) {
-            final Object[] elements = Object[].class.cast(Array.newInstance(Class.class.cast(args[0]), targets.length));
-            System.arraycopy(targets, 0, elements, 0, targets.length);
+            final Object[] elements = Object[].class.cast(Array.newInstance(Class.class.cast(args[0]), targets.size()));
+            System.arraycopy(targets.toArray(), 0, elements, 0, targets.size());
             return elements;
         } else if (multicastTargetsDirect.equals(method)) {
             method = (Method) args[0];
@@ -134,7 +134,7 @@ public class MulticastingInvoker<T> implements Invoker {
         } else if (method.getReturnType().equals(boolean.class)) {
             return andBooleans(invocationResults.toArray());
         } else {
-            return Multicasting.proxy(invocationResults.toArray()).build(proxyFactory);
+            return Multicasting.proxy(invocationResults).build(proxyFactory);
         }
     }
 

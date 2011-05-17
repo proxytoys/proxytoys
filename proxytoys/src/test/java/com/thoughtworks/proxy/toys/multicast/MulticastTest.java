@@ -91,8 +91,32 @@ public class MulticastTest extends AbstractProxyTest {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Dog timAndTom = Multicasting.proxy(Dog.class).with(tim, tom).build(getFactory());
+        Multicasting.MulticastingWith<Dog> proxy = Multicasting.proxy(Dog.class);
+        Multicasting.MulticastingBuild<Dog> with = proxy.with(tim, tom);
+        ProxyFactory factory = getFactory();
+        Dog timAndTom = with.build(factory);
         Tail timAndTomsTails = timAndTom.getTail();
+        timAndTomsTails.wag();
+
+        assertTrue(timsTail.wasWagged());
+        assertTrue(tomsTail.wasWagged());
+    }
+
+    @Test
+    public void shouldMulticastRecursivelyForDeclaredReturnTypeUsingModifiedProxy() {
+        TailImpl timsTail = new TailImpl();
+        Dog tim = new DogImpl(timsTail);
+
+        TailImpl tomsTail = new TailImpl();
+        Dog tom = new DogImpl(tomsTail);
+
+        List<Object> dogs = new ArrayList<Object>();
+        dogs.add(tim);
+
+        Dog timAndEventuallyTom = Multicasting.proxy(Dog.class).with(dogs).build(getFactory());
+        dogs.add(tom);
+
+        Tail timAndTomsTails = timAndEventuallyTom.getTail();
         timAndTomsTails.wag();
 
         assertTrue(timsTail.wasWagged());
@@ -174,12 +198,12 @@ public class MulticastTest extends AbstractProxyTest {
     }
 
     @Test
-    public void shouldNotReturnProxyWhenThereIsOnlyOneForCompatibleDeclaredReturnTypes() {
+    public void returnsProxyEvenWhenThereIsOnlyOneForCompatibleDeclaredReturnTypes() {
         Map<?, ?> map = new HashMap<Object, Object>();
         ProxyFactory factory = getFactory();
         Map<?,?> multicast = Multicasting.proxy(Map.class, Serializable.class).with(map).build(factory);
-        assertFalse(factory.isProxyClass(multicast.getClass()));
-        assertSame(map, multicast);
+        assertTrue(factory.isProxyClass(multicast.getClass()));
+        assertEquals(map, multicast);
     }
 
     @Test
