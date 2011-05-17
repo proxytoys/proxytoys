@@ -91,10 +91,7 @@ public class MulticastTest extends AbstractProxyTest {
         TailImpl tomsTail = new TailImpl();
         Dog tom = new DogImpl(tomsTail);
 
-        Multicasting.MulticastingWith<Dog> proxy = Multicasting.proxy(Dog.class);
-        Multicasting.MulticastingBuild<Dog> with = proxy.with(tim, tom);
-        ProxyFactory factory = getFactory();
-        Dog timAndTom = with.build(factory);
+        Dog timAndTom = Multicasting.proxy(Dog.class).with(tim, tom).build(getFactory());
         Tail timAndTomsTails = timAndTom.getTail();
         timAndTomsTails.wag();
 
