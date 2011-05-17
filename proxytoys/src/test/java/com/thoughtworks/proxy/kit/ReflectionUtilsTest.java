@@ -44,58 +44,45 @@ import org.junit.Test;
 public class ReflectionUtilsTest {
     @Test
     public void mostCommonSuperclassForClassesWithACommonBaseClass() {
-        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new StringWriter(), new OutputStreamWriter(System.out))));
-        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new OutputStreamWriter(System.out), new StringWriter())));
+        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new StringWriter(), new OutputStreamWriter(System.out)));
+        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new OutputStreamWriter(System.out), new StringWriter()));
     }
 
     @Test
     public void mostCommonSuperclassForClassesAreInSameHierarchy() {
-        assertEquals(OutputStreamWriter.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out))));
-        assertEquals(OutputStreamWriter.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out))));
+        assertEquals(OutputStreamWriter.class, ReflectionUtils.getMostCommonSuperclass(new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out)));
+        assertEquals(OutputStreamWriter.class, ReflectionUtils.getMostCommonSuperclass(new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out)));
     }
 
     @Test
     public void mostCommonSuperclassForClassesInSameOrDifferentHierarchy() {
-        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new FileWriter(FileDescriptor.out), new StringWriter(), new OutputStreamWriter(System.out))));
-        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out), new StringWriter())));
-        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new StringWriter(), new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out))));
-        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out), new StringWriter())));
-        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new StringWriter(), new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out))));
-        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new OutputStreamWriter(System.out), new StringWriter(), new FileWriter(FileDescriptor.out))));
+        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new FileWriter(FileDescriptor.out), new StringWriter(), new OutputStreamWriter(System.out)));
+        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out), new StringWriter()));
+        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new StringWriter(), new FileWriter(FileDescriptor.out), new OutputStreamWriter(System.out)));
+        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out), new StringWriter()));
+        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new StringWriter(), new OutputStreamWriter(System.out), new FileWriter(FileDescriptor.out)));
+        assertEquals(Writer.class, ReflectionUtils.getMostCommonSuperclass(new OutputStreamWriter(System.out), new StringWriter(), new FileWriter(FileDescriptor.out)));
     }
 
     @Test
     public void mostCommonSuperclassForUnmatchingObjects() {
-        assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                1, new OutputStreamWriter(System.out))));
-        assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new OutputStreamWriter(System.out), 1)));
+        assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(1, new OutputStreamWriter(System.out)));
+        assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(new OutputStreamWriter(System.out), 1));
     }
 
     @Test
     public void mostCommonSuperclassForEmptyArray() {
-        assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(Collections.<Object>emptyList()));
+        assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass());
     }
 
     @Test
     public void mostCommonSuperclassForNullElements() {
-        assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(null, null)));
+        assertEquals(Object.class, ReflectionUtils.getMostCommonSuperclass(null, null));
     }
 
     @Test
     public void mostCommonSuperclassForCollections() {
-        assertEquals(AbstractList.class, ReflectionUtils.getMostCommonSuperclass(Arrays.<Object>asList(
-                new LinkedList<Object>(), new Vector<Object>())));
+        assertEquals(AbstractList.class, ReflectionUtils.getMostCommonSuperclass(new LinkedList<Object>(), new Vector<Object>()));
     }
 
     @Test

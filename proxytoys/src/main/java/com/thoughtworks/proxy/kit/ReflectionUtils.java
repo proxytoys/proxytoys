@@ -67,7 +67,7 @@ public class ReflectionUtils {
      * @return an set of interfaces. The set may be empty
      * @since 0.2
      */
-    public static Set<Class<?>> getAllInterfaces(List<Object> objects) {
+    public static Set<Class<?>> getAllInterfaces(Object... objects) {
         final Set<Class<?>> interfaces = new HashSet<Class<?>>();
         for (Object object : objects) {
             if (object != null) {
@@ -118,10 +118,10 @@ public class ReflectionUtils {
      * @return the superclass or <code>{@link Void Void.class}</code> for an empty array.
      * @since 0.2
      */
-    public static Class<?> getMostCommonSuperclass(final List<Object> objects) {
+    public static Class<?> getMostCommonSuperclass(Object... objects) {
         Class<?> type = null;
         boolean found = false;
-        if (objects != null && objects.size() > 0) {
+        if (objects != null && objects.length > 0) {
             while (!found) {
                 for (Object object : objects) {
                     found = true;

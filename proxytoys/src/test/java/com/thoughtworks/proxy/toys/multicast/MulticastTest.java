@@ -113,7 +113,7 @@ public class MulticastTest extends AbstractProxyTest {
         List<Object> dogs = new ArrayList<Object>();
         dogs.add(tim);
 
-        Dog timAndEventuallyTom = Multicasting.proxy(Dog.class).with(dogs).build(getFactory());
+        Dog timAndEventuallyTom = Multicasting.proxy(Dog.class).withList(dogs).build(getFactory());
         dogs.add(tom);
 
         Tail timAndTomsTails = timAndEventuallyTom.getTail();

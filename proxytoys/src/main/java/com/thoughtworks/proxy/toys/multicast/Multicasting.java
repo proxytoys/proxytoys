@@ -83,10 +83,10 @@ public class Multicasting<T> {
          * @since 1.0
          */
         public MulticastingBuild<T> with(Object... targets) {
-            return with(Arrays.asList(targets));
+            return withList(Arrays.asList(targets));
         }
 
-        public MulticastingBuild<T> with(List<Object> targets) {
+        public MulticastingBuild<T> withList(List<Object> targets) {
             multicasting.delegates = targets;
             return new MulticastingBuild<T>(multicasting);
         }
@@ -135,30 +135,14 @@ public class Multicasting<T> {
         if (types == null) {
             return buildWithNoTypesInput(factory);
         }
-
-        if (delegates.size() == 100) {
-            int i;
-            for (i = 0; i < types.length; i++) {
-                if (types[i] == Multicast.class) {
-                    continue;
-                }
-                if (!types[i].isAssignableFrom(delegates.get(0).getClass())) {
-                    break;
-                }
-            }
-            if (i == types.length) {
-                @SuppressWarnings("unchecked")
-                final T instance = (T) delegates.get(0);
-                return instance;
-            }
-        }
         return new MulticastingInvoker<T>(types, factory, delegates).proxy();
     }
 
     private T buildWithNoTypesInput(ProxyFactory factory) {
         if (delegates.size() > 1) {
-            final Class<?> superclass = ReflectionUtils.getMostCommonSuperclass(delegates);
-            final Set<Class<?>> interfaces = ReflectionUtils.getAllInterfaces(delegates);
+            Object[] delegateArray = delegates.toArray();
+            final Class<?> superclass = ReflectionUtils.getMostCommonSuperclass(delegateArray);
+            final Set<Class<?>> interfaces = ReflectionUtils.getAllInterfaces(delegateArray);
             ReflectionUtils.addIfClassProxyingSupportedAndNotObject(superclass, interfaces, factory);
             this.types = interfaces.toArray(new Class<?>[interfaces.size()]);
             return new MulticastingInvoker<T>(types, factory, delegates).proxy();
