@@ -31,7 +31,7 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
  */
 public class Multicasting<T> {
     private Class<?>[] types;
-    private List<Object> delegates;
+    private List<?> delegates;
 
     private Multicasting(List<Object> delegates) {
         this.delegates = delegates;
@@ -98,7 +98,7 @@ public class Multicasting<T> {
             return withList(Arrays.asList(targets));
         }
 
-        public MulticastingBuild<T> withList(List<Object> targets) {
+        public MulticastingBuild<T> withList(List<?> targets) {
             multicasting.delegates = targets;
             return new MulticastingBuild<T>(multicasting);
         }

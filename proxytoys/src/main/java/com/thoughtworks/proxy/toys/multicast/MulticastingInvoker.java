@@ -49,7 +49,7 @@ public class MulticastingInvoker<T> implements Invoker {
 
     private Class<?>[] types;
     private ProxyFactory proxyFactory;
-    private List<Object> targets;
+    private List<?> targets;
 
     /**
      * Construct a MulticastingInvoker.
@@ -59,7 +59,7 @@ public class MulticastingInvoker<T> implements Invoker {
      * @param targets      the target instances where the proxy delegates a call
      * @since 0.1
      */
-    public MulticastingInvoker(final Class<?>[] type, final ProxyFactory proxyFactory, final List<Object> targets) {
+    public MulticastingInvoker(final Class<?>[] type, final ProxyFactory proxyFactory, final List<?> targets) {
         this.types = type;
         this.proxyFactory = proxyFactory;
         this.targets = targets;
