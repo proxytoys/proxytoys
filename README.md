@@ -2,7 +2,7 @@
 
 ## Motivation
 
-Have you ever developed code that uses java.lang.reflect.Proxy and thought:
+Have you ever developed code that uses `java.lang.reflect.Proxy` and thought:
 
 > "That CGLIB library sure is cool. I wish I could leverage both standard
 > proxies and CGLIB proxies without changing my code".
