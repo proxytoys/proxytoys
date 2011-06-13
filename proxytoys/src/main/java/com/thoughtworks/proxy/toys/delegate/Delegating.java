@@ -10,8 +10,10 @@
  */
 package com.thoughtworks.proxy.toys.delegate;
 
+import com.thoughtworks.proxy.Invoker;
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
+import com.thoughtworks.proxy.kit.ObjectReference;
 import com.thoughtworks.proxy.kit.SimpleReference;
 
 /**
@@ -34,14 +36,14 @@ public class Delegating<T> {
     private Object delegate;
     private DelegationMode delegationMode = DelegationMode.SIGNATURE;
 
-    private Delegating(Class<T> type) {
+    protected Delegating(Class<T> type) {
         this.type = type;
     }
 
     /**
      * Creates a factory for proxy instances that allow delegation.
      *
-     * @param type     the type of the proxy when it is finally created.
+     * @param type the type of the proxy when it is finally created.
      * @return a factory that will proxy instances of the supplied type.
      * @since 1.0
      */
@@ -50,9 +52,9 @@ public class Delegating<T> {
     }
 
     public static class DelegatingWith<T> {
-        private Delegating<T> delegating;
+        protected Delegating<T> delegating;
 
-        private DelegatingWith(Delegating<T> delegating) {
+        protected DelegatingWith(Delegating<T> delegating) {
             this.delegating = delegating;
         }
 
@@ -63,17 +65,22 @@ public class Delegating<T> {
          * @return the factory that will route calls to the supplied delegate.
          * @since 1.0
          */
-        public DelegatingModeOrBuild<T> with(Object delegate) {
+        public DelegatingBuild<T> with(Object delegate) {
             delegating.delegate = delegate;
-            return new DelegatingModeOrBuild<T>(delegating);
+            return build();
+        }
+
+        protected DelegatingBuild<T> build() {
+            return new DelegatingBuild<T>(delegating);
         }
 
     }
 
-    public static class DelegatingModeOrBuild<T> extends DelegatingBuild<T>{
+    public static class DelegatingBuild<T> {
+        protected Delegating<T> delegating;
 
-        private DelegatingModeOrBuild(Delegating<T> delegating) {
-            super(delegating);
+        public DelegatingBuild(Delegating<T> delegating) {
+            this.delegating = delegating;
         }
 
         /**
@@ -86,15 +93,6 @@ public class Delegating<T> {
         public DelegatingBuild<T> mode(DelegationMode mode) {
             delegating.delegationMode = mode;
             return new DelegatingBuild<T>(delegating);
-        }
-
-    }
-
-    public static class DelegatingBuild<T> {
-        protected Delegating<T> delegating;
-
-        private DelegatingBuild(Delegating<T> delegating) {
-            this.delegating = delegating;
         }
 
         /**
@@ -115,8 +113,11 @@ public class Delegating<T> {
          * @since 1.0
          */
         public T build(ProxyFactory factory) {
-            return factory.<T>createProxy(new DelegatingInvoker<Object>(factory,
-                    new SimpleReference<Object>(delegating.delegate), delegating.delegationMode), delegating.type);
+            return factory.<T>createProxy(invoker(factory, new SimpleReference<Object>(delegating.delegate)), delegating.type);
+        }
+
+        protected Invoker invoker(ProxyFactory factory, ObjectReference<Object> reference) {
+            return new DelegatingInvoker<Object>(factory, reference, delegating.delegationMode);
         }
     }
 }
