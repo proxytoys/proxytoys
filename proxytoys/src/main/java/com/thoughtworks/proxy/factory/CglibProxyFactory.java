@@ -44,10 +44,19 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     private final boolean interceptDuringConstruction;
     private transient ForeignPackageNamingPolicy namingPolicy = new ForeignPackageNamingPolicy();
 
+    /**
+     * This constructor sets interceptDuringConstruction to true since this is Cglib's Enhancer's default behavior.
+     * @see #CglibProxyFactory(boolean)
+     */
     public CglibProxyFactory() {
         this(true);
     }
 
+    /**
+     * @param interceptDuringConstruction default to true. A false value can be useful when decorating objects with a
+     * constructor that sets default values by calling methods of the given objects; setting this to false only "enables"
+     * the decoration/delegation until after the proxy creation is done.
+     */
     public CglibProxyFactory(boolean interceptDuringConstruction) {
         this.interceptDuringConstruction = interceptDuringConstruction;
     }
