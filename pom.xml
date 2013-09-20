@@ -56,14 +56,14 @@
     </issueManagement>
     <licenses>
         <license>
-            <url>https://svn.codehaus.org/proxytoys/trunk/LICENSE.txt</url>
+            <url>https://raw.github.com/proxytoys/proxytoys/master/LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:http://svn.codehaus.org/proxytoys/trunk</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/proxytoys/trunk</developerConnection>
-        <url>http://fisheye.codehaus.org/browse/proxytoys/trunk</url>
+        <connection>scm:git:https://github.com/proxytoys/proxytoys.git</connection>
+        <developerConnection>scm:git:https://github.com/proxytoys/proxytoys.git</developerConnection>
+        <url>https://github.com/proxytoys/proxytoys</url>
     </scm>
     <developers>
         <developer>
