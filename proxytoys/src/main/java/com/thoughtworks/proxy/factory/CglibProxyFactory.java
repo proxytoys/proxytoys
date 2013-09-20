@@ -41,7 +41,16 @@ public class CglibProxyFactory extends AbstractProxyFactory {
 	private static final long serialVersionUID = -5615928639194345818L;
     private static final ThreadLocal<List<Class<?>>> cycleGuard = new ThreadLocal<List<Class<?>>>();
     private static final ProxyFactory standardProxyFactory = new StandardProxyFactory();
+    private final boolean interceptDuringConstruction;
     private transient ForeignPackageNamingPolicy namingPolicy = new ForeignPackageNamingPolicy();
+
+    public CglibProxyFactory() {
+        this(true);
+    }
+
+    public CglibProxyFactory(boolean interceptDuringConstruction) {
+        this.interceptDuringConstruction = interceptDuringConstruction;
+    }
 
     /**
      * The native invocation handler.
@@ -80,6 +89,7 @@ public class CglibProxyFactory extends AbstractProxyFactory {
         }
         final Class<?>[] interfaces = getInterfaces(types);
         final Enhancer enhancer = new Enhancer();
+        enhancer.setInterceptDuringConstruction(interceptDuringConstruction);
         for(;;) {
 	        enhancer.setSuperclass(type);
 	        enhancer.setInterfaces(interfaces);
