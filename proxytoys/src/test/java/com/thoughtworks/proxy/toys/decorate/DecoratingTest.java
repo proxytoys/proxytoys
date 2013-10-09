@@ -31,7 +31,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.thoughtworks.proxy.AbstractProxyTest;
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.mockito.SameArrayMatcher;
 
 /**
@@ -193,40 +192,5 @@ public class DecoratingTest extends AbstractProxyTest {
     public void serializeWithXStreamInPureReflectionMode() {
         useSerializedProxy(serializeWithXStreamAndPureReflection(
         	Decorating.proxy(CharSequence.class).with("Test").visiting(new AssertingDecorator()).build(getFactory())));
-    }
-
-    @Test
-    public void canDeferDecorationUntilAfterProxyInstantiation() throws Exception {
-        final Decorator<WithCallsInConstructor> nullDecorator = new Decorator<WithCallsInConstructor>() {};
-
-        final WithCallsInConstructor obj = new WithCallsInConstructor();
-        obj.setS("custom");
-        assertEquals("sanity check", "custom", obj.getS());
-        final WithCallsInConstructor withCallsInConstructor = Decorating.proxy(WithCallsInConstructor.class).with(obj).visiting(nullDecorator).build(new CglibProxyFactory(true));
-        assertEquals("This won't be expected by most users, but it is \"correct\" nonetheless", "default", withCallsInConstructor.getS());
-        assertEquals("And this was passed on to the underlying object too", "default", obj.getS());
-
-        final WithCallsInConstructor obj2 = new WithCallsInConstructor();
-        obj2.setS("custom");
-        assertEquals("sanity check", "custom", obj2.getS());
-        final WithCallsInConstructor withoutCallsInConstructor = Decorating.proxy(WithCallsInConstructor.class).with(obj2).visiting(nullDecorator).build(new CglibProxyFactory(false));
-        assertEquals("And this is what most users would expect - setting interceptDuringConstruction to false", "custom", withoutCallsInConstructor.getS());
-        assertEquals("And this was not passed on to the underlying object either", "custom", obj2.getS());
-    }
-
-    public class WithCallsInConstructor {
-        private String s;
-
-        public WithCallsInConstructor() {
-            setS("default");
-        }
-
-        public String getS() {
-            return s;
-        }
-
-        public void setS(String s) {
-            this.s = s;
-        }
     }
 }
