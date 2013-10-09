@@ -1,5 +1,5 @@
 /*
- * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * (c) 2003-2005, 2009, 2010, 2013 ThoughtWorks Ltd
  * All rights reserved.
  *
  * The software in this package is published under the terms of the BSD
@@ -45,17 +45,33 @@ public class CglibProxyFactory extends AbstractProxyFactory {
     private transient ForeignPackageNamingPolicy namingPolicy = new ForeignPackageNamingPolicy();
 
     /**
-     * This constructor sets interceptDuringConstruction to true since this is Cglib's Enhancer's default behavior.
+     * Create a ProxyFactory based on CGLIB.
+     * 
+     * <p>
+     * A proxy for instantiable Java types created by this factory will intercept also calls to the new instance from
+     * within the constructor.
+     * </p>
+     * 
      * @see #CglibProxyFactory(boolean)
+     * @since upcoming
      */
     public CglibProxyFactory() {
         this(true);
     }
 
     /**
-     * @param interceptDuringConstruction default to true. A false value can be useful when decorating objects with a
-     * constructor that sets default values by calling methods of the given objects; setting this to false only "enables"
-     * the decoration/delegation until after the proxy creation is done.
+     * Create a ProxyFactory based on CGLIB controlling the interceptions during proxy construction.
+     * 
+     * <p>
+     * This factory instance can control if a proxy for instantiable Java types created by this factory will
+     * intercept calls to the new instance from within the constructor. However, sometimes an InvocationHandler
+     * implementation requires additional setup after the proxy has been created. In that case it is necessary that
+     * calls from the constructor are not intercepted at all to ensure that the proxied object is properly initialized.
+     * </p>
+     *  
+     * @param interceptDuringConstruction <code>true</code> to intercept calls from within the constructor,
+     * <code>false</code> to allow the call to proceed without being handled.
+     * @since upcoming
      */
     public CglibProxyFactory(boolean interceptDuringConstruction) {
         this.interceptDuringConstruction = interceptDuringConstruction;
