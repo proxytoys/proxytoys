@@ -1,5 +1,5 @@
 /*
- * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
+ * (c) 2003-2005, 2009, 2010, 2013 ThoughtWorks Ltd
  * All rights reserved.
  *
  * The software in this package is published under the terms of the BSD
@@ -17,6 +17,7 @@ import com.thoughtworks.proxy.factory.CglibProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactoryTest;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
 import com.thoughtworks.proxy.kit.ReflectionUtilsTest;
+import com.thoughtworks.proxy.toys.decorate.CglibDecoratingTest;
 import com.thoughtworks.proxy.toys.decorate.DecoratingTest;
 import com.thoughtworks.proxy.toys.delegate.DelegatingTest;
 import com.thoughtworks.proxy.toys.dispatch.DispatchingTest;
@@ -43,6 +44,7 @@ import com.thoughtworks.proxy.toys.privilege.PrivilegingTest;
         AllTests.CglibSuite.class,
         AllTests.StandardSuite.class,
         CglibProxyFactoryTest.class,
+        CglibDecoratingTest.class,
         CglibEchoingTest.class,
         CglibHotSwappingTest.class,
         CglibMulticastTest.class,
