@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/proxytoys/proxytoys.svg?branch=master)](https://travis-ci.org/proxytoys/proxytoys)
+
+----
 # Proxy Factories and Common Usage Patterns
 
 ## Motivation
