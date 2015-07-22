@@ -1,4 +1,5 @@
 language: java
 jdk:
   - openjdk6
+install: mvn validate
 script: mvn install -B -V
