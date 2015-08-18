@@ -16,7 +16,6 @@
     <name>ProxyToys Parent</name>
     <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <url>http://proxytoys.codehaus.org</url>
     <profiles>
         <profile>
             <id>default</id>
@@ -44,16 +43,20 @@
         </profile>
     </profiles>
     <organization>
-        <name>Codehaus</name>
-        <url>http://codehaus.org/</url>
+        <name>ProxyToys</name>
+        <url>http://proxytoys.github.io/</url>
     </organization>
     <inceptionYear>2005</inceptionYear>
     <description>
-        <![CDATA[Please refer to the <a href="http://proxytoys.codehaus.org/">site</a> for documentation.]]></description>
+        <![CDATA[Please refer to the <a href="http://proxytoys.github.io/">site</a> for documentation.]]></description>
     <issueManagement>
-        <system>JIRA</system>
-        <url>http://jira.codehaus.org/browse/PTOYS</url>
+        <system>github</system>
+        <url>https://github.com/proxytoys/proxytoys/issues/</url>
     </issueManagement>
+  <ciManagement>
+    <system>Travis</system>
+    <url>https://travis-ci.org/proxytoys/proxytoys</url>
+  </ciManagement>
     <licenses>
         <license>
             <url>https://raw.github.com/proxytoys/proxytoys/master/LICENSE.txt</url>
@@ -64,6 +67,7 @@
         <connection>scm:git:https://github.com/proxytoys/proxytoys.git</connection>
         <developerConnection>scm:git:https://github.com/proxytoys/proxytoys.git</developerConnection>
         <url>https://github.com/proxytoys/proxytoys</url>
+        <tag>HEAD</tag>
     </scm>
     <developers>
         <developer>
@@ -307,20 +311,17 @@
       The server id here defined must also appear in ~/.m2/settings.xml
       cf. settings-template.xml
     -->
-        <repository>
-            <id>codehaus.org</id>
-            <name>Codehaus ProxyToys Repository</name>
-            <url>dav:https://dav.codehaus.org/repository/proxytoys</url>
-        </repository>
-        <snapshotRepository>
-            <id>codehaus.org</id>
-            <name>Codehaus ProxyToys Snapshot Repository</name>
-            <url>dav:https://dav.codehaus.org/snapshots.repository/proxytoys</url>
-        </snapshotRepository>
-        <site>
-            <id>codehaus.org</id>
-            <name>Codehaus ProxyToys Site</name>
-            <url>dav:https://dav.codehaus.org/proxytoys</url>
-        </site>
+    <repository>
+      <id>ossrh-staging</id>
+      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <id>ossrh-snapshots</id>
+      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <!--site>
+      <id>github</id>
+      <url>scm:git:ssh://git@github.com/proxytoys/proxytoys.github.com.git</url>
+    </site-->
     </distributionManagement>
 </project>
