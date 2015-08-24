@@ -1,6 +1,6 @@
 /*
- * (c) 2004, 2005, 2009, 2010 ThoughtWorks Ltd
- * All rights reserved.
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd. All rights reserved.
+ * (c) 2015 ProxyToys Committers. All rights reserved.
  *
  * The software in this package is published under the terms of the BSD
  * style license a copy of which has been included with this distribution in
@@ -85,6 +85,7 @@ public class Pool<T> implements Serializable {
      * Creates a factory for a pool instance which proxy the managed elements in the pool.
      * 
      * @param type the type of the instances
+     * @param <T> the proxied type
      * @return return the pool with parameters specified
      * @since 1.0
      */
@@ -163,7 +164,7 @@ public class Pool<T> implements Serializable {
          * again.</li>
          * </ul>
          * 
-         * @param serializationMode
+         * @param serializationMode the serialization mode
          * @return the pool with a certain serialization mode
          * @throws IllegalArgumentException if the serialization mode is not one of the
          *             predefined values

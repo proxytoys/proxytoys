@@ -1,6 +1,6 @@
 /*
- * (c) 2003-2004, 2009, 2010 ThoughtWorks Ltd
- * All rights reserved.
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd. All rights reserved.
+ * (c) 2015 ProxyToys Committers. All rights reserved.
  *
  * The software in this package is published under the terms of the BSD
  * style license a copy of which has been included with this distribution in
@@ -44,6 +44,7 @@ public class Future<T> {
      * Creates a proxy instance for asynchronous calls on a type. 
      * 
      * @param primaryType the type of the created proxy.
+     * @param <T> the proxied type
      * @return the proxy of the specified type.
      * @since 1.0
      */
@@ -57,6 +58,7 @@ public class Future<T> {
      * 
      * @param primaryType the main type of the created proxy.
      * @param types the other types of the created proxy.
+     * @param <T> the proxied type
      * @return the proxy of the specified types
      * @since 1.0
      */
@@ -69,6 +71,7 @@ public class Future<T> {
      * Creates a proxy instance for asynchronous calls on an object. 
      * 
      * @param target the proxied object.
+     * @param <T> the proxied type
      * @return the proxy.
      * @since 1.0
      */

@@ -1,6 +1,6 @@
 /*
- * (c) 2005, 2009, 2010 ThoughtWorks Ltd
- * All rights reserved.
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd. All rights reserved.
+ * (c) 2015 ProxyToys Committers. All rights reserved.
  *
  * The software in this package is published under the terms of the BSD
  * style license a copy of which has been included with this distribution in
@@ -37,6 +37,7 @@ public interface Multicast {
      * @param type   the type that has a method with the given name and matching arguments
      * @param method the method name
      * @param args   the arguments of the invocation
+     * @param <T> the proxied type
      * @return the result of the multicast
      * @throws NoSuchMethodException if the type has no matching method
      * @throws SecurityException     if the security manager prevents the method access by reflection
@@ -63,6 +64,7 @@ public interface Multicast {
      * Access the targets of the proxy in a typed array.
      *
      * @param type the type of an array element
+     * @param <T> the proxied type
      * @return the typed array of proxy targets
      * @since 0.2
      */

@@ -1,6 +1,6 @@
 /*
- * (c) 2005, 2009, 2010 ThoughtWorks Ltd
- * All rights reserved.
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd. All rights reserved.
+ * (c) 2015 ProxyToys Committers. All rights reserved.
  *
  * The software in this package is published under the terms of the BSD
  * style license a copy of which has been included with this distribution in
@@ -39,6 +39,7 @@ public class Dispatching<T> {
      *
      * @param primaryType the primary type of the proxy that will not have to be cast to
      * @param types the other types of the proxy
+     * @param <T> the proxied type
      * @return a builder that will proxy instances of the supplied type.
      * @since 1.0
      */

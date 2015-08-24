@@ -1,6 +1,6 @@
 /*
- * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
- * All rights reserved.
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd. All rights reserved.
+ * (c) 2015 ProxyToys Committers. All rights reserved.
  *
  * The software in this package is published under the terms of the BSD
  * style license a copy of which has been included with this distribution in
@@ -47,6 +47,7 @@ public class HotSwapping<T> {
      * Creates a factory for proxy instances that allow the exchange of delegated instances.
      *
      * @param type the type of the proxy when it is finally created.
+     * @param <T> the proxied type
      * @return a factory that will proxy instances of the supplied type.
      * @since 1.0
      */
@@ -59,6 +60,7 @@ public class HotSwapping<T> {
      *
      * @param primaryType the primary type implemented by the proxy
      * @param types other types that are implemented by the proxy
+     * @param <T> the proxied type
      * @return a factory that will proxy instances of the supplied type.
      * @since 1.0
      */

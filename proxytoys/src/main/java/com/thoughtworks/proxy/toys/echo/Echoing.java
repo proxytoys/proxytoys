@@ -1,6 +1,6 @@
 /*
- * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd
- * All rights reserved.
+ * (c) 2003-2005, 2009, 2010 ThoughtWorks Ltd. All rights reserved.
+ * (c) 2015 ProxyToys Committers. All rights reserved.
  *
  * The software in this package is published under the terms of the BSD
  * style license a copy of which has been included with this distribution in
@@ -43,6 +43,7 @@ public class Echoing<T> {
      * Creates a factory for proxy instances that allow delegation.
      *
      * @param type the type of the proxy when it is finally created.
+     * @param <T> the proxied type
      * @return a factory that will proxy instances of the supplied type.
      * @since 1.0
      */
