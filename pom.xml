@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <!--
      (c) 2009, 2010 ThoughtWorks Ltd. All rights reserved.
-     (c) 2015 ProxyToys Committers. All rights reserved.
+     (c) 2015, 2016 ProxyToys Committers. All rights reserved.
     
      The software in this package is published under the terms of the BSD
      style license a copy of which has been included with this distribution in
@@ -16,6 +16,7 @@
     <name>ProxyToys Parent</name>
     <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <url>http://proxytoys.github.io/</url>
     <profiles>
         <profile>
             <id>default</id>
