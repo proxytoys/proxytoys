@@ -65,8 +65,8 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:https://github.com/proxytoys/proxytoys.git</connection>
-        <developerConnection>scm:git:https://github.com/proxytoys/proxytoys.git</developerConnection>
+        <connection>scm:git:ssh://git@github.com/proxytoys/proxytoys.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/proxytoys/proxytoys.git</developerConnection>
         <url>https://github.com/proxytoys/proxytoys</url>
         <tag>HEAD</tag>
     </scm>
